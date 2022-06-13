@@ -15,21 +15,20 @@ variable "ibmcloud_api_key" {
 variable "region" {
   description = "The region to which to deploy the VPC"
   type        = string
-  default = "au-syd"
+  default     = "au-syd"
 }
 
 variable "prefix" {
   description = "The prefix that you would like to append to your resources"
   type        = string
-  default = "test-landing-zone-vpc"
+  default     = "test-landing-zone-vpc"
 }
 
-variable "vpc_name" {
-  description = "Name for vpc. If left null, one will be generated using the prefix for this module."
+variable "existing_resource_group_name" {
   type        = string
-  default     = "vpc"
+  description = "Name of the existing resource group.  Required if not creating new resource group"
+  default     = null
 }
-
 
 ##############################################################################
 # Default Security Group Rules
@@ -38,11 +37,10 @@ variable "vpc_name" {
 variable "security_group_rules" {
   description = "A list of security group rules to be added to the default vpc security group"
   default = [{
-    name  = "default-sgr"
+    name      = "default-sgr"
     direction = "inbound"
-    remote = "10.0.0.0/8"
+    remote    = "10.0.0.0/8"
   }]
 }
-
 
 ##############################################################################
