@@ -24,9 +24,9 @@ variable "prefix" {
   default     = "test-landing-zone-vpc"
 }
 
-variable "existing_resource_group_name" {
+variable "resource_group" {
   type        = string
-  description = "Name of the existing resource group.  Required if not creating new resource group"
+  description = "An existing resource group name to use for this example, if unset a new resource group will be created"
   default     = null
 }
 
