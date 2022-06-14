@@ -2,6 +2,7 @@
 # Network ACL
 ##############################################################################
 
+
 locals {
   cluster_rules = [
     # Cluster Rules
@@ -100,7 +101,7 @@ locals {
     }
   ]
 
-  # ACL Objects                                                                                    
+  # ACL Objects
   acl_object = {
     for network_acl in var.network_acls :
     network_acl.name => {

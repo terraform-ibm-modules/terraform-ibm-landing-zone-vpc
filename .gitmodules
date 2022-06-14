@@ -1,0 +1,3 @@
+[submodule "common-dev-asset"]
+	path = common-dev-asset
+	url = git@github.com:terraform-ibm-modules/common-dev-assets.git

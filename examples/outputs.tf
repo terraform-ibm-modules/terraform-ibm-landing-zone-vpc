@@ -1,10 +1,11 @@
 ##############################################################################
-# Terraform Providers
+# Outputs
 ##############################################################################
 
-terraform {
-  required_version = ">=1.0"
-  experiments      = [module_variable_optional_attrs]
-}
+#output "myoutput" {
+#  description = "Description of my output"
+#  value       = "value"
+#  depends_on  = [<some resource>]
+#}
 
 ##############################################################################

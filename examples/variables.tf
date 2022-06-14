@@ -42,6 +42,13 @@ variable "resource_tags" {
 
 variable "security_group_rules" {
   description = "A list of security group rules to be added to the default vpc security group"
+  type = list(
+    object({
+      name      = string
+      direction = string
+      remote    = string
+    })
+  )
   default = [{
     name      = "default-sgr"
     direction = "inbound"
