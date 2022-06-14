@@ -30,6 +30,12 @@ variable "existing_resource_group_name" {
   default     = null
 }
 
+variable "resource_tags" {
+  description = "List of Tags for the resource created"
+  type        = list(string)
+  default     = null
+}
+
 ##############################################################################
 # Default Security Group Rules
 ##############################################################################

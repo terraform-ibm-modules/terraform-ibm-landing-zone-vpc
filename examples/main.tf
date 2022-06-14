@@ -24,4 +24,5 @@ module "deploy_vpc" {
   prefix               = var.prefix
   security_group_rules = var.security_group_rules
   vpc_name             = var.prefix
+  tags                 = var.resource_tags
 }
