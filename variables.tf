@@ -315,6 +315,11 @@ variable "subnets" {
 
 variable "security_group_rules" {
   description = "A list of security group rules to be added to the default vpc security group"
+  default = [{
+    name      = "default-sgr"
+    direction = "inbound"
+    remote    = "10.0.0.0/8"
+  }]
   type = list(
     object({
       name      = string

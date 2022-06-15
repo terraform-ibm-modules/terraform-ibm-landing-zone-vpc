@@ -51,7 +51,7 @@ locals {
   # tflint-ignore: terraform_unused_declarations
   assert_rule_exists_in_map = lookup(module.unit_tests.security_group_rules, "test-rule")
   # tflint-ignore: terraform_unused_declarations
-  assert_rule_has_correct_field = regex("field", module.unit_tests.security_group_rules["test-rule"].field)
+  assert_rule_has_correct_field = regex("test-rule", module.unit_tests.security_group_rules["test-rule"].name)
 }
 
 ##############################################################################
