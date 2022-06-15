@@ -2,10 +2,12 @@
 # Outputs
 ##############################################################################
 
-#output "myoutput" {
-#  description = "Description of my output"
-#  value       = "value"
-#  depends_on  = [<some resource>]
-#}
+output "id" {
+  value       = module.deploy_vpc.vpc_id
+  description = "VPC id"
+}
 
-##############################################################################
+output "crn" {
+  value       = module.deploy_vpc.vpc_crn
+  description = "VPC crn"
+}
