@@ -1,21 +1,13 @@
-##############################################################################
-# Required Paramaters
-##############################################################################
-
 variable "ibmcloud_api_key" {
-  description = "APIkey that's associated with the account to use, set via environment variable TF_VAR_ibmcloud_api_key"
+  description = "APIkey that's associated with the account to provision resources to"
   type        = string
   sensitive   = true
 }
 
-##############################################################################
-# Module Level Variables
-##############################################################################
-
 variable "region" {
   description = "The region to which to deploy the VPC"
   type        = string
-  default     = "au-syd"
+  default     = "us-south"
 }
 
 variable "prefix" {
@@ -35,43 +27,3 @@ variable "resource_tags" {
   type        = list(string)
   default     = null
 }
-
-##############################################################################
-# Default Security Group Rules
-##############################################################################
-
-variable "security_group_rules" {
-  description = "A list of security group rules to be added to the default vpc security group"
-  type = list(
-    object({
-      name      = string
-      direction = string
-      remote    = string
-      tcp = optional(
-        object({
-          port_max = optional(number)
-          port_min = optional(number)
-        })
-      )
-      udp = optional(
-        object({
-          port_max = optional(number)
-          port_min = optional(number)
-        })
-      )
-      icmp = optional(
-        object({
-          type = optional(number)
-          code = optional(number)
-        })
-      )
-    })
-  )
-  default = [{
-    name      = "default-sgr"
-    direction = "inbound"
-    remote    = "10.0.0.0/8"
-  }]
-}
-
-##############################################################################

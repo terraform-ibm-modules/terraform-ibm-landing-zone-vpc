@@ -1,16 +1,11 @@
-##############################################################################
-# Terraform Providers
-##############################################################################
-
 terraform {
-  required_providers {
-    ibm = {
-      source  = "IBM-Cloud/ibm"
-      version = "1.41.0"
-    }
-  }
   required_version = ">= 1.0.0"
   experiments      = [module_variable_optional_attrs]
+  required_providers {
+    # Pin to the lowest provider version of the range defined in the main module's version.tf to ensure lowest version still works
+    ibm = {
+      source  = "IBM-Cloud/ibm"
+      version = "1.41.1"
+    }
+  }
 }
-
-##############################################################################
