@@ -9,7 +9,7 @@ locals {
     for zone in [
       for zone in ["zone-1", "zone-2", "zone-3"] :
       zone if var.address_prefixes[zone] != null && length(
-        // If zone is null return empty array, otherwise get zone length
+        # If zone is null return empty array, otherwise get zone length
         var.address_prefixes[zone] == null ? [] : var.address_prefixes[zone]
       ) > 0
     ] :

@@ -2,10 +2,10 @@ terraform {
   required_version = ">= 1.0.0"
   experiments      = [module_variable_optional_attrs]
   required_providers {
-    # Use "greater than or equal to" range in modules
+    # Pin to the lowest provider version of the range defined in the main module's version.tf to ensure lowest version still works
     ibm = {
       source  = "IBM-Cloud/ibm"
-      version = ">= 1.41.1"
+      version = "1.41.1"
     }
   }
 }

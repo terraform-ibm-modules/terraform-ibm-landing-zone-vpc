@@ -55,19 +55,19 @@ variable "use_manual_address_prefixes" {
 }
 
 variable "default_network_acl_name" {
-  description = "OPTIONAL - Name of the Default ACL. If null, a name will be automatically genetated"
+  description = "OPTIONAL - Name of the Default ACL. If null, a name will be automatically generated"
   type        = string
   default     = null
 }
 
 variable "default_security_group_name" {
-  description = "OPTIONAL - Name of the Default Security Group. If null, a name will be automatically genetated"
+  description = "OPTIONAL - Name of the Default Security Group. If null, a name will be automatically generated"
   type        = string
   default     = null
 }
 
 variable "default_routing_table_name" {
-  description = "OPTIONAL - Name of the Default Routing Table. If null, a name will be automatically genetated"
+  description = "OPTIONAL - Name of the Default Routing Table. If null, a name will be automatically generated"
   type        = string
   default     = null
 }
@@ -315,6 +315,11 @@ variable "subnets" {
 
 variable "security_group_rules" {
   description = "A list of security group rules to be added to the default vpc security group"
+  default = [{
+    name      = "default-sgr"
+    direction = "inbound"
+    remote    = "10.0.0.0/8"
+  }]
   type = list(
     object({
       name      = string

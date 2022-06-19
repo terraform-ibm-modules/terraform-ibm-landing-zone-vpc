@@ -1,4 +1,8 @@
-# IBM VPC Terraform module
+# IBM Secure Landing Zone VPC Module
+
+[![Build Status](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/actions/workflows/main.yml/badge.svg)](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/actions/workflows/main.yml)
+[![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
+[![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
 This module creates underlying VPC network components:
 
@@ -20,10 +24,15 @@ This module creates underlying VPC network components:
    1. [Address Prefixes](#address-prefixes)
    2. [Subnets](#subnets-1)
 5. [VPN Gateways](#vpn-gateways)
-6. [Module Variables](#module-variables)
-7. [Module Outputs](#module-outputs)
-8. [As A Module in a Larger Architecture](#as-a-module-in-a-larger-architecture)
+6. [Usage](#usage)
+7. [Required IAM access policies](#required-iam-access-policies)
+8. [Examples](#examples)
 9. [Usage](#usage)
+10. [Requirements](#requirements)
+11. [Modules](#modules)
+12. [Resources](#resources)
+13. [Inputs](#inputs)
+14. [Outputs](#outputs)
 
 ## VPC
 
@@ -97,47 +106,11 @@ This module can create any number of VPN gateways on any number of subnets using
 
 ---
 
-## Module Variables
-
-Name                        | Type                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | Description                                                                                                                                                                                                                                                                                                                                                                          | Sensitive | Default
---------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ | --------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-resource_group_id           | string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | The resource group ID where the VPC to be created                                                                                                                                                                                                                                                                                                                                    |           | 
-region                      | string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | The region to which to deploy the VPC                                                                                                                                                                                                                                                                                                                                                |           | 
-prefix                      | string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | The prefix that you would like to append to your resources                                                                                                                                                                                                                                                                                                                           |           | 
-tags                        | list(string)                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                               | List of Tags for the resource created                                                                                                                                                                                                                                                                                                                                                |           | null
-vpc_name                    | string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | The resource group ID where the VPC to be created. If left null, one will be generated using the prefix for this module.                                                                                                                                                                                                                                                             |           | null
-classic_access              | bool                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                       | OPTIONAL - Classic Access to the VPC                                                                                                                                                                                                                                                                                                                                                 |           | false
-use_manual_address_prefixes | string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | OPTIONAL - Use manual address prefixes for VPC                                                                                                                                                                                                                                                                                                                                       |           | false
-default_network_acl_name    | string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | OPTIONAL - Name of the Default ACL. If null, a name will be automatically genetated                                                                                                                                                                                                                                                                                                  |           | null
-default_security_group_name | string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | OPTIONAL - Name of the Default Security Group. If null, a name will be automatically genetated                                                                                                                                                                                                                                                                                       |           | null
-default_routing_table_name  | string                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | OPTIONAL - Name of the Default Routing Table. If null, a name will be automatically genetated                                                                                                                                                                                                                                                                                        |           | null
-address_prefixes            | object({ zone-1 = optional(list(string)) zone-2 = optional(list(string)) zone-3 = optional(list(string)) })                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                | OPTIONAL - IP range that will be defined for the VPC for a certain location. Use only with manual address prefixes                                                                                                                                                                                                                                                                   |           | { zone-1 = null zone-2 = null zone-3 = null }
-network_acls                | list( object({ name = string network_connections = optional(list(string)) add_cluster_rules = optional(bool) rules = list( object({ name = string action = string destination = string direction = string source = string tcp = optional( object({ port_max = optional(number) port_min = optional(number) source_port_max = optional(number) source_port_min = optional(number) }) ) udp = optional( object({ port_max = optional(number) port_min = optional(number) source_port_max = optional(number) source_port_min = optional(number) }) ) icmp = optional( object({ type = optional(number) code = optional(number) }) ) }) ) }) ) | List of ACLs to create. Rules can be automatically created to allow inbound and outbound traffic from a VPC tier by adding the name of that tier to the `network_connections` list. Rules automatically generated by these network connections will be added at the beginning of a list, and will be web-tierlied to traffic first. At least one rule must be provided for each ACL. |           | [ { name = "vpc-acl" add_cluster_rules = true rules = [ { name = "allow-all-inbound" action = "allow" direction = "inbound" destination = "0.0.0.0/0" source = "0.0.0.0/0" }, { name = "allow-all-outbound" action = "allow" direction = "outbound" destination = "0.0.0.0/0" source = "0.0.0.0/0" } ] } ]
-use_public_gateways         | object({ zone-1 = optional(bool) zone-2 = optional(bool) zone-3 = optional(bool) })                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                        | Create a public gateway in any of the three zones with `true`.                                                                                                                                                                                                                                                                                                                       |           | { zone-1 = true zone-2 = false zone-3 = false }
-subnets                     | object({ zone-1 = list(object({ name = string cidr = string public_gateway = optional(bool) acl_name = string })) zone-2 = list(object({ name = string cidr = string public_gateway = optional(bool) acl_name = string })) zone-3 = list(object({ name = string cidr = string public_gateway = optional(bool) acl_name = string })) })                                                                                                                                                                                                                                                                                                     | List of subnets for the vpc. For each item in each array, a subnet will be created. Items can be either CIDR blocks or total ipv4 addressess. Public gateways will be enabled only in zones where a gateway has been created                                                                                                                                                         |           | { zone-1 = [ { name = "subnet-a" cidr = "10.10.10.0/24" public_gateway = true acl_name = "vpc-acl" } ], zone-2 = [ { name = "subnet-b" cidr = "10.20.10.0/24" public_gateway = true acl_name = "vpc-acl" } ], zone-3 = [ { name = "subnet-c" cidr = "10.30.10.0/24" public_gateway = true acl_name = "vpc-acl" } ] }
-routes                      | list( object({ name = string zone = number destination = string next_hop = string }) )                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     | OPTIONAL - Allows you to specify the next hop for packets based on their destination address                                                                                                                                                                                                                                                                                         |           | []
-vpn_gateways                | list( object({ name = string subnet_name = string mode = optional(string) tags = optional(list(string)) connections = list( object({ peer_address = list(string) preshared_key = string local_cidrs = optional(list(string)) peer_cidrs = optional(list(string)) admin_state_up = optional(bool) }) ) }) )                                                                                                                                                                                                                                                                                                                                 | List defining the information needed to create a VPN service to securely connect your VPC to another private network                                                                                                                                                                                                                                                                 |           | []
-
----
-
-## Module Outputs
-
-Name                   | Description
----------------------- | -----------------------------------------------------------
-vpc_id                 | ID of VPC created
-vpn_gateway_public_ips | List of VPN Gateway public IPS
-subnet_ids             | The IDs of the subnets
-subnet_detail_list     | A list of subnets containing names, CIDR blocks, and zones.
-subnet_zone_list       | A list containing subnet IDs and subnet zones
-
----
-
-## As A Module in a Larger Architecture
-
 ## Usage
 ```terraform
 module vpc {
-  source                      = "./vpc"
+  # Replace "master" with a GIT release version to lock into a specific release
+  source                      = "git::https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc.git?ref=master"
   resource_group_id           = var.resource_group_id
   region                      = var.region
   prefix                      = var.prefix
@@ -150,3 +123,86 @@ module vpc {
   vpn_gateways                = var.vpn_gateways
 }
 ```
+
+---
+
+## Required IAM access policies
+You need the following permissions to run this module.
+
+- IAM services
+   - **VPC Infrastructure** services
+      - `Editor` platform access
+   - **No service access**
+      - **Resource Group** \<your resource group>
+      - `Viewer` resource group access
+
+---
+
+## Examples
+
+- [Default Example](examples/default)
+
+---
+
+<!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+## Requirements
+
+| Name | Version |
+|------|---------|
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.41.1 |
+
+## Modules
+
+| Name | Source | Version |
+|------|--------|---------|
+| <a name="module_dynamic_values"></a> [dynamic\_values](#module\_dynamic\_values) | ./dynamic_values | n/a |
+| <a name="module_unit_tests"></a> [unit\_tests](#module\_unit\_tests) | ./dynamic_values | n/a |
+
+## Resources
+
+| Name | Type |
+|------|------|
+| [ibm_is_network_acl.network_acl](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_network_acl) | resource |
+| [ibm_is_public_gateway.gateway](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_public_gateway) | resource |
+| [ibm_is_security_group_rule.default_vpc_rule](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_security_group_rule) | resource |
+| [ibm_is_subnet.subnet](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_subnet) | resource |
+| [ibm_is_vpc.vpc](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc) | resource |
+| [ibm_is_vpc_address_prefix.address_prefixes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_address_prefix) | resource |
+| [ibm_is_vpc_address_prefix.subnet_prefix](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_address_prefix) | resource |
+| [ibm_is_vpc_route.route](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_route) | resource |
+
+## Inputs
+
+| Name | Description | Type | Default | Required |
+|------|-------------|------|---------|:--------:|
+| <a name="input_address_prefixes"></a> [address\_prefixes](#input\_address\_prefixes) | OPTIONAL - IP range that will be defined for the VPC for a certain location. Use only with manual address prefixes | <pre>object({<br>    zone-1 = optional(list(string))<br>    zone-2 = optional(list(string))<br>    zone-3 = optional(list(string))<br>  })</pre> | <pre>{<br>  "zone-1": null,<br>  "zone-2": null,<br>  "zone-3": null<br>}</pre> | no |
+| <a name="input_classic_access"></a> [classic\_access](#input\_classic\_access) | OPTIONAL - Classic Access to the VPC | `bool` | `false` | no |
+| <a name="input_default_network_acl_name"></a> [default\_network\_acl\_name](#input\_default\_network\_acl\_name) | OPTIONAL - Name of the Default ACL. If null, a name will be automatically generated | `string` | `null` | no |
+| <a name="input_default_routing_table_name"></a> [default\_routing\_table\_name](#input\_default\_routing\_table\_name) | OPTIONAL - Name of the Default Routing Table. If null, a name will be automatically generated | `string` | `null` | no |
+| <a name="input_default_security_group_name"></a> [default\_security\_group\_name](#input\_default\_security\_group\_name) | OPTIONAL - Name of the Default Security Group. If null, a name will be automatically generated | `string` | `null` | no |
+| <a name="input_network_acls"></a> [network\_acls](#input\_network\_acls) | List of ACLs to create. Rules can be automatically created to allow inbound and outbound traffic from a VPC tier by adding the name of that tier to the `network_connections` list. Rules automatically generated by these network connections will be added at the beginning of a list, and will be web-tierlied to traffic first. At least one rule must be provided for each ACL. | <pre>list(<br>    object({<br>      name                = string<br>      network_connections = optional(list(string))<br>      add_cluster_rules   = optional(bool)<br>      rules = list(<br>        object({<br>          name        = string<br>          action      = string<br>          destination = string<br>          direction   = string<br>          source      = string<br>          tcp = optional(<br>            object({<br>              port_max        = optional(number)<br>              port_min        = optional(number)<br>              source_port_max = optional(number)<br>              source_port_min = optional(number)<br>            })<br>          )<br>          udp = optional(<br>            object({<br>              port_max        = optional(number)<br>              port_min        = optional(number)<br>              source_port_max = optional(number)<br>              source_port_min = optional(number)<br>            })<br>          )<br>          icmp = optional(<br>            object({<br>              type = optional(number)<br>              code = optional(number)<br>            })<br>          )<br>        })<br>      )<br>    })<br>  )</pre> | <pre>[<br>  {<br>    "add_cluster_rules": true,<br>    "name": "vpc-acl",<br>    "rules": [<br>      {<br>        "action": "allow",<br>        "destination": "0.0.0.0/0",<br>        "direction": "inbound",<br>        "name": "allow-all-inbound",<br>        "source": "0.0.0.0/0"<br>      },<br>      {<br>        "action": "allow",<br>        "destination": "0.0.0.0/0",<br>        "direction": "outbound",<br>        "name": "allow-all-outbound",<br>        "source": "0.0.0.0/0"<br>      }<br>    ]<br>  }<br>]</pre> | no |
+| <a name="input_network_cidr"></a> [network\_cidr](#input\_network\_cidr) | Network CIDR for the VPC. This is used to manage network ACL rules for cluster provisioning. | `string` | `"10.0.0.0/8"` | no |
+| <a name="input_prefix"></a> [prefix](#input\_prefix) | The prefix that you would like to append to your resources | `string` | n/a | yes |
+| <a name="input_region"></a> [region](#input\_region) | The region to which to deploy the VPC | `string` | n/a | yes |
+| <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The resource group ID where the VPC to be created | `string` | n/a | yes |
+| <a name="input_routes"></a> [routes](#input\_routes) | OPTIONAL - Allows you to specify the next hop for packets based on their destination address | <pre>list(<br>    object({<br>      name        = string<br>      zone        = number<br>      destination = string<br>      next_hop    = string<br>    })<br>  )</pre> | `[]` | no |
+| <a name="input_security_group_rules"></a> [security\_group\_rules](#input\_security\_group\_rules) | A list of security group rules to be added to the default vpc security group | <pre>list(<br>    object({<br>      name      = string<br>      direction = string<br>      remote    = string<br>      tcp = optional(<br>        object({<br>          port_max = optional(number)<br>          port_min = optional(number)<br>        })<br>      )<br>      udp = optional(<br>        object({<br>          port_max = optional(number)<br>          port_min = optional(number)<br>        })<br>      )<br>      icmp = optional(<br>        object({<br>          type = optional(number)<br>          code = optional(number)<br>        })<br>      )<br>    })<br>  )</pre> | <pre>[<br>  {<br>    "direction": "inbound",<br>    "name": "default-sgr",<br>    "remote": "10.0.0.0/8"<br>  }<br>]</pre> | no |
+| <a name="input_subnets"></a> [subnets](#input\_subnets) | List of subnets for the vpc. For each item in each array, a subnet will be created. Items can be either CIDR blocks or total ipv4 addressess. Public gateways will be enabled only in zones where a gateway has been created | <pre>object({<br>    zone-1 = list(object({<br>      name           = string<br>      cidr           = string<br>      public_gateway = optional(bool)<br>      acl_name       = string<br>    }))<br>    zone-2 = list(object({<br>      name           = string<br>      cidr           = string<br>      public_gateway = optional(bool)<br>      acl_name       = string<br>    }))<br>    zone-3 = list(object({<br>      name           = string<br>      cidr           = string<br>      public_gateway = optional(bool)<br>      acl_name       = string<br>    }))<br>  })</pre> | <pre>{<br>  "zone-1": [<br>    {<br>      "acl_name": "vpc-acl",<br>      "cidr": "10.10.10.0/24",<br>      "name": "subnet-a",<br>      "public_gateway": true<br>    }<br>  ],<br>  "zone-2": [<br>    {<br>      "acl_name": "vpc-acl",<br>      "cidr": "10.20.10.0/24",<br>      "name": "subnet-b",<br>      "public_gateway": true<br>    }<br>  ],<br>  "zone-3": [<br>    {<br>      "acl_name": "vpc-acl",<br>      "cidr": "10.30.10.0/24",<br>      "name": "subnet-c",<br>      "public_gateway": false<br>    }<br>  ]<br>}</pre> | no |
+| <a name="input_tags"></a> [tags](#input\_tags) | List of Tags for the resource created | `list(string)` | `null` | no |
+| <a name="input_use_manual_address_prefixes"></a> [use\_manual\_address\_prefixes](#input\_use\_manual\_address\_prefixes) | OPTIONAL - Use manual address prefixes for VPC | `bool` | `false` | no |
+| <a name="input_use_public_gateways"></a> [use\_public\_gateways](#input\_use\_public\_gateways) | Create a public gateway in any of the three zones with `true`. | <pre>object({<br>    zone-1 = optional(bool)<br>    zone-2 = optional(bool)<br>    zone-3 = optional(bool)<br>  })</pre> | <pre>{<br>  "zone-1": true,<br>  "zone-2": false,<br>  "zone-3": false<br>}</pre> | no |
+| <a name="input_vpc_name"></a> [vpc\_name](#input\_vpc\_name) | Name for vpc. If left null, one will be generated using the prefix for this module. | `string` | `null` | no |
+
+## Outputs
+
+| Name | Description |
+|------|-------------|
+| <a name="output_subnet_detail_list"></a> [subnet\_detail\_list](#output\_subnet\_detail\_list) | A list of subnets containing names, CIDR blocks, and zones. |
+| <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | The IDs of the subnets |
+| <a name="output_subnet_zone_list"></a> [subnet\_zone\_list](#output\_subnet\_zone\_list) | A list containing subnet IDs and subnet zones |
+| <a name="output_vpc_crn"></a> [vpc\_crn](#output\_vpc\_crn) | CRN of VPC created |
+| <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | ID of VPC created |
+<!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+---
