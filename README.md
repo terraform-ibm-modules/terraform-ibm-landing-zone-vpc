@@ -1,68 +1,49 @@
-# IBM Secure Landing Zone VPC Module
+# IBM Secure Landing Zone VPC module
 
 [![Build Status](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/actions/workflows/ci.yml/badge.svg)](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/actions/workflows/ci.yml)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
-This module creates underlying VPC network components:
+This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) network components:
 
 - VPC
-- Public Gateways
+- Public gateways
 - Subnets
 - Network ACLs
-- VPN Gateways
-- VPN Gateway Connections
+- VPN gateways
+- VPN gateway connections
 
 ![vpc-module](./.docs/vpc-module.png)
 
-## Table of Contents
-
-1. [VPC](#vpc)
-2. [Public Gateways](#public-gateways)
-3. [Network ACLs](#network-acls)
-4. [Subnets](#subnets)
-   1. [Address Prefixes](#address-prefixes)
-   2. [Subnets](#subnets-1)
-5. [VPN Gateways](#vpn-gateways)
-6. [Usage](#usage)
-7. [Required IAM access policies](#required-iam-access-policies)
-8. [Examples](#examples)
-9. [Usage](#usage)
-10. [Requirements](#requirements)
-11. [Modules](#modules)
-12. [Resources](#resources)
-13. [Inputs](#inputs)
-14. [Outputs](#outputs)
-
 ## VPC
 
-This module creates a VPC in a resource group with optional Classic Access. The VPC and components are created in [main.tf](main.tf)
+This module creates a VPC in a resource group, and supports classic access. The VPC and components are specified in the [main.tf](main.tf) file.
 
 ---
 
-## Public Gateways
+## Public gateways
 
-This module allows a user to optionally create public gateways in the VPC in each of the three zones of the VPC's region.
+You can optionally create public gateways in the VPC in each of the three zones of the VPC's region.
 
 ---
 
 ## Network ACLs
 
-This module creates any number of network ACLs with any number of rules. *(Note: by default, VPC Network ACLs have a maximum of 25 rules.)*
+You can create any number of network ACLs with any number of rules. By default, VPC network ACLs can have no more than 25 rules.
 
 ---
 
 ## Subnets
 
-The [subnet.tf](./subnet.tf) file allows users to create subnets in 1, 2, or 3 zones. Public gateways can be optionally attached to each subnet. Each subnet can also be given as a parameter any ACL created within this module.
+You can create up to three zones in the [subnet.tf](subnet.tf) file. You can optionally attach public gateways to each subnet. And you can provide an ACL as a parameter to each subnet if the ACL is created by the module.
 
-### Address Prefixes
+### Address prefixes
 
-A CIDR block is created in the VPC for each subnet that will be provisioned
+A CIDR block is created in the VPC for each subnet that is provisioned.
 
-### Subnets
+### Subnets variable
 
-The type of the `subnets` variable is as follows:
+The following example shows the `subnets` variable.
 
 ```terraform
 object({
@@ -87,7 +68,7 @@ object({
   })
 ```
 
-While `zone-1`, `zone-2`, and `zone-3` are all lists, these lists are converted into an object before the resources are provisioned. This ensures that the addition or deletion of subnets will affect only the added or deleted subnets. Example:
+`zone-1`, `zone-2`, and `zone-3` are lists, but are converted to objects before the resources are provisioned. The conversion ensures that the addition or deletion of subnets affects only the added or deleted subnets, as shown in the following example.
 
 ```terraform
 module.subnets.ibm_is_subnet.subnet["gcat-multizone-subnet-a"]
@@ -100,9 +81,9 @@ module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-c"
 
 ---
 
-## VPN Gateways
+## VPN gateways
 
-This module can create any number of VPN gateways on any number of subnets using the `vpn_gateways` variable. For more about VPN gateways on VPC [read the documentation here](https://cloud.ibm.com/docs/vpc?topic=vpc-using-vpn)
+You can create any number of VPN gateways on your subnets by using the `vpn_gateways` variable. For more information about VPN gateways on VPC, see [About site-to-site VPN gateways](https://cloud.ibm.com/docs/vpc?topic=vpc-using-vpn) in the IBM Cloud docs.
 
 ---
 
@@ -130,11 +111,11 @@ module vpc {
 You need the following permissions to run this module.
 
 - IAM services
-   - **VPC Infrastructure** services
-      - `Editor` platform access
-   - **No service access**
-      - **Resource Group** \<your resource group>
-      - `Viewer` resource group access
+    - **VPC Infrastructure** services
+        - `Editor` platform access
+    - **No service access**
+        - **Resource Group** \<your resource group>
+        - `Viewer` resource group access
 
 ---
 
