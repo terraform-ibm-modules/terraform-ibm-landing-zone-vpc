@@ -1,4 +1,4 @@
-module github.ibm.com/GoldenEye/terraform-ibm-landing-zone-vpc
+module github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc
 
 go 1.18
 
