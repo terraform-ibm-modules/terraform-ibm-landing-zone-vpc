@@ -3,7 +3,7 @@ module github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc
 go 1.18
 
 require (
-	github.com/stretchr/testify v1.7.2
+	github.com/stretchr/testify v1.7.5
 	github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper v1.0.5
 )
 
