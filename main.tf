@@ -3,7 +3,7 @@
 ##############################################################################
 
 resource "ibm_is_vpc" "vpc" {
-  name                        = var.prefix != null ? "${var.prefix}-${var.vpc_name}" : var.vpc_name
+  name                        = var.vpc_name != null ? "${var.prefix}-${var.vpc_name}" : "${var.prefix}-vpc"
   resource_group              = var.resource_group_id
   classic_access              = var.classic_access
   address_prefix_management   = var.use_manual_address_prefixes == false ? null : "manual"
