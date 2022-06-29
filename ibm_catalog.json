@@ -1,0 +1,128 @@
+{
+    "name": "slz-terraform-ibm-landing-zone-vpc",
+    "version": "1.0.2",
+    "flavors": [
+        {
+            "label": "",
+            "name": "",
+            "compliance": {
+                "controls": [
+                    {
+                        "profile_name": "SLZ compliance v0.1.1",
+                        "control_id": "AC-2(1)"
+                    },
+                    {
+                        "profile_name": "SLZ compliance v0.1.1",
+                        "control_id": "AC-2(a)"
+                    },
+                    {
+                        "profile_name": "SLZ compliance v0.1.1",
+                        "control_id": "AC-2(c)"
+                    },
+                    {
+                        "profile_name": "SLZ compliance v0.1.1",
+                        "control_id": "AC-2(i)"
+                    },
+                    {
+                        "profile_name": "SLZ compliance v0.1.1",
+                        "control_id": "AC-2(j)"
+                    },
+                    {
+                        "profile_name": "SLZ compliance v0.1.1",
+                        "control_id": "AC-3"
+                    },
+                    {
+                        "profile_name": "SLZ compliance v0.1.1",
+                        "control_id": "AC-4"
+                    },
+                    {
+                        "profile_name": "SLZ compliance v0.1.1",
+                        "control_id": "AC-6-0"
+                    },
+                    {
+                        "profile_name": "SLZ compliance v0.1.1",
+                        "control_id": "AU-2(a)"
+                    },
+                    {
+                        "profile_name": "SLZ compliance v0.1.1",
+                        "control_id": "CA-7(a)"
+                    },
+                    {
+                        "profile_name": "SLZ compliance v0.1.1",
+                        "control_id": "CM-2"
+                    },
+                    {
+                        "profile_name": "SLZ compliance v0.1.1",
+                        "control_id": "CM-8(4)"
+                    },
+                    {
+                        "profile_name": "SLZ compliance v0.1.1",
+                        "control_id": "IA-4"
+                    },
+                    {
+                        "profile_name": "SLZ compliance v0.1.1",
+                        "control_id": "SC-8-0"
+                    },
+                    {
+                        "profile_name": "SLZ compliance v0.1.1",
+                        "control_id": "RA-5(a)"
+                    },
+                    {
+                        "profile_name": "SLZ compliance v0.1.1",
+                        "control_id": "SC-12"
+                    },
+                    {
+                        "profile_name": "SLZ compliance v0.1.1",
+                        "control_id": "SC-13"
+                    },
+                    {
+                        "profile_name": "SLZ compliance v0.1.1",
+                        "control_id": "SC-36"
+                    }
+                ]
+            },
+            "iam_permissions": [
+                {
+                    "role_crns": [
+                        "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                        "crn:v1:bluemix:public:iam::::role:Administrator"
+                    ],
+                    "service_name": "is.vpc"
+                }
+            ],
+            "architecture": {
+                "descriptions": "",
+                "features": [
+                    {
+                        "title": "VPC"
+                    },
+                    {
+                        "title": "Public gateways"
+                    },
+                    {
+                        "title": "Subnets"
+                    },
+                    {
+                        "title": "Network ACLs,"
+                    },
+                    {
+                        "title": "VPN gateways"
+                    },
+                    {
+                        "title": "VPN gateway connections"
+                    }
+                ],
+                "diagrams": [
+                    {
+                        "diagram": {
+                            "caption": "Secure Landing Zone VPC module",
+                            "url": "https://globalcatalog.cloud.ibm.com/api/v1/goldeneye-artifacts/artifacts/vpc-module.drawio.svg",
+                            "metadata": []
+                        },
+                        "description": "This module creates a VPC in a resource group, and supports classic access. The VPC and components are specified in the main.tf file."
+                    }
+                ]
+            }
+        }
+    ]
+}
