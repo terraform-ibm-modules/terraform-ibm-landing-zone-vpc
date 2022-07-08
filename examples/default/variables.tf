@@ -13,7 +13,13 @@ variable "region" {
 variable "prefix" {
   description = "The prefix that you would like to append to your resources"
   type        = string
-  default     = "test-landing-zone-vpc"
+  default     = "test-landing-zone"
+}
+
+variable "name" {
+  description = "The name of the vpc"
+  type        = string
+  default     = "vpc"
 }
 
 variable "resource_group" {

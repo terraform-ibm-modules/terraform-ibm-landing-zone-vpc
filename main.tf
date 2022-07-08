@@ -3,7 +3,7 @@
 ##############################################################################
 
 resource "ibm_is_vpc" "vpc" {
-  name                        = var.vpc_name != null ? "${var.prefix}-${var.vpc_name}" : "${var.prefix}-vpc"
+  name                        = var.prefix != null ? "${var.prefix}-${var.name}-vpc" : "${var.name}-vpc"
   resource_group              = var.resource_group_id
   classic_access              = var.classic_access
   address_prefix_management   = var.use_manual_address_prefixes == false ? null : "manual"
@@ -53,7 +53,7 @@ locals {
 
 resource "ibm_is_vpc_route" "route" {
   for_each    = local.routes_map
-  name        = "${var.prefix}-route-${each.value.name}"
+  name        = "${var.prefix}-${var.name}-route-${each.value.name}"
   vpc         = ibm_is_vpc.vpc.id
   zone        = each.value.zone
   destination = each.value.destination
@@ -77,7 +77,7 @@ locals {
 
 resource "ibm_is_public_gateway" "gateway" {
   for_each       = local.gateway_object
-  name           = "${var.prefix}-public-gateway-${each.key}"
+  name           = "${var.prefix}-${var.name}-public-gateway-${each.key}"
   vpc            = ibm_is_vpc.vpc.id
   resource_group = var.resource_group_id
   zone           = each.value
