@@ -47,8 +47,7 @@ module "unit_tests" {
   }
   security_group_rules = [
     {
-      name  = "test-rule"
-      field = "field"
+      name = "test-rule"
     }
   ]
   network_cidr = "1.2.3.4/5"
