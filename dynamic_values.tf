@@ -4,7 +4,7 @@
 
 module "dynamic_values" {
   source               = "./dynamic_values"
-  prefix               = var.prefix
+  prefix               = "${var.prefix}-${var.name}"
   region               = var.region
   address_prefixes     = var.address_prefixes
   routes               = var.routes
