@@ -2,6 +2,11 @@
 # VPC GUID
 ##############################################################################
 
+output "vpc_name" {
+  description = "Name of VPC created"
+  value       = ibm_is_vpc.vpc.name
+}
+
 output "vpc_id" {
   description = "ID of VPC created"
   value       = ibm_is_vpc.vpc.id
