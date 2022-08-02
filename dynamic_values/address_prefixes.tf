@@ -10,7 +10,7 @@ module "prefix_map" {
     {
       zone_name = zone
       addresses = [
-        for address in(lookup(var.address_prefixes, zone, null) == null ? [] : var.address_prefixes[zone]) :
+        for address in(var.address_prefixes != null ? lookup(var.address_prefixes, zone, null) == null ? [] : var.address_prefixes[zone] : []) :
         {
           name = "${var.prefix}-${zone}-${index(var.address_prefixes[zone], address) + 1}"
           cidr = address

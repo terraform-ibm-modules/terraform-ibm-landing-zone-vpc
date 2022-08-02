@@ -81,6 +81,7 @@ resource "ibm_is_public_gateway" "gateway" {
   vpc            = ibm_is_vpc.vpc.id
   resource_group = var.resource_group_id
   zone           = each.value
+  tags           = var.tags
 }
 
 ##############################################################################
