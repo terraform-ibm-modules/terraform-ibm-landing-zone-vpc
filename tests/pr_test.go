@@ -8,7 +8,7 @@ import (
 )
 
 const defaultExampleTerraformDir = "examples/default"
-const resourceGroup = "geretain-test-slz-vpc"
+const resourceGroup = "geretain-test-resources"
 
 func setupOptions(t *testing.T, prefix string) *testhelper.TestOptions {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
