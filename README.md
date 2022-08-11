@@ -119,10 +119,11 @@ You need the following permissions to run this module.
 
 ---
 
+<!-- BEGIN EXAMPLES HOOK -->
 ## Examples
 
-- [Default Example](examples/default)
-
+- [ Default Example](examples/default)
+<!-- END EXAMPLES HOOK -->
 ---
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
@@ -192,9 +193,3 @@ You need the following permissions to run this module.
 You can report issues and request features for this module in the [terraform-ibm-issue-tracker](https://github.com/terraform-ibm-modules/terraform-ibm-issue-tracker/issues) repo. See [Report an issue or request a feature](https://github.com/terraform-ibm-modules/.github/blob/main/.github/SUPPORT.md).
 
 To set up your local development environment, see [Local development setup](https://terraform-ibm-modules.github.io/documentation/#/local-dev-setup) in the project documentation.
-
-<!-- BEGIN EXAMPLES HOOK -->
-## Examples
-
-- [ Default Example](examples/default)
-<!-- END EXAMPLES HOOK -->
