@@ -104,6 +104,7 @@ locals {
   acl_object = {
     for network_acl in var.network_acls :
     network_acl.name => {
+      name = network_acl.name
       rules = flatten([
         [
           # These rules cannot be added in a conditional operator due to inconsistant typing

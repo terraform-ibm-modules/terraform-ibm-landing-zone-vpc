@@ -19,6 +19,23 @@ output "vpc_crn" {
 
 ##############################################################################
 
+##############################################################################
+# Public Gateways
+##############################################################################
+
+output "public_gateways" {
+  description = "Map of public gateways by zone"
+  value = {
+    for zone in [1, 2, 3] :
+    "zone-${zone}" => (
+      var.use_public_gateways["zone-${zone}"] == false
+      ? null
+      : ibm_is_public_gateway.gateway["zone-${zone}"].id
+    )
+  }
+}
+
+##############################################################################
 
 ##############################################################################
 # Subnet Outputs
@@ -57,6 +74,23 @@ output "subnet_zone_list" {
       id   = subnet.id
       zone = subnet.zone
       cidr = subnet.ipv4_cidr_block
+    }
+  ]
+}
+
+##############################################################################
+
+##############################################################################
+# Network ACLs
+##############################################################################
+
+output "network_acls" {
+  description = "List of shortnames and IDs of network ACLs"
+  value = [
+    for network_acl in local.acl_object :
+    {
+      shortname = network_acl.name
+      id        = ibm_is_network_acl.network_acl[network_acl.name].id
     }
   ]
 }
