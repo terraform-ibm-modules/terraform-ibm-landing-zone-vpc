@@ -10,7 +10,7 @@
     }],
     ["@semantic-release/exec", {
       "successCmd": "echo \"SEMVER_VERSION=${nextRelease.version}\" >> $GITHUB_ENV",
-      "publishCmd": "./ci/run-catalog-onboarding-pipeline.sh --catalog_id=7df1e4ca-d54c-4fd0-82ce-3d13247308cd --offering_id=0ab1fe91-7d04-4cba-91c2-2b3ad600bfbc --version=v${nextRelease.version} --target=ibm --validation_dir_list=examples/default --github_url=github.com --github_org=terraform-ibm-modules"
+      "publishCmd": "./ci/run-catalog-onboarding-pipeline.sh --catalog_id=7df1e4ca-d54c-4fd0-82ce-3d13247308cd --offering_id=0ab1fe91-7d04-4cba-91c2-2b3ad600bfbc --version=v${nextRelease.version} --target=ibm --validation_dir_list=examples/default --github_url=github.com --github_org=terraform-ibm-modules --use_default_targz"
     }]
   ]
 }
