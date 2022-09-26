@@ -40,24 +40,27 @@ resource "ibm_is_vpc_address_prefix" "address_prefixes" {
 
 
 ##############################################################################
-# ibm_is_vpc_route: Create vpc route resource
+# Create vpc route resource
 ##############################################################################
 
-locals {
-  routes_map = {
-    # Convert routes from list to map
-    for route in var.routes :
-    (route.name) => route
-  }
+resource "ibm_is_vpc_routing_table" "route_table" {
+  for_each                      = module.dynamic_values.routing_table_map
+  name                          = "${var.prefix}-${var.name}-route-${each.value.name}"
+  vpc                           = ibm_is_vpc.vpc.id
+  route_direct_link_ingress     = each.value.route_direct_link_ingress
+  route_transit_gateway_ingress = each.value.route_transit_gateway_ingress
+  route_vpc_zone_ingress        = each.value.route_vpc_zone_ingress
 }
 
-resource "ibm_is_vpc_route" "route" {
-  for_each    = local.routes_map
-  name        = "${var.prefix}-${var.name}-route-${each.value.name}"
-  vpc         = ibm_is_vpc.vpc.id
-  zone        = each.value.zone
-  destination = each.value.destination
-  next_hop    = each.value.next_hop
+resource "ibm_is_vpc_routing_table_route" "routing_table_routes" {
+  for_each      = module.dynamic_values.routing_table_route_map
+  vpc           = ibm_is_vpc.vpc.id
+  routing_table = ibm_is_vpc_routing_table.route_table[each.value.route_table].routing_table
+  zone          = "${var.region}-${each.value.zone}"
+  name          = each.key
+  destination   = each.value.destination
+  action        = each.value.action
+  next_hop      = each.value.next_hop
 }
 
 ##############################################################################

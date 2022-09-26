@@ -135,7 +135,7 @@
     },
     "routes": {
       "name": "routes",
-      "type": "list(\n    object({\n      name        = string\n      zone        = number\n      destination = string\n      next_hop    = string\n    })\n  )",
+      "type": "list(\n    object({\n      name                          = string\n      route_direct_link_ingress     = optional(bool)\n      route_transit_gateway_ingress = optional(bool)\n      route_vpc_zone_ingress        = optional(bool)\n      routes = optional(\n        list(\n          object({\n            action      = optional(string)\n            zone        = number\n            destination = string\n            next_hop    = string\n          })\n      ))\n    })\n  )",
       "description": "OPTIONAL - Allows you to specify the next hop for packets based on their destination address",
       "default": [],
       "pos": {
@@ -336,7 +336,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 78
+        "line": 81
       }
     },
     "ibm_is_security_group_rule.default_vpc_rule": {
@@ -413,10 +413,10 @@
         "line": 16
       }
     },
-    "ibm_is_vpc_route.route": {
+    "ibm_is_vpc_routing_table.route_table": {
       "mode": "managed",
-      "type": "ibm_is_vpc_route",
-      "name": "route",
+      "type": "ibm_is_vpc_routing_table",
+      "name": "route_table",
       "attributes": {
         "name": "prefix"
       },
@@ -425,7 +425,22 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 54
+        "line": 46
+      }
+    },
+    "ibm_is_vpc_routing_table_route.routing_table_routes": {
+      "mode": "managed",
+      "type": "ibm_is_vpc_routing_table_route",
+      "name": "routing_table_routes",
+      "attributes": {
+        "zone": "region"
+      },
+      "provider": {
+        "name": "ibm"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 55
       }
     }
   },
