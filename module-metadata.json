@@ -445,6 +445,8 @@
         "subnets": "subnets",
         "use_public_gateways": "use_public_gateways"
       },
+      "managed_resources": null,
+      "data_resources": null,
       "pos": {
         "filename": "dynamic_values.tf",
         "line": 5
@@ -453,6 +455,8 @@
     "unit_tests": {
       "name": "unit_tests",
       "source": "./dynamic_values",
+      "managed_resources": null,
+      "data_resources": null,
       "pos": {
         "filename": "dynamic_values.tf",
         "line": 26
