@@ -51,7 +51,7 @@ locals {
   }
 }
 
-resource "ibm_is_vpc_route" "route" {
+resource "ibm_is_vpc_routing_table_route" "route" {
   for_each    = local.routes_map
   name        = "${var.prefix}-${var.name}-route-${each.value.name}"
   vpc         = ibm_is_vpc.vpc.id
