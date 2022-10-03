@@ -413,9 +413,9 @@
         "line": 16
       }
     },
-    "ibm_is_vpc_route.route": {
+    "ibm_is_vpc_routing_table_route.route": {
       "mode": "managed",
-      "type": "ibm_is_vpc_route",
+      "type": "ibm_is_vpc_routing_table_route",
       "name": "route",
       "attributes": {
         "name": "prefix"

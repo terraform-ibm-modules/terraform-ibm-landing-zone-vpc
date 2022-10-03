@@ -152,7 +152,7 @@ You need the following permissions to run this module.
 | [ibm_is_vpc.vpc](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc) | resource |
 | [ibm_is_vpc_address_prefix.address_prefixes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_address_prefix) | resource |
 | [ibm_is_vpc_address_prefix.subnet_prefix](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_address_prefix) | resource |
-| [ibm_is_vpc_route.route](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_route) | resource |
+| [ibm_is_vpc_routing_table_route.route](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_routing_table_route) | resource |
 
 ## Inputs
 
