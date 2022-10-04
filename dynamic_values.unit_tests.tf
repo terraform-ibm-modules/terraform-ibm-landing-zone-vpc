@@ -23,7 +23,7 @@ locals {
   # tflint-ignore: terraform_unused_declarations
   assert_route_key_exists = lookup(module.unit_tests.routes, "test-route")
   # tflint-ignore: terraform_unused_declarations
-  assert_route_has_correct_next_hop = regex("test", module.unit_tests.routes["test-route"].next_hop)
+  assert_route_has_route_table = lookup(module.unit_tests.routing_table_route_map, "ut-test-route-route-1")
 }
 
 ##############################################################################

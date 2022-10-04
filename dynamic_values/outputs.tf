@@ -79,3 +79,17 @@ output "subnet_map" {
 }
 
 ##############################################################################
+
+##############################################################################
+# Routing table
+##############################################################################
+
+output "routing_table_map" {
+  description = "Routing table as map"
+  value       = module.routes.value
+}
+
+output "routing_table_route_map" {
+  description = "Routing table routes as map"
+  value       = local.routing_table_route_map
+}
