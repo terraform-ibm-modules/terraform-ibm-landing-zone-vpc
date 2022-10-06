@@ -34,10 +34,14 @@ module "unit_tests" {
   }
   routes = [
     {
-      name        = "test-route"
-      zone        = 1
-      destination = "test"
-      next_hop    = "test"
+      name = "test-route"
+      routes = [
+        {
+          zone        = 1
+          destination = "10.2.14.1/32"
+          next_hop    = "1.1.1.1"
+        }
+      ]
     }
   ]
   use_public_gateways = {

@@ -399,10 +399,19 @@ variable "routes" {
   description = "OPTIONAL - Allows you to specify the next hop for packets based on their destination address"
   type = list(
     object({
-      name        = string
-      zone        = number
-      destination = string
-      next_hop    = string
+      name                          = string
+      route_direct_link_ingress     = optional(bool)
+      route_transit_gateway_ingress = optional(bool)
+      route_vpc_zone_ingress        = optional(bool)
+      routes = optional(
+        list(
+          object({
+            action      = optional(string)
+            zone        = number
+            destination = string
+            next_hop    = string
+          })
+      ))
     })
   )
   default = []
