@@ -156,7 +156,7 @@ resource "ibm_is_network_acl" "network_acl" {
           port_min        = lookup(rules.value.tcp, "port_min", null)
           port_max        = lookup(rules.value.tcp, "port_max", null)
           source_port_min = lookup(rules.value.tcp, "source_port_min", null)
-          source_port_max = lookup(rules.value.tcp, "source_port_min", null)
+          source_port_max = lookup(rules.value.tcp, "source_port_max", null)
         }
       }
 
@@ -182,7 +182,7 @@ resource "ibm_is_network_acl" "network_acl" {
           port_min        = lookup(rules.value.udp, "port_min", null)
           port_max        = lookup(rules.value.udp, "port_max", null)
           source_port_min = lookup(rules.value.udp, "source_port_min", null)
-          source_port_max = lookup(rules.value.udp, "source_port_min", null)
+          source_port_max = lookup(rules.value.udp, "source_port_max", null)
         }
       }
 
