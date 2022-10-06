@@ -5,7 +5,6 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 
 This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) network components:
-
 - VPC
 - Public gateways
 - Subnets
