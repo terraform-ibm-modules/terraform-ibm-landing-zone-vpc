@@ -272,6 +272,7 @@
     "vpc_crn": {
       "name": "vpc_crn",
       "description": "CRN of VPC created",
+      "value": "ibm_is_vpc.vpc.crn",
       "pos": {
         "filename": "outputs.tf",
         "line": 15
@@ -280,6 +281,7 @@
     "vpc_id": {
       "name": "vpc_id",
       "description": "ID of VPC created",
+      "value": "ibm_is_vpc.vpc.id",
       "pos": {
         "filename": "outputs.tf",
         "line": 10
@@ -288,6 +290,7 @@
     "vpc_name": {
       "name": "vpc_name",
       "description": "Name of VPC created",
+      "value": "ibm_is_vpc.vpc.name",
       "pos": {
         "filename": "outputs.tf",
         "line": 5
