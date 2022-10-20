@@ -1,90 +1,21 @@
 # IBM Secure Landing Zone VPC module
 
-[![Build Status](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/actions/workflows/ci.yml/badge.svg)](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/actions/workflows/ci.yml)
+[![Graduated (Supported)](https://img.shields.io/badge/status-Graduated%20(Supported)-brightgreen?style=plastic)](https://terraform-ibm-modules.github.io/documentation/#/badge-status)
+[![build status](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/actions/workflows/ci.yml/badge.svg)](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/actions/workflows/ci.yml)
 [![semantic-release](https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-e10079.svg)](https://github.com/semantic-release/semantic-release)
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
+[![latest release](https://img.shields.io/github/v/release/terraform-ibm-modules/terraform-ibm-landing-zone-vpc?logo=GitHub&sort=semver)](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/releases/latest)
 
 This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) network components:
-- VPC
-- Public gateways
-- Subnets
-- Network ACLs
-- VPN gateways
-- VPN gateway connections
+
+- VPC: Creates a VPC in a resource group and supports classic access. The VPC and components are specified in the [main.tf](main.tf) file.
+- Public gateways: Optionally create public gateways in the VPC in each of the three zones of the VPC's region.
+- Subnets: Create one to three zones in the [subnet.tf](subnet.tf) file.
+- Network ACLs: Create network ACLs with multiple rules. By default, VPC network ACLs can have no more than 25 rules.
+- VPN gateways: Create VPN gateways on your subnets by using the `vpn_gateways` variable. For more information about VPN gateways on VPC, see [About site-to-site VPN gateways](https://cloud.ibm.com/docs/vpc?topic=vpc-using-vpn) in the IBM Cloud docs.
+- VPN gateway connections: Add connections to a VPN gateway.
 
 ![vpc-module](./.docs/vpc-module.png)
-
-## VPC
-
-This module creates a VPC in a resource group, and supports classic access. The VPC and components are specified in the [main.tf](main.tf) file.
-
----
-
-## Public gateways
-
-You can optionally create public gateways in the VPC in each of the three zones of the VPC's region.
-
----
-
-## Network ACLs
-
-You can create any number of network ACLs with any number of rules. By default, VPC network ACLs can have no more than 25 rules.
-
----
-
-## Subnets
-
-You can create up to three zones in the [subnet.tf](subnet.tf) file. You can optionally attach public gateways to each subnet. And you can provide an ACL as a parameter to each subnet if the ACL is created by the module.
-
-### Address prefixes
-
-A CIDR block is created in the VPC for each subnet that is provisioned.
-
-### Subnets variable
-
-The following example shows the `subnets` variable.
-
-```terraform
-object({
-    zone-1 = list(object({
-      name           = string
-      cidr           = string
-      acl_name       = string
-      public_gateway = optional(bool)
-    }))
-    zone-2 = list(object({
-      name           = string
-      cidr           = string
-      acl_name       = string
-      public_gateway = optional(bool)
-    }))
-    zone-3 = list(object({
-      name           = string
-      cidr           = string
-      acl_name       = string
-      public_gateway = optional(bool)
-    }))
-  })
-```
-
-`zone-1`, `zone-2`, and `zone-3` are lists, but are converted to objects before the resources are provisioned. The conversion ensures that the addition or deletion of subnets affects only the added or deleted subnets, as shown in the following example.
-
-```terraform
-module.subnets.ibm_is_subnet.subnet["gcat-multizone-subnet-a"]
-module.subnets.ibm_is_subnet.subnet["gcat-multizone-subnet-b"]
-module.subnets.ibm_is_subnet.subnet["gcat-multizone-subnet-c"]
-module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-a"]
-module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-b"]
-module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-c"]
-```
-
----
-
-## VPN gateways
-
-You can create any number of VPN gateways on your subnets by using the `vpn_gateways` variable. For more information about VPN gateways on VPC, see [About site-to-site VPN gateways](https://cloud.ibm.com/docs/vpc?topic=vpc-using-vpn) in the IBM Cloud docs.
-
----
 
 ## Usage
 ```terraform
@@ -104,7 +35,18 @@ module vpc {
 }
 ```
 
----
+## Subnets
+
+ You can create a maximum of three zones in the [subnet.tf](subnet.tf) file. The zones are defined as lists in the file, and then are converted to objects before the resources are provisioned. The conversion ensures that the addition or deletion of subnets affects only the added or deleted subnets, as shown in the following example.
+
+```terraform
+module.subnets.ibm_is_subnet.subnet["gcat-multizone-subnet-a"]
+module.subnets.ibm_is_subnet.subnet["gcat-multizone-subnet-b"]
+module.subnets.ibm_is_subnet.subnet["gcat-multizone-subnet-c"]
+module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-a"]
+module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-b"]
+module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-c"]
+```
 
 ## Required IAM access policies
 You need the following permissions to run this module.
@@ -115,8 +57,6 @@ You need the following permissions to run this module.
     - **No service access**
         - **Resource Group** \<your resource group>
         - `Viewer` resource group access
-
----
 
 <!-- BEGIN EXAMPLES HOOK -->
 ## Examples
@@ -192,6 +132,6 @@ You need the following permissions to run this module.
 
 ## Contributing
 
-You can report issues and request features for this module in the [terraform-ibm-issue-tracker](https://github.com/terraform-ibm-modules/terraform-ibm-issue-tracker/issues) repo. See [Report an issue or request a feature](https://github.com/terraform-ibm-modules/.github/blob/main/.github/SUPPORT.md).
+You can report issues and request features for this module in GitHub issues in the module repo. See [Report an issue or request a feature](https://github.com/terraform-ibm-modules/.github/blob/main/.github/SUPPORT.md).
 
 To set up your local development environment, see [Local development setup](https://terraform-ibm-modules.github.io/documentation/#/local-dev-setup) in the project documentation.
