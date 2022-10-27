@@ -6,3 +6,13 @@
 # the settings of this repository are updated immediately.
 
 _extends: repo-settings
+
+# repo-specific settings
+#
+repository:
+  # By changing this field, you rename the repository.
+  name: "terraform-ibm-landing-zone-vsi"
+
+  # The description is displayed under the repository name on the
+  # organization page and in the 'About' section of the repository.
+  description: "Creates virtual servers across subnets in a single VPC connected by a single security group. Supports floating IP addresses and multiple load balancers."
