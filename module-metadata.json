@@ -10,6 +10,9 @@
         "zone-2": null,
         "zone-3": null
       },
+      "source": [
+        "module.dynamic_values"
+      ],
       "pos": {
         "filename": "variables.tf",
         "line": 73
@@ -20,37 +23,62 @@
       "type": "bool",
       "description": "OPTIONAL - Classic Access to the VPC",
       "default": false,
+      "source": [
+        "ibm_is_vpc.vpc.classic_access"
+      ],
       "pos": {
         "filename": "variables.tf",
         "line": 43
-      }
+      },
+      "immutable": true
     },
     "default_network_acl_name": {
       "name": "default_network_acl_name",
       "type": "string",
       "description": "OPTIONAL - Name of the Default ACL. If null, a name will be automatically generated",
+      "source": [
+        "ibm_is_vpc.vpc.default_network_acl_name"
+      ],
       "pos": {
         "filename": "variables.tf",
         "line": 55
-      }
+      },
+      "min_length": 1,
+      "max_length": 63,
+      "matches": "^([a-z]|[a-z][-a-z0-9]*[a-z0-9])$",
+      "computed": true
     },
     "default_routing_table_name": {
       "name": "default_routing_table_name",
       "type": "string",
       "description": "OPTIONAL - Name of the Default Routing Table. If null, a name will be automatically generated",
+      "source": [
+        "ibm_is_vpc.vpc.default_routing_table_name"
+      ],
       "pos": {
         "filename": "variables.tf",
         "line": 67
-      }
+      },
+      "min_length": 1,
+      "max_length": 63,
+      "matches": "^([a-z]|[a-z][-a-z0-9]*[a-z0-9])$",
+      "computed": true
     },
     "default_security_group_name": {
       "name": "default_security_group_name",
       "type": "string",
       "description": "OPTIONAL - Name of the Default Security Group. If null, a name will be automatically generated",
+      "source": [
+        "ibm_is_vpc.vpc.default_security_group_name"
+      ],
       "pos": {
         "filename": "variables.tf",
         "line": 61
-      }
+      },
+      "min_length": 1,
+      "max_length": 63,
+      "matches": "^([a-z]|[a-z][-a-z0-9]*[a-z0-9])$",
+      "computed": true
     },
     "name": {
       "name": "name",
@@ -88,6 +116,9 @@
           ]
         }
       ],
+      "source": [
+        "module.dynamic_values"
+      ],
       "pos": {
         "filename": "variables.tf",
         "line": 98
@@ -98,6 +129,9 @@
       "type": "string",
       "description": "Network CIDR for the VPC. This is used to manage network ACL rules for cluster provisioning.",
       "default": "10.0.0.0/8",
+      "source": [
+        "module.dynamic_values"
+      ],
       "pos": {
         "filename": "variables.tf",
         "line": 37
@@ -108,36 +142,64 @@
       "type": "string",
       "description": "The prefix that you would like to append to your resources",
       "required": true,
+      "source": [
+        "ibm_is_network_acl.network_acl.name",
+        "ibm_is_public_gateway.gateway.name",
+        "ibm_is_vpc.vpc.name",
+        "ibm_is_vpc_routing_table.route_table.name",
+        "module.dynamic_values"
+      ],
       "pos": {
         "filename": "variables.tf",
         "line": 20
-      }
+      },
+      "min_length": 1,
+      "max_length": 63,
+      "matches": "^([a-z]|[a-z][-a-z0-9]*[a-z0-9])$",
+      "computed": true
     },
     "region": {
       "name": "region",
       "type": "string",
       "description": "The region to which to deploy the VPC",
       "required": true,
+      "source": [
+        "ibm_is_vpc_routing_table_route.routing_table_routes.zone",
+        "module.dynamic_values"
+      ],
       "pos": {
         "filename": "variables.tf",
         "line": 15
-      }
+      },
+      "immutable": true
     },
     "resource_group_id": {
       "name": "resource_group_id",
       "type": "string",
       "description": "The resource group ID where the VPC to be created",
       "required": true,
+      "source": [
+        "ibm_is_network_acl.network_acl.resource_group",
+        "ibm_is_public_gateway.gateway.resource_group",
+        "ibm_is_subnet.subnet.resource_group",
+        "ibm_is_vpc.vpc.resource_group"
+      ],
       "pos": {
         "filename": "variables.tf",
         "line": 10
-      }
+      },
+      "cloud_data_type": "resource_group",
+      "immutable": true,
+      "computed": true
     },
     "routes": {
       "name": "routes",
       "type": "list(\n    object({\n      name                          = string\n      route_direct_link_ingress     = optional(bool)\n      route_transit_gateway_ingress = optional(bool)\n      route_vpc_zone_ingress        = optional(bool)\n      routes = optional(\n        list(\n          object({\n            action      = optional(string)\n            zone        = number\n            destination = string\n            next_hop    = string\n          })\n      ))\n    })\n  )",
       "description": "OPTIONAL - Allows you to specify the next hop for packets based on their destination address",
       "default": [],
+      "source": [
+        "module.dynamic_values"
+      ],
       "pos": {
         "filename": "variables.tf",
         "line": 398
@@ -153,6 +215,9 @@
           "name": "default-sgr",
           "remote": "10.0.0.0/8"
         }
+      ],
+      "source": [
+        "module.dynamic_values"
       ],
       "pos": {
         "filename": "variables.tf",
@@ -189,6 +254,9 @@
           }
         ]
       },
+      "source": [
+        "module.dynamic_values"
+      ],
       "pos": {
         "filename": "variables.tf",
         "line": 251
@@ -198,9 +266,21 @@
       "name": "tags",
       "type": "list(string)",
       "description": "List of Tags for the resource created",
+      "source": [
+        "ibm_is_public_gateway.gateway.tags",
+        "ibm_is_subnet.subnet.tags",
+        "ibm_is_vpc.vpc.tags"
+      ],
       "pos": {
         "filename": "variables.tf",
         "line": 25
+      },
+      "min_length": 1,
+      "max_length": 128,
+      "matches": "^[A-Za-z0-9:_ .-]+$",
+      "computed": true,
+      "elem": {
+        "type": "TypeString"
       }
     },
     "use_manual_address_prefixes": {
@@ -208,10 +288,15 @@
       "type": "bool",
       "description": "OPTIONAL - Use manual address prefixes for VPC",
       "default": false,
+      "source": [
+        "ibm_is_vpc.vpc.address_prefix_management"
+      ],
       "pos": {
         "filename": "variables.tf",
         "line": 49
-      }
+      },
+      "immutable": true,
+      "options": "auto, manual"
     },
     "use_public_gateways": {
       "name": "use_public_gateways",
@@ -222,6 +307,9 @@
         "zone-2": false,
         "zone-3": false
       },
+      "source": [
+        "module.dynamic_values"
+      ],
       "pos": {
         "filename": "variables.tf",
         "line": 225
@@ -463,8 +551,100 @@
         "subnets": "subnets",
         "use_public_gateways": "use_public_gateways"
       },
-      "managed_resources": null,
-      "data_resources": null,
+      "managed_resources": {},
+      "data_resources": {},
+      "outputs": {
+        "acl_map": {
+          "name": "acl_map",
+          "description": "ACL map",
+          "value": "local.acl_map",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 60
+          }
+        },
+        "address_prefixes": {
+          "name": "address_prefixes",
+          "description": "Address prefix list",
+          "value": "local.address_prefixes",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 5
+          }
+        },
+        "cluster_rules": {
+          "name": "cluster_rules",
+          "description": "Cluster creation ACL allow rules",
+          "value": "local.cluster_rules",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 49
+          }
+        },
+        "routes": {
+          "name": "routes",
+          "description": "Routes map",
+          "value": "local.routes_map",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 16
+          }
+        },
+        "routing_table_map": {
+          "name": "routing_table_map",
+          "description": "Routing table as map",
+          "value": "module.routes.value",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 87
+          }
+        },
+        "routing_table_route_map": {
+          "name": "routing_table_route_map",
+          "description": "Routing table routes as map",
+          "value": "local.routing_table_route_map",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 92
+          }
+        },
+        "security_group_rules": {
+          "name": "security_group_rules",
+          "description": "Security Group Rules map",
+          "value": "local.security_group_rule_object",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 38
+          }
+        },
+        "subnet_list": {
+          "name": "subnet_list",
+          "description": "Subnet list",
+          "value": "local.subnet_list",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 71
+          }
+        },
+        "subnet_map": {
+          "name": "subnet_map",
+          "description": "Subnets as map",
+          "value": "local.subnet_map",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 76
+          }
+        },
+        "use_public_gateways": {
+          "name": "use_public_gateways",
+          "description": "Public gateways map",
+          "value": "local.gateway_map",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 27
+          }
+        }
+      },
       "pos": {
         "filename": "dynamic_values.tf",
         "line": 5
@@ -473,8 +653,100 @@
     "unit_tests": {
       "name": "unit_tests",
       "source": "./dynamic_values",
-      "managed_resources": null,
-      "data_resources": null,
+      "managed_resources": {},
+      "data_resources": {},
+      "outputs": {
+        "acl_map": {
+          "name": "acl_map",
+          "description": "ACL map",
+          "value": "local.acl_map",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 60
+          }
+        },
+        "address_prefixes": {
+          "name": "address_prefixes",
+          "description": "Address prefix list",
+          "value": "local.address_prefixes",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 5
+          }
+        },
+        "cluster_rules": {
+          "name": "cluster_rules",
+          "description": "Cluster creation ACL allow rules",
+          "value": "local.cluster_rules",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 49
+          }
+        },
+        "routes": {
+          "name": "routes",
+          "description": "Routes map",
+          "value": "local.routes_map",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 16
+          }
+        },
+        "routing_table_map": {
+          "name": "routing_table_map",
+          "description": "Routing table as map",
+          "value": "module.routes.value",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 87
+          }
+        },
+        "routing_table_route_map": {
+          "name": "routing_table_route_map",
+          "description": "Routing table routes as map",
+          "value": "local.routing_table_route_map",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 92
+          }
+        },
+        "security_group_rules": {
+          "name": "security_group_rules",
+          "description": "Security Group Rules map",
+          "value": "local.security_group_rule_object",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 38
+          }
+        },
+        "subnet_list": {
+          "name": "subnet_list",
+          "description": "Subnet list",
+          "value": "local.subnet_list",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 71
+          }
+        },
+        "subnet_map": {
+          "name": "subnet_map",
+          "description": "Subnets as map",
+          "value": "local.subnet_map",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 76
+          }
+        },
+        "use_public_gateways": {
+          "name": "use_public_gateways",
+          "description": "Public gateways map",
+          "value": "local.gateway_map",
+          "pos": {
+            "filename": "dynamic_values/outputs.tf",
+            "line": 27
+          }
+        }
+      },
       "pos": {
         "filename": "dynamic_values.tf",
         "line": 26
