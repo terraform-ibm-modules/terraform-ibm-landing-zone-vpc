@@ -364,7 +364,9 @@
       "pos": {
         "filename": "outputs.tf",
         "line": 15
-      }
+      },
+      "type": "TypeString",
+      "cloud_data_type": "crn"
     },
     "vpc_id": {
       "name": "vpc_id",
@@ -373,7 +375,13 @@
       "pos": {
         "filename": "outputs.tf",
         "line": 10
-      }
+      },
+      "type": "TypeString",
+      "cloud_data_type": "is",
+      "cloud_data_range": [
+        "service:vpc",
+        "resolved_to:id"
+      ]
     },
     "vpc_name": {
       "name": "vpc_name",
@@ -382,7 +390,8 @@
       "pos": {
         "filename": "outputs.tf",
         "line": 5
-      }
+      },
+      "type": "TypeString"
     }
   },
   "required_core": [
@@ -591,8 +600,8 @@
           }
         },
         "routing_table_map": {
-          "name": "routing_table_map",
-          "description": "Routing table as map",
+          "name": "value",
+          "description": "List converted into map",
           "value": "module.routes.value",
           "pos": {
             "filename": "dynamic_values/outputs.tf",
@@ -693,8 +702,8 @@
           }
         },
         "routing_table_map": {
-          "name": "routing_table_map",
-          "description": "Routing table as map",
+          "name": "value",
+          "description": "List converted into map",
           "value": "module.routes.value",
           "pos": {
             "filename": "dynamic_values/outputs.tf",
