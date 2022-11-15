@@ -202,7 +202,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 398
+        "line": 362
       }
     },
     "security_group_rules": {
@@ -221,7 +221,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 314
+        "line": 296
       }
     },
     "subnets": {
@@ -259,7 +259,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 251
+        "line": 233
       }
     },
     "tags": {
@@ -312,7 +312,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 225
+        "line": 207
       }
     }
   },
@@ -364,9 +364,7 @@
       "pos": {
         "filename": "outputs.tf",
         "line": 15
-      },
-      "type": "TypeString",
-      "cloud_data_type": "crn"
+      }
     },
     "vpc_id": {
       "name": "vpc_id",
@@ -375,13 +373,7 @@
       "pos": {
         "filename": "outputs.tf",
         "line": 10
-      },
-      "type": "TypeString",
-      "cloud_data_type": "is",
-      "cloud_data_range": [
-        "service:vpc",
-        "resolved_to:id"
-      ]
+      }
     },
     "vpc_name": {
       "name": "vpc_name",
@@ -390,8 +382,7 @@
       "pos": {
         "filename": "outputs.tf",
         "line": 5
-      },
-      "type": "TypeString"
+      }
     }
   },
   "required_core": [
@@ -600,8 +591,8 @@
           }
         },
         "routing_table_map": {
-          "name": "value",
-          "description": "List converted into map",
+          "name": "routing_table_map",
+          "description": "Routing table as map",
           "value": "module.routes.value",
           "pos": {
             "filename": "dynamic_values/outputs.tf",
@@ -702,8 +693,8 @@
           }
         },
         "routing_table_map": {
-          "name": "value",
-          "description": "List converted into map",
+          "name": "routing_table_map",
+          "description": "Routing table as map",
           "value": "module.routes.value",
           "pos": {
             "filename": "dynamic_values/outputs.tf",
