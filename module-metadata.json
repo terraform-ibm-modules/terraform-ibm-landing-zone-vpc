@@ -202,7 +202,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 398
+        "line": 362
       }
     },
     "security_group_rules": {
@@ -221,7 +221,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 314
+        "line": 296
       }
     },
     "subnets": {
@@ -259,7 +259,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 251
+        "line": 233
       }
     },
     "tags": {
@@ -312,7 +312,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 225
+        "line": 207
       }
     }
   },
