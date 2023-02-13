@@ -111,19 +111,28 @@ locals {
     network_acl.name => {
       name = network_acl.name
       rules = flatten([
+        # Prepend ibm rules
         [
           # These rules cannot be added in a conditional operator due to inconsistant typing
           # This will add all cluster rules if the acl object contains add_cluster rules
           for rule in local.below_the_line_rules :
-          rule if network_acl.add_below_the_line_rules == true
+          rule if network_acl.add_below_the_line_rules == true && network_acl.prepend_ibm_rules == true
         ],
         [
-          # These rules cannot be added in a conditional operator due to inconsistant typing
-          # This will add all cluster rules if the acl object contains add_cluster rules
           for rule in local.cluster_app_rules :
-          rule if network_acl.add_cluster_app_rules == true
+          rule if network_acl.add_cluster_app_rules == true && network_acl.prepend_ibm_rules == true
         ],
-        network_acl.rules
+        # Customer rules
+        network_acl.rules,
+        # Append ibm rules
+        [
+          for rule in local.below_the_line_rules :
+          rule if network_acl.add_below_the_line_rules == true && network_acl.prepend_ibm_rules != true
+        ],
+        [
+          for rule in local.cluster_app_rules :
+          rule if network_acl.add_cluster_app_rules == true && network_acl.prepend_ibm_rules != true
+        ],
       ])
     }
   }

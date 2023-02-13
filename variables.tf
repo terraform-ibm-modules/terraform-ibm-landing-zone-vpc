@@ -103,6 +103,7 @@ variable "network_acls" {
       network_connections      = optional(list(string))
       add_below_the_line_rules = optional(bool)
       add_cluster_app_rules    = optional(bool)
+      prepend_ibm_rules        = optional(bool)
       rules = list(
         object({
           name        = string
@@ -142,6 +143,7 @@ variable "network_acls" {
       name                     = "vpc-acl"
       add_below_the_line_rules = true
       add_cluster_app_rules    = true
+      prepend_ibm_rules        = true
       rules = [
         {
           name        = "allow-all-inbound"
