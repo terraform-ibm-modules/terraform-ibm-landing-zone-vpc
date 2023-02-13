@@ -75,33 +75,34 @@ locals {
       }
       udp  = null
       icmp = null
-    },
-    {
-      name        = "ibmflow-allow-lb-incoming-traffic-requests"
-      action      = "allow"
-      source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-      destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-      direction   = "inbound"
-      tcp = {
-        port_min = 443
-        port_max = 443
-      }
-      udp  = null
-      icmp = null
-    },
-    {
-      name        = "ibmflow-allow-lb-outgoing-traffic-requests"
-      action      = "allow"
-      source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-      destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-      direction   = "outbound"
-      tcp = {
-        source_port_min = 443
-        source_port_max = 443
-      }
-      udp  = null
-      icmp = null
     }
+    # },
+    # {
+    #   name        = "ibmflow-allow-lb-incoming-traffic-requests"
+    #   action      = "allow"
+    #   source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+    #   destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+    #   direction   = "inbound"
+    #   tcp = {
+    #     port_min = 443
+    #     port_max = 443
+    #   }
+    #   udp  = null
+    #   icmp = null
+    # },
+    # {
+    #   name        = "ibmflow-allow-lb-outgoing-traffic-requests"
+    #   action      = "allow"
+    #   source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+    #   destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+    #   direction   = "outbound"
+    #   tcp = {
+    #     source_port_min = 443
+    #     source_port_max = 443
+    #   }
+    #   udp  = null
+    #   icmp = null
+    # }
   ]
 
   # ACL Objects
