@@ -62,6 +62,7 @@ You need the following permissions to run this module.
 ## Examples
 
 - [ Default Example](examples/default)
+- [ Default Example](examples/test)
 <!-- END EXAMPLES HOOK -->
 ---
 
