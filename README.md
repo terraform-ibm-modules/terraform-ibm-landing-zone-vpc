@@ -20,8 +20,8 @@ This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) net
 ## Usage
 ```terraform
 module vpc {
-  # Replace "master" with a GIT release version to lock into a specific release
-  source                      = "git::https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc.git?ref=master"
+  # Replace "main" with a GIT release version to lock into a specific release
+  source                      = "git::https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc.git?ref=main"
   resource_group_id           = var.resource_group_id
   region                      = var.region
   prefix                      = var.prefix
