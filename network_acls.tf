@@ -101,10 +101,8 @@ locals {
     network_acl.name => {
       name = network_acl.name
       rules = flatten([
-        local.us_south_inbound_rules,
-        local.us_south_outbound_rules,
-        local.us_east_inbound_rules,
-        local.us_east_outbound_rules,
+        local.region_wise_inbound_rules,
+        local.region_wise_outbound_rules,
         # Prepend ibm rules
         [
           # These rules cannot be added in a conditional operator due to inconsistant typing
