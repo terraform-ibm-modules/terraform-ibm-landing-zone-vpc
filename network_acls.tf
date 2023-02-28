@@ -106,7 +106,7 @@ locals {
           # These rules cannot be added in a conditional operator due to inconsistant typing
           # This will add all cluster rules if the acl object contains add_cluster rules
           for rule in local.ibm_cloud_internal_rules :
-          rule if network_acl.add_below_the_line_rules == true && network_acl.prepend_ibm_rules == true
+          rule if network_acl.add_ibm_cloud_internal_rules == true && network_acl.prepend_ibm_rules == true
         ],
         [
           for rule in local.vpc_connectivity_rules :
@@ -117,7 +117,7 @@ locals {
         # Append ibm rules
         [
           for rule in local.ibm_cloud_internal_rules :
-          rule if network_acl.add_below_the_line_rules == true && network_acl.prepend_ibm_rules != true
+          rule if network_acl.add_ibm_cloud_internal_rules == true && network_acl.prepend_ibm_rules != true
         ],
         [
           for rule in local.vpc_connectivity_rules :
