@@ -3,7 +3,7 @@
 ##############################################################################
 
 locals {
-  below_the_line_rules = [
+  ibm_cloud_internal_rules = [
     # IaaS and PaaS Rules. Note that this coarse grained list will be narrowed in upcoming releases.
     {
       name        = "ibmflow-iaas-inbound"
@@ -105,7 +105,7 @@ locals {
         [
           # These rules cannot be added in a conditional operator due to inconsistant typing
           # This will add all cluster rules if the acl object contains add_cluster rules
-          for rule in local.below_the_line_rules :
+          for rule in local.ibm_cloud_internal_rules :
           rule if network_acl.add_below_the_line_rules == true && network_acl.prepend_ibm_rules == true
         ],
         [
@@ -116,13 +116,14 @@ locals {
         network_acl.rules,
         # Append ibm rules
         [
-          for rule in local.below_the_line_rules :
+          for rule in local.ibm_cloud_internal_rules :
           rule if network_acl.add_below_the_line_rules == true && network_acl.prepend_ibm_rules != true
         ],
         [
           for rule in local.vpc_connectivity_rules :
           rule if network_acl.add_vpc_connectivity_rules == true && network_acl.prepend_ibm_rules != true
         ],
+        # Best practice to add deny all at the end of ACL
         local.deny_all_rules
       ])
     }
