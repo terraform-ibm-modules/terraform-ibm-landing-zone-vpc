@@ -32,6 +32,8 @@ func TestRunBasicExample(t *testing.T) {
 }
 
 func TestRunUpgradeBasicExample(t *testing.T) {
+	// Breaking change in this PR leading to next major version - skip upgrade test
+	t.Skip()
 	t.Parallel()
 
 	options := setupOptions(t, "slz-vpc-upg")

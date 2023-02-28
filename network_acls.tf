@@ -3,10 +3,10 @@
 ##############################################################################
 
 locals {
-  cluster_rules = [
-    # Cluster Rules
+  ibm_cloud_internal_rules = [
+    # IaaS and PaaS Rules. Note that this coarse grained list will be narrowed in upcoming releases.
     {
-      name        = "roks-create-worker-nodes-inbound"
+      name        = "ibmflow-iaas-inbound"
       action      = "allow"
       source      = "161.26.0.0/16"
       destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
@@ -16,7 +16,7 @@ locals {
       icmp        = null
     },
     {
-      name        = "roks-create-worker-nodes-outbound"
+      name        = "ibmflow-iaas-outbound"
       action      = "allow"
       destination = "161.26.0.0/16"
       source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
@@ -26,7 +26,7 @@ locals {
       icmp        = null
     },
     {
-      name        = "roks-nodes-to-service-inbound"
+      name        = "ibmflow-paas-inbound"
       action      = "allow"
       source      = "166.8.0.0/14"
       destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
@@ -36,7 +36,7 @@ locals {
       icmp        = null
     },
     {
-      name        = "roks-nodes-to-service-outbound"
+      name        = "ibmflow-paas-outbound"
       action      = "allow"
       destination = "166.8.0.0/14"
       source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
@@ -44,59 +44,54 @@ locals {
       tcp         = null
       udp         = null
       icmp        = null
-    },
-    # App Rules
+    }
+  ]
+
+  vpc_connectivity_rules = [
+    # All connectivity across any subnet within VPC
+    # TODO: narrow down to VPC address spaces
     {
-      name        = "allow-app-incoming-traffic-requests"
+      name        = "ibmflow-allow-vpc-connectivity-inbound"
       action      = "allow"
       source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
       destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
       direction   = "inbound"
-      tcp = {
-        source_port_min = 30000
-        source_port_max = 32767
-      }
-      udp  = null
-      icmp = null
+      tcp         = null
+      udp         = null
+      icmp        = null
     },
     {
-      name        = "allow-app-outgoing-traffic-requests"
+      name        = "ibmflow-allow-vpc-connectivity-outbound"
       action      = "allow"
       source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
       destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
       direction   = "outbound"
-      tcp = {
-        port_min = 30000
-        port_max = 32767
-      }
-      udp  = null
-      icmp = null
-    },
+      tcp         = null
+      udp         = null
+      icmp        = null
+    }
+  ]
+
+  deny_all_rules = [
     {
-      name        = "allow-lb-incoming-traffic-requests"
-      action      = "allow"
-      source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-      destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+      name        = "ibmflow-deny-all-inbound"
+      action      = "deny"
+      source      = "0.0.0.0/0"
+      destination = "0.0.0.0/0"
       direction   = "inbound"
-      tcp = {
-        port_min = 443
-        port_max = 443
-      }
-      udp  = null
-      icmp = null
+      tcp         = null
+      udp         = null
+      icmp        = null
     },
     {
-      name        = "allow-lb-outgoing-traffic-requests"
-      action      = "allow"
-      source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-      destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+      name        = "ibmflow-deny-all-outbound"
+      action      = "deny"
+      source      = "0.0.0.0/0"
+      destination = "0.0.0.0/0"
       direction   = "outbound"
-      tcp = {
-        source_port_min = 443
-        source_port_max = 443
-      }
-      udp  = null
-      icmp = null
+      tcp         = null
+      udp         = null
+      icmp        = null
     }
   ]
 
@@ -106,13 +101,30 @@ locals {
     network_acl.name => {
       name = network_acl.name
       rules = flatten([
+        # Prepend ibm rules
         [
           # These rules cannot be added in a conditional operator due to inconsistant typing
-          # This will add all cluster rules if the acl object contains add_cluster rules
-          for rule in local.cluster_rules :
-          rule if network_acl.add_cluster_rules == true
+          # This will add all internal rules if the acl object contains add_ibm_cloud_internal_rules rules
+          for rule in local.ibm_cloud_internal_rules :
+          rule if network_acl.add_ibm_cloud_internal_rules == true && network_acl.prepend_ibm_rules == true
         ],
-        network_acl.rules
+        [
+          for rule in local.vpc_connectivity_rules :
+          rule if network_acl.add_vpc_connectivity_rules == true && network_acl.prepend_ibm_rules == true
+        ],
+        # Customer rules
+        network_acl.rules,
+        # Append ibm rules
+        [
+          for rule in local.ibm_cloud_internal_rules :
+          rule if network_acl.add_ibm_cloud_internal_rules == true && network_acl.prepend_ibm_rules != true
+        ],
+        [
+          for rule in local.vpc_connectivity_rules :
+          rule if network_acl.add_vpc_connectivity_rules == true && network_acl.prepend_ibm_rules != true
+        ],
+        # Best practice to add deny all at the end of ACL
+        local.deny_all_rules
       ])
     }
   }
