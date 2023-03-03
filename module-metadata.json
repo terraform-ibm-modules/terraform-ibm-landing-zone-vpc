@@ -505,7 +505,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 97
+        "line": 102
       }
     },
     "ibm_is_flow_log.flow_logs": {
@@ -525,7 +525,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 108
+        "line": 113
       }
     },
     "ibm_is_network_acl.network_acl": {
