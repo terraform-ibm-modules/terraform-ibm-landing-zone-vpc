@@ -35,7 +35,7 @@
     "create_authorization_policy_vpc_to_cos": {
       "name": "create_authorization_policy_vpc_to_cos",
       "type": "bool",
-      "description": "Set it to true if authorization policy is required for VPC to access COS",
+      "description": "Create authorisation policy for VPC to access COS. Set as false if authorization policy exists already",
       "default": false,
       "pos": {
         "filename": "variables.tf",

@@ -406,7 +406,7 @@ variable "enable_vpc_flow_logs" {
 }
 
 variable "create_authorization_policy_vpc_to_cos" {
-  description = "Set it to true if authorization policy is required for VPC to access COS"
+  description = "Create authorisation policy for VPC to access COS. Set as false if authorization policy exists already"
   type        = bool
   default     = false
 }
