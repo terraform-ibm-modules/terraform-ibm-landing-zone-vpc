@@ -33,3 +33,31 @@ variable "resource_tags" {
   type        = list(string)
   default     = null
 }
+
+variable "enable_vpc_flow_logs" {
+  type        = bool
+  description = "Enable VPC Flow Logs, it will create Flow logs collector if set to true"
+  default     = true
+}
+
+variable "cos_plan" {
+  description = "Plan to be used for creating cloud object storage instance"
+  type        = string
+  default     = "standard"
+  validation {
+    condition     = contains(["standard", "lite"], var.cos_plan)
+    error_message = "The specified cos_plan is not a valid selection!"
+  }
+}
+
+variable "cos_location" {
+  description = "Location of the cloud object storage instance"
+  type        = string
+  default     = "global"
+}
+
+variable "create_authorization_policy_vpc_to_cos" {
+  description = "Set it to true if authorization policy is required for VPC to access COS"
+  type        = bool
+  default     = true
+}

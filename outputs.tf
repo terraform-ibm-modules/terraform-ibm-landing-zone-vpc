@@ -96,3 +96,23 @@ output "network_acls" {
 }
 
 ##############################################################################
+
+##############################################################################
+# VPC flow logs
+##############################################################################
+
+output "vpc_flow_logs" {
+  description = "Details of VPC flow logs collector"
+  value = var.enable_vpc_flow_logs != true ? [] : [
+    for flow_log_collector in ibm_is_flow_log.flow_logs :
+    {
+      name  = flow_log_collector.name
+      id    = flow_log_collector.id
+      crn   = flow_log_collector.crn
+      href  = flow_log_collector.href
+      state = flow_log_collector.lifecycle_state
+    }
+  ]
+}
+
+##############################################################################
