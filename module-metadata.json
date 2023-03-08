@@ -395,12 +395,20 @@
     }
   },
   "outputs": {
+    "cluster_subnets": {
+      "name": "cluster_subnets",
+      "description": "Map to be consumed by vpc cluster containing id, CIDR blocks, and zones.",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 82
+      }
+    },
     "network_acls": {
       "name": "network_acls",
       "description": "List of shortnames and IDs of network ACLs",
       "pos": {
         "filename": "outputs.tf",
-        "line": 87
+        "line": 103
       }
     },
     "public_gateways": {
@@ -451,7 +459,7 @@
       "description": "Details of VPC flow logs collector",
       "pos": {
         "filename": "outputs.tf",
-        "line": 104
+        "line": 120
       }
     },
     "vpc_id": {

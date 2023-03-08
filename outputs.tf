@@ -78,6 +78,22 @@ output "subnet_zone_list" {
   ]
 }
 
+
+output "cluster_subnets" {
+  description = "Map to be consumed by vpc cluster containing id, CIDR blocks, and zones."
+
+  value = {
+    for zone_name in distinct([for subnet in ibm_is_subnet.subnet : subnet.zone]) : zone_name => [{
+      for subnet in ibm_is_subnet.subnet : subnet.name =>
+      {
+        id   = subnet.id
+        zone = subnet.zone
+        cidr = subnet.ipv4_cidr_block
+      }
+    }]
+  }
+}
+
 ##############################################################################
 
 ##############################################################################
