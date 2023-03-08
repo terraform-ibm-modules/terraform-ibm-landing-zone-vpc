@@ -88,3 +88,37 @@ resource "ibm_is_public_gateway" "gateway" {
 }
 
 ##############################################################################
+
+##############################################################################
+# Add VPC to Flow Logs
+##############################################################################
+
+locals {
+  # tflint-ignore: terraform_unused_declarations
+  validate_vpc_flow_logs_inputs = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? ((var.existing_cos_instance_guid != null && var.existing_storage_bucket_name != null) ? true : tobool("Please provide COS instance & bucket name to create flow logs collector.")) : ((var.existing_storage_bucket_name != null) ? true : tobool("Please provide COS bucket name to create flow logs collector"))) : false
+}
+
+# Create authorization policy to allow VPC to access COS instance
+resource "ibm_iam_authorization_policy" "policy" {
+  count = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? 1 : 0) : 0
+
+  source_service_name         = "is"
+  source_resource_type        = "flow-log-collector"
+  target_service_name         = "cloud-object-storage"
+  target_resource_instance_id = var.existing_cos_instance_guid
+  roles                       = ["Writer"]
+}
+
+# Create VPC flow logs collector
+resource "ibm_is_flow_log" "flow_logs" {
+  count = (var.enable_vpc_flow_logs) ? 1 : 0
+
+  name           = "${var.prefix}-${var.name}-logs"
+  target         = ibm_is_vpc.vpc.id
+  active         = var.is_flow_log_collector_active
+  storage_bucket = var.existing_storage_bucket_name
+  resource_group = var.resource_group_id
+  tags           = var.tags
+}
+
+##############################################################################

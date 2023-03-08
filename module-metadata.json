@@ -32,6 +32,16 @@
       },
       "immutable": true
     },
+    "create_authorization_policy_vpc_to_cos": {
+      "name": "create_authorization_policy_vpc_to_cos",
+      "type": "bool",
+      "description": "Create authorisation policy for VPC to access COS. Set as false if authorization policy exists already",
+      "default": false,
+      "pos": {
+        "filename": "variables.tf",
+        "line": 408
+      }
+    },
     "default_network_acl_name": {
       "name": "default_network_acl_name",
       "type": "string",
@@ -79,6 +89,61 @@
       "max_length": 63,
       "matches": "^([a-z]|[a-z][-a-z0-9]*[a-z0-9])$",
       "computed": true
+    },
+    "enable_vpc_flow_logs": {
+      "name": "enable_vpc_flow_logs",
+      "type": "bool",
+      "description": "Flag to enable vpc flow logs. If true, flow log collector will be created",
+      "default": false,
+      "source": [
+        "ibm_iam_authorization_policy.policy.count",
+        "ibm_is_flow_log.flow_logs.count"
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 402
+      }
+    },
+    "existing_cos_instance_guid": {
+      "name": "existing_cos_instance_guid",
+      "type": "string",
+      "description": "GUID of the COS instance to create Flow log collector",
+      "source": [
+        "ibm_iam_authorization_policy.policy.target_resource_instance_id"
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 414
+      },
+      "immutable": true,
+      "computed": true
+    },
+    "existing_storage_bucket_name": {
+      "name": "existing_storage_bucket_name",
+      "type": "string",
+      "description": "Name of the COS bucket to collect VPC flow logs",
+      "required": true,
+      "source": [
+        "ibm_is_flow_log.flow_logs.storage_bucket"
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 420
+      },
+      "immutable": true
+    },
+    "is_flow_log_collector_active": {
+      "name": "is_flow_log_collector_active",
+      "type": "bool",
+      "description": "Indicates whether the collector is active. If false, this collector is created in inactive mode.",
+      "default": true,
+      "source": [
+        "ibm_is_flow_log.flow_logs.active"
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 426
+      }
     },
     "name": {
       "name": "name",
@@ -153,6 +218,7 @@
       "description": "The prefix that you would like to append to your resources",
       "required": true,
       "source": [
+        "ibm_is_flow_log.flow_logs.name",
         "ibm_is_network_acl.network_acl.name",
         "ibm_is_public_gateway.gateway.name",
         "ibm_is_vpc.vpc.name",
@@ -189,6 +255,7 @@
       "description": "The resource group ID where the VPC to be created",
       "required": true,
       "source": [
+        "ibm_is_flow_log.flow_logs.resource_group",
         "ibm_is_network_acl.network_acl.resource_group",
         "ibm_is_public_gateway.gateway.resource_group",
         "ibm_is_subnet.subnet.resource_group",
@@ -277,6 +344,7 @@
       "type": "list(string)",
       "description": "List of Tags for the resource created",
       "source": [
+        "ibm_is_flow_log.flow_logs.tags",
         "ibm_is_public_gateway.gateway.tags",
         "ibm_is_subnet.subnet.tags",
         "ibm_is_vpc.vpc.tags"
@@ -378,6 +446,14 @@
       "type": "TypeString",
       "cloud_data_type": "crn"
     },
+    "vpc_flow_logs": {
+      "name": "vpc_flow_logs",
+      "description": "Details of VPC flow logs collector",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 104
+      }
+    },
     "vpc_id": {
       "name": "vpc_id",
       "description": "ID of VPC created",
@@ -416,6 +492,42 @@
     }
   },
   "managed_resources": {
+    "ibm_iam_authorization_policy.policy": {
+      "mode": "managed",
+      "type": "ibm_iam_authorization_policy",
+      "name": "policy",
+      "attributes": {
+        "count": "enable_vpc_flow_logs",
+        "target_resource_instance_id": "existing_cos_instance_guid"
+      },
+      "provider": {
+        "name": "ibm"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 102
+      }
+    },
+    "ibm_is_flow_log.flow_logs": {
+      "mode": "managed",
+      "type": "ibm_is_flow_log",
+      "name": "flow_logs",
+      "attributes": {
+        "active": "is_flow_log_collector_active",
+        "count": "enable_vpc_flow_logs",
+        "name": "prefix",
+        "resource_group": "resource_group_id",
+        "storage_bucket": "existing_storage_bucket_name",
+        "tags": "tags"
+      },
+      "provider": {
+        "name": "ibm"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 113
+      }
+    },
     "ibm_is_network_acl.network_acl": {
       "mode": "managed",
       "type": "ibm_is_network_acl",

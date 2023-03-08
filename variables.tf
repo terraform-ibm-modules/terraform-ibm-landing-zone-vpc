@@ -394,3 +394,39 @@ variable "routes" {
 }
 
 ##############################################################################
+
+##############################################################################
+# VPC Flow Logs Variables
+##############################################################################
+
+variable "enable_vpc_flow_logs" {
+  description = "Flag to enable vpc flow logs. If true, flow log collector will be created"
+  type        = bool
+  default     = false
+}
+
+variable "create_authorization_policy_vpc_to_cos" {
+  description = "Create authorisation policy for VPC to access COS. Set as false if authorization policy exists already"
+  type        = bool
+  default     = false
+}
+
+variable "existing_cos_instance_guid" {
+  description = "GUID of the COS instance to create Flow log collector"
+  type        = string
+  default     = null
+}
+
+variable "existing_storage_bucket_name" {
+  description = "Name of the COS bucket to collect VPC flow logs"
+  type        = string
+  default     = null
+}
+
+variable "is_flow_log_collector_active" {
+  description = "Indicates whether the collector is active. If false, this collector is created in inactive mode."
+  type        = bool
+  default     = true
+}
+
+##############################################################################
