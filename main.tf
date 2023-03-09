@@ -14,10 +14,21 @@ resource "ibm_is_vpc" "vpc" {
 }
 
 resource "ibm_is_network_acl" "acl" {
-  name = "vpc-acl"
+  name = "example-acl"
   vpc  = ibm_is_vpc.vpc.id
   rules {
     name        = "outbound"
+    action      = "deny"
+    source      = "0.0.0.0/0"
+    destination = "0.0.0.0/0"
+    direction   = "outbound"
+    icmp {
+      code = 1
+      type = 1
+    }
+  }
+  rules {
+    name        = "inbound"
     action      = "deny"
     source      = "0.0.0.0/0"
     destination = "0.0.0.0/0"
