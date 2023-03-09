@@ -13,6 +13,22 @@ resource "ibm_is_vpc" "vpc" {
   tags                        = var.tags
 }
 
+resource "ibm_is_network_acl" "acl" {
+  name = "vpc-acl"
+  vpc  = ibm_is_vpc.vpc.id
+  rules {
+    name        = "outbound"
+    action      = "deny"
+    source      = "0.0.0.0/0"
+    destination = "0.0.0.0/0"
+    direction   = "inbound"
+    icmp {
+      code = 1
+      type = 1
+    }
+  }
+}
+
 ##############################################################################
 
 
