@@ -80,7 +80,7 @@ output "subnet_zone_list" {
 
 output "cluster_subnets" {
   description = "Map to be consumed by vpc cluster containing id, CIDR blocks, and zones."
-  value = zipmap([for prefix ,_ in var.address_prefixes: prefix ], [for subnet in ibm_is_subnet.subnet: [{id=subnet.id,zone=subnet.zone,cidr_block=subnet.ipv4_cidr_block}]])
+  value       = zipmap([for prefix, _ in var.address_prefixes : prefix], [for subnet in ibm_is_subnet.subnet : [{ id = subnet.id, zone = subnet.zone, cidr_block = subnet.ipv4_cidr_block }]])
 }
 ##############################################################################
 

@@ -400,7 +400,7 @@
       "description": "Map to be consumed by vpc cluster containing id, CIDR blocks, and zones.",
       "pos": {
         "filename": "outputs.tf",
-        "line": 82
+        "line": 81
       }
     },
     "network_acls": {
@@ -408,7 +408,7 @@
       "description": "List of shortnames and IDs of network ACLs",
       "pos": {
         "filename": "outputs.tf",
-        "line": 103
+        "line": 91
       }
     },
     "public_gateways": {
@@ -459,7 +459,7 @@
       "description": "Details of VPC flow logs collector",
       "pos": {
         "filename": "outputs.tf",
-        "line": 120
+        "line": 108
       }
     },
     "vpc_id": {
