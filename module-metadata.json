@@ -400,7 +400,7 @@
       "description": "List of shortnames and IDs of network ACLs",
       "pos": {
         "filename": "outputs.tf",
-        "line": 87
+        "line": 91
       }
     },
     "public_gateways": {
@@ -417,6 +417,14 @@
       "pos": {
         "filename": "outputs.tf",
         "line": 52
+      }
+    },
+    "subnet_detail_map": {
+      "name": "subnet_detail_map",
+      "description": "A map of subnets containing IDs, CIDR blocks, and zones",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 81
       }
     },
     "subnet_ids": {
@@ -451,7 +459,7 @@
       "description": "Details of VPC flow logs collector",
       "pos": {
         "filename": "outputs.tf",
-        "line": 104
+        "line": 108
       }
     },
     "vpc_id": {
