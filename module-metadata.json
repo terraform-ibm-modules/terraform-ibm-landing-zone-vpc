@@ -395,14 +395,6 @@
     }
   },
   "outputs": {
-    "cluster_subnets": {
-      "name": "cluster_subnets",
-      "description": "Map to be consumed by vpc cluster containing id, CIDR blocks, and zones.",
-      "pos": {
-        "filename": "outputs.tf",
-        "line": 81
-      }
-    },
     "network_acls": {
       "name": "network_acls",
       "description": "List of shortnames and IDs of network ACLs",
@@ -425,6 +417,14 @@
       "pos": {
         "filename": "outputs.tf",
         "line": 52
+      }
+    },
+    "subnet_detail_map": {
+      "name": "subnet_detail_map",
+      "description": "A map of subnets containing IDs, CIDR blocks, and zones",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 81
       }
     },
     "subnet_ids": {
