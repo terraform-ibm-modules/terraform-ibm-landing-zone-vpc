@@ -145,28 +145,35 @@ variable "network_acls" {
       add_vpc_connectivity_rules   = true
       prepend_ibm_rules            = true
       rules = [
-        {
-          name      = "allow-all-443-inbound"
-          action    = "allow"
-          direction = "inbound"
-          tcp = {
-            port_min = 443
-            port_max = 443
-          }
-          destination = "0.0.0.0/0"
-          source      = "0.0.0.0/0"
-        },
-        {
-          name      = "allow-all-443-outbound"
-          action    = "allow"
-          direction = "outbound"
-          tcp = {
-            source_port_min = 443
-            source_port_max = 443
-          }
-          destination = "0.0.0.0/0"
-          source      = "0.0.0.0/0"
-        }
+        ## The below rules may be added to easily provide network connectivity for a loadbalancer
+        ## Note that opening 0.0.0.0/0 is not FsCloud compliant
+        # {
+        #   name      = "allow-all-443-inbound"
+        #   action    = "allow"
+        #   direction = "inbound"
+        #   tcp = {
+
+        #     port_min = 443
+        #     port_max = 443
+        #     source_port_min = 1024
+        #     source_port_max = 65535
+        #   }
+        #   destination = "0.0.0.0/0"
+        #   source      = "0.0.0.0/0"
+        # },
+        # {
+        #   name      = "allow-all-443-outbound"
+        #   action    = "allow"
+        #   direction = "outbound"
+        #   tcp = {
+        #     source_port_min = 443
+        #     source_port_max = 443
+        #     port_min = 1024
+        #     port_max = 65535
+        #   }
+        #   destination = "0.0.0.0/0"
+        #   source      = "0.0.0.0/0"
+        # }
       ]
     }
   ]
