@@ -39,7 +39,7 @@
       "default": false,
       "pos": {
         "filename": "variables.tf",
-        "line": 408
+        "line": 415
       }
     },
     "default_network_acl_name": {
@@ -101,7 +101,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 402
+        "line": 409
       }
     },
     "existing_cos_instance_guid": {
@@ -113,7 +113,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 414
+        "line": 421
       },
       "immutable": true,
       "computed": true
@@ -128,7 +128,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 420
+        "line": 427
       },
       "immutable": true
     },
@@ -142,7 +142,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 426
+        "line": 433
       }
     },
     "name": {
@@ -165,30 +165,7 @@
           "add_vpc_connectivity_rules": true,
           "name": "vpc-acl",
           "prepend_ibm_rules": true,
-          "rules": [
-            {
-              "action": "allow",
-              "destination": "0.0.0.0/0",
-              "direction": "inbound",
-              "name": "allow-all-443-inbound",
-              "source": "0.0.0.0/0",
-              "tcp": {
-                "port_max": 443,
-                "port_min": 443
-              }
-            },
-            {
-              "action": "allow",
-              "destination": "0.0.0.0/0",
-              "direction": "outbound",
-              "name": "allow-all-443-outbound",
-              "source": "0.0.0.0/0",
-              "tcp": {
-                "source_port_max": 443,
-                "source_port_min": 443
-              }
-            }
-          ]
+          "rules": []
         }
       ],
       "source": [
@@ -279,7 +256,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 374
+        "line": 381
       }
     },
     "security_group_rules": {
@@ -298,7 +275,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 308
+        "line": 315
       }
     },
     "subnets": {
@@ -336,7 +313,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 245
+        "line": 252
       }
     },
     "tags": {
@@ -390,7 +367,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 219
+        "line": 226
       }
     }
   },
