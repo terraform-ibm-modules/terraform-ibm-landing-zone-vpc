@@ -1,0 +1,160 @@
+{
+    "resource_groups": [
+      {
+        "create": true,
+        "name": "slz-service-rg",
+        "use_prefix": true
+      },
+      {
+        "create": true,
+        "name": "slz-management-rg",
+        "use_prefix": true
+      },
+      {
+        "create": true,
+        "name": "slz-workload-rg",
+        "use_prefix": true
+    }
+    ],
+    "vpcs": [
+      {
+        "address_prefixes": {
+            "zone-1": [],
+            "zone-2": [],
+            "zone-3": []
+          },
+          "default_security_group_rules": [],
+          "flow_logs_bucket_name": "management-bucket",
+          "network_acls": [
+              {
+                  "add_cluster_rules": true,
+                  "name": "management-acl",
+                  "rules": [
+                    {
+                        "action": "allow",
+                        "destination": "0.0.0.0/0",
+                        "direction": "inbound",
+                        "name": "allow-all-inbound",
+                        "source": "0.0.0.0/0"
+                      },
+                      {
+                          "action": "allow",
+                          "destination": "0.0.0.0/0",
+                          "direction": "outbound",
+                          "name": "allow-all-outbound",
+                          "source": "0.0.0.0/0"
+                      }
+                  ]
+              }
+          ],
+          "prefix": "management",
+          "resource_group": "slz-management-rg",
+          "subnets": {
+              "zone-1": [
+                  {
+                      "acl_name": "management-acl",
+                      "cidr": "10.10.10.0/24",
+                      "name": "vsi-zone-1",
+                      "public_gateway": false
+                  }
+              ],
+              "zone-2": null,
+              "zone-3": null
+          },
+          "use_public_gateways": {
+              "zone-1": false,
+              "zone-2": false,
+              "zone-3": false
+          }
+      },
+      {
+        "address_prefixes": {
+            "zone-1": [],
+            "zone-2": [],
+            "zone-3": []
+          },
+          "default_security_group_rules": [],
+          "flow_logs_bucket_name": "workload-bucket",
+          "network_acls": [
+              {
+                  "add_cluster_rules": true,
+                  "name": "workload-acl",
+                  "rules": [
+                      {
+                          "action": "allow",
+                          "destination": "10.0.0.0/8",
+                          "direction": "inbound",
+                          "name": "allow-ibm-inbound",
+                          "source": "161.26.0.0/16"
+                      },
+                      {
+                          "action": "allow",
+                          "destination": "10.0.0.0/8",
+                          "direction": "inbound",
+                          "name": "allow-all-network-inbound",
+                          "source": "10.0.0.0/8"
+                      },
+                      {
+                          "action": "allow",
+                          "destination": "0.0.0.0/0",
+                          "direction": "outbound",
+                          "name": "allow-all-outbound",
+                          "source": "0.0.0.0/0"
+                      }
+                  ]
+              }
+          ],
+          "prefix": "workload",
+          "resource_group": "slz-workload-rg",
+          "subnets": {
+              "zone-1": [
+                  {
+                      "acl_name": "workload-acl",
+                      "cidr": "10.40.10.0/24",
+                      "name": "vsi-zone-1",
+                      "public_gateway": false
+                  },
+                  {
+                      "acl_name": "workload-acl",
+                      "cidr": "10.40.20.0/24",
+                      "name": "vpe-zone-1",
+                      "public_gateway": false
+                  }
+              ],
+              "zone-2": [
+                  {
+                      "acl_name": "workload-acl",
+                      "cidr": "10.50.10.0/24",
+                      "name": "vsi-zone-2",
+                      "public_gateway": false
+                  },
+                  {
+                      "acl_name": "workload-acl",
+                      "cidr": "10.50.20.0/24",
+                      "name": "vpe-zone-2",
+                      "public_gateway": false
+                  }
+              ],
+              "zone-3": [
+                  {
+                      "acl_name": "workload-acl",
+                      "cidr": "10.60.10.0/24",
+                      "name": "vsi-zone-3",
+                      "public_gateway": false
+                  },
+                  {
+                      "acl_name": "workload-acl",
+                      "cidr": "10.60.20.0/24",
+                      "name": "vpe-zone-3",
+                      "public_gateway": false
+                  }
+              ]
+          },
+          "use_public_gateways": {
+              "zone-1": false,
+              "zone-2": false,
+              "zone-3": false
+          }
+      }
+  ]
+  }

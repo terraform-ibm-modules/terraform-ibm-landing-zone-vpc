@@ -8,6 +8,7 @@ import (
 )
 
 const defaultExampleTerraformDir = "examples/default"
+const landingZoneVPCDir = "landing-zone-submodule/vpcs"
 const resourceGroup = "geretain-test-resources"
 
 func setupOptions(t *testing.T, prefix string) *testhelper.TestOptions {
@@ -17,6 +18,22 @@ func setupOptions(t *testing.T, prefix string) *testhelper.TestOptions {
 		Prefix:        prefix,
 		ResourceGroup: resourceGroup,
 	})
+
+	return options
+}
+
+func setupOptionsSLZModule(t *testing.T, prefix string) *testhelper.TestOptions {
+	options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
+		Testing:       t,
+		TerraformDir:  landingZoneVPCDir,
+		Prefix:        prefix,
+		ResourceGroup: resourceGroup,
+	})
+
+	options.TerraformVars = map[string]interface{}{
+		"prefix": options.Prefix,
+		"region": options.Region,
+	}
 
 	return options
 }
@@ -31,9 +48,18 @@ func TestRunBasicExample(t *testing.T) {
 	assert.NotNil(t, output, "Expected some output")
 }
 
+func TestRunLZVpcExample(t *testing.T) {
+	t.Parallel()
+
+	options := setupOptionsSLZModule(t, "slz")
+
+	output, err := options.RunTestConsistency()
+	assert.Nil(t, err, "This should not have errored")
+	assert.NotNil(t, output, "Expected some output")
+}
+
 func TestRunUpgradeBasicExample(t *testing.T) {
-	// Breaking change in this PR leading to next major version - skip upgrade test
-	t.Skip()
+
 	t.Parallel()
 
 	options := setupOptions(t, "slz-vpc-upg")
