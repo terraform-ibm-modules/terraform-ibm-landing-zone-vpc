@@ -14,7 +14,7 @@ module "resource_group" {
 #############################################################################
 
 module "management_vpc" {
-  source                                 = "../../"
+  source                      = "../../"
   name                        = "management"
   tags                        = var.tags
   resource_group_id           = module.resource_group.resource_group_id

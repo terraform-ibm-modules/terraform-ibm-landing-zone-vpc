@@ -4,5 +4,5 @@
 
 output "vpc_names" {
   description = "VPC name"
-  value = module.management_vpc.vpc_name
+  value       = module.management_vpc.vpc_name
 }
