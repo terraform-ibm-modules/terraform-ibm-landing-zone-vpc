@@ -62,7 +62,6 @@ You need the following permissions to run this module.
 ## Examples
 
 - [ Default Example](examples/default)
-- [ One VPC with one VSI](examples/landing-zone-vpc)
 <!-- END EXAMPLES HOOK -->
 ---
 
