@@ -11,7 +11,7 @@ _extends: repo-settings:.github/common-settings.yml
 #
 repository:
   # By changing this field, you rename the repository.
-  name: "terraform-ibm-landing-zone-vsi"
+  name: "terraform-ibm-landing-zone-vpc"
 
   # The description is displayed under the repository name on the
   # organization page and in the 'About' section of the repository.
