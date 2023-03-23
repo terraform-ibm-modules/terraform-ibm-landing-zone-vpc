@@ -28,6 +28,11 @@ variable "tags" {
   default     = []
 }
 
+
+#############################################################################
+# VPC variables
+#############################################################################
+
 variable "network_cidr" {
   description = "Network CIDR for the VPC. This is used to manage network ACL rules for cluster provisioning."
   type        = string
@@ -43,7 +48,7 @@ variable "classic_access" {
 variable "use_manual_address_prefixes" {
   description = "Optionally assign prefixes to VPC manually. By default this is false, and prefixes will be created along with subnets"
   type        = bool
-  default     = null
+  default     = true
 }
 
 variable "default_network_acl_name" {
@@ -63,8 +68,6 @@ variable "default_routing_table_name" {
   type        = string
   default     = null
 }
-
-
 
 variable "default_security_group_rules" {
   description = "Override default security group rules"
@@ -265,4 +268,37 @@ variable "subnets" {
       }
     ]
   }
+}
+
+
+#############################################################################
+# Variables for COS and Flow Logs
+#############################################################################
+
+variable "enable_vpc_flow_logs" {
+  type        = bool
+  description = "Enable VPC Flow Logs, it will create Flow logs collector if set to true"
+  default     = true
+}
+
+variable "cos_plan" {
+  description = "Plan to be used for creating cloud object storage instance"
+  type        = string
+  default     = "standard"
+  validation {
+    condition     = contains(["standard", "lite"], var.cos_plan)
+    error_message = "The specified cos_plan is not a valid selection!"
+  }
+}
+
+variable "cos_location" {
+  description = "Location of the cloud object storage instance"
+  type        = string
+  default     = "global"
+}
+
+variable "create_authorization_policy_vpc_to_cos" {
+  description = "Set it to true if authorization policy is required for VPC to access COS"
+  type        = bool
+  default     = true
 }
