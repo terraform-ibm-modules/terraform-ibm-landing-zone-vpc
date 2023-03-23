@@ -377,7 +377,7 @@
       "description": "List of shortnames and IDs of network ACLs",
       "pos": {
         "filename": "outputs.tf",
-        "line": 91
+        "line": 105
       }
     },
     "public_gateways": {
@@ -436,7 +436,7 @@
       "description": "Details of VPC flow logs collector",
       "pos": {
         "filename": "outputs.tf",
-        "line": 108
+        "line": 122
       }
     },
     "vpc_id": {
