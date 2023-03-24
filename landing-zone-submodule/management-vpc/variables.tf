@@ -1,9 +1,3 @@
-variable "ibmcloud_api_key" {
-  description = "APIkey that's associated with the account to provision resources to"
-  type        = string
-  sensitive   = true
-}
-
 variable "region" {
   description = "The region to which to deploy the VPC"
   type        = string
@@ -16,10 +10,9 @@ variable "prefix" {
   default     = "management"
 }
 
-variable "resource_group" {
+variable "resource_group_id" {
+  description = "The resource group ID where the VPC to be created"
   type        = string
-  description = "An existing resource group name to use for this example, if unset a new resource group will be created"
-  default     = null
 }
 
 variable "tags" {
