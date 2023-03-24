@@ -8,7 +8,7 @@ locals {
     {
       name        = "ibmflow-iaas-inbound"
       action      = "allow"
-      source      = "161.26.0.10/31"
+      source      = "161.26.0.0/16"
       destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
       direction   = "inbound"
       tcp         = null
@@ -18,7 +18,7 @@ locals {
     {
       name        = "ibmflow-iaas-outbound"
       action      = "allow"
-      destination = "161.26.0.10/31"
+      destination = "161.26.0.0/16"
       source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
       direction   = "outbound"
       tcp         = null
@@ -28,7 +28,7 @@ locals {
     {
       name        = "ibmflow-paas-inbound"
       action      = "allow"
-      source      = "161.26.112.28/32"
+      source      = "166.8.0.0/14"
       destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
       direction   = "inbound"
       tcp         = null
@@ -38,7 +38,7 @@ locals {
     {
       name        = "ibmflow-paas-outbound"
       action      = "allow"
-      destination = "161.26.112.28/32"
+      destination = "166.8.0.0/14"
       source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
       direction   = "outbound"
       tcp         = null
