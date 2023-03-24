@@ -80,8 +80,22 @@ output "subnet_zone_list" {
 
 output "subnet_detail_map" {
   description = "A map of subnets containing IDs, CIDR blocks, and zones"
-  value       = zipmap([for prefix, _ in var.address_prefixes : prefix], [for subnet in ibm_is_subnet.subnet : [{ id = subnet.id, zone = subnet.zone, cidr_block = subnet.ipv4_cidr_block }]])
+  value = {
+    for zone_name in distinct([
+      for subnet in ibm_is_subnet.subnet :
+      subnet.zone
+    ]) :
+    "zone-${substr(zone_name, -1, length(zone_name))}" => [
+      for subnet in ibm_is_subnet.subnet :
+      {
+        id         = subnet.id
+        zone       = subnet.zone
+        cidr_block = subnet.ipv4_cidr_block
+      } if subnet.zone == zone_name
+    ]
+  }
 }
+
 ##############################################################################
 
 ##############################################################################
