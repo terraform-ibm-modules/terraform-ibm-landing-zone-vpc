@@ -52,14 +52,14 @@ module "workload_vpc" {
   enable_vpc_flow_logs                   = var.enable_vpc_flow_logs
   create_authorization_policy_vpc_to_cos = var.create_authorization_policy_vpc_to_cos
   existing_cos_instance_guid             = ibm_resource_instance.cos_instance[0].guid
-  existing_cos_bucket_name           = ibm_cos_bucket.cos_bucket[0].bucket_name
+  existing_cos_bucket_name               = ibm_cos_bucket.cos_bucket[0].bucket_name
 }
 
 
 module "management_vpc" {
-  source                                 = "../../landing-zone-submodule/management-vpc/"
-  resource_group_id                      = module.management_resource_group.resource_group_id
-  region                                 = var.region
-  prefix                                 = var.prefix
-  tags                                   = var.resource_tags
+  source            = "../../landing-zone-submodule/management-vpc/"
+  resource_group_id = module.management_resource_group.resource_group_id
+  region            = var.region
+  prefix            = var.prefix
+  tags              = var.resource_tags
 }

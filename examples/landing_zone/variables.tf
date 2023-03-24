@@ -16,12 +16,6 @@ variable "prefix" {
   default     = "test-landing-zone"
 }
 
-variable "name" {
-  description = "The name of the vpc"
-  type        = string
-  default     = "vpc"
-}
-
 variable "workload_resource_group" {
   type        = string
   description = "An existing resource group name to use for this example, if unset a new resource group will be created"
