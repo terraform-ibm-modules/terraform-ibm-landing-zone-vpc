@@ -153,30 +153,40 @@ variable "network_acls" {
   )
   default = [
     {
-      "add_cluster_rules" : true,
-      "name" : "workload-acl",
-      "rules" : [
-        {
-          "action" : "allow",
-          "destination" : "10.0.0.0/8",
-          "direction" : "inbound",
-          "name" : "allow-ibm-inbound",
-          "source" : "161.26.0.0/16"
-        },
-        {
-          "action" : "allow",
-          "destination" : "10.0.0.0/8",
-          "direction" : "inbound",
-          "name" : "allow-all-network-inbound",
-          "source" : "10.0.0.0/8"
-        },
-        {
-          "action" : "allow",
-          "destination" : "0.0.0.0/0",
-          "direction" : "outbound",
-          "name" : "allow-all-outbound",
-          "source" : "0.0.0.0/0"
-        }
+      name                         = "workload-acl"
+      add_ibm_cloud_internal_rules = true
+      add_vpc_connectivity_rules   = true
+      prepend_ibm_rules            = true
+      rules = [
+        ## The below rules may be added to easily provide network connectivity for a loadbalancer
+        ## Note that opening 0.0.0.0/0 is not FsCloud compliant
+        # {
+        #   name      = "allow-all-443-inbound"
+        #   action    = "allow"
+        #   direction = "inbound"
+        #   tcp = {
+
+        #     port_min = 443
+        #     port_max = 443
+        #     source_port_min = 1024
+        #     source_port_max = 65535
+        #   }
+        #   destination = "0.0.0.0/0"
+        #   source      = "0.0.0.0/0"
+        # },
+        # {
+        #   name      = "allow-all-443-outbound"
+        #   action    = "allow"
+        #   direction = "outbound"
+        #   tcp = {
+        #     source_port_min = 443
+        #     source_port_max = 443
+        #     port_min = 1024
+        #     port_max = 65535
+        #   }
+        #   destination = "0.0.0.0/0"
+        #   source      = "0.0.0.0/0"
+        # }
       ]
     }
   ]
@@ -272,27 +282,23 @@ variable "subnets" {
 variable "enable_vpc_flow_logs" {
   type        = bool
   description = "Enable VPC Flow Logs, it will create Flow logs collector if set to true"
-  default     = true
-}
-
-variable "cos_plan" {
-  description = "Plan to be used for creating cloud object storage instance"
-  type        = string
-  default     = "standard"
-  validation {
-    condition     = contains(["standard", "lite"], var.cos_plan)
-    error_message = "The specified cos_plan is not a valid selection!"
-  }
-}
-
-variable "cos_location" {
-  description = "Location of the cloud object storage instance"
-  type        = string
-  default     = "global"
+  default     = false
 }
 
 variable "create_authorization_policy_vpc_to_cos" {
   description = "Set it to true if authorization policy is required for VPC to access COS"
   type        = bool
-  default     = true
+  default     = false
+}
+
+variable "existing_cos_instance_guid" {
+  description = "GUID of the COS instance to create Flow log collector"
+  type        = string
+  default     = null
+}
+
+variable "existing_cos_bucket_name" {
+  description = "Name of the COS bucket to collect VPC flow logs"
+  type        = string
+  default     = null
 }
