@@ -16,12 +16,6 @@ variable "prefix" {
   default     = "test-landing-zone"
 }
 
-variable "name" {
-  description = "The name of the vpc"
-  type        = string
-  default     = "vpc"
-}
-
 variable "resource_group" {
   type        = string
   description = "An existing resource group name to use for this example, if unset a new resource group will be created"
@@ -54,10 +48,4 @@ variable "cos_location" {
   description = "Location of the cloud object storage instance"
   type        = string
   default     = "global"
-}
-
-variable "create_authorization_policy_vpc_to_cos" {
-  description = "Set it to true if authorization policy is required for VPC to access COS"
-  type        = bool
-  default     = true
 }
