@@ -47,7 +47,7 @@ locals {
     }
   ]
   vpc_inbound_rule = [
-    for zone , addresses in var.address_prefixes : [ for index, address in addresses: 
+    for zone, addresses in var.address_prefixes : [for index, address in addresses :
       {
         name        = "ibmflow-allow-vpc-connectivity-inbound-${zone}-${index}" # Providing unique rule names
         action      = "allow"
@@ -58,9 +58,9 @@ locals {
         udp         = null
         icmp        = null
       }
-    ]]
+  ]]
   vpc_outbound_rule = [
-    for zone, addresses in var.address_prefixes : [ for index, address in addresses: 
+    for zone, addresses in var.address_prefixes : [for index, address in addresses :
       {
         name        = "ibmflow-allow-vpc-connectivity-outbound-${zone}-${index}"
         action      = "allow"
@@ -71,10 +71,10 @@ locals {
         udp         = null
         icmp        = null
       }
-    ]]
+  ]]
 
-  vpc_connectivity_rules = distinct(flatten(concat(local.vpc_inbound_rule,local.vpc_outbound_rule)))
- 
+  vpc_connectivity_rules = distinct(flatten(concat(local.vpc_inbound_rule, local.vpc_outbound_rule)))
+
   deny_all_rules = [
     {
       name        = "ibmflow-deny-all-inbound"

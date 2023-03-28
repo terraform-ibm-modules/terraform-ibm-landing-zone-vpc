@@ -78,12 +78,9 @@ variable "address_prefixes" {
     zone-3 = optional(list(string))
   })
   default = {
-    zone-1 = ["0.0.0.0/0"]
-    zone-2 = ["0.0.0.0/0"]
-    zone-3 = ["0.0.0.0/0"]
-    # zone-1 = ["10.10.10.0/23", "10.20.10.0/24"]
-    # zone-2 = ["10.30.10.0/23"]
-    # zone-3 = ["10.40.10.0/23"]
+    zone-1 = null
+    zone-2 = null
+    zone-3 = null
   }
   validation {
     error_message = "Keys for `use_public_gateways` must be in the order `zone-1`, `zone-2`, `zone-3`."
