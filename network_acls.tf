@@ -46,32 +46,35 @@ locals {
       icmp        = null
     }
   ]
+  vpc_inbound_rule = [
+    for zone , addresses in var.address_prefixes : [ for index, address in addresses: 
+      {
+        name        = "ibmflow-allow-vpc-connectivity-inbound-${zone}-${index}" # Providing unique rule names
+        action      = "allow"
+        source      = address
+        destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+        direction   = "inbound"
+        tcp         = null
+        udp         = null
+        icmp        = null
+      }
+    ]]
+  vpc_outbound_rule = [
+    for zone, addresses in var.address_prefixes : [ for index, address in addresses: 
+      {
+        name        = "ibmflow-allow-vpc-connectivity-outbound-${zone}-${index}"
+        action      = "allow"
+        source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+        destination = address
+        direction   = "outbound"
+        tcp         = null
+        udp         = null
+        icmp        = null
+      }
+    ]]
 
-  vpc_connectivity_rules = [
-    # All connectivity across any subnet within VPC
-    # TODO: narrow down to VPC address spaces
-    {
-      name        = "ibmflow-allow-vpc-connectivity-inbound"
-      action      = "allow"
-      source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-      destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-      direction   = "inbound"
-      tcp         = null
-      udp         = null
-      icmp        = null
-    },
-    {
-      name        = "ibmflow-allow-vpc-connectivity-outbound"
-      action      = "allow"
-      source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-      destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-      direction   = "outbound"
-      tcp         = null
-      udp         = null
-      icmp        = null
-    }
-  ]
-
+  vpc_connectivity_rules = distinct(flatten(concat(local.vpc_inbound_rule,local.vpc_outbound_rule)))
+ 
   deny_all_rules = [
     {
       name        = "ibmflow-deny-all-inbound"
