@@ -70,7 +70,7 @@ variable "address_prefixes" {
     zone-3 = optional(list(string))
   })
   default = {
-    zone-1 = ["10.10.10.0/24", "10.10.12.0/24"]
+    zone-1 = ["10.10.10.0/24"]
     zone-2 = ["10.20.10.0/24"]
     zone-3 = ["10.30.10.0/24"]
   }

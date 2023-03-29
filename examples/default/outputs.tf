@@ -26,3 +26,8 @@ output "cos_bucket_name" {
   value       = ibm_cos_bucket.cos_bucket[0].bucket_name
   description = "COS bucket name"
 }
+
+output "cidr_blocks" {
+  value       = module.slz_vpc.cidr_blocks
+  description = "CIDR values"
+}

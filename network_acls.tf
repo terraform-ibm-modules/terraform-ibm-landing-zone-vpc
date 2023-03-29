@@ -2,10 +2,6 @@
 # Network ACL
 ##############################################################################
 
-data "ibm_is_vpc_address_prefixes" "get_address_prefixes" {
-  vpc = ibm_is_vpc.vpc.id
-}
-
 locals {
   ibm_cloud_internal_rules = [
     # IaaS and PaaS Rules. Note that this coarse grained list will be narrowed in upcoming releases.
@@ -54,7 +50,7 @@ locals {
   vpc_inbound_rule = [
     for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes :
     {
-      name        = "ibmflow-allow-vpc-connectivity-inbound-${substr(address.name, 0, 5)}" # Providing unique rule names
+      name        = "ibmflow-allow-vpc-connectivity-inbound-${substr(address.id, -4, -1)}" # Providing unique rule names
       action      = "allow"
       source      = address.cidr
       destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
@@ -67,7 +63,7 @@ locals {
   vpc_outbound_rule = [
     for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes :
     {
-      name        = "ibmflow-allow-vpc-connectivity-outbound-${substr(address.name, 0, 5)}"
+      name        = "ibmflow-allow-vpc-connectivity-outbound-${substr(address.name, -4, -1)}"
       action      = "allow"
       source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
       destination = address.cidr

@@ -372,6 +372,14 @@
     }
   },
   "outputs": {
+    "cidr_blocks": {
+      "name": "cidr_blocks",
+      "description": "List of CIDR blocks present in VPC stack",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 137
+      }
+    },
     "network_acls": {
       "name": "network_acls",
       "description": "List of shortnames and IDs of network ACLs",
@@ -490,7 +498,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 102
+        "line": 105
       }
     },
     "ibm_is_flow_log.flow_logs": {
@@ -510,7 +518,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 113
+        "line": 116
       }
     },
     "ibm_is_network_acl.network_acl": {
@@ -526,7 +534,7 @@
       },
       "pos": {
         "filename": "network_acls.tf",
-        "line": 141
+        "line": 137
       }
     },
     "ibm_is_public_gateway.gateway": {
@@ -543,7 +551,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 81
+        "line": 84
       }
     },
     "ibm_is_security_group_rule.default_vpc_rule": {
@@ -632,7 +640,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 46
+        "line": 49
       }
     },
     "ibm_is_vpc_routing_table_route.routing_table_routes": {
@@ -647,7 +655,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 55
+        "line": 58
       }
     }
   },
@@ -660,8 +668,8 @@
         "name": "ibm"
       },
       "pos": {
-        "filename": "network_acls.tf",
-        "line": 5
+        "filename": "main.tf",
+        "line": 39
       }
     }
   },
