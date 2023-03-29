@@ -526,7 +526,7 @@
       },
       "pos": {
         "filename": "network_acls.tf",
-        "line": 136
+        "line": 141
       }
     },
     "ibm_is_public_gateway.gateway": {
@@ -651,7 +651,20 @@
       }
     }
   },
-  "data_resources": {},
+  "data_resources": {
+    "data.ibm_is_vpc_address_prefixes.get_address_prefixes": {
+      "mode": "data",
+      "type": "ibm_is_vpc_address_prefixes",
+      "name": "get_address_prefixes",
+      "provider": {
+        "name": "ibm"
+      },
+      "pos": {
+        "filename": "network_acls.tf",
+        "line": 5
+      }
+    }
+  },
   "module_calls": {
     "dynamic_values": {
       "name": "dynamic_values",

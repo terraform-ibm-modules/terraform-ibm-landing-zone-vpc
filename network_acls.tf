@@ -2,6 +2,10 @@
 # Network ACL
 ##############################################################################
 
+data "ibm_is_vpc_address_prefixes" "get_address_prefixes" {
+  vpc = ibm_is_vpc.vpc.id
+}
+
 locals {
   ibm_cloud_internal_rules = [
     # IaaS and PaaS Rules. Note that this coarse grained list will be narrowed in upcoming releases.
@@ -46,32 +50,33 @@ locals {
       icmp        = null
     }
   ]
+
   vpc_inbound_rule = [
-    for zone, addresses in var.address_prefixes : [for index, address in addresses :
-      {
-        name        = "ibmflow-allow-vpc-connectivity-inbound-${zone}-${index}" # Providing unique rule names
-        action      = "allow"
-        source      = address
-        destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-        direction   = "inbound"
-        tcp         = null
-        udp         = null
-        icmp        = null
-      }
-  ]]
+    for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes :
+    {
+      name        = "ibmflow-allow-vpc-connectivity-inbound-${substr(address.name, 0, 5)}" # Providing unique rule names
+      action      = "allow"
+      source      = address.cidr
+      destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+      direction   = "inbound"
+      tcp         = null
+      udp         = null
+      icmp        = null
+    }
+  ]
   vpc_outbound_rule = [
-    for zone, addresses in var.address_prefixes : [for index, address in addresses :
-      {
-        name        = "ibmflow-allow-vpc-connectivity-outbound-${zone}-${index}"
-        action      = "allow"
-        source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-        destination = address
-        direction   = "outbound"
-        tcp         = null
-        udp         = null
-        icmp        = null
-      }
-  ]]
+    for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes :
+    {
+      name        = "ibmflow-allow-vpc-connectivity-outbound-${substr(address.name, 0, 5)}"
+      action      = "allow"
+      source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+      destination = address.cidr
+      direction   = "outbound"
+      tcp         = null
+      udp         = null
+      icmp        = null
+    }
+  ]
 
   vpc_connectivity_rules = distinct(flatten(concat(local.vpc_inbound_rule, local.vpc_outbound_rule)))
 

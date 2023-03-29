@@ -95,6 +95,7 @@ You need the following permissions to run this module.
 | [ibm_is_vpc_address_prefix.subnet_prefix](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_address_prefix) | resource |
 | [ibm_is_vpc_routing_table.route_table](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_routing_table) | resource |
 | [ibm_is_vpc_routing_table_route.routing_table_routes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_routing_table_route) | resource |
+| [ibm_is_vpc_address_prefixes.get_address_prefixes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_vpc_address_prefixes) | data source |
 
 ## Inputs
 
