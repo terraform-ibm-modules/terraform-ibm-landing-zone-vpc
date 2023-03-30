@@ -37,7 +37,8 @@ resource "ibm_is_vpc_address_prefix" "address_prefixes" {
 }
 
 data "ibm_is_vpc_address_prefixes" "get_address_prefixes" {
-  vpc = ibm_is_vpc.vpc.id
+  depends_on = [ibm_is_vpc_address_prefix.address_prefixes]
+  vpc        = ibm_is_vpc.vpc.id
 }
 ##############################################################################
 
