@@ -36,6 +36,10 @@ resource "ibm_is_vpc_address_prefix" "address_prefixes" {
   cidr     = each.value.cidr
 }
 
+data "ibm_is_vpc_address_prefixes" "get_address_prefixes" {
+  depends_on = [ibm_is_vpc_address_prefix.address_prefixes, ibm_is_vpc_address_prefix.subnet_prefix]
+  vpc        = ibm_is_vpc.vpc.id
+}
 ##############################################################################
 
 
