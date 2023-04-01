@@ -61,3 +61,21 @@ variable "create_authorization_policy_vpc_to_cos" {
   type        = bool
   default     = true
 }
+
+variable "address_prefixes" {
+  description = "OPTIONAL - IP range that will be defined for the VPC for a certain location. Use only with manual address prefixes"
+  type = object({
+    zone-1 = optional(list(string))
+    zone-2 = optional(list(string))
+    zone-3 = optional(list(string))
+  })
+  default = {
+    zone-1 = ["10.10.10.0/24"]
+    zone-2 = ["10.20.10.0/24"]
+    zone-3 = ["10.30.10.0/24"]
+  }
+  validation {
+    error_message = "Keys for `use_public_gateways` must be in the order `zone-1`, `zone-2`, `zone-3`."
+    condition     = var.address_prefixes == null ? true : (keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2" && keys(var.address_prefixes)[2] == "zone-3")
+  }
+}

@@ -47,30 +47,34 @@ locals {
     }
   ]
 
-  vpc_connectivity_rules = [
-    # All connectivity across any subnet within VPC
-    # TODO: narrow down to VPC address spaces
+  vpc_inbound_rule = [
+    for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes :
     {
-      name        = "ibmflow-allow-vpc-connectivity-inbound"
+      name        = "ibmflow-allow-vpc-connectivity-inbound-${substr(address.id, -4, -1)}" # Providing unique rule names
       action      = "allow"
-      source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+      source      = address.cidr
       destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
       direction   = "inbound"
       tcp         = null
       udp         = null
       icmp        = null
-    },
+    }
+  ]
+  vpc_outbound_rule = [
+    for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes :
     {
-      name        = "ibmflow-allow-vpc-connectivity-outbound"
+      name        = "ibmflow-allow-vpc-connectivity-outbound-${substr(address.name, -4, -1)}"
       action      = "allow"
       source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-      destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+      destination = address.cidr
       direction   = "outbound"
       tcp         = null
       udp         = null
       icmp        = null
     }
   ]
+
+  vpc_connectivity_rules = distinct(flatten(concat(local.vpc_inbound_rule, local.vpc_outbound_rule)))
 
   deny_all_rules = [
     {

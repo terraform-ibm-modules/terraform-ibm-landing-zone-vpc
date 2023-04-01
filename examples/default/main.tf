@@ -52,4 +52,5 @@ module "slz_vpc" {
   create_authorization_policy_vpc_to_cos = var.create_authorization_policy_vpc_to_cos
   existing_cos_instance_guid             = ibm_resource_instance.cos_instance[0].guid
   existing_storage_bucket_name           = ibm_cos_bucket.cos_bucket[0].bucket_name
+  address_prefixes                       = var.address_prefixes
 }
