@@ -1,29 +1,18 @@
-# Management VPC
+# Landing Zone Management VPC (Standalone)
 
-You can use this submodule as a starting point to add capabilities incrementally.
+This specialized module calls the [parent landing-zone-vpc module](../..) with preset configuration that results in a 'management' VPC whose topology identical to the management VPC created by the [terraform-ibm-landing-zone module](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone/tree/main).
 
-Using this submodule, you can deploy a bare management VPC.
-1. A single VPC:
-   - Named `management` in this example
-   - Includes three subnets across the three availability zone to host VSIs
-   - Default, open network ACLs
+This submodule can be used by advanced consumers requiring more modularity than provided by the [terraform-ibm-landing-zone module](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone/tree/main) to create their topology. This module provides one of the building block for this topology.
 
-This submodule also creates the following.
-- A COS bucket which will be used for enabling flow logs.
+An executable example is available [here](../../examples/landing_zone/).
 
-:exclamation: **Important:** This example shows an example of basic topology. The topology is not highly available or validated for the IBM Cloud Framework for Financial Services.
-
-Example usage:
-```
-export TF_VAR_ibmcloud_api_key=<your api key> # pragma: allowlist secret
-terraform apply -var=region=eu-gb -var=prefix=my_slz
-```
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.49.0 |
 
 ## Modules
 

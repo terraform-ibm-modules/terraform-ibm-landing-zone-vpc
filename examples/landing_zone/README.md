@@ -1,9 +1,10 @@
 # Landing Zone Example
 
-This example creates two VPCs
-- Workload VPC
-- Management VPC
+This example demonstrates how to use the management and workload vpc module to create a network VPC topology that is aligned with the [Financial Services Framework](https://cloud.ibm.com/docs/framework-financial-services?topic=framework-financial-services-vpc-architecture-connectivity-overview) network segregation key principles.
 
-Created using default values, workload_vpc has flow_logs enabled and management_vpc doesn't have the flow logs enabled.
+The purpose of this example is to show how to use base modules to create such topology:
+- A management VPC
+- A workload VPC
+- A transit gateway connecting the two VPCs
 
-:exclamation: **Important:** The cos instance/bucket created in this example is not fscloud compliant. Refer this [link](https://github.com/terraform-ibm-modules/terraform-ibm-cos/tree/main/profiles/fscloud) to create a fscloud compliant instance/bucket.
+:exclamation: **Important:** The topology created in this example does not meet all compliance controls for Financial Services. Use the [terraform-ibm-landing-zone](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone) module to create a fully compliant stack.
