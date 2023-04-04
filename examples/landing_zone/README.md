@@ -1,4 +1,4 @@
-# Landing Zone Example
+# Landing Zone example
 
 This example demonstrates how to use the management and workload vpc [modules](../../landing-zone-submodule/) to create a network VPC topology that is aligned with the [Financial Services Framework](https://cloud.ibm.com/docs/framework-financial-services?topic=framework-financial-services-vpc-architecture-connectivity-overview) network segregation key principles.
 
