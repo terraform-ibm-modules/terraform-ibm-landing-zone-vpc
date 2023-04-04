@@ -19,7 +19,7 @@ This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) net
 
 ## Presets
 
-Along with this root module, this repository also provides two "submodules" that call the root module with presets/defaults that are aligned with the general [Financial Services Framework](https://cloud.ibm.com/docs/framework-financial-services?topic=framework-financial-services-vpc-architecture-about) management and workload VPC topologies. See the [landing-zone-submodules](./landing-zone-submodule/) for details.
+In addition to this root module, this repository provides two submodules that call the root module with presets and defaults that are aligned with the general [Framework for Financial Services](https://cloud.ibm.com/docs/framework-financial-services?topic=framework-financial-services-vpc-architecture-about) management and workload VPC topologies. See the [landing-zone-submodules](/landing-zone-submodule/) for details.
 
 
 ## Usage
