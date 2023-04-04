@@ -41,6 +41,12 @@
             "description:": "Check whether Virtual Private Cloud (VPC) network access control lists don't allow ingress from 0.0.0.0/0 to any port",
             "ignore_reason": "False positive introduced in CRA 1.2.1. There is no such allow ingress ACL created by the module. There is a deny rule on 0.0.0.0/0 to any port.",
             "is_valid": false
+        },
+        {
+            "scc_goal_id": "3000452",
+            "description:": "Check whether Virtual Private Cloud (VPC) network access control lists don't allow egress from 0.0.0.0/0 to any port",
+            "ignore_reason": "False positive introduced in CRA 1.2.1. There is no such allow egress ACL created by the module. There is a deny rule on 0.0.0.0/0 to any port.",
+            "is_valid": false
         }
     ]
 }

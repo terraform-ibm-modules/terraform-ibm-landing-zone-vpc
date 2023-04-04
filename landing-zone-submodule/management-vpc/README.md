@@ -4,7 +4,7 @@ This specialized submodule calls the root [landing-zone-vpc module](../..) with 
 
 You can use this submodule when you need more modularity to create your topology than the terraform-ibm-landing-zone module provides. This submodule provides one of the building blocks for this topology.
 
-See the [Landing Zone example](../../examples/landing_zone/) for runnable code. 
+See the [Landing Zone example](../../examples/landing_zone/) for runnable code.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
@@ -12,7 +12,6 @@ See the [Landing Zone example](../../examples/landing_zone/) for runnable code.
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.49.0 |
 
 ## Modules
 

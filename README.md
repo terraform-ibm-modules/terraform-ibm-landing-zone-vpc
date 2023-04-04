@@ -67,7 +67,7 @@ You need the following permissions to run this module.
 ## Examples
 
 - [ Default Example](examples/default)
-- [ Landing Zone Example](examples/landing_zone)
+- [ Landing Zone example](examples/landing_zone)
 <!-- END EXAMPLES HOOK -->
 ---
 
