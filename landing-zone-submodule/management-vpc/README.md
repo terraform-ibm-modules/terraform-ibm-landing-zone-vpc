@@ -1,10 +1,10 @@
-# Landing Zone Management VPC (Standalone)
+# Landing Zone management VPC (standalone)
 
-This specialized module calls the [parent landing-zone-vpc module](../..) with preset configuration that results in a 'management' VPC whose topology identical to the management VPC created by the [terraform-ibm-landing-zone module](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone/tree/main).
+This specialized submodule calls the root [landing-zone-vpc module](../..) with a preset configuration that results in a management VPC with a topology that is identical to the management VPC that is created by the [terraform-ibm-landing-zone module](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone/tree/main).
 
-This submodule can be used by advanced consumers requiring more modularity than provided by the [terraform-ibm-landing-zone module](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone/tree/main) to create their topology. This module provides one of the building block for this topology.
+You can use this submodule when you need more modularity to create your topology than the terraform-ibm-landing-zone module provides. This submodule provides one of the building blocks for this topology.
 
-An executable example is available [here](../../examples/landing_zone/).
+See the [Landing Zone example](../../examples/landing_zone/) for runnable code. 
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ## Requirements
