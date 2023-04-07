@@ -158,7 +158,7 @@
     "network_acls": {
       "name": "network_acls",
       "type": "list(\n    object({\n      name                         = string\n      add_ibm_cloud_internal_rules = optional(bool)\n      add_vpc_connectivity_rules   = optional(bool)\n      prepend_ibm_rules            = optional(bool)\n      rules = list(\n        object({\n          name        = string\n          action      = string\n          destination = string\n          direction   = string\n          source      = string\n          tcp = optional(\n            object({\n              port_max        = optional(number)\n              port_min        = optional(number)\n              source_port_max = optional(number)\n              source_port_min = optional(number)\n            })\n          )\n          udp = optional(\n            object({\n              port_max        = optional(number)\n              port_min        = optional(number)\n              source_port_max = optional(number)\n              source_port_min = optional(number)\n            })\n          )\n          icmp = optional(\n            object({\n              type = optional(number)\n              code = optional(number)\n            })\n          )\n        })\n      )\n    })\n  )",
-      "description": "List of ACLs to create.At least one rule must be provided for each ACL.",
+      "description": "The list of ACLs to create. Provide at least one rule for each ACL.",
       "default": [
         {
           "add_ibm_cloud_internal_rules": true,

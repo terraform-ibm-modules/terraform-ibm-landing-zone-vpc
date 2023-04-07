@@ -96,7 +96,7 @@ variable "address_prefixes" {
 ##############################################################################
 
 variable "network_acls" {
-  description = "List of ACLs to create.At least one rule must be provided for each ACL."
+  description = "The list of ACLs to create. Provide at least one rule for each ACL."
   type = list(
     object({
       name                         = string
