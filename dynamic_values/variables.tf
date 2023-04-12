@@ -123,9 +123,8 @@ variable "network_acls" {
   description = "direct reference to network acls"
   type = list(
     object({
-      name                = string
-      network_connections = optional(list(string))
-      add_cluster_rules   = optional(bool)
+      name              = string
+      add_cluster_rules = optional(bool)
       rules = list(
         object({
           name = string
