@@ -63,7 +63,7 @@ locals {
   vpc_outbound_rule = [
     for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes :
     {
-      name        = "ibmflow-allow-vpc-connectivity-outbound-${substr(address.name, -4, -1)}"
+      name        = "ibmflow-allow-vpc-connectivity-outbound-${substr(address.id, -4, -1)}"
       action      = "allow"
       source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
       destination = address.cidr
