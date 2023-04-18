@@ -37,11 +37,6 @@ variable "classic_access" {
   default     = null
 }
 
-variable "use_manual_address_prefixes" {
-  description = "Optionally assign prefixes to VPC manually. By default this is false, and prefixes will be created along with subnets"
-  type        = bool
-  default     = null
-}
 
 variable "default_network_acl_name" {
   description = "Override default ACL name"

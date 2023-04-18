@@ -11,11 +11,12 @@
         "zone-3": null
       },
       "source": [
+        "ibm_is_vpc.vpc.address_prefix_management",
         "module.dynamic_values"
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 73
+        "line": 67
       }
     },
     "classic_access": {
@@ -39,7 +40,7 @@
       "default": false,
       "pos": {
         "filename": "variables.tf",
-        "line": 414
+        "line": 408
       }
     },
     "default_network_acl_name": {
@@ -51,7 +52,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 55
+        "line": 49
       },
       "min_length": 1,
       "max_length": 63,
@@ -67,7 +68,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 67
+        "line": 61
       },
       "min_length": 1,
       "max_length": 63,
@@ -83,7 +84,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 61
+        "line": 55
       },
       "min_length": 1,
       "max_length": 63,
@@ -101,7 +102,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 408
+        "line": 402
       }
     },
     "existing_cos_instance_guid": {
@@ -113,7 +114,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 420
+        "line": 414
       },
       "immutable": true,
       "computed": true
@@ -128,7 +129,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 426
+        "line": 420
       },
       "immutable": true
     },
@@ -142,7 +143,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 432
+        "line": 426
       }
     },
     "name": {
@@ -173,7 +174,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 98
+        "line": 92
       }
     },
     "network_cidr": {
@@ -256,7 +257,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 380
+        "line": 374
       }
     },
     "security_group_rules": {
@@ -275,7 +276,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 314
+        "line": 308
       }
     },
     "subnets": {
@@ -313,7 +314,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 251
+        "line": 245
       }
     },
     "tags": {
@@ -338,21 +339,6 @@
         "type": "TypeString"
       }
     },
-    "use_manual_address_prefixes": {
-      "name": "use_manual_address_prefixes",
-      "type": "bool",
-      "description": "OPTIONAL - Use manual address prefixes for VPC",
-      "default": false,
-      "source": [
-        "ibm_is_vpc.vpc.address_prefix_management"
-      ],
-      "pos": {
-        "filename": "variables.tf",
-        "line": 49
-      },
-      "immutable": true,
-      "options": "auto, manual"
-    },
     "use_public_gateways": {
       "name": "use_public_gateways",
       "type": "object({\n    zone-1 = optional(bool)\n    zone-2 = optional(bool)\n    zone-3 = optional(bool)\n  })",
@@ -367,7 +353,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 225
+        "line": 219
       }
     }
   },
@@ -480,7 +466,7 @@
     "ibm": {
       "source": "IBM-Cloud/ibm",
       "version_constraints": [
-        "\u003e= 1.49.0"
+        "\u003e= 1.52.0"
       ]
     }
   },
@@ -587,7 +573,7 @@
       "type": "ibm_is_vpc",
       "name": "vpc",
       "attributes": {
-        "address_prefix_management": "use_manual_address_prefixes",
+        "address_prefix_management": "address_prefixes",
         "classic_access": "classic_access",
         "default_network_acl_name": "default_network_acl_name",
         "default_routing_table_name": "default_routing_table_name",
