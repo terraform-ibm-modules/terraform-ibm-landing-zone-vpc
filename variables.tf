@@ -363,6 +363,11 @@ variable "security_group_rules" {
   }
 }
 
+variable "clean_default_security_group" {
+  description = "Remove all rules from the default VPC security group (less permissive)"
+  type        = bool
+  default     = false
+}
 
 ##############################################################################
 

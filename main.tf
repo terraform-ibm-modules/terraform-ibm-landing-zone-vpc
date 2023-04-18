@@ -126,3 +126,20 @@ resource "ibm_is_flow_log" "flow_logs" {
 }
 
 ##############################################################################
+
+##############################################################################
+# Clean default network objects if required
+##############################################################################
+
+resource "null_resource" "clean_default_security_group" {
+  count = (var.clean_default_security_group) ? 1 : 0
+  # only clean if default security group changes
+  triggers = {
+    security_group_id = ibm_is_vpc.vpc.default_security_group
+  }
+
+  provisioner "local-exec" {
+    command     = "/usr/bin/env python3 ${path.module}/scripts/fix_security_group.py --ibmApiKeyVariable \"TF_VAR_ibmcloud_api_key\" --security_group_id \"${ibm_is_vpc.vpc.default_security_group}\" --region \"${var.region}\""
+    interpreter = ["/bin/bash", "-c"]
+  }
+}
