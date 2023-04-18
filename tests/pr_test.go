@@ -11,18 +11,12 @@ const defaultExampleTerraformDir = "examples/default"
 const landingZoneExampleTerraformDir = "examples/landing_zone"
 const resourceGroup = "geretain-test-resources"
 
-// The ACL ignores can be removed once we merge this PR (https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/pull/471)
-var ignoreUpdates = []string{"module.slz_vpc.ibm_is_network_acl.network_acl[\"vpc-acl\"]"}
-
 func setupOptions(t *testing.T, prefix string, terraformDir string) *testhelper.TestOptions {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
 		Testing:       t,
 		TerraformDir:  terraformDir,
 		Prefix:        prefix,
 		ResourceGroup: resourceGroup,
-		IgnoreUpdates: testhelper.Exemptions{
-			List: ignoreUpdates,
-		},
 	})
 
 	return options

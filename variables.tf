@@ -46,12 +46,6 @@ variable "classic_access" {
   default     = false
 }
 
-variable "use_manual_address_prefixes" {
-  description = "OPTIONAL - Use manual address prefixes for VPC"
-  type        = bool
-  default     = false
-}
-
 variable "default_network_acl_name" {
   description = "OPTIONAL - Name of the Default ACL. If null, a name will be automatically generated"
   type        = string

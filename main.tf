@@ -6,7 +6,7 @@ resource "ibm_is_vpc" "vpc" {
   name                        = var.prefix != null ? "${var.prefix}-${var.name}-vpc" : "${var.name}-vpc"
   resource_group              = var.resource_group_id
   classic_access              = var.classic_access
-  address_prefix_management   = var.use_manual_address_prefixes == false ? null : "manual"
+  address_prefix_management   = length([for prefix in values(coalesce(var.address_prefixes, {})) : prefix if prefix != null]) != 0 ? "manual" : null
   default_network_acl_name    = var.default_network_acl_name
   default_security_group_name = var.default_security_group_name
   default_routing_table_name  = var.default_routing_table_name
