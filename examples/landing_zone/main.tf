@@ -40,15 +40,19 @@ module "workload_vpc" {
   create_authorization_policy_vpc_to_cos = var.create_authorization_policy_vpc_to_cos
   existing_cos_instance_guid             = module.cos_bucket[0].cos_instance_guid
   existing_cos_bucket_name               = module.cos_bucket[0].bucket_name[0]
+  clean_default_security_group           = true
+  clean_default_acl                      = true
 }
 
 
 module "management_vpc" {
-  source            = "../../landing-zone-submodule/management-vpc/"
-  resource_group_id = module.resource_group.resource_group_id
-  region            = var.region
-  prefix            = var.prefix
-  tags              = var.resource_tags
+  source                       = "../../landing-zone-submodule/management-vpc/"
+  resource_group_id            = module.resource_group.resource_group_id
+  region                       = var.region
+  prefix                       = var.prefix
+  tags                         = var.resource_tags
+  clean_default_security_group = true
+  clean_default_acl            = true
 }
 
 

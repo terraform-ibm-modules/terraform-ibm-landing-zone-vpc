@@ -87,6 +87,18 @@ variable "default_security_group_rules" {
   default = []
 }
 
+variable "clean_default_security_group" {
+  description = "Remove all rules from the default VPC security group (less permissive)"
+  type        = bool
+  default     = false
+}
+
+variable "clean_default_acl" {
+  description = "Remove all rules from the default VPC ACL (less permissive)"
+  type        = bool
+  default     = false
+}
+
 variable "address_prefixes" {
   description = "Use `address_prefixes` only if `use_manual_address_prefixes` is true otherwise prefixes will not be created. Use only if you need to manage prefixes manually."
   type = object({
