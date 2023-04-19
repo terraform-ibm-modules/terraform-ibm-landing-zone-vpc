@@ -57,7 +57,7 @@ module "management_vpc" {
 ##############################################################################
 
 module "tg_gateway_connection" {
-  source                    = "git::https://github.com/terraform-ibm-modules/terraform-ibm-transit-gateway.git?ref=v2.0.2"
+  source                    = "git::https://github.com/terraform-ibm-modules/terraform-ibm-transit-gateway.git?ref=v2.1.1"
   transit_gateway_name      = "${var.prefix}-tg"
   region                    = var.region
   global_routing            = false
