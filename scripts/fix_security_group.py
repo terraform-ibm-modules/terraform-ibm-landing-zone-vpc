@@ -3,12 +3,16 @@ import logging
 import argparse
 import requests
 
-def get_bearer_token(apikey: str, cloud_base_domain: str = "cloud.ibm.com") -> str:
+def get_bearer_token(refresh_token: str, cloud_base_domain: str = "cloud.ibm.com") -> str:
     url = f"https://iam.{cloud_base_domain}/identity/token"
 
-    payload = (
-        f"grant_type=urn%3Aibm%3Aparams%3Aoauth%3Agrant-type%3Aapikey&apikey={apikey}"
-    )
+    payload = {
+        "grant_type": "refresh_token",
+        "refresh_token": refresh_token,
+        "client_id": "bx",
+        "client_secret": "bx"
+    }
+
     headers = {"Content-Type": "application/x-www-form-urlencoded"}
 
     response = requests.request("POST", url, headers=headers, data=payload)
@@ -16,7 +20,7 @@ def get_bearer_token(apikey: str, cloud_base_domain: str = "cloud.ibm.com") -> s
     return response.json().get("access_token")
 
 def get_security_group_rules(
-    sg_id: str, region: str, apikey: str, cloud_base_domain: str = "cloud.ibm.com"
+    sg_id: str, region: str, access_token: str, cloud_base_domain: str = "cloud.ibm.com"
     ) -> dict:
 
     url = f"https://{region}.iaas.{cloud_base_domain}/v1/security_groups/{sg_id}/rules"
@@ -26,7 +30,7 @@ def get_security_group_rules(
         "generation": "2"
     }
     headers = {
-        "Authorization": f"Bearer {get_bearer_token(apikey, cloud_base_domain)}",
+        "Authorization": f"Bearer {access_token}",
     }
 
     response = requests.request("GET", url, headers=headers, params=parameters)
@@ -42,7 +46,7 @@ def get_security_group_rules(
         return response.json().get("rules")
 
 def delete_security_group_rule(
-    sg_id: str, rule_id: str, region: str, apikey: str, cloud_base_domain: str = "cloud.ibm.com"
+    sg_id: str, rule_id: str, region: str, access_token: str, cloud_base_domain: str = "cloud.ibm.com"
 ):
     url = f"https://{region}.iaas.{cloud_base_domain}/v1/security_groups/{sg_id}/rules/{rule_id}"
 
@@ -51,7 +55,7 @@ def delete_security_group_rule(
         "generation": "2"
     }
     headers = {
-        "Authorization": f"Bearer {get_bearer_token(apikey, cloud_base_domain)}",
+        "Authorization": f"Bearer {access_token}",
     }   
 
     response = requests.request("DELETE", url, headers=headers, params=parameters) 
@@ -70,12 +74,11 @@ For compliance reasons.
     )
 
     parser.add_argument(
-        "--ibmApiKeyVariable",
-        dest="ibm_api_key_variable",
+        "--ibmApiRefreshTokenEnvName",
+        dest="ibm_refresh_token_env_name",
         action="store",
-        help="Environment variable containing IBM Cloud apikey",
-        default="TF_VAR_ibmcloud_api_key",
-        required=False,
+        help="IBM Cloud IAM refresh token environment variable name",
+        required=True,
     )
 
     parser.add_argument(
@@ -117,20 +120,23 @@ For compliance reasons.
         logging.basicConfig(level=logging.INFO)
 
     # set argument variables
-    ibmcloud_api_key = os.getenv(args.ibm_api_key_variable)
-    if not ibmcloud_api_key:
+    refresh_token = os.getenv(args.ibm_refresh_token_env_name)
+    if not refresh_token:
         logging.warning(
-            f"Please set environment variable `{args.ibm_api_key_variable}`,"
-            f" or set the flag `--ibmApiKeyVariable` to change the environment variable"
+            f"Please set environment variable `{args.ibm_refresh_token_env_name}`,"
+            f" or set the flag `--ibmApiRefreshTokenEnvName` to change the environment variable"
         )
-        raise Exception(f"Please set environment variable {args.ibm_api_key_variable}")
+        raise Exception(f"Please set environment variable {args.ibm_refresh_token_env_name}")
 
     ibmcloud_region = args.region
     sg_id = args.sg_id
     ibmcloud_base_domain = args.ibm_cloud_base_domain
 
+    # get access token using refresh
+    access_token = get_bearer_token(refresh_token=refresh_token, cloud_base_domain=ibmcloud_base_domain)
+
     sg_rules = get_security_group_rules(
-        sg_id, ibmcloud_region, ibmcloud_api_key, ibmcloud_base_domain
+        sg_id, ibmcloud_region, access_token, ibmcloud_base_domain
     )
 
     if sg_rules:
@@ -140,7 +146,7 @@ For compliance reasons.
             logging.debug(f"Removing rule {rule['id']}")
 
             delete_security_group_rule(
-                sg_id, rule_id, ibmcloud_region, ibmcloud_api_key, ibmcloud_base_domain
+                sg_id, rule_id, ibmcloud_region, access_token, ibmcloud_base_domain
             )
     else:
         logging.info(f"No rules found for security group {sg_id}. Nothing to remove")
