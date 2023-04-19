@@ -133,7 +133,7 @@ resource "ibm_is_flow_log" "flow_logs" {
 
 locals {
   # only get auth tokens if needed
-  auth_token_required = (var.clean_default_security_group) ? true : false
+  auth_token_required = (var.clean_default_security_group || var.clean_default_acl) ? true : false
 }
 
 # valid refresh token from provider is needed for scripts
@@ -150,6 +150,22 @@ resource "null_resource" "clean_default_security_group" {
 
   provisioner "local-exec" {
     command     = "/usr/bin/env python3 ${path.module}/scripts/fix_security_group.py --ibmApiRefreshTokenEnvName \"IBMCLOUD_REFRESH_TOKEN\" --security_group_id \"${ibm_is_vpc.vpc.default_security_group}\" --region \"${var.region}\""
+    interpreter = ["/bin/bash", "-c"]
+    environment = {
+      IBMCLOUD_REFRESH_TOKEN = data.ibm_iam_auth_token.tokendata[0].iam_refresh_token
+    }
+  }
+}
+
+resource "null_resource" "clean_default_acl" {
+  count = (var.clean_default_acl) ? 1 : 0
+  # only clean if default acl changes
+  triggers = {
+    acl_id = ibm_is_vpc.vpc.default_network_acl
+  }
+
+  provisioner "local-exec" {
+    command     = "/usr/bin/env python3 ${path.module}/scripts/fix_access_control_list.py --ibmApiRefreshTokenEnvName \"IBMCLOUD_REFRESH_TOKEN\" --acl_id \"${ibm_is_vpc.vpc.default_network_acl}\" --region \"${var.region}\""
     interpreter = ["/bin/bash", "-c"]
     environment = {
       IBMCLOUD_REFRESH_TOKEN = data.ibm_iam_auth_token.tokendata[0].iam_refresh_token
