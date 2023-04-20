@@ -33,6 +33,32 @@
       },
       "immutable": true
     },
+    "clean_default_acl": {
+      "name": "clean_default_acl",
+      "type": "bool",
+      "description": "Remove all rules from the default VPC ACL (less permissive)",
+      "default": false,
+      "source": [
+        "null_resource.clean_default_acl.count"
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 372
+      }
+    },
+    "clean_default_security_group": {
+      "name": "clean_default_security_group",
+      "type": "bool",
+      "description": "Remove all rules from the default VPC security group (less permissive)",
+      "default": false,
+      "source": [
+        "null_resource.clean_default_security_group.count"
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 366
+      }
+    },
     "create_authorization_policy_vpc_to_cos": {
       "name": "create_authorization_policy_vpc_to_cos",
       "type": "bool",
@@ -40,7 +66,7 @@
       "default": false,
       "pos": {
         "filename": "variables.tf",
-        "line": 408
+        "line": 419
       }
     },
     "default_network_acl_name": {
@@ -102,7 +128,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 402
+        "line": 413
       }
     },
     "existing_cos_instance_guid": {
@@ -114,7 +140,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 414
+        "line": 425
       },
       "immutable": true,
       "computed": true
@@ -129,7 +155,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 420
+        "line": 431
       },
       "immutable": true
     },
@@ -143,7 +169,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 426
+        "line": 437
       }
     },
     "name": {
@@ -257,7 +283,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 374
+        "line": 385
       }
     },
     "security_group_rules": {
@@ -468,6 +494,12 @@
       "version_constraints": [
         "\u003e= 1.52.0"
       ]
+    },
+    "null": {
+      "source": "hashicorp/null",
+      "version_constraints": [
+        "\u003e= 3.2.1"
+      ]
     }
   },
   "managed_resources": {
@@ -643,9 +675,51 @@
         "filename": "main.tf",
         "line": 59
       }
+    },
+    "null_resource.clean_default_acl": {
+      "mode": "managed",
+      "type": "null_resource",
+      "name": "clean_default_acl",
+      "attributes": {
+        "count": "clean_default_acl"
+      },
+      "provider": {
+        "name": "null"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 160
+      }
+    },
+    "null_resource.clean_default_security_group": {
+      "mode": "managed",
+      "type": "null_resource",
+      "name": "clean_default_security_group",
+      "attributes": {
+        "count": "clean_default_security_group"
+      },
+      "provider": {
+        "name": "null"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 144
+      }
     }
   },
   "data_resources": {
+    "data.ibm_iam_auth_token.tokendata": {
+      "mode": "data",
+      "type": "ibm_iam_auth_token",
+      "name": "tokendata",
+      "provider": {
+        "name": "ibm"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 140
+      }
+    },
     "data.ibm_is_vpc_address_prefixes.get_address_prefixes": {
       "mode": "data",
       "type": "ibm_is_vpc_address_prefixes",

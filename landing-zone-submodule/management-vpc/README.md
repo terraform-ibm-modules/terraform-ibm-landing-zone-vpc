@@ -29,6 +29,8 @@ No resources.
 |------|-------------|------|---------|:--------:|
 | <a name="input_address_prefixes"></a> [address\_prefixes](#input\_address\_prefixes) | Use `address_prefixes` only if `use_manual_address_prefixes` is true otherwise prefixes will not be created. Use only if you need to manage prefixes manually. | <pre>object({<br>    zone-1 = optional(list(string))<br>    zone-2 = optional(list(string))<br>    zone-3 = optional(list(string))<br>  })</pre> | `null` | no |
 | <a name="input_classic_access"></a> [classic\_access](#input\_classic\_access) | Optionally allow VPC to access classic infrastructure network | `bool` | `null` | no |
+| <a name="input_clean_default_acl"></a> [clean\_default\_acl](#input\_clean\_default\_acl) | Remove all rules from the default VPC ACL (less permissive) | `bool` | `false` | no |
+| <a name="input_clean_default_security_group"></a> [clean\_default\_security\_group](#input\_clean\_default\_security\_group) | Remove all rules from the default VPC security group (less permissive) | `bool` | `false` | no |
 | <a name="input_create_authorization_policy_vpc_to_cos"></a> [create\_authorization\_policy\_vpc\_to\_cos](#input\_create\_authorization\_policy\_vpc\_to\_cos) | Set it to true if authorization policy is required for VPC to access COS | `bool` | `false` | no |
 | <a name="input_default_network_acl_name"></a> [default\_network\_acl\_name](#input\_default\_network\_acl\_name) | Override default ACL name | `string` | `null` | no |
 | <a name="input_default_routing_table_name"></a> [default\_routing\_table\_name](#input\_default\_routing\_table\_name) | Override default VPC routing table name | `string` | `null` | no |
