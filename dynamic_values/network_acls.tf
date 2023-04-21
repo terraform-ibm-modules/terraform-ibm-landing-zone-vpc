@@ -9,7 +9,7 @@ locals {
       rules = flatten([
         [
           # These rules cannot be added in a conditional operator due to inconsistant typing
-          # This will add all cluster_rules if the acl object contains prepend_ibm_rules as false
+          # This will add all cluster_rules if the acl object contains prepend_ibm_rules as true
           for rule in local.cluster_rules :
           rule if network_acl.prepend_ibm_rules == true
         ],
