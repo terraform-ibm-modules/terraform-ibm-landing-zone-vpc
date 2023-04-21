@@ -1,24 +1,24 @@
 import argparse
+import gzip
+import json
 import logging
 import os
+import platform
 import urllib.parse
 import urllib.request
 import urllib.response
-import json
-import platform
-import gzip
 
-def get_http_response_str(
-    response: urllib.response.addinfourl
-) -> str:
-    if response.info().get('Content-Encoding') == 'gzip':
+
+def get_http_response_str(response: urllib.response.addinfourl) -> str:
+    if response.info().get("Content-Encoding") == "gzip":
         pagedata = gzip.decompress(response.read())
-    elif response.info().get('Content-Encoding') == 'deflate':
+    elif response.info().get("Content-Encoding") == "deflate":
         pagedata = response.read()
     else:
         pagedata = response.read()
 
     return pagedata
+
 
 def get_bearer_token(
     refresh_token: str, cloud_base_domain: str = "cloud.ibm.com"
@@ -41,11 +41,11 @@ def get_bearer_token(
     }
 
     data = urllib.parse.urlencode(payload)
-    data = data.encode('ascii')
+    data = data.encode("ascii")
     request = urllib.request.Request(url=url, data=data, headers=headers)
 
     response = urllib.request.urlopen(request)
-    
+
     if response.status == 200:
         response_txt = get_http_response_str(response=response)
         return json.loads(response_txt).get("access_token")
@@ -106,7 +106,7 @@ def delete_security_group_rule(
 
     response = urllib.request.urlopen(request)
     logging.debug(response)
-    
+
     if response.status != 204:
         logging.error(response)
         raise Exception(f"Failed to delete rule {rule_id} for security group {sg_id}")
