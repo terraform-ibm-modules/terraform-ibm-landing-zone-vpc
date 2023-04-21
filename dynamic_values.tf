@@ -57,8 +57,10 @@ module "unit_tests" {
   network_cidr = "1.2.3.4/5"
   network_acls = [
     {
-      name              = "acl"
-      add_cluster_rules = true
+      name                         = "acl"
+      add_ibm_cloud_internal_rules = true
+      add_vpc_connectivity_rules   = true
+      prepend_ibm_rules            = true
       rules = [
         {
           name = "test-rule"
