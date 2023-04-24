@@ -1,6 +1,5 @@
 import gzip
 import json
-import logging
 import platform
 import urllib.parse
 import urllib.request
@@ -12,6 +11,7 @@ COMMON_REST_HEADERS = {
     "Accept": "*/*",
     "Connection": "keep-alive",
 }
+
 
 def get_http_response_str(response: urllib.response.addinfourl) -> str:
     if response.info().get("Content-Encoding") == "gzip":
@@ -25,9 +25,11 @@ def get_http_response_str(response: urllib.response.addinfourl) -> str:
 
 
 def get_bearer_token(
-    refresh_token: str, cloud_base_domain: str = "cloud.ibm.com", use_private_endpoint: bool = False
+    refresh_token: str,
+    cloud_base_domain: str = "cloud.ibm.com",
+    use_private_endpoint: bool = False,
 ) -> str:
-    private_url_prefix = 'private.' if use_private_endpoint else ''
+    private_url_prefix = "private." if use_private_endpoint else ""
     url = f"https://{private_url_prefix}iam.{cloud_base_domain}/identity/token"
 
     payload = {
@@ -38,7 +40,7 @@ def get_bearer_token(
     }
 
     headers = {
-        "Content-Type": "application/x-www-form-urlencoded",    
+        "Content-Type": "application/x-www-form-urlencoded",
     }
     headers |= COMMON_REST_HEADERS  # merge in common headers
 
