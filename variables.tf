@@ -375,6 +375,17 @@ variable "clean_default_acl" {
   default     = false
 }
 
+variable "ibmcloud_api_visibility" {
+  description = "IBM Cloud API visibility used for internal scripts. Must be 'public', 'private', or 'public-and-private'"
+  type        = string
+  default     = "public"
+
+  validation {
+    error_message = "IBM Cloud API visibility must be either 'public', 'private', or 'public-and-private'"
+    condition     = (var.ibmcloud_api_visibility == "public") || (var.ibmcloud_api_visibility == "private") || (var.ibmcloud_api_visibility == "public-and-private")
+  }
+}
+
 ##############################################################################
 
 

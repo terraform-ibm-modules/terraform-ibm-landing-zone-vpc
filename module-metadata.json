@@ -66,7 +66,7 @@
       "default": false,
       "pos": {
         "filename": "variables.tf",
-        "line": 419
+        "line": 430
       }
     },
     "default_network_acl_name": {
@@ -128,7 +128,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 413
+        "line": 424
       }
     },
     "existing_cos_instance_guid": {
@@ -140,7 +140,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 425
+        "line": 436
       },
       "immutable": true,
       "computed": true
@@ -155,9 +155,19 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 431
+        "line": 442
       },
       "immutable": true
+    },
+    "ibmcloud_api_visibility": {
+      "name": "ibmcloud_api_visibility",
+      "type": "string",
+      "description": "IBM Cloud API visibility used for internal scripts. Must be 'public', 'private', or 'public-and-private'",
+      "default": "public",
+      "pos": {
+        "filename": "variables.tf",
+        "line": 378
+      }
     },
     "is_flow_log_collector_active": {
       "name": "is_flow_log_collector_active",
@@ -169,7 +179,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 437
+        "line": 448
       }
     },
     "name": {
@@ -283,7 +293,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 385
+        "line": 396
       }
     },
     "security_group_rules": {
@@ -688,7 +698,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 160
+        "line": 161
       }
     },
     "null_resource.clean_default_security_group": {
@@ -703,7 +713,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 144
+        "line": 145
       }
     }
   },
@@ -717,7 +727,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 140
+        "line": 141
       }
     },
     "data.ibm_is_vpc_address_prefixes.get_address_prefixes": {

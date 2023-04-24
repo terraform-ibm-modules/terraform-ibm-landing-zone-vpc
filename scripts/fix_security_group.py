@@ -1,70 +1,28 @@
 import argparse
-import gzip
 import json
 import logging
 import os
-import platform
 import urllib.parse
 import urllib.request
 import urllib.response
 
-
-def get_http_response_str(response: urllib.response.addinfourl) -> str:
-    if response.info().get("Content-Encoding") == "gzip":
-        pagedata = gzip.decompress(response.read())
-    elif response.info().get("Content-Encoding") == "deflate":
-        pagedata = response.read()
-    else:
-        pagedata = response.read()
-
-    return pagedata
-
-
-def get_bearer_token(
-    refresh_token: str, cloud_base_domain: str = "cloud.ibm.com"
-) -> str:
-    url = f"https://iam.{cloud_base_domain}/identity/token"
-
-    payload = {
-        "grant_type": "refresh_token",
-        "refresh_token": refresh_token,
-        "client_id": "bx",
-        "client_secret": "bx",  # pragma: allowlist secret
-    }
-
-    headers = {
-        "Content-Type": "application/x-www-form-urlencoded",
-        "User-Agent": f"python-{platform.python_version()}",
-        "Accept-Encoding": "gzip, deflate",
-        "Accept": "*/*",
-        "Connection": "keep-alive",
-    }
-
-    data = urllib.parse.urlencode(payload)
-    data = data.encode("ascii")
-    request = urllib.request.Request(url=url, data=data, headers=headers)
-
-    response = urllib.request.urlopen(request)
-
-    if response.status == 200:
-        response_txt = get_http_response_str(response=response)
-        return json.loads(response_txt).get("access_token")
-    else:
-        raise Exception("Failed to retrieve refresh_token")
+import common_util
 
 
 def get_security_group_rules(
-    sg_id: str, region: str, access_token: str, cloud_base_domain: str = "cloud.ibm.com"
+    sg_id: str,
+    region: str,
+    access_token: str,
+    cloud_base_domain: str = "cloud.ibm.com",
+    use_private_endpoint: bool = False,
 ) -> dict:
-    url = f"https://{region}.iaas.{cloud_base_domain}/v1/security_groups/{sg_id}/rules?version=2023-04-11&generation=2"
+    private_url_prefix = "private." if use_private_endpoint else ""
+    url = f"https://{region}.{private_url_prefix}iaas.{cloud_base_domain}/v1/security_groups/{sg_id}/rules?version=2023-04-11&generation=2"
 
     headers = {
         "Authorization": f"Bearer {access_token}",
-        "User-Agent": f"python-{platform.python_version()}",
-        "Accept-Encoding": "gzip, deflate",
-        "Accept": "*/*",
-        "Connection": "keep-alive",
     }
+    headers |= common_util.COMMON_REST_HEADERS  # merge in common headers
 
     request = urllib.request.Request(url=url, headers=headers)
 
@@ -75,7 +33,7 @@ def get_security_group_rules(
         logging.error(response)
         raise Exception(f"Failed to retrieve rules for security group {sg_id}")
 
-    response_txt = get_http_response_str(response=response)
+    response_txt = common_util.get_http_response_str(response=response)
     respjson = json.loads(response_txt)
 
     if len(respjson.get("rules")) == 0:
@@ -90,16 +48,15 @@ def delete_security_group_rule(
     region: str,
     access_token: str,
     cloud_base_domain: str = "cloud.ibm.com",
+    use_private_endpoint: bool = False,
 ):
-    url = f"https://{region}.iaas.{cloud_base_domain}/v1/security_groups/{sg_id}/rules/{rule_id}?version=2023-04-11&generation=2"
+    private_url_prefix = "private." if use_private_endpoint else ""
+    url = f"https://{region}.{private_url_prefix}iaas.{cloud_base_domain}/v1/security_groups/{sg_id}/rules/{rule_id}?version=2023-04-11&generation=2"
 
     headers = {
         "Authorization": f"Bearer {access_token}",
-        "User-Agent": f"python-{platform.python_version()}",
-        "Accept-Encoding": "gzip, deflate",
-        "Accept": "*/*",
-        "Connection": "keep-alive",
     }
+    headers |= common_util.COMMON_REST_HEADERS  # merge in common headers
 
     request = urllib.request.Request(url=url, headers=headers, method="DELETE")
     logging.debug(request)
@@ -157,6 +114,15 @@ For compliance reasons.
     )
 
     parser.add_argument(
+        "--usePrivateEndpoints",
+        dest="use_private_endpoint",
+        action="store",
+        help="Use IBM Cloud private (VPE) endpoints for REST APIs",
+        default="false",
+        required=False,
+    )
+
+    parser.add_argument(
         "--debug", "-d", dest="debug", action="store_true", help="enable debug logging"
     )
 
@@ -181,16 +147,20 @@ For compliance reasons.
     ibmcloud_region = args.region
     sg_id = args.sg_id
     ibmcloud_base_domain = args.ibm_cloud_base_domain
+    use_private_endpoint = args.use_private_endpoint.lower() == "true"
 
     # get access token using refresh
-    access_token = get_bearer_token(
-        refresh_token=refresh_token, cloud_base_domain=ibmcloud_base_domain
+    access_token = common_util.get_bearer_token(
+        refresh_token=refresh_token,
+        cloud_base_domain=ibmcloud_base_domain,
+        use_private_endpoint=use_private_endpoint,
     )
     sg_rules = get_security_group_rules(
         sg_id=sg_id,
         region=ibmcloud_region,
         access_token=access_token,
         cloud_base_domain=ibmcloud_base_domain,
+        use_private_endpoint=use_private_endpoint,
     )
 
     if sg_rules:
@@ -205,6 +175,7 @@ For compliance reasons.
                 region=ibmcloud_region,
                 access_token=access_token,
                 cloud_base_domain=ibmcloud_base_domain,
+                use_private_endpoint=use_private_endpoint,
             )
     else:
         logging.info(f"No rules found for security group {sg_id}. Nothing to remove")
