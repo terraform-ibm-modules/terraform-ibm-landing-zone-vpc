@@ -2,7 +2,7 @@
 
 set -euo pipefail
 
-IBMCLOUD_API_KEY="UNSET"
+IBMCLOUD_API_KEY="UNSET"  # pragma: allowlist secret
 SG_ID="UNSET"
 REGION="UNSET"
 API_VISIBILITY="public"
