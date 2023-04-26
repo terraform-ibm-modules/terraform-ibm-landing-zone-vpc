@@ -53,16 +53,16 @@ if [[ -z $IBMCLOUD_API_KEY ]]; then
 fi
 
 # Target the resource group and region if passed in
-cmd="ibmcloud login --quiet"
+args=(login --quiet)
 if [[ -n "${rg}" && "${rg}" != "UNSET" ]]; then
-    cmd+=" -g ${rg}"
+    args+=(-g "${rg}")
 fi
 if [[ -n "${region}" && "${region}" != "UNSET" ]]; then
-    cmd+=" -r ${region}"
+    args+=(-r "${region}")
 fi
 # change api to private if visibility not public
 if [[ -n "${api_visibility}" && "${api_visibility}" != "UNSET" && "${api_visibility}" != "public" ]]; then
-    cmd+=" -a 'private.cloud.ibm.com' --vpc"
+    args+=(-a "private.cloud.ibm.com" --vpc)
 fi
 
 # ibmcloud login (with 3 retry attempts)
@@ -70,7 +70,7 @@ total_attempts=3
 i=0
 wait=3
 until [ "$i" -ge $total_attempts ]; do
-  ${cmd} && break
+  ibmcloud "${args[@]}" && break
   i=$((i+1))
   if [ "$i" = $total_attempts ]; then
     echo "Maximum login attempts reached. Giving up!" >&2

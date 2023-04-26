@@ -66,7 +66,7 @@
       "default": false,
       "pos": {
         "filename": "variables.tf",
-        "line": 430
+        "line": 437
       }
     },
     "default_network_acl_name": {
@@ -128,7 +128,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 424
+        "line": 431
       }
     },
     "existing_cos_instance_guid": {
@@ -140,7 +140,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 436
+        "line": 443
       },
       "immutable": true,
       "computed": true
@@ -155,14 +155,24 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 442
+        "line": 449
       },
       "immutable": true
+    },
+    "ibmcloud_api_key": {
+      "name": "ibmcloud_api_key",
+      "type": "string",
+      "description": "IBM Cloud API Key that will be used for authentication in scripts run in this module.",
+      "sensitive": true,
+      "pos": {
+        "filename": "variables.tf",
+        "line": 389
+      }
     },
     "ibmcloud_api_visibility": {
       "name": "ibmcloud_api_visibility",
       "type": "string",
-      "description": "IBM Cloud API visibility used for internal scripts. Must be 'public', 'private', or 'public-and-private'",
+      "description": "IBM Cloud API visibility used by scripts run in this module. Must be 'public', 'private', or 'public-and-private'",
       "default": "public",
       "pos": {
         "filename": "variables.tf",
@@ -179,7 +189,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 448
+        "line": 455
       }
     },
     "name": {
@@ -293,7 +303,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 396
+        "line": 403
       }
     },
     "security_group_rules": {
@@ -698,7 +708,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 161
+        "line": 155
       }
     },
     "null_resource.clean_default_security_group": {
@@ -713,23 +723,11 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 145
+        "line": 134
       }
     }
   },
   "data_resources": {
-    "data.ibm_iam_auth_token.tokendata": {
-      "mode": "data",
-      "type": "ibm_iam_auth_token",
-      "name": "tokendata",
-      "provider": {
-        "name": "ibm"
-      },
-      "pos": {
-        "filename": "main.tf",
-        "line": 141
-      }
-    },
     "data.ibm_is_vpc_address_prefixes.get_address_prefixes": {
       "mode": "data",
       "type": "ibm_is_vpc_address_prefixes",
