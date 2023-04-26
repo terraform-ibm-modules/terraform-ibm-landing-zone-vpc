@@ -25,4 +25,6 @@ module "management_vpc" {
   existing_storage_bucket_name           = var.existing_cos_bucket_name
   clean_default_security_group           = var.clean_default_security_group
   clean_default_acl                      = var.clean_default_acl
+  ibmcloud_api_visibility                = var.ibmcloud_api_visibility
+  ibmcloud_api_key                       = var.ibmcloud_api_key
 }

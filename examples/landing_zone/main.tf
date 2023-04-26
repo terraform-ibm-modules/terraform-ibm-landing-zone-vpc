@@ -42,6 +42,7 @@ module "workload_vpc" {
   existing_cos_bucket_name               = module.cos_bucket[0].bucket_name[0]
   clean_default_security_group           = true
   clean_default_acl                      = true
+  ibmcloud_api_key                       = var.ibmcloud_api_key
 }
 
 
@@ -53,6 +54,7 @@ module "management_vpc" {
   tags                         = var.resource_tags
   clean_default_security_group = true
   clean_default_acl            = true
+  ibmcloud_api_key             = var.ibmcloud_api_key
 }
 
 
