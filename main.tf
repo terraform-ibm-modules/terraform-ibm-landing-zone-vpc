@@ -139,16 +139,11 @@ resource "null_resource" "clean_default_security_group" {
   }
 
   provisioner "local-exec" {
-    command     = "${path.module}/scripts/ibm_cloud_login.sh -r '${var.region}' -g '${var.resource_group_id}' -v '${var.ibmcloud_api_visibility}'"
+    command     = "${path.module}/scripts/fix_security_group.sh -s '${ibm_is_vpc.vpc.default_security_group}' -r '${var.region}' -g '${var.resource_group_id}' -v '${var.ibmcloud_api_visibility}'"
     interpreter = ["bash", "-c"]
     environment = {
       IBMCLOUD_API_KEY = var.ibmcloud_api_key
     }
-  }
-
-  provisioner "local-exec" {
-    command     = "${path.module}/scripts/fix_security_group.sh '${ibm_is_vpc.vpc.default_security_group}'"
-    interpreter = ["bash", "-c"]
   }
 }
 
@@ -160,15 +155,10 @@ resource "null_resource" "clean_default_acl" {
   }
 
   provisioner "local-exec" {
-    command     = "${path.module}/scripts/ibm_cloud_login.sh -r '${var.region}' -g '${var.resource_group_id}' -v '${var.ibmcloud_api_visibility}'"
+    command     = "${path.module}/scripts/fix_access_control_list.sh -a '${ibm_is_vpc.vpc.default_network_acl}' -r '${var.region}' -g '${var.resource_group_id}' -v '${var.ibmcloud_api_visibility}'"
     interpreter = ["bash", "-c"]
     environment = {
       IBMCLOUD_API_KEY = var.ibmcloud_api_key
     }
-  }
-
-  provisioner "local-exec" {
-    command     = "${path.module}/scripts/fix_access_control_list.sh '${ibm_is_vpc.vpc.default_network_acl}'"
-    interpreter = ["bash", "-c"]
   }
 }
