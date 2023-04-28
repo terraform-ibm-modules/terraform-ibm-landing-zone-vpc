@@ -162,7 +162,7 @@
     "ibmcloud_api_key": {
       "name": "ibmcloud_api_key",
       "type": "string",
-      "description": "IBM Cloud API Key that will be used for authentication in scripts run in this module.",
+      "description": "IBM Cloud API Key that will be used for authentication in scripts run in this module. Only required if certain options are chosen, such as the 'clean_default_*' variables being 'true'.",
       "sensitive": true,
       "pos": {
         "filename": "variables.tf",

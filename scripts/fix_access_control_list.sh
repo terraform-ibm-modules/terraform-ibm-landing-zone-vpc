@@ -59,7 +59,7 @@ done
 #### END GETTING INPUT ####
 
 # Ensure $IBMCLOUD_API_KEY is set
-if [[ -z "${IBMCLOUD_API_KEY:-}" ]]; then
+if [[ -z "${IBMCLOUD_API_KEY:-}" ]]; then  # pragma: allowlist secret
     echo "ERROR: Module variable ibmcloud_api_key is not set! Please provide a valid key in terraform input variable for this feature."
     exit 1
 fi

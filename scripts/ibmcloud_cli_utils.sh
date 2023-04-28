@@ -59,12 +59,12 @@ function setup_temp_config_home ()
     cp -r "${old_home}/.bluemix/plugins" "${ibmcloud_config_home}/.bluemix/plugins"
 }
 
-function error_handler () 
+function error_handler ()
 {
     # on error clean up the temp folder if created
     if [[ -n "${TEMP_IBMCLOUD_HOME:-}" ]]; then
         rm -rf "${TEMP_IBMCLOUD_HOME}" || true
     fi
 
-    exit $1
+    exit "$1"
 }
