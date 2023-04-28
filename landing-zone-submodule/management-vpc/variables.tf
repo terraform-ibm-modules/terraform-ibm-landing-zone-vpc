@@ -111,7 +111,7 @@ variable "ibmcloud_api_visibility" {
 }
 
 variable "ibmcloud_api_key" {
-  description = "IBM Cloud API Key that will be used for authentication in scripts run in this module."
+  description = "IBM Cloud API Key that will be used for authentication in scripts run in this module. Only required if certain options are chosen, such as the 'clean_default_*' variables being 'true'."
   type        = string
   sensitive   = true
   default     = null
