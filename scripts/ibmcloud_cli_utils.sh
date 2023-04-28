@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -Eeuo pipefail
 
 function ibmcloud_login ()
 {
@@ -52,8 +52,19 @@ function setup_temp_config_home ()
     # This ensures config separation between various terraform provision blocks on the same machine.
     ibmcloud_config_home=$(mktemp -d)
     export IBMCLOUD_HOME="${ibmcloud_config_home}"
+    export TEMP_IBMCLOUD_HOME="${ibmcloud_config_home}"
 
     # move any installed plugins
     mkdir "${ibmcloud_config_home}/.bluemix"
     cp -r "${old_home}/.bluemix/plugins" "${ibmcloud_config_home}/.bluemix/plugins"
+}
+
+function error_handler () 
+{
+    # on error clean up the temp folder if created
+    if [[ -n "${TEMP_IBMCLOUD_HOME:-}" ]]; then
+        rm -rf "${TEMP_IBMCLOUD_HOME}" || true
+    fi
+
+    exit $1
 }

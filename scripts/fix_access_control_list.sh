@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-set -euo pipefail
+set -Eeuo pipefail
 
 source "$(dirname "$0")"/ibmcloud_cli_utils.sh
 
@@ -59,7 +59,7 @@ done
 #### END GETTING INPUT ####
 
 # Ensure $IBMCLOUD_API_KEY is set
-if [[ -z $IBMCLOUD_API_KEY ]]; then
+if [[ -z "${IBMCLOUD_API_KEY:-}" ]]; then
     echo "ERROR: Module variable ibmcloud_api_key is not set! Please provide a valid key in terraform input variable for this feature."
     exit 1
 fi
@@ -69,6 +69,9 @@ if [[ -z "${acl_id}" || "${acl_id}" == "UNSET" ]]; then
     echo "ERROR: Access Control List ID was empty or not supplied!"
     exit 1
 fi
+
+# trap errors so cleanup of temp config happens
+trap 'error_handler $?' ERR
 
 # Create a temporary home for CLI config, used by both login and further commands.
 # This ensures config separation between various terraform provision blocks on the same machine.
@@ -85,3 +88,6 @@ while IFS='' read -r line; do acl_rule_ids+=("$line"); done <<< "${rules_list}"
 for i in "${acl_rule_ids[@]}"; do
   ibmcloud is network-acl-rule-delete "${acl_id}" "${i}" --force --quiet
 done
+
+# Remove the temp config directory (ignore any error doing so)
+rm -rf "${TEMP_IBMCLOUD_HOME}" || true
