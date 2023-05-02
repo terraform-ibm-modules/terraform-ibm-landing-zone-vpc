@@ -21,6 +21,12 @@ variable "tags" {
   default     = []
 }
 
+variable "access_tags" {
+  type        = list(string)
+  description = "Optional list of access tags to be added to the created Key Protect instance"
+  default     = []
+}
+
 #############################################################################
 # VPC variables
 #############################################################################

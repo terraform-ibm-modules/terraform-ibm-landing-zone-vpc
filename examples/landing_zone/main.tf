@@ -36,6 +36,7 @@ module "workload_vpc" {
   region                                 = var.region
   prefix                                 = var.prefix
   tags                                   = var.resource_tags
+  access_tags                            = var.access_tags
   enable_vpc_flow_logs                   = var.enable_vpc_flow_logs
   create_authorization_policy_vpc_to_cos = var.create_authorization_policy_vpc_to_cos
   existing_cos_instance_guid             = module.cos_bucket[0].cos_instance_guid
@@ -49,6 +50,7 @@ module "management_vpc" {
   region            = var.region
   prefix            = var.prefix
   tags              = var.resource_tags
+  access_tags       = var.access_tags
 }
 
 

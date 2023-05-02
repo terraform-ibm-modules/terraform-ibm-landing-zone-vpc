@@ -1,6 +1,30 @@
 {
   "path": ".",
   "variables": {
+    "access_tags": {
+      "name": "access_tags",
+      "type": "list(string)",
+      "description": "A list of access tags to apply to the resources created by the module, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial for more details",
+      "default": [],
+      "source": [
+        "ibm_is_flow_log.flow_logs.access_tags",
+        "ibm_is_network_acl.network_acl.access_tags",
+        "ibm_is_public_gateway.gateway.access_tags",
+        "ibm_is_subnet.subnet.access_tags",
+        "ibm_is_vpc.vpc.access_tags"
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 31
+      },
+      "min_length": 1,
+      "max_length": 128,
+      "matches": "^([A-Za-z0-9_.-]|[A-Za-z0-9_.-][A-Za-z0-9_ .-]*[A-Za-z0-9_.-]):([A-Za-z0-9_.-]|[A-Za-z0-9_.-][A-Za-z0-9_ .-]*[A-Za-z0-9_.-])$",
+      "computed": true,
+      "elem": {
+        "type": "TypeString"
+      }
+    },
     "address_prefixes": {
       "name": "address_prefixes",
       "type": "object({\n    zone-1 = optional(list(string))\n    zone-2 = optional(list(string))\n    zone-3 = optional(list(string))\n  })",
@@ -16,7 +40,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 67
+        "line": 80
       }
     },
     "classic_access": {
@@ -29,7 +53,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 43
+        "line": 56
       },
       "immutable": true
     },
@@ -40,7 +64,7 @@
       "default": false,
       "pos": {
         "filename": "variables.tf",
-        "line": 408
+        "line": 421
       }
     },
     "default_network_acl_name": {
@@ -52,7 +76,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 49
+        "line": 62
       },
       "min_length": 1,
       "max_length": 63,
@@ -68,7 +92,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 61
+        "line": 74
       },
       "min_length": 1,
       "max_length": 63,
@@ -84,7 +108,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 55
+        "line": 68
       },
       "min_length": 1,
       "max_length": 63,
@@ -102,7 +126,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 402
+        "line": 415
       }
     },
     "existing_cos_instance_guid": {
@@ -114,7 +138,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 414
+        "line": 427
       },
       "immutable": true,
       "computed": true
@@ -129,7 +153,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 420
+        "line": 433
       },
       "immutable": true
     },
@@ -143,7 +167,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 426
+        "line": 439
       }
     },
     "name": {
@@ -174,7 +198,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 92
+        "line": 105
       }
     },
     "network_cidr": {
@@ -187,7 +211,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 37
+        "line": 50
       }
     },
     "prefix": {
@@ -257,7 +281,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 374
+        "line": 387
       }
     },
     "security_group_rules": {
@@ -276,7 +300,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 308
+        "line": 321
       }
     },
     "subnets": {
@@ -314,7 +338,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 245
+        "line": 258
       }
     },
     "tags": {
@@ -353,7 +377,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 219
+        "line": 232
       }
     }
   },
@@ -484,7 +508,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 106
+        "line": 108
       }
     },
     "ibm_is_flow_log.flow_logs": {
@@ -492,6 +516,7 @@
       "type": "ibm_is_flow_log",
       "name": "flow_logs",
       "attributes": {
+        "access_tags": "access_tags",
         "active": "is_flow_log_collector_active",
         "count": "enable_vpc_flow_logs",
         "name": "prefix",
@@ -504,7 +529,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 117
+        "line": 119
       }
     },
     "ibm_is_network_acl.network_acl": {
@@ -512,6 +537,7 @@
       "type": "ibm_is_network_acl",
       "name": "network_acl",
       "attributes": {
+        "access_tags": "access_tags",
         "name": "prefix",
         "resource_group": "resource_group_id"
       },
@@ -528,6 +554,7 @@
       "type": "ibm_is_public_gateway",
       "name": "gateway",
       "attributes": {
+        "access_tags": "access_tags",
         "name": "prefix",
         "resource_group": "resource_group_id",
         "tags": "tags"
@@ -537,7 +564,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 85
+        "line": 86
       }
     },
     "ibm_is_security_group_rule.default_vpc_rule": {
@@ -557,6 +584,7 @@
       "type": "ibm_is_subnet",
       "name": "subnet",
       "attributes": {
+        "access_tags": "access_tags",
         "resource_group": "resource_group_id",
         "tags": "tags"
       },
@@ -573,6 +601,7 @@
       "type": "ibm_is_vpc",
       "name": "vpc",
       "attributes": {
+        "access_tags": "access_tags",
         "address_prefix_management": "address_prefixes",
         "classic_access": "classic_access",
         "default_network_acl_name": "default_network_acl_name",
@@ -599,7 +628,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 31
+        "line": 32
       }
     },
     "ibm_is_vpc_address_prefix.subnet_prefix": {
@@ -626,7 +655,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 50
+        "line": 51
       }
     },
     "ibm_is_vpc_routing_table_route.routing_table_routes": {
@@ -641,7 +670,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 59
+        "line": 60
       }
     }
   },
@@ -655,7 +684,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 39
+        "line": 40
       }
     }
   },

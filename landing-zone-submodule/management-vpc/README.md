@@ -27,6 +27,7 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | Optional list of access tags to be added to the created Key Protect instance | `list(string)` | `[]` | no |
 | <a name="input_address_prefixes"></a> [address\_prefixes](#input\_address\_prefixes) | Use `address_prefixes` only if `use_manual_address_prefixes` is true otherwise prefixes will not be created. Use only if you need to manage prefixes manually. | <pre>object({<br>    zone-1 = optional(list(string))<br>    zone-2 = optional(list(string))<br>    zone-3 = optional(list(string))<br>  })</pre> | `null` | no |
 | <a name="input_classic_access"></a> [classic\_access](#input\_classic\_access) | Optionally allow VPC to access classic infrastructure network | `bool` | `null` | no |
 | <a name="input_create_authorization_policy_vpc_to_cos"></a> [create\_authorization\_policy\_vpc\_to\_cos](#input\_create\_authorization\_policy\_vpc\_to\_cos) | Set it to true if authorization policy is required for VPC to access COS | `bool` | `false` | no |

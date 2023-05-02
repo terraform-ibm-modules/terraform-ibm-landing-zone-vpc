@@ -39,6 +39,7 @@ resource "ibm_is_subnet" "subnet" {
   network_acl     = ibm_is_network_acl.network_acl[each.value.acl].id
   public_gateway  = each.value.public_gateway
   tags            = var.tags
+  access_tags     = var.access_tags
   depends_on      = [ibm_is_vpc_address_prefix.address_prefixes]
 }
 
