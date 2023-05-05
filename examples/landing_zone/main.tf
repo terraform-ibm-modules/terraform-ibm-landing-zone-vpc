@@ -15,7 +15,7 @@ module "resource_group" {
 
 module "cos_bucket" {
   count                 = var.enable_vpc_flow_logs ? 1 : 0
-  source                = "git::https://github.com/terraform-ibm-modules/terraform-ibm-cos.git?ref=v6.3.1"
+  source                = "git::https://github.com/terraform-ibm-modules/terraform-ibm-cos.git?ref=v6.5.1"
   resource_group_id     = module.resource_group.resource_group_id
   region                = var.region
   cross_region_location = null
