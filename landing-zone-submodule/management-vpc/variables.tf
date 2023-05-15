@@ -92,6 +92,36 @@ variable "default_security_group_rules" {
   default = []
 }
 
+variable "clean_default_security_group" {
+  description = "Remove all rules from the default VPC security group (less permissive)"
+  type        = bool
+  default     = false
+}
+
+variable "clean_default_acl" {
+  description = "Remove all rules from the default VPC ACL (less permissive)"
+  type        = bool
+  default     = false
+}
+
+variable "ibmcloud_api_visibility" {
+  description = "IBM Cloud API visibility used by scripts run in this module. Must be 'public', 'private', or 'public-and-private'"
+  type        = string
+  default     = "public"
+
+  validation {
+    error_message = "IBM Cloud API visibility must be either 'public', 'private', or 'public-and-private'"
+    condition     = (var.ibmcloud_api_visibility == "public") || (var.ibmcloud_api_visibility == "private") || (var.ibmcloud_api_visibility == "public-and-private")
+  }
+}
+
+variable "ibmcloud_api_key" {
+  description = "IBM Cloud API Key that will be used for authentication in scripts run in this module. Only required if certain options are chosen, such as the 'clean_default_*' variables being 'true'."
+  type        = string
+  sensitive   = true
+  default     = null
+}
+
 variable "address_prefixes" {
   description = "Use `address_prefixes` only if `use_manual_address_prefixes` is true otherwise prefixes will not be created. Use only if you need to manage prefixes manually."
   type = object({
