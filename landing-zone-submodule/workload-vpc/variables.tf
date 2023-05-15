@@ -23,7 +23,7 @@ variable "tags" {
 
 variable "access_tags" {
   type        = list(string)
-  description = "Optional list of access tags to be added to the created Key Protect instance"
+  description = "Optional list of access tags to be added to the created VPC resources"
   default     = []
 }
 
