@@ -33,6 +33,32 @@
       },
       "immutable": true
     },
+    "clean_default_acl": {
+      "name": "clean_default_acl",
+      "type": "bool",
+      "description": "Remove all rules from the default VPC ACL (less permissive)",
+      "default": false,
+      "source": [
+        "null_resource.clean_default_acl.count"
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 372
+      }
+    },
+    "clean_default_security_group": {
+      "name": "clean_default_security_group",
+      "type": "bool",
+      "description": "Remove all rules from the default VPC security group (less permissive)",
+      "default": false,
+      "source": [
+        "null_resource.clean_default_security_group.count"
+      ],
+      "pos": {
+        "filename": "variables.tf",
+        "line": 366
+      }
+    },
     "create_authorization_policy_vpc_to_cos": {
       "name": "create_authorization_policy_vpc_to_cos",
       "type": "bool",
@@ -40,7 +66,7 @@
       "default": false,
       "pos": {
         "filename": "variables.tf",
-        "line": 408
+        "line": 437
       }
     },
     "default_network_acl_name": {
@@ -102,7 +128,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 402
+        "line": 431
       }
     },
     "existing_cos_instance_guid": {
@@ -114,7 +140,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 414
+        "line": 443
       },
       "immutable": true,
       "computed": true
@@ -129,9 +155,29 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 420
+        "line": 449
       },
       "immutable": true
+    },
+    "ibmcloud_api_key": {
+      "name": "ibmcloud_api_key",
+      "type": "string",
+      "description": "IBM Cloud API Key that will be used for authentication in scripts run in this module. Only required if certain options are chosen, such as the 'clean_default_*' variables being 'true'.",
+      "sensitive": true,
+      "pos": {
+        "filename": "variables.tf",
+        "line": 389
+      }
+    },
+    "ibmcloud_api_visibility": {
+      "name": "ibmcloud_api_visibility",
+      "type": "string",
+      "description": "IBM Cloud API visibility used by scripts run in this module. Must be 'public', 'private', or 'public-and-private'",
+      "default": "public",
+      "pos": {
+        "filename": "variables.tf",
+        "line": 378
+      }
     },
     "is_flow_log_collector_active": {
       "name": "is_flow_log_collector_active",
@@ -143,7 +189,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 426
+        "line": 455
       }
     },
     "name": {
@@ -257,7 +303,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 374
+        "line": 403
       }
     },
     "security_group_rules": {
@@ -468,6 +514,12 @@
       "version_constraints": [
         "\u003e= 1.52.0"
       ]
+    },
+    "null": {
+      "source": "hashicorp/null",
+      "version_constraints": [
+        "\u003e= 3.2.1"
+      ]
     }
   },
   "managed_resources": {
@@ -642,6 +694,36 @@
       "pos": {
         "filename": "main.tf",
         "line": 59
+      }
+    },
+    "null_resource.clean_default_acl": {
+      "mode": "managed",
+      "type": "null_resource",
+      "name": "clean_default_acl",
+      "attributes": {
+        "count": "clean_default_acl"
+      },
+      "provider": {
+        "name": "null"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 150
+      }
+    },
+    "null_resource.clean_default_security_group": {
+      "mode": "managed",
+      "type": "null_resource",
+      "name": "clean_default_security_group",
+      "attributes": {
+        "count": "clean_default_security_group"
+      },
+      "provider": {
+        "name": "null"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 134
       }
     }
   },
