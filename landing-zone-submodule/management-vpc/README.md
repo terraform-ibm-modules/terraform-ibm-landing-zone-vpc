@@ -27,7 +27,7 @@ No resources.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | Optional list of access tags to be added to the created VPC resources | `list(string)` | `[]` | no |
+| <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | Optional list of access tags to add to the VPC resources that are created | `list(string)` | `[]` | no |
 | <a name="input_address_prefixes"></a> [address\_prefixes](#input\_address\_prefixes) | Use `address_prefixes` only if `use_manual_address_prefixes` is true otherwise prefixes will not be created. Use only if you need to manage prefixes manually. | <pre>object({<br>    zone-1 = optional(list(string))<br>    zone-2 = optional(list(string))<br>    zone-3 = optional(list(string))<br>  })</pre> | `null` | no |
 | <a name="input_classic_access"></a> [classic\_access](#input\_classic\_access) | Optionally allow VPC to access classic infrastructure network | `bool` | `null` | no |
 | <a name="input_clean_default_acl"></a> [clean\_default\_acl](#input\_clean\_default\_acl) | Remove all rules from the default VPC ACL (less permissive) | `bool` | `false` | no |

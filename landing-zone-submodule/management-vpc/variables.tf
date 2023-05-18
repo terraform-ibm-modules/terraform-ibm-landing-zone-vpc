@@ -23,7 +23,7 @@ variable "tags" {
 
 variable "access_tags" {
   type        = list(string)
-  description = "Optional list of access tags to be added to the created VPC resources"
+  description = "Optional list of access tags to add to the VPC resources that are created"
   default     = []
 }
 

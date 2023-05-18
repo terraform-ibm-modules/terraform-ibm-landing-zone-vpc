@@ -30,14 +30,14 @@ variable "tags" {
 
 variable "access_tags" {
   type        = list(string)
-  description = "A list of access tags to apply to the VPC resources created by the module, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial for more details"
+  description = "A list of access tags to apply to the VPC resources created by the module. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial."
   default     = []
 
   validation {
     condition = alltrue([
       for tag in var.access_tags : can(regex("[\\w\\-_\\.]+:[\\w\\-_\\.]+", tag)) && length(tag) <= 128
     ])
-    error_message = "Tags must match the regular expression \"[\\w\\-_\\.]+:[\\w\\-_\\.]+\", see https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#limits for more details"
+    error_message = "Tags must match the regular expression \"[\\w\\-_\\.]+:[\\w\\-_\\.]+\". For more information, see https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#limits."
   }
 }
 
