@@ -11,6 +11,7 @@ resource "ibm_is_vpc" "vpc" {
   default_security_group_name = var.default_security_group_name
   default_routing_table_name  = var.default_routing_table_name
   tags                        = var.tags
+  access_tags                 = var.access_tags
 }
 
 ##############################################################################
@@ -89,6 +90,7 @@ resource "ibm_is_public_gateway" "gateway" {
   resource_group = var.resource_group_id
   zone           = each.value
   tags           = var.tags
+  access_tags    = var.access_tags
 }
 
 ##############################################################################
@@ -123,6 +125,7 @@ resource "ibm_is_flow_log" "flow_logs" {
   storage_bucket = var.existing_storage_bucket_name
   resource_group = var.resource_group_id
   tags           = var.tags
+  access_tags    = var.access_tags
 }
 
 ##############################################################################
