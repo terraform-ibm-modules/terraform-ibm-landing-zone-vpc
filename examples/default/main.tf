@@ -48,6 +48,7 @@ module "slz_vpc" {
   name                                   = var.name
   prefix                                 = var.prefix
   tags                                   = var.resource_tags
+  access_tags                            = var.access_tags
   enable_vpc_flow_logs                   = var.enable_vpc_flow_logs
   create_authorization_policy_vpc_to_cos = var.create_authorization_policy_vpc_to_cos
   existing_cos_instance_guid             = ibm_resource_instance.cos_instance[0].guid

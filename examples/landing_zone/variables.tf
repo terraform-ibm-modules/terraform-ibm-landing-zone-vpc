@@ -28,6 +28,11 @@ variable "resource_tags" {
   default     = null
 }
 
+variable "access_tags" {
+  type        = list(string)
+  description = "Optional list of access tags to add to the VPC resources that are created"
+  default     = []
+}
 
 ##############################################################################
 # VPC flow logs variables

@@ -34,6 +34,12 @@ variable "resource_tags" {
   default     = null
 }
 
+variable "access_tags" {
+  type        = list(string)
+  description = "Optional list of access tags to add to the VPC resources that are created"
+  default     = []
+}
+
 variable "enable_vpc_flow_logs" {
   type        = bool
   description = "Enable VPC Flow Logs, it will create Flow logs collector if set to true"
