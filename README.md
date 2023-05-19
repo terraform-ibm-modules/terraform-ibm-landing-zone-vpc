@@ -23,8 +23,12 @@ In addition to this root module, this repository provides two submodules that ca
 
 ## Before you begin
 
-Some features of this module require additional software beyond the [Terraform CLI](https://www.terraform.io/).
-- Make sure that you have a recent version of the [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-getting-started)
+In addition to the [Terraform CLI](https://www.terraform.io/), some features of this module require additional software.
+
+If the `clean_default_security_group` or `clean_default_acl` input variables are set to `true`, you need the IBM Cloud CLI and VPC plug-in:
+
+- Install or update the [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-getting-started)
+- Install of update the [VPC infrastructure CLI plug-in](https://cloud.ibm.com/docs/cli?topic=cli-vpc-reference)
 
 ## Usage
 ```terraform
