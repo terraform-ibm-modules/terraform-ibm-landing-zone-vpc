@@ -14,16 +14,16 @@ module "resource_group" {
 #############################################################################
 
 module "cos_bucket" {
-  count                 = var.enable_vpc_flow_logs ? 1 : 0
-  source                = "git::https://github.com/terraform-ibm-modules/terraform-ibm-cos.git?ref=v6.3.1"
-  resource_group_id     = module.resource_group.resource_group_id
-  region                = var.region
-  cross_region_location = null
-  cos_instance_name     = "${var.prefix}-vpc-logs-cos"
-  cos_tags              = var.resource_tags
-  bucket_name           = "${var.prefix}-vpc-logs-cos-bucket"
-  encryption_enabled    = false
-  retention_enabled     = false
+  count                  = var.enable_vpc_flow_logs ? 1 : 0
+  source                 = "git::https://github.com/terraform-ibm-modules/terraform-ibm-cos.git?ref=v6.6.0"
+  resource_group_id      = module.resource_group.resource_group_id
+  region                 = var.region
+  cross_region_location  = null
+  cos_instance_name      = "${var.prefix}-vpc-logs-cos"
+  cos_tags               = var.resource_tags
+  bucket_name            = "${var.prefix}-vpc-logs-cos-bucket"
+  kms_encryption_enabled = false
+  retention_enabled      = false
 }
 
 #############################################################################
@@ -40,7 +40,7 @@ module "workload_vpc" {
   enable_vpc_flow_logs                   = var.enable_vpc_flow_logs
   create_authorization_policy_vpc_to_cos = var.create_authorization_policy_vpc_to_cos
   existing_cos_instance_guid             = module.cos_bucket[0].cos_instance_guid
-  existing_cos_bucket_name               = module.cos_bucket[0].bucket_name[0]
+  existing_cos_bucket_name               = module.cos_bucket[0].bucket_name
   clean_default_security_group           = true
   clean_default_acl                      = true
   ibmcloud_api_key                       = var.ibmcloud_api_key
