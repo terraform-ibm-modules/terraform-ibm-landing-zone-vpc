@@ -48,7 +48,7 @@ output "security_group_rules" {
 
 output "cluster_rules" {
   description = "Cluster creation ACL allow rules"
-  value       = local.cluster_rules
+  value       = local.rules
 }
 
 ##############################################################################
