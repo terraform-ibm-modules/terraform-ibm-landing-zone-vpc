@@ -250,7 +250,7 @@
     "network_cidrs": {
       "name": "network_cidrs",
       "type": "list(string)",
-      "description": "Network CIDR for the VPC. This is used to manage network ACL rules for cluster provisioning.",
+      "description": "List of Network CIDRs for the VPC. This is used to manage network ACL rules for cluster provisioning.",
       "default": [
         "10.0.0.0/8"
       ],
