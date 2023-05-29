@@ -49,17 +49,11 @@ locals {
 
   ibm_cloud_internal_rules = flatten([
     for rules in local.internal_rules : [
-      for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] : {
-        name        = "${rules.name}-${index}"
-        action      = "allow"
-        destination = rules.destination
-        source      = cidrs
-        direction   = rules.direction
-        tcp         = null
-        udp         = null
-        icmp        = null
-
-      }
+      for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] :
+      merge(rules, {
+        name   = "${rules.name}-${index}"
+        source = cidrs
+      })
     ]
   ])
 

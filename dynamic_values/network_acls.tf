@@ -73,17 +73,11 @@ locals {
 
   cluster_rules_list = flatten([
     for rules in local.cluster_rules : [
-      for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] : {
-        name        = "${rules.name}-${index}"
-        action      = "allow"
-        destination = "${rules.destination}"
-        source      = "${cidrs}"
-        direction   = "${rules.direction}"
-        tcp         = null
-        udp         = null
-        icmp        = null
-
-      }
+      for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] :
+      merge(rules, {
+        name   = "${rules.name}-${index}"
+        source = cidrs
+      })
     ]
   ])
 
@@ -146,21 +140,14 @@ locals {
 
   app_rules_list = flatten([
     for rules in local.app_rules : [
-      for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] : {
+      for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] :
+      merge(rules, {
         name        = "${rules.name}-${index}"
-        action      = "allow"
-        source      = "${cidrs}"
-        destination = "${cidrs}"
-        direction   = "${rules.direction}"
-        tcp         = "${rules.tcp}"
-        udp         = null
-        icmp        = null
-
-      }
+        source      = cidrs
+        destination = cidrs
+      })
     ]
   ])
-
-
 
   rules = concat(local.cluster_rules_list, local.app_rules_list)
 
