@@ -31,3 +31,8 @@ output "cidr_blocks" {
   value       = module.slz_vpc.cidr_blocks
   description = "CIDR values"
 }
+
+output "vpc_connectivity_rules" {
+  description = "VPC rules"
+  value       = module.slz_vpc.vpc_connectivity_rules
+}

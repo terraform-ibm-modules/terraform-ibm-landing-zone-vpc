@@ -484,6 +484,15 @@
         "line": 69
       }
     },
+    "vpc_connectivity_rules": {
+      "name": "vpc_connectivity_rules",
+      "description": "vpc connectivity rules",
+      "value": "local.vpc_connectivity_rules",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 142
+      }
+    },
     "vpc_crn": {
       "name": "vpc_crn",
       "description": "CRN of VPC created",

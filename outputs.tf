@@ -138,3 +138,8 @@ output "cidr_blocks" {
   description = "List of CIDR blocks present in VPC stack"
   value       = [for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes : address.cidr]
 }
+
+output "vpc_connectivity_rules" {
+  description = "vpc connectivity rules"
+  value       = local.vpc_connectivity_rules
+}
