@@ -144,7 +144,7 @@ output "vpc_connectivity_rules" {
   value       = local.vpc_connectivity_rules
 }
 
-output "address_prefixes" {
+output "data_address_prefixes" {
   description = "address prefix"
-  value       = local.address_prefixes
+  value       = data.ibm_is_vpc_address_prefixes.get_address_prefixes
 }

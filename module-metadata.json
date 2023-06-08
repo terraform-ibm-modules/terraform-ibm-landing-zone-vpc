@@ -428,21 +428,21 @@
     }
   },
   "outputs": {
-    "address_prefixes": {
-      "name": "address_prefixes",
-      "description": "address prefix",
-      "value": "local.address_prefixes",
-      "pos": {
-        "filename": "outputs.tf",
-        "line": 147
-      }
-    },
     "cidr_blocks": {
       "name": "cidr_blocks",
       "description": "List of CIDR blocks present in VPC stack",
       "pos": {
         "filename": "outputs.tf",
         "line": 137
+      }
+    },
+    "data_address_prefixes": {
+      "name": "data_address_prefixes",
+      "description": "address prefix",
+      "value": "data.ibm_is_vpc_address_prefixes.get_address_prefixes",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 147
       }
     },
     "network_acls": {
