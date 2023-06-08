@@ -155,6 +155,7 @@ To attach access management tags to resources in this module, you need the follo
 
 | Name | Description |
 |------|-------------|
+| <a name="output_address_prefixes"></a> [address\_prefixes](#output\_address\_prefixes) | address prefix |
 | <a name="output_cidr_blocks"></a> [cidr\_blocks](#output\_cidr\_blocks) | List of CIDR blocks present in VPC stack |
 | <a name="output_network_acls"></a> [network\_acls](#output\_network\_acls) | List of shortnames and IDs of network ACLs |
 | <a name="output_public_gateways"></a> [public\_gateways](#output\_public\_gateways) | Map of public gateways by zone |

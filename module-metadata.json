@@ -428,6 +428,15 @@
     }
   },
   "outputs": {
+    "address_prefixes": {
+      "name": "address_prefixes",
+      "description": "address prefix",
+      "value": "local.address_prefixes",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 147
+      }
+    },
     "cidr_blocks": {
       "name": "cidr_blocks",
       "description": "List of CIDR blocks present in VPC stack",

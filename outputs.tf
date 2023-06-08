@@ -143,3 +143,8 @@ output "vpc_connectivity_rules" {
   description = "vpc connectivity rules"
   value       = local.vpc_connectivity_rules
 }
+
+output "address_prefixes" {
+  description = "address prefix"
+  value       = local.address_prefixes
+}
