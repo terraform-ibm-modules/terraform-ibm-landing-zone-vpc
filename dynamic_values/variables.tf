@@ -109,7 +109,7 @@ variable "security_group_rules" {
 ##############################################################################
 
 variable "network_cidrs" {
-  description = "direct reference to network cidr"
+  description = "direct reference to network cidrs"
   type        = list(string)
 }
 
