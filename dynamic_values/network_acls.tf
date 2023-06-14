@@ -10,7 +10,7 @@ locals {
         [
           # These rules cannot be added in a conditional operator due to inconsistant typing
           # This will add all cluster_rules if the acl object contains prepend_ibm_rules as true
-          for rule in local.cluster_rules :
+          for rule in local.rules :
           rule if network_acl.prepend_ibm_rules == true
         ],
         network_acl.rules
@@ -33,7 +33,7 @@ locals {
       name        = "roks-create-worker-nodes-inbound"
       action      = "allow"
       source      = "161.26.0.0/16"
-      destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+      destination = "0.0.0.0/0"
       direction   = "inbound"
       tcp         = null
       udp         = null
@@ -43,7 +43,7 @@ locals {
       name        = "roks-create-worker-nodes-outbound"
       action      = "allow"
       destination = "161.26.0.0/16"
-      source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+      source      = "0.0.0.0/0"
       direction   = "outbound"
       tcp         = null
       udp         = null
@@ -53,7 +53,7 @@ locals {
       name        = "roks-nodes-to-service-inbound"
       action      = "allow"
       source      = "166.8.0.0/14"
-      destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+      destination = "0.0.0.0/0"
       direction   = "inbound"
       tcp         = null
       udp         = null
@@ -63,18 +63,31 @@ locals {
       name        = "roks-nodes-to-service-outbound"
       action      = "allow"
       destination = "166.8.0.0/14"
-      source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+      source      = "0.0.0.0/0"
       direction   = "outbound"
       tcp         = null
       udp         = null
       icmp        = null
-    },
-    # App Rules
+    }
+  ]
+
+  cluster_rules_list = flatten([
+    for rules in local.cluster_rules : [
+      for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] :
+      merge(rules, {
+        name   = "${rules.name}-${index}"
+        source = cidrs
+      })
+    ]
+  ])
+
+  # App Rules
+  app_rules = [
     {
       name        = "allow-app-incoming-traffic-requests"
       action      = "allow"
-      source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-      destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+      source      = "0.0.0.0/0"
+      destination = "0.0.0.0/0"
       direction   = "inbound"
       tcp = {
         source_port_min = 30000
@@ -86,8 +99,8 @@ locals {
     {
       name        = "allow-app-outgoing-traffic-requests"
       action      = "allow"
-      source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-      destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+      source      = "0.0.0.0/0"
+      destination = "0.0.0.0/0"
       direction   = "outbound"
       tcp = {
         port_min = 30000
@@ -99,8 +112,8 @@ locals {
     {
       name        = "allow-lb-incoming-traffic-requests"
       action      = "allow"
-      source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-      destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+      source      = "0.0.0.0/0"
+      destination = "0.0.0.0/0"
       direction   = "inbound"
       tcp = {
         port_min = 443
@@ -112,8 +125,8 @@ locals {
     {
       name        = "allow-lb-outgoing-traffic-requests"
       action      = "allow"
-      source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-      destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+      source      = "0.0.0.0/0"
+      destination = "0.0.0.0/0"
       direction   = "outbound"
       tcp = {
         source_port_min = 443
@@ -123,6 +136,21 @@ locals {
       icmp = null
     }
   ]
+
+
+  app_rules_list = flatten([
+    for rules in local.app_rules : [
+      for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] :
+      merge(rules, {
+        name        = "${rules.name}-${index}"
+        source      = cidrs
+        destination = cidrs
+      })
+    ]
+  ])
+
+  rules = concat(local.cluster_rules_list, local.app_rules_list)
+
 }
 
 ##############################################################################

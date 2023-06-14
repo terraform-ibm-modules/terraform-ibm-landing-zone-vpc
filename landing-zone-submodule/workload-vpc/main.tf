@@ -10,7 +10,7 @@ module "workload_vpc" {
   resource_group_id                      = var.resource_group_id
   region                                 = var.region
   prefix                                 = var.prefix
-  network_cidr                           = var.network_cidr
+  network_cidrs                          = var.network_cidrs
   classic_access                         = var.classic_access
   default_network_acl_name               = var.default_network_acl_name
   default_security_group_name            = var.default_security_group_name

@@ -10,7 +10,7 @@ module "dynamic_values" {
   routes               = var.routes
   use_public_gateways  = var.use_public_gateways
   security_group_rules = var.security_group_rules
-  network_cidr         = var.network_cidr
+  network_cidrs        = var.network_cidrs
   network_acls         = var.network_acls
   subnets              = var.subnets
   public_gateways      = ibm_is_public_gateway.gateway
@@ -54,7 +54,7 @@ module "unit_tests" {
       name = "test-rule"
     }
   ]
-  network_cidr = "1.2.3.4/5"
+  network_cidrs = ["1.2.3.4/5"]
   network_acls = [
     {
       name                         = "acl"
