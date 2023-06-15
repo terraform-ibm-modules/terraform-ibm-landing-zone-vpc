@@ -3,13 +3,13 @@
 ##############################################################################
 
 locals {
-  ibm_cloud_internal_rules = [
+  internal_rules = [
     # IaaS and PaaS Rules. Note that this coarse grained list will be narrowed in upcoming releases.
     {
       name        = "ibmflow-iaas-inbound"
       action      = "allow"
       source      = "161.26.0.0/16"
-      destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+      destination = "0.0.0.0/0"
       direction   = "inbound"
       tcp         = null
       udp         = null
@@ -19,7 +19,7 @@ locals {
       name        = "ibmflow-iaas-outbound"
       action      = "allow"
       destination = "161.26.0.0/16"
-      source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+      source      = "0.0.0.0/0"
       direction   = "outbound"
       tcp         = null
       udp         = null
@@ -29,7 +29,7 @@ locals {
       name        = "ibmflow-paas-inbound"
       action      = "allow"
       source      = "166.8.0.0/14"
-      destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+      destination = "0.0.0.0/0"
       direction   = "inbound"
       tcp         = null
       udp         = null
@@ -39,7 +39,7 @@ locals {
       name        = "ibmflow-paas-outbound"
       action      = "allow"
       destination = "166.8.0.0/14"
-      source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
+      source      = "0.0.0.0/0"
       direction   = "outbound"
       tcp         = null
       udp         = null
@@ -47,32 +47,47 @@ locals {
     }
   ]
 
-  vpc_inbound_rule = [
-    for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes :
-    {
-      name        = "ibmflow-allow-vpc-connectivity-inbound-${substr(address.id, -4, -1)}" # Providing unique rule names
-      action      = "allow"
-      source      = address.cidr
-      destination = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-      direction   = "inbound"
-      tcp         = null
-      udp         = null
-      icmp        = null
-    }
-  ]
-  vpc_outbound_rule = [
-    for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes :
-    {
-      name        = "ibmflow-allow-vpc-connectivity-outbound-${substr(address.id, -4, -1)}"
-      action      = "allow"
-      source      = var.network_cidr != null ? var.network_cidr : "0.0.0.0/0"
-      destination = address.cidr
-      direction   = "outbound"
-      tcp         = null
-      udp         = null
-      icmp        = null
-    }
-  ]
+  ibm_cloud_internal_rules = flatten([
+    for rules in local.internal_rules : [
+      for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] :
+      merge(rules, {
+        name   = "${rules.name}-${index}"
+        source = cidrs
+      })
+    ]
+  ])
+
+  vpc_inbound_rule = flatten([
+    for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes : [
+      for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] :
+      {
+        name        = "ibmflow-allow-vpc-connectivity-inbound-${substr(address.id, -4, -1)}-${index}" # Providing unique rule names
+        action      = "allow"
+        source      = address.cidr
+        destination = cidrs
+        direction   = "inbound"
+        tcp         = null
+        udp         = null
+        icmp        = null
+      }
+    ]
+  ])
+  vpc_outbound_rule = flatten([
+    for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes : [
+      for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] :
+
+      {
+        name        = "ibmflow-allow-vpc-connectivity-outbound-${substr(address.id, -4, -1)}-${index}"
+        action      = "allow"
+        source      = cidrs
+        destination = address.cidr
+        direction   = "outbound"
+        tcp         = null
+        udp         = null
+        icmp        = null
+      }
+    ]
+  ])
 
   vpc_connectivity_rules = distinct(flatten(concat(local.vpc_inbound_rule, local.vpc_outbound_rule)))
 

@@ -85,3 +85,9 @@ variable "address_prefixes" {
     condition     = var.address_prefixes == null ? true : (keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2" && keys(var.address_prefixes)[2] == "zone-3")
   }
 }
+
+variable "network_cidrs" {
+  description = "List of Network CIDRs for the VPC. This is used to manage network ACL rules for cluster provisioning."
+  type        = list(string)
+  default     = ["10.0.0.0/8", "164.0.0.0/8"]
+}
