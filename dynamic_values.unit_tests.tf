@@ -66,7 +66,7 @@ locals {
   # tflint-ignore: terraform_unused_declarations
   assert_cluster_rule_exists_in_position_0 = regex("roks-create-worker-nodes-inbound", module.unit_tests.acl_map["acl"].rules[0].name)
   # tflint-ignore: terraform_unused_declarations
-  assert_cluster_rule_uses_network_cidr = regex("1.2.3.4/5", module.unit_tests.acl_map["acl"].rules[0].destination)
+  assert_cluster_rule_uses_network_cidr = regex("0.0.0.0/0", module.unit_tests.acl_map["acl"].rules[0].destination)
   # tflint-ignore: terraform_unused_declarations
   assert_acl_rule_exists_in_last_position = regex("test-rule", module.unit_tests.acl_map["acl"].rules[length(module.unit_tests.acl_map["acl"].rules) - 1].name)
   # tflint-ignore: terraform_unused_declarations

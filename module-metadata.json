@@ -247,11 +247,13 @@
         "line": 105
       }
     },
-    "network_cidr": {
-      "name": "network_cidr",
-      "type": "string",
-      "description": "Network CIDR for the VPC. This is used to manage network ACL rules for cluster provisioning.",
-      "default": "10.0.0.0/8",
+    "network_cidrs": {
+      "name": "network_cidrs",
+      "type": "list(string)",
+      "description": "List of Network CIDRs for the VPC. This is used to manage network ACL rules for cluster provisioning.",
+      "default": [
+        "10.0.0.0/8"
+      ],
       "source": [
         "module.dynamic_values"
       ],
@@ -598,7 +600,7 @@
       },
       "pos": {
         "filename": "network_acls.tf",
-        "line": 137
+        "line": 152
       }
     },
     "ibm_is_public_gateway.gateway": {
@@ -777,7 +779,7 @@
       "attributes": {
         "address_prefixes": "address_prefixes",
         "network_acls": "network_acls",
-        "network_cidr": "network_cidr",
+        "network_cidrs": "network_cidrs",
         "prefix": "prefix",
         "region": "region",
         "routes": "routes",
@@ -809,7 +811,7 @@
         "cluster_rules": {
           "name": "cluster_rules",
           "description": "Cluster creation ACL allow rules",
-          "value": "local.cluster_rules",
+          "value": "local.rules",
           "pos": {
             "filename": "dynamic_values/outputs.tf",
             "line": 49
@@ -911,7 +913,7 @@
         "cluster_rules": {
           "name": "cluster_rules",
           "description": "Cluster creation ACL allow rules",
-          "value": "local.cluster_rules",
+          "value": "local.rules",
           "pos": {
             "filename": "dynamic_values/outputs.tf",
             "line": 49
