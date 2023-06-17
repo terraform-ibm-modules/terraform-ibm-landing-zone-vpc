@@ -15,7 +15,7 @@ module "resource_group" {
 
 module "cos_bucket" {
   count                  = var.enable_vpc_flow_logs ? 1 : 0
-  source                 = "git::https://github.com/terraform-ibm-modules/terraform-ibm-cos.git?ref=v6.6.1"
+  source                 = "git::https://github.com/terraform-ibm-modules/terraform-ibm-cos.git?ref=v6.6.2"
   resource_group_id      = module.resource_group.resource_group_id
   region                 = var.region
   cross_region_location  = null
@@ -64,7 +64,7 @@ module "management_vpc" {
 ##############################################################################
 
 module "tg_gateway_connection" {
-  source                    = "git::https://github.com/terraform-ibm-modules/terraform-ibm-transit-gateway.git?ref=v2.1.1"
+  source                    = "git::https://github.com/terraform-ibm-modules/terraform-ibm-transit-gateway.git?ref=v2.2.0"
   transit_gateway_name      = "${var.prefix}-tg"
   region                    = var.region
   global_routing            = false
