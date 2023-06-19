@@ -33,8 +33,8 @@ If the `clean_default_security_group` or `clean_default_acl` input variables are
 ## Usage
 ```terraform
 module vpc {
-  # Replace "main" with a GIT release version to lock into a specific release
-  source                      = "git::https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc.git?ref=main"
+  source  = "terraform-ibm-modules/landing-zone-vpc/ibm"
+  version = "latest" # Replace "latest" with a release version to lock into a specific release
   resource_group_id           = var.resource_group_id
   region                      = var.region
   prefix                      = var.prefix
