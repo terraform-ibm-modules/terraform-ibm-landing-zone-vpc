@@ -114,7 +114,7 @@ output "network_acls" {
 }
 
 output "akash-acl" {
-  value = ibm_is_network_acl.network_acl
+  value = ibm_is_network_acl_rule.example
   
 }
 
