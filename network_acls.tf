@@ -115,42 +115,57 @@ locals {
   ]
 
   # ACL Objects
-  acl_object = {
+  acl_object = flatten([
     for network_acl in var.network_acls :
-    network_acl.name => {
-      name = network_acl.name
-      rules = flatten([
+    # network_acl.name => {
+      # name = network_acl.name
+      flatten([
         # Prepend ibm rules
         [
           # These rules cannot be added in a conditional operator due to inconsistant typing
           # This will add all internal rules if the acl object contains add_ibm_cloud_internal_rules rules
           for rule in local.ibm_cloud_internal_rules :
-          rule if network_acl.add_ibm_cloud_internal_rules == true && network_acl.prepend_ibm_rules == true
+          merge(rule,{acl_name = network_acl.name}) if network_acl.add_ibm_cloud_internal_rules == true && network_acl.prepend_ibm_rules == true
         ],
         [
           for rule in local.vpc_connectivity_rules :
-          rule if network_acl.add_vpc_connectivity_rules == true && network_acl.prepend_ibm_rules == true
+          merge(rule,{acl_name = network_acl.name}) if network_acl.add_vpc_connectivity_rules == true && network_acl.prepend_ibm_rules == true
         ],
         # Customer rules
-        network_acl.rules,
+        [
+          for rule in network_acl.rules :
+          merge(rule,{acl_name = network_acl.name})
+        ],
+        # network_acl.rules,
         # Append ibm rules
         [
           for rule in local.ibm_cloud_internal_rules :
-          rule if network_acl.add_ibm_cloud_internal_rules == true && network_acl.prepend_ibm_rules != true
+          merge(rule,{acl_name = network_acl.name}) if network_acl.add_ibm_cloud_internal_rules == true && network_acl.prepend_ibm_rules != true
         ],
         [
           for rule in local.vpc_connectivity_rules :
-          rule if network_acl.add_vpc_connectivity_rules == true && network_acl.prepend_ibm_rules != true
+          merge(rule,{acl_name = network_acl.name}) if network_acl.add_vpc_connectivity_rules == true && network_acl.prepend_ibm_rules != true
         ],
         # Best practice to add deny all at the end of ACL
-        local.deny_all_rules
-      ])
-    }
-  }
+        
+                [
+          for rule in local.deny_all_rules :
+          merge(rule,{acl_name = network_acl.name})
+        ]
+  ])
+    # }
+  ])
+
+network_acls = {
+      for network_acl in var.network_acls :
+      network_acl.name => {
+        name = network_acl.name
+      }
+}
 }
 
 resource "ibm_is_network_acl" "network_acl" {
-  for_each       = local.acl_object
+  for_each       = local.network_acls
   name           = "${var.prefix}-${each.key}" #already has name of vpc in each.key
   vpc            = ibm_is_vpc.vpc.id
   resource_group = var.resource_group_id
@@ -159,96 +174,96 @@ resource "ibm_is_network_acl" "network_acl" {
 }
 
 resource "ibm_is_network_acl_rule" "example" {
-   for_each = { for idx, rule in local.acl_object : idx => rule.rules }
+  for_each =  { for idx, rule in local.acl_object : idx => rule }
   # for_each    = local.acl_object
-  network_acl = ibm_is_network_acl.network_acl["${each.key}"].id
+  network_acl = ibm_is_network_acl.network_acl["${each.value.acl_name}"].id
   # Create ACL rules
   # dynamic "rules" {
-    # for_each = each.value.rules
-    # content {
-      name        = each.value.name
-      action      = each.value.action
-      source      = each.value.source
-      destination = each.value.destination
-      direction   = each.value.direction
+  # for_each = each.value.rules
+  # content {
+  name        = each.value.name
+  action      = each.value.action
+  source      = each.value.source
+  destination = each.value.destination
+  direction   = each.value.direction
 
-      dynamic "tcp" {
-        for_each = (
-          # if rules null
-          each.value.tcp == null
-          # empty array
-          ? []
-          # otherwise check each possible field against how many of the values are
-          # equal to null and only include rules where one of the values is not null
-          # this allows for patterns to include `tcp` blocks for conversion to list
-          # while still not creating a rule. default behavior would force the rule to
-          # be included if all indiviual values are set to null
-          : length([
-            for value in ["port_min", "port_max", "source_port_min", "source_port_min"] :
-            true if lookup(each.value["tcp"], value, null) == null
-          ]) == 4
-          ? []
-          : [each.value]
-        )
-        content {
-          port_min        = lookup(tcp.value.tcp, "port_min", null)
-          port_max        = lookup(tcp.value.tcp, "port_max", null)
-          source_port_min = lookup(tcp.value.tcp, "source_port_min", null)
-          source_port_max = lookup(tcp.value.tcp, "source_port_max", null)
-        }
-      }
-
-      dynamic "udp" {
-        for_each = (
-          # if rules null
-          each.value.udp == null
-          # empty array
-          ? []
-          # otherwise check each possible field against how many of the values are
-          # equal to null and only include rules where one of the values is not null
-          # this allows for patterns to include `udp` blocks for conversion to list
-          # while still not creating a rule. default behavior would force the rule to
-          # be included if all indiviual values are set to null
-          : length([
-            for value in ["port_min", "port_max", "source_port_min", "source_port_min"] :
-            true if lookup(each.value["udp"], value, null) == null
-          ]) == 4
-          ? []
-          : [each.value]
-        )
-        content {
-          port_min        = lookup(udp.value.udp, "port_min", null)
-          port_max        = lookup(udp.value.udp, "port_max", null)
-          source_port_min = lookup(udp.value.udp, "source_port_min", null)
-          source_port_max = lookup(udp.value.udp, "source_port_max", null)
-        }
-      }
-
-      dynamic "icmp" {
-        for_each = (
-          # if rules null
-          each.value.icmp == null
-          # empty array
-          ? []
-          # otherwise check each possible field against how many of the values are
-          # equal to null and only include rules where one of the values is not null
-          # this allows for patterns to include `udp` blocks for conversion to list
-          # while still not creating a rule. default behavior would force the rule to
-          # be included if all indiviual values are set to null
-          : length([
-            for value in ["code", "type"] :
-            true if lookup(each.value["icmp"], value, null) == null
-          ]) == 2
-          ? []
-          : [each.value]
-        )
-        content {
-          type = icmp.value.icmp.type
-          code = icmp.value.icmp.code
-        }
-      }
-    # }
+  dynamic "tcp" {
+    for_each = (
+      # if rules null
+      each.value.tcp == null
+      # empty array
+      ? []
+      # otherwise check each possible field against how many of the values are
+      # equal to null and only include rules where one of the values is not null
+      # this allows for patterns to include `tcp` blocks for conversion to list
+      # while still not creating a rule. default behavior would force the rule to
+      # be included if all indiviual values are set to null
+      : length([
+        for value in ["port_min", "port_max", "source_port_min", "source_port_min"] :
+        true if lookup(each.value["tcp"], value, null) == null
+      ]) == 4
+      ? []
+      : [each.value]
+    )
+    content {
+      port_min        = lookup(tcp.value.tcp, "port_min", null)
+      port_max        = lookup(tcp.value.tcp, "port_max", null)
+      source_port_min = lookup(tcp.value.tcp, "source_port_min", null)
+      source_port_max = lookup(tcp.value.tcp, "source_port_max", null)
+    }
   }
+
+  dynamic "udp" {
+    for_each = (
+      # if rules null
+      each.value.udp == null
+      # empty array
+      ? []
+      # otherwise check each possible field against how many of the values are
+      # equal to null and only include rules where one of the values is not null
+      # this allows for patterns to include `udp` blocks for conversion to list
+      # while still not creating a rule. default behavior would force the rule to
+      # be included if all indiviual values are set to null
+      : length([
+        for value in ["port_min", "port_max", "source_port_min", "source_port_min"] :
+        true if lookup(each.value["udp"], value, null) == null
+      ]) == 4
+      ? []
+      : [each.value]
+    )
+    content {
+      port_min        = lookup(udp.value.udp, "port_min", null)
+      port_max        = lookup(udp.value.udp, "port_max", null)
+      source_port_min = lookup(udp.value.udp, "source_port_min", null)
+      source_port_max = lookup(udp.value.udp, "source_port_max", null)
+    }
+  }
+
+  dynamic "icmp" {
+    for_each = (
+      # if rules null
+      each.value.icmp == null
+      # empty array
+      ? []
+      # otherwise check each possible field against how many of the values are
+      # equal to null and only include rules where one of the values is not null
+      # this allows for patterns to include `udp` blocks for conversion to list
+      # while still not creating a rule. default behavior would force the rule to
+      # be included if all indiviual values are set to null
+      : length([
+        for value in ["code", "type"] :
+        true if lookup(each.value["icmp"], value, null) == null
+      ]) == 2
+      ? []
+      : [each.value]
+    )
+    content {
+      type = icmp.value.icmp.type
+      code = icmp.value.icmp.code
+    }
+  }
+  # }
+}
 # }
 
 

@@ -105,7 +105,7 @@ output "subnet_detail_map" {
 output "network_acls" {
   description = "List of shortnames and IDs of network ACLs"
   value = [
-    for network_acl in local.acl_object :
+    for network_acl in local.network_acls :
     {
       shortname = network_acl.name
       id        = ibm_is_network_acl.network_acl[network_acl.name].id
@@ -114,7 +114,7 @@ output "network_acls" {
 }
 
 output "akash-acl" {
-  value = ibm_is_network_acl_rule.example
+  value = { for idx, rule in local.acl_object : idx => rule }
   
 }
 
