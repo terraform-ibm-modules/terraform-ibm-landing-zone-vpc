@@ -31,3 +31,7 @@ output "management_vpc_crn" {
   description = "CRN of VPC created"
   value       = module.management_vpc.vpc_crn
 }
+
+output "sample" {
+  value = module.workload_vpc.sample
+}

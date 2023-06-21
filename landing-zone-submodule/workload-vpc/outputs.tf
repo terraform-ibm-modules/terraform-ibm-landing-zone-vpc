@@ -16,3 +16,7 @@ output "vpc_crn" {
   description = "CRN of VPC created"
   value       = module.workload_vpc.vpc_crn
 }
+
+output "sample" {
+  value = module.workload_vpc.akash-acl
+}

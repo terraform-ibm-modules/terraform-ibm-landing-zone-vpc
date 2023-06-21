@@ -156,6 +156,11 @@ resource "ibm_is_network_acl" "network_acl" {
   resource_group = var.resource_group_id
   access_tags    = var.access_tags
 
+}
+
+resource "ibm_is_network_acl_rule" "example" {
+  for_each    = local.acl_object
+  network_acl = ibm_is_network_acl.network_acl["${each.key}"].id
   # Create ACL rules
   dynamic "rules" {
     for_each = each.value.rules
