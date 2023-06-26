@@ -4,7 +4,7 @@ go 1.20
 
 require (
 	github.com/stretchr/testify v1.8.4
-	github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper v1.10.4
+	github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper v1.10.7
 )
 
 require (
@@ -13,8 +13,8 @@ require (
 	cloud.google.com/go/compute/metadata v0.2.3 // indirect
 	cloud.google.com/go/iam v1.1.0 // indirect
 	cloud.google.com/go/storage v1.30.1 // indirect
-	github.com/IBM-Cloud/bluemix-go v0.0.0-20230601050310-eecebfbff63e // indirect
-	github.com/IBM-Cloud/power-go-client v1.2.3 // indirect
+	github.com/IBM-Cloud/bluemix-go v0.0.0-20230616121711-b838ccdcd2fb // indirect
+	github.com/IBM-Cloud/power-go-client v1.2.4 // indirect
 	github.com/IBM/go-sdk-core/v5 v5.13.4 // indirect
 	github.com/IBM/platform-services-go-sdk v0.40.0 // indirect
 	github.com/IBM/vpc-go-sdk v1.0.2 // indirect
@@ -55,7 +55,7 @@ require (
 	github.com/google/uuid v1.3.0 // indirect
 	github.com/googleapis/enterprise-certificate-proxy v0.2.4 // indirect
 	github.com/googleapis/gax-go/v2 v2.10.0 // indirect
-	github.com/gruntwork-io/terratest v0.43.0 // indirect
+	github.com/gruntwork-io/terratest v0.43.4 // indirect
 	github.com/hashicorp/errwrap v1.1.0 // indirect
 	github.com/hashicorp/go-cleanhttp v0.5.2 // indirect
 	github.com/hashicorp/go-getter v1.7.1 // indirect
@@ -94,7 +94,7 @@ require (
 	go.opentelemetry.io/otel v1.16.0 // indirect
 	go.opentelemetry.io/otel/metric v1.16.0 // indirect
 	go.opentelemetry.io/otel/trace v1.16.0 // indirect
-	golang.org/x/crypto v0.9.0 // indirect
+	golang.org/x/crypto v0.10.0 // indirect
 	golang.org/x/mod v0.10.0 // indirect
 	golang.org/x/net v0.10.0 // indirect
 	golang.org/x/oauth2 v0.8.0 // indirect
