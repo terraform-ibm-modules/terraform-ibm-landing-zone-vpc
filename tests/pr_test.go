@@ -36,11 +36,6 @@ func setupOptions(t *testing.T, prefix string, terraformDir string) *testhelper.
 		TerraformDir:  terraformDir,
 		Prefix:        prefix,
 		ResourceGroup: resourceGroup,
-		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
-			List: []string{
-				"module.slz_vpc.ibm_is_network_acl.network_acl[\"vpc-acl\"]",
-			},
-		},
 		TerraformVars: map[string]interface{}{
 			"access_tags": permanentResources["accessTags"],
 		},
