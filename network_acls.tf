@@ -48,18 +48,28 @@ locals {
   ]
 
   ibm_cloud_internal_rules = flatten([
-    for rules in local.internal_rules : [
-      for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] :
-      merge(rules, {
-        name   = "${rules.name}-${index}"
-        source = cidrs
-      })
-    ]
+    for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] :
+    flatten([
+      [
+        for rule in local.internal_rules :
+        merge(rule, {
+          name   = "${rule.name}-${index}"
+          source = cidrs
+        }) if rule.direction == "outbound"
+      ],
+      [
+        for rule in local.internal_rules :
+        merge(rule, {
+          name        = "${rule.name}-${index}"
+          destination = cidrs
+        }) if rule.direction == "inbound"
+      ]
+    ])
   ])
 
   vpc_inbound_rule = flatten([
-    for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes : [
-      for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] :
+    for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] : [
+      for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes :
       {
         name        = "ibmflow-allow-vpc-connectivity-inbound-${substr(address.id, -4, -1)}-${index}" # Providing unique rule names
         action      = "allow"
