@@ -61,6 +61,7 @@ output "subnet_detail_list" {
       subnet.name => {
         id   = subnet.id
         cidr = subnet.ipv4_cidr_block
+        crn  = subnet.crn
       } if subnet.zone == zone_name
     }
   }
@@ -74,6 +75,7 @@ output "subnet_zone_list" {
       id   = subnet.id
       zone = subnet.zone
       cidr = subnet.ipv4_cidr_block
+      crn  = subnet.crn
     }
   ]
 }
@@ -91,6 +93,7 @@ output "subnet_detail_map" {
         id         = subnet.id
         zone       = subnet.zone
         cidr_block = subnet.ipv4_cidr_block
+        crn        = subnet.crn
       } if subnet.zone == zone_name
     ]
   }
