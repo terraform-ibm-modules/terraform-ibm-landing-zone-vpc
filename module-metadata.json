@@ -435,7 +435,7 @@
       "description": "List of CIDR blocks present in VPC stack",
       "pos": {
         "filename": "outputs.tf",
-        "line": 137
+        "line": 140
       }
     },
     "network_acls": {
@@ -443,7 +443,7 @@
       "description": "List of shortnames and IDs of network ACLs",
       "pos": {
         "filename": "outputs.tf",
-        "line": 105
+        "line": 108
       }
     },
     "public_gateways": {
@@ -467,7 +467,7 @@
       "description": "A map of subnets containing IDs, CIDR blocks, and zones",
       "pos": {
         "filename": "outputs.tf",
-        "line": 81
+        "line": 83
       }
     },
     "subnet_ids": {
@@ -483,7 +483,7 @@
       "description": "A list containing subnet IDs and subnet zones",
       "pos": {
         "filename": "outputs.tf",
-        "line": 69
+        "line": 70
       }
     },
     "vpc_crn": {
@@ -502,7 +502,7 @@
       "description": "Details of VPC flow logs collector",
       "pos": {
         "filename": "outputs.tf",
-        "line": 122
+        "line": 125
       }
     },
     "vpc_id": {
