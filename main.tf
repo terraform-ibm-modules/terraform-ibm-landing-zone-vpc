@@ -110,6 +110,7 @@ resource "ibm_iam_authorization_policy" "policy" {
 
   source_service_name         = "is"
   source_resource_type        = "flow-log-collector"
+  source_resource_group_id    = var.resource_group_id
   target_service_name         = "cloud-object-storage"
   target_resource_instance_id = var.existing_cos_instance_guid
   roles                       = ["Writer"]
@@ -119,6 +120,7 @@ resource "ibm_iam_authorization_policy" "policy" {
 resource "ibm_is_flow_log" "flow_logs" {
   count = (var.enable_vpc_flow_logs) ? 1 : 0
 
+  depends_on     = [ibm_iam_authorization_policy.policy]
   name           = "${var.prefix}-${var.name}-logs"
   target         = ibm_is_vpc.vpc.id
   active         = var.is_flow_log_collector_active
