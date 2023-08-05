@@ -7,23 +7,23 @@ You can use this submodule when you need more modularity to create your topology
 See the [Landing Zone example](../../examples/landing_zone/) for runnable code.
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
-## Requirements
+### Requirements
 
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
 
-## Modules
+### Modules
 
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_management_vpc"></a> [management\_vpc](#module\_management\_vpc) | ../../ | n/a |
 
-## Resources
+### Resources
 
 No resources.
 
-## Inputs
+### Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
@@ -51,7 +51,7 @@ No resources.
 | <a name="input_tags"></a> [tags](#input\_tags) | List of tags to apply to resources created by this module. | `list(string)` | `[]` | no |
 | <a name="input_use_public_gateways"></a> [use\_public\_gateways](#input\_use\_public\_gateways) | For each `zone` that is set to `true`, a public gateway will be created in that zone | <pre>object({<br>    zone-1 = optional(bool)<br>    zone-2 = optional(bool)<br>    zone-3 = optional(bool)<br>  })</pre> | <pre>{<br>  "zone-1": false,<br>  "zone-2": false,<br>  "zone-3": false<br>}</pre> | no |
 
-## Outputs
+### Outputs
 
 | Name | Description |
 |------|-------------|
