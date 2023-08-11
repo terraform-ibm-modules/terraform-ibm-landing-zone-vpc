@@ -546,6 +546,12 @@
       "version_constraints": [
         "\u003e= 3.2.1"
       ]
+    },
+    "time": {
+      "source": "hashicorp/time",
+      "version_constraints": [
+        "\u003e= 0.9.1"
+      ]
     }
   },
   "managed_resources": {
@@ -562,7 +568,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 108
+        "line": 114
       }
     },
     "ibm_is_flow_log.flow_logs": {
@@ -583,7 +589,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 119
+        "line": 125
       }
     },
     "ibm_is_network_acl.network_acl": {
@@ -618,7 +624,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 86
+        "line": 92
       }
     },
     "ibm_is_security_group_rule.default_vpc_rule": {
@@ -709,7 +715,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 51
+        "line": 57
       }
     },
     "ibm_is_vpc_routing_table_route.routing_table_routes": {
@@ -724,7 +730,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 60
+        "line": 66
       }
     },
     "null_resource.clean_default_acl": {
@@ -739,7 +745,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 153
+        "line": 159
       }
     },
     "null_resource.clean_default_security_group": {
@@ -754,7 +760,19 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 137
+        "line": 143
+      }
+    },
+    "time_sleep.wait_for_authorization_policy": {
+      "mode": "managed",
+      "type": "time_sleep",
+      "name": "wait_for_authorization_policy",
+      "provider": {
+        "name": "time"
+      },
+      "pos": {
+        "filename": "main.tf",
+        "line": 47
       }
     }
   },
