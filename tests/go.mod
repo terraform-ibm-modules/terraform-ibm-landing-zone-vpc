@@ -18,6 +18,7 @@ require (
 	github.com/IBM-Cloud/power-go-client v1.3.0 // indirect
 	github.com/IBM/go-sdk-core/v5 v5.13.4 // indirect
 	github.com/IBM/platform-services-go-sdk v0.44.0 // indirect
+	github.com/IBM/schematics-go-sdk v0.2.1 // indirect
 	github.com/IBM/vpc-go-sdk v1.0.2 // indirect
 	github.com/Microsoft/go-winio v0.6.1 // indirect
 	github.com/ProtonMail/go-crypto v0.0.0-20230717121422-5aa5874ade95 // indirect
