@@ -21,9 +21,9 @@ module "cos_bucket" {
   resource_group_id      = module.resource_group.resource_group_id
   region                 = var.region
   cross_region_location  = null
-  cos_instance_name      = "${var.prefix}-vpc-logs-cos"
+  cos_instance_name      = var.prefix != null ? "${var.prefix}-vpc-logs-cos" : "vpc-logs-cos"
   cos_tags               = var.resource_tags
-  bucket_name            = "${var.prefix}-vpc-logs-cos-bucket"
+  bucket_name            = var.prefix != null ? "${var.prefix}-vpc-logs-cos-bucket" : "vpc-logs-cos-bucket"
   kms_encryption_enabled = false
   retention_enabled      = false
 }
@@ -68,7 +68,7 @@ module "management_vpc" {
 module "tg_gateway_connection" {
   source                    = "terraform-ibm-modules/transit-gateway/ibm"
   version                   = "2.1.1"
-  transit_gateway_name      = "${var.prefix}-tg"
+  transit_gateway_name      = var.prefix != null ? "${var.prefix}-tg" : "tg"
   region                    = var.region
   global_routing            = false
   resource_tags             = var.resource_tags

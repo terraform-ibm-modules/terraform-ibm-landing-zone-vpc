@@ -56,7 +56,7 @@ resource "time_sleep" "wait_for_authorization_policy" {
 
 resource "ibm_is_vpc_routing_table" "route_table" {
   for_each                      = module.dynamic_values.routing_table_map
-  name                          = "${var.prefix}-${var.name}-route-${each.value.name}"
+  name                          = var.prefix != null ? "${var.prefix}-${var.name}-route-${each.value.name}" : "${var.name}-route-${each.value.name}"
   vpc                           = ibm_is_vpc.vpc.id
   route_direct_link_ingress     = each.value.route_direct_link_ingress
   route_transit_gateway_ingress = each.value.route_transit_gateway_ingress
@@ -91,7 +91,7 @@ locals {
 
 resource "ibm_is_public_gateway" "gateway" {
   for_each       = local.gateway_object
-  name           = "${var.prefix}-${var.name}-public-gateway-${each.key}"
+  name           = var.prefix != null ? "${var.prefix}-${var.name}-public-gateway-${each.key}" : "${var.name}-public-gateway-${each.key}"
   vpc            = ibm_is_vpc.vpc.id
   resource_group = var.resource_group_id
   zone           = each.value
@@ -125,7 +125,7 @@ resource "ibm_iam_authorization_policy" "policy" {
 resource "ibm_is_flow_log" "flow_logs" {
   count = (var.enable_vpc_flow_logs) ? 1 : 0
 
-  name           = "${var.prefix}-${var.name}-logs"
+  name           = var.prefix != null ? "${var.prefix}-${var.name}-logs" : "${var.name}-logs"
   target         = ibm_is_vpc.vpc.id
   active         = var.is_flow_log_collector_active
   storage_bucket = var.existing_storage_bucket_name
