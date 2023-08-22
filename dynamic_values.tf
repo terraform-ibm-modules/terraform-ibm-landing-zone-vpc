@@ -4,7 +4,7 @@
 
 module "dynamic_values" {
   source               = "./dynamic_values"
-  prefix               = var.prefix != null ? var.prefix - var.name : var.name
+  prefix               = "${var.prefix}-${var.name}"
   region               = var.region
   address_prefixes     = var.address_prefixes
   routes               = var.routes
@@ -15,7 +15,6 @@ module "dynamic_values" {
   subnets              = var.subnets
   public_gateways      = ibm_is_public_gateway.gateway
 }
-
 ##############################################################################
 
 
