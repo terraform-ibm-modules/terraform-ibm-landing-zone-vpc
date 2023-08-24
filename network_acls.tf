@@ -161,7 +161,7 @@ locals {
 
 resource "ibm_is_network_acl" "network_acl" {
   for_each       = local.acl_object
-  name           = var.prefix != null ? "${var.prefix}-${each.key}" : "${each.key}" #already has name of vpc in each.key
+  name           = var.prefix != null ? "${var.prefix}-${each.key}-acl" : "${each.key}-acl" #already has name of vpc in each.key
   vpc            = ibm_is_vpc.vpc.id
   resource_group = var.resource_group_id
   access_tags    = var.access_tags
