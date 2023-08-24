@@ -17,7 +17,7 @@ locals {
       for address in var.address_prefixes[zone] :
       # Return object containing name, zone, and CIDR
       {
-        name = "${var.prefix}-${zone}-${index(var.address_prefixes[zone], address) + 1}"
+        name = var.prefix != null ? "${var.prefix}-${zone}-${index(var.address_prefixes[zone], address) + 1}" : "{${zone}-${index(var.address_prefixes[zone], address) + 1}"
         cidr = address
         zone = "${var.region}-${index(keys(var.address_prefixes), zone) + 1}"
       }
