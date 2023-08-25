@@ -36,7 +36,7 @@ module "workload_vpc" {
   source                                 = "../../landing-zone-submodule/workload-vpc/"
   resource_group_id                      = module.resource_group.resource_group_id
   region                                 = var.region
-  prefix                                 = null
+  prefix                                 = var.prefix
   tags                                   = var.resource_tags
   access_tags                            = var.access_tags
   enable_vpc_flow_logs                   = var.enable_vpc_flow_logs
@@ -53,7 +53,7 @@ module "management_vpc" {
   source                       = "../../landing-zone-submodule/management-vpc/"
   resource_group_id            = module.resource_group.resource_group_id
   region                       = var.region
-  prefix                       = null
+  prefix                       = var.prefix
   tags                         = var.resource_tags
   clean_default_security_group = true
   clean_default_acl            = true
