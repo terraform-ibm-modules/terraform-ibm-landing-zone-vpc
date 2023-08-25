@@ -18,7 +18,7 @@ variable "region" {
 }
 
 variable "prefix" {
-  description = "The prefix that you would like to append to your resources"
+  description = "The prefix that you would like to append to your resources. Explicitly set to null if you do not wish to use a prefix."
   type        = string
 }
 

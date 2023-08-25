@@ -265,7 +265,7 @@
     "prefix": {
       "name": "prefix",
       "type": "string",
-      "description": "The prefix that you would like to append to your resources",
+      "description": "The prefix that you would like to append to your resources. Explicitly set to null if you do not wish to use a prefix.",
       "required": true,
       "source": [
         "ibm_is_flow_log.flow_logs.name",
