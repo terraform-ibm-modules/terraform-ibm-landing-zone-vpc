@@ -1,10 +1,14 @@
 package test
 
 import (
+	"fmt"
 	"log"
 	"os"
+	"strings"
 	"testing"
 
+	"github.com/gruntwork-io/terratest/modules/random"
+	"github.com/gruntwork-io/terratest/modules/terraform"
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
@@ -52,6 +56,30 @@ func TestRunBasicExample(t *testing.T) {
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
+}
+
+func TestRunNull(t *testing.T) {
+	t.Parallel()
+
+	var testName string = strings.ToLower(random.UniqueId())
+	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
+		Testing:      t,
+		TerraformDir: "examples/no-prefix",
+		Prefix:       "test-no-prefix-lz-vpc",
+		TerraformVars: map[string]interface{}{
+			"name": testName,
+		},
+	})
+	options.SkipTestTearDown = true
+	output, err := options.RunTestConsistency()
+	assert.Nil(t, err, "This should not have errored")
+	assert.NotNil(t, output, "Expected some output")
+
+	// check if name is the same
+	outputs := terraform.OutputAll(options.Testing, options.TerraformOptions)
+	fmt.Print("kiki test: test name-", testName, " output name-", outputs["vpc_name"], "\n")
+	assert.Equal(t, testName, outputs["vpc_name"], "VPC name was altered, and should not have been.")
+	options.TestTearDown()
 }
 
 func TestRunLandingZoneExample(t *testing.T) {
