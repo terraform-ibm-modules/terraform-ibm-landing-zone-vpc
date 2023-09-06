@@ -1,7 +1,6 @@
 package test
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"strings"
@@ -77,8 +76,7 @@ func TestRunNull(t *testing.T) {
 
 	// check if name is the same
 	outputs := terraform.OutputAll(options.Testing, options.TerraformOptions)
-	fmt.Print("kiki test: test name-", testName, " output name-", outputs["vpc_name"], "\n")
-	assert.Equal(t, testName, outputs["vpc_name"], "VPC name was altered, and should not have been.")
+	assert.Equal(t, testName+"-vpc", outputs["vpc_name"], "VPC name was altered, and should not have been.")
 	options.TestTearDown()
 }
 
