@@ -60,7 +60,7 @@
     "clean_default_acl": {
       "name": "clean_default_acl",
       "type": "bool",
-      "description": "Remove all rules from the default VPC ACL (less permissive)",
+      "description": "DEPRECATED: if you wish to remove all rules from default VPC ACL and VPC Security Group, you can use the `clean_default_sg_acl` setting.",
       "default": false,
       "pos": {
         "filename": "variables.tf",
@@ -70,7 +70,7 @@
     "clean_default_security_group": {
       "name": "clean_default_security_group",
       "type": "bool",
-      "description": "Remove all rules from the default VPC security group (less permissive)",
+      "description": "DEPRECATED: if you wish to remove all rules from default VPC Security Groups and VPC ACL, you can use the `clean_default_sg_acl` setting.",
       "default": false,
       "pos": {
         "filename": "variables.tf",
@@ -97,7 +97,7 @@
       "default": false,
       "pos": {
         "filename": "variables.tf",
-        "line": 464
+        "line": 457
       }
     },
     "default_network_acl_name": {
@@ -159,7 +159,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 458
+        "line": 451
       }
     },
     "existing_cos_instance_guid": {
@@ -171,7 +171,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 470
+        "line": 463
       },
       "immutable": true,
       "computed": true
@@ -186,19 +186,9 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 476
+        "line": 469
       },
       "immutable": true
-    },
-    "ibmcloud_api_key": {
-      "name": "ibmcloud_api_key",
-      "type": "string",
-      "description": "IBM Cloud API Key that will be used for authentication in scripts run in this module. Only required if certain options are chosen, such as the 'clean_default_*' variables being 'true'.",
-      "sensitive": true,
-      "pos": {
-        "filename": "variables.tf",
-        "line": 416
-      }
     },
     "ibmcloud_api_visibility": {
       "name": "ibmcloud_api_visibility",
@@ -220,7 +210,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 482
+        "line": 475
       }
     },
     "name": {
@@ -336,7 +326,7 @@
       ],
       "pos": {
         "filename": "variables.tf",
-        "line": 430
+        "line": 423
       }
     },
     "security_group_rules": {

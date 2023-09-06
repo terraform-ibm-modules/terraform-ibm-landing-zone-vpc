@@ -383,7 +383,7 @@ variable "clean_default_sg_acl" {
 }
 
 variable "clean_default_security_group" {
-  description = "Remove all rules from the default VPC security group (less permissive)"
+  description = "DEPRECATED: if you wish to remove all rules from default VPC Security Groups and VPC ACL, you can use the `clean_default_sg_acl` setting."
   type        = bool
   default     = false
   validation {
@@ -393,7 +393,7 @@ variable "clean_default_security_group" {
 }
 
 variable "clean_default_acl" {
-  description = "Remove all rules from the default VPC ACL (less permissive)"
+  description = "DEPRECATED: if you wish to remove all rules from default VPC ACL and VPC Security Group, you can use the `clean_default_sg_acl` setting."
   type        = bool
   default     = false
   validation {
@@ -411,13 +411,6 @@ variable "ibmcloud_api_visibility" {
     error_message = "IBM Cloud API visibility must be either 'public', 'private', or 'public-and-private'"
     condition     = (var.ibmcloud_api_visibility == "public") || (var.ibmcloud_api_visibility == "private") || (var.ibmcloud_api_visibility == "public-and-private")
   }
-}
-
-variable "ibmcloud_api_key" {
-  description = "IBM Cloud API Key that will be used for authentication in scripts run in this module. Only required if certain options are chosen, such as the 'clean_default_*' variables being 'true'."
-  type        = string
-  sensitive   = true
-  default     = null
 }
 
 ##############################################################################
