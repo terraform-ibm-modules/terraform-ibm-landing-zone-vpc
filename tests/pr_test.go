@@ -57,7 +57,7 @@ func TestRunBasicExample(t *testing.T) {
 	assert.NotNil(t, output, "Expected some output")
 }
 
-func TestRunNull(t *testing.T) {
+func TestRunNoPrefixExample(t *testing.T) {
 	t.Parallel()
 
 	var testName string = strings.ToLower(random.UniqueId())
