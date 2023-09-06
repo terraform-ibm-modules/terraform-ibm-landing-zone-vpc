@@ -376,16 +376,30 @@ variable "security_group_rules" {
   }
 }
 
+variable "clean_default_sg_acl" {
+  description = "Remove all rules from the default VPC security group and VPC ACL (less permissive)"
+  type        = bool
+  default     = false
+}
+
 variable "clean_default_security_group" {
   description = "Remove all rules from the default VPC security group (less permissive)"
   type        = bool
   default     = false
+  validation {
+    error_message = "DEPRECATED: if you wish to remove all rules from default VPC Security Groups and VPC ACL, you can use the `clean_default_sg_acl` setting."
+    condition     = var.clean_default_security_group == false
+  }
 }
 
 variable "clean_default_acl" {
   description = "Remove all rules from the default VPC ACL (less permissive)"
   type        = bool
   default     = false
+  validation {
+    error_message = "DEPRECATED: if you wish to remove all rules from default VPC ACL and VPC Security Group, you can use the `clean_default_sg_acl` setting."
+    condition     = var.clean_default_acl == false
+  }
 }
 
 variable "ibmcloud_api_visibility" {
