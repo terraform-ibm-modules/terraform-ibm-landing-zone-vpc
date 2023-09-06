@@ -24,12 +24,12 @@ output "vpc_flow_logs_collector" {
 }
 
 output "cos_instance_crn" {
-  value       = ibm_resource_instance.cos_instance[0].crn
+  value       = ibm_resource_instance.cos_instance.crn
   description = "COS instance crn"
 }
 
 output "cos_bucket_name" {
-  value       = ibm_cos_bucket.cos_bucket[0].bucket_name
+  value       = ibm_cos_bucket.cos_bucket.bucket_name
   description = "COS bucket name"
 }
 
