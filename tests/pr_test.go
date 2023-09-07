@@ -60,7 +60,7 @@ func TestRunBasicExample(t *testing.T) {
 func TestRunNoPrefixExample(t *testing.T) {
 	t.Parallel()
 
-	var testName string = strings.ToLower(random.UniqueId())
+	var testName string = "vpc-" + strings.ToLower(random.UniqueId())
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
 		Testing:      t,
 		TerraformDir: "examples/no-prefix",
