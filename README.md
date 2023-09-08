@@ -82,6 +82,7 @@ To attach access management tags to resources in this module, you need the follo
 
 - [ Default Example](examples/default)
 - [ Landing Zone example](examples/landing_zone)
+- [ No Prefix Example](examples/no-prefix)
 <!-- END EXAMPLES HOOK -->
 ---
 
