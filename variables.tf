@@ -319,12 +319,8 @@ variable "subnets" {
 ##############################################################################
 
 variable "security_group_rules" {
-  description = "A list of security group rules to be added to the default vpc security group"
-  default = [{
-    name      = "default-sgr"
-    direction = "inbound"
-    remote    = "10.0.0.0/8"
-  }]
+  description = "A list of security group rules to be added to the default vpc security group (default empty)"
+  default     = []
   type = list(
     object({
       name      = string
@@ -380,26 +376,6 @@ variable "clean_default_sg_acl" {
   description = "Remove all rules from the default VPC security group and VPC ACL (less permissive)"
   type        = bool
   default     = false
-}
-
-variable "clean_default_security_group" {
-  description = "DEPRECATED: if you wish to remove all rules from default VPC Security Groups and VPC ACL, you can use the `clean_default_sg_acl` setting."
-  type        = bool
-  default     = false
-  validation {
-    error_message = "DEPRECATED: if you wish to remove all rules from default VPC Security Groups and VPC ACL, you can use the `clean_default_sg_acl` setting."
-    condition     = var.clean_default_security_group == false
-  }
-}
-
-variable "clean_default_acl" {
-  description = "DEPRECATED: if you wish to remove all rules from default VPC ACL and VPC Security Group, you can use the `clean_default_sg_acl` setting."
-  type        = bool
-  default     = false
-  validation {
-    error_message = "DEPRECATED: if you wish to remove all rules from default VPC ACL and VPC Security Group, you can use the `clean_default_sg_acl` setting."
-    condition     = var.clean_default_acl == false
-  }
 }
 
 variable "ibmcloud_api_visibility" {

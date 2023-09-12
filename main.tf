@@ -1,4 +1,13 @@
 ##############################################################################
+# terraform-ibm-landing-zone-vpc
+##############################################################################
+locals {
+  # input variable validation
+  # tflint-ignore: terraform_unused_declarations
+  validate_default_secgroup_rules = var.clean_default_sg_acl && (var.security_group_rules != null && length(var.security_group_rules) > 0) ? tobool("var.clean_default_sg_acl is true and var.security_group_rules are not empty, which are in direct conflict of each other. If you would like the default VPC Security Group to be empty, you must remove default rules from var.security_group_rules.") : true
+}
+
+##############################################################################
 # Create new VPC
 ##############################################################################
 
