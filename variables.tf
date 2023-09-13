@@ -319,12 +319,8 @@ variable "subnets" {
 ##############################################################################
 
 variable "security_group_rules" {
-  description = "A list of security group rules to be added to the default vpc security group"
-  default = [{
-    name      = "default-sgr"
-    direction = "inbound"
-    remote    = "10.0.0.0/8"
-  }]
+  description = "A list of security group rules to be added to the default vpc security group (default empty)"
+  default     = []
   type = list(
     object({
       name      = string
@@ -376,14 +372,8 @@ variable "security_group_rules" {
   }
 }
 
-variable "clean_default_security_group" {
-  description = "Remove all rules from the default VPC security group (less permissive)"
-  type        = bool
-  default     = false
-}
-
-variable "clean_default_acl" {
-  description = "Remove all rules from the default VPC ACL (less permissive)"
+variable "clean_default_sg_acl" {
+  description = "Remove all rules from the default VPC security group and VPC ACL (less permissive)"
   type        = bool
   default     = false
 }
@@ -397,13 +387,6 @@ variable "ibmcloud_api_visibility" {
     error_message = "IBM Cloud API visibility must be either 'public', 'private', or 'public-and-private'"
     condition     = (var.ibmcloud_api_visibility == "public") || (var.ibmcloud_api_visibility == "private") || (var.ibmcloud_api_visibility == "public-and-private")
   }
-}
-
-variable "ibmcloud_api_key" {
-  description = "IBM Cloud API Key that will be used for authentication in scripts run in this module. Only required if certain options are chosen, such as the 'clean_default_*' variables being 'true'."
-  type        = string
-  sensitive   = true
-  default     = null
 }
 
 ##############################################################################

@@ -1,4 +1,13 @@
 ##############################################################################
+# terraform-ibm-landing-zone-vpc
+##############################################################################
+locals {
+  # input variable validation
+  # tflint-ignore: terraform_unused_declarations
+  validate_default_secgroup_rules = var.clean_default_sg_acl && (var.security_group_rules != null && length(var.security_group_rules) > 0) ? tobool("var.clean_default_sg_acl is true and var.security_group_rules are not empty, which are in direct conflict of each other. If you would like the default VPC Security Group to be empty, you must remove default rules from var.security_group_rules.") : true
+}
+
+##############################################################################
 # Create new VPC
 ##############################################################################
 
@@ -12,6 +21,7 @@ resource "ibm_is_vpc" "vpc" {
   default_routing_table_name  = var.default_routing_table_name
   tags                        = var.tags
   access_tags                 = var.access_tags
+  no_sg_acl_rules             = var.clean_default_sg_acl
 }
 
 ##############################################################################
@@ -135,39 +145,3 @@ resource "ibm_is_flow_log" "flow_logs" {
 }
 
 ##############################################################################
-
-##############################################################################
-# Clean default network objects if required
-##############################################################################
-
-resource "null_resource" "clean_default_security_group" {
-  count = (var.clean_default_security_group) ? 1 : 0
-  # only clean if default security group changes
-  triggers = {
-    security_group_id = ibm_is_vpc.vpc.default_security_group
-  }
-
-  provisioner "local-exec" {
-    command     = "${path.module}/scripts/fix_security_group.sh -s '${ibm_is_vpc.vpc.default_security_group}' -r '${var.region}' -g '${var.resource_group_id}' -v '${var.ibmcloud_api_visibility}'"
-    interpreter = ["bash", "-c"]
-    environment = {
-      IBMCLOUD_API_KEY = var.ibmcloud_api_key
-    }
-  }
-}
-
-resource "null_resource" "clean_default_acl" {
-  count = (var.clean_default_acl) ? 1 : 0
-  # only clean if default acl changes
-  triggers = {
-    acl_id = ibm_is_vpc.vpc.default_network_acl
-  }
-
-  provisioner "local-exec" {
-    command     = "${path.module}/scripts/fix_access_control_list.sh -a '${ibm_is_vpc.vpc.default_network_acl}' -r '${var.region}' -g '${var.resource_group_id}' -v '${var.ibmcloud_api_visibility}'"
-    interpreter = ["bash", "-c"]
-    environment = {
-      IBMCLOUD_API_KEY = var.ibmcloud_api_key
-    }
-  }
-}
