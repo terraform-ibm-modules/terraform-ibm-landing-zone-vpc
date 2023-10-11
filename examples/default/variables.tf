@@ -16,6 +16,11 @@ variable "prefix" {
   default     = "test-landing-zone"
 }
 
+variable "is_vpc_existing" {
+  description = "Indicates whether user wants to use an existing vpc or create a new one."
+  type        = bool
+}
+
 variable "name" {
   description = "The name of the vpc"
   type        = string

@@ -43,6 +43,7 @@ module "slz_vpc" {
   source                                 = "../../"
   resource_group_id                      = var.resource_group != null ? data.ibm_resource_group.existing_resource_group[0].id : ibm_resource_group.resource_group[0].id
   region                                 = var.region
+  is_vpc_existing                        = var.is_vpc_existing
   name                                   = var.name
   prefix                                 = var.prefix
   tags                                   = var.resource_tags

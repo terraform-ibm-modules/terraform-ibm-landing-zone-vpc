@@ -3,8 +3,13 @@
 ##############################################################################
 
 variable "name" {
-  description = "Name for VPC"
+  description = "Name for VPC. If the vpc is existing please enter the full vpc name."
   type        = string
+}
+
+variable "is_vpc_existing" {
+  description = "Indicates whether user wants to use an existing vpc or create a new one."
+  type        = bool
 }
 
 variable "resource_group_id" {

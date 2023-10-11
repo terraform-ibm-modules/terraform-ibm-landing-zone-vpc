@@ -12,6 +12,7 @@ locals {
 ##############################################################################
 
 resource "ibm_is_vpc" "vpc" {
+  count                       = var.is_vpc_existing == false ? 1 : 0
   name                        = var.prefix != null ? "${var.prefix}-${var.name}-vpc" : "${var.name}-vpc"
   resource_group              = var.resource_group_id
   classic_access              = var.classic_access
@@ -22,6 +23,11 @@ resource "ibm_is_vpc" "vpc" {
   tags                        = var.tags
   access_tags                 = var.access_tags
   no_sg_acl_rules             = var.clean_default_sg_acl
+}
+
+data "ibm_is_vpc" "vpc" {
+  count = var.is_vpc_existing == true ? 1 : 0
+  name = var.name
 }
 
 ##############################################################################
