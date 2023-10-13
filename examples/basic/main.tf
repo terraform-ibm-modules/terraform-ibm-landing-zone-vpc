@@ -21,7 +21,6 @@ module "slz_vpc" {
   name              = var.name
   prefix            = var.prefix
   tags              = var.resource_tags
-  access_tags       = var.access_tags
   subnets = {
     zone-1 = [
       {
