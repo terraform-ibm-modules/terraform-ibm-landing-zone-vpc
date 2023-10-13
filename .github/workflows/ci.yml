@@ -11,5 +11,4 @@ jobs:
     secrets: inherit
     with:
         craSCCv2: true
-        craTarget: "examples/default"
-        craRuleIgnoreFile: "cra-tf-validate-ignore-rules.json"
+        craConfigYamlFile: "cra-config.yaml"
