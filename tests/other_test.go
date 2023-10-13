@@ -14,7 +14,7 @@ func TestRunBasicExample(t *testing.T) {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
 		Testing:       t,
 		TerraformDir:  basicExampleTerraformDir,
-		Prefix:        "bas-slz-vpc",
+		Prefix:        "bas-slz",
 		ResourceGroup: resourceGroup,
 	})
 
