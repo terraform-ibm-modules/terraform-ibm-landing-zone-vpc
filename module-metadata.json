@@ -468,6 +468,14 @@
       "type": "TypeString",
       "cloud_data_type": "crn"
     },
+    "vpc_data": {
+      "name": "vpc_data",
+      "description": "Data of the VPC created.",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 145
+      }
+    },
     "vpc_flow_logs": {
       "name": "vpc_flow_logs",
       "description": "Details of VPC flow logs collector",

@@ -141,3 +141,14 @@ output "cidr_blocks" {
   description = "List of CIDR blocks present in VPC stack"
   value       = [for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes : address.cidr]
 }
+
+output "vpc_data" {
+  description = "Data of the VPC created."
+  value = {
+    crn                 = ibm_is_vpc.vpc.crn
+    id                  = ibm_is_vpc.vpc.id
+    name                = ibm_is_vpc.vpc.name
+    resource_group      = ibm_is_vpc.vpc.resource_group
+    resource_group_name = ibm_is_vpc.vpc.resource_group_name
+  }
+}
