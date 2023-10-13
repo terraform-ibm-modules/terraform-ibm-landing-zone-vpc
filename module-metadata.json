@@ -471,6 +471,7 @@
     "vpc_data": {
       "name": "vpc_data",
       "description": "Data of the VPC created.",
+      "value": "ibm_is_vpc.vpc",
       "pos": {
         "filename": "outputs.tf",
         "line": 145
