@@ -65,7 +65,7 @@ func TestRunNoPrefixExample(t *testing.T) {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
 		Testing:      t,
 		TerraformDir: "examples/no-prefix",
-		Prefix:       "test-no-prefix-lz-vpc",
+		Prefix:       "no-prefix-lz",
 		TerraformVars: map[string]interface{}{
 			"name": testName,
 		},
