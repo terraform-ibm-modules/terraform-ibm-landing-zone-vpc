@@ -11,12 +11,6 @@
             "description:": "Check whether Cloud Object Storage is enabled with customer-managed encryption and Keep Your Own Key (KYOK)",
             "ignore_reason": "This module does not create any Cloud object storage and it is used in an example for testing purpose.",
             "is_valid": false
-        },
-        {
-            "scc_rule_id": "rule-216e2449-27d7-4afc-929a-b66e196a9cf9",
-            "description": "Check whether Flow Logs for VPC are enabled",
-            "ignore_reason": "This rule should not be failing as we do enable flow logs in the code. Bug reported with CRA: https://github.ibm.com/oneibmcloud/CD-CRA/issues/1907",
-            "is_valid": false
         }
     ]
 }
