@@ -13,6 +13,7 @@ import (
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
 )
 
+const basicExampleTerraformDir = "examples/basic"
 const defaultExampleTerraformDir = "examples/default"
 const landingZoneExampleTerraformDir = "examples/landing_zone"
 const resourceGroup = "geretain-test-resources"
@@ -47,7 +48,7 @@ func setupOptions(t *testing.T, prefix string, terraformDir string) *testhelper.
 	return options
 }
 
-func TestRunBasicExample(t *testing.T) {
+func TestRunDefaultExample(t *testing.T) {
 	t.Parallel()
 
 	options := setupOptions(t, "slz-vpc", defaultExampleTerraformDir)
@@ -64,7 +65,7 @@ func TestRunNoPrefixExample(t *testing.T) {
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
 		Testing:      t,
 		TerraformDir: "examples/no-prefix",
-		Prefix:       "test-no-prefix-lz-vpc",
+		Prefix:       "no-prefix-lz",
 		TerraformVars: map[string]interface{}{
 			"name": testName,
 		},
@@ -90,7 +91,7 @@ func TestRunLandingZoneExample(t *testing.T) {
 	assert.NotNil(t, output, "Expected some output")
 }
 
-func TestRunUpgradeBasicExample(t *testing.T) {
+func TestRunUpgradeDefaultExample(t *testing.T) {
 
 	t.Parallel()
 

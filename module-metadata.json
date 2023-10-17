@@ -468,6 +468,15 @@
       "type": "TypeString",
       "cloud_data_type": "crn"
     },
+    "vpc_data": {
+      "name": "vpc_data",
+      "description": "Data of the VPC created.",
+      "value": "ibm_is_vpc.vpc",
+      "pos": {
+        "filename": "outputs.tf",
+        "line": 145
+      }
+    },
     "vpc_flow_logs": {
       "name": "vpc_flow_logs",
       "description": "Details of VPC flow logs collector",
@@ -503,7 +512,7 @@
     }
   },
   "required_core": [
-    "\u003e= 1.3.0"
+    "\u003e= 1.3.0, \u003c1.6.0"
   ],
   "required_providers": {
     "ibm": {

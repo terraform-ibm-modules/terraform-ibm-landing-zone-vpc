@@ -7,9 +7,8 @@ on:
       - created
 jobs:
   call-terraform-ci-pipeline:
-    uses: terraform-ibm-modules/common-pipeline-assets/.github/workflows/common-terraform-module-ci-v2.yml@v1.17.9
+    uses: terraform-ibm-modules/common-pipeline-assets/.github/workflows/common-terraform-module-ci-v2.yml@v1.18.1
     secrets: inherit
     with:
         craSCCv2: true
-        craTarget: "examples/default"
-        craRuleIgnoreFile: "cra-tf-validate-ignore-rules.json"
+        craConfigYamlFile: "cra-config.yaml"
