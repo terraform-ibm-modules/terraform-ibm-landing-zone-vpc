@@ -16,7 +16,7 @@ variable "prefix" {
   default     = "def-slz-vpc"
 }
 
-variable "is_vpc_existing" {
+variable "create_vpc" {
   description = "Indicates whether user wants to use an existing vpc or create a new one."
   type        = bool
 }
