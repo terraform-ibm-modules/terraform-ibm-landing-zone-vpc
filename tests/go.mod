@@ -7,7 +7,7 @@ toolchain go1.21.3
 require (
 	github.com/gruntwork-io/terratest v0.46.1
 	github.com/stretchr/testify v1.8.4
-	github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper v1.23.11
+	github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper v1.23.12
 )
 
 require (
@@ -18,7 +18,7 @@ require (
 	cloud.google.com/go/storage v1.30.1 // indirect
 	dario.cat/mergo v1.0.0 // indirect
 	github.com/IBM-Cloud/bluemix-go v0.0.0-20231017073329-75ebe90c98ba // indirect
-	github.com/IBM-Cloud/power-go-client v1.5.1 // indirect
+	github.com/IBM-Cloud/power-go-client v1.5.2 // indirect
 	github.com/IBM/go-sdk-core/v5 v5.14.1 // indirect
 	github.com/IBM/platform-services-go-sdk v0.52.0 // indirect
 	github.com/IBM/vpc-go-sdk v1.0.2 // indirect
