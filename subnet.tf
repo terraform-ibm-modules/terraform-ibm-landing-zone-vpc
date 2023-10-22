@@ -18,7 +18,7 @@ resource "ibm_is_vpc_address_prefix" "subnet_prefix" {
   for_each = length(local.address_prefixes) > 0 ? {} : local.subnet_object
   name     = each.value.prefix_name
   zone     = each.value.zone_name
-  vpc      = ibm_is_vpc.vpc.id
+  vpc      = local.vpc_id
   cidr     = each.value.cidr
 }
 
@@ -31,7 +31,7 @@ resource "ibm_is_vpc_address_prefix" "subnet_prefix" {
 
 resource "ibm_is_subnet" "subnet" {
   for_each        = local.subnet_object
-  vpc             = ibm_is_vpc.vpc.id
+  vpc             = local.vpc_id
   name            = each.key
   zone            = each.value.zone_name
   resource_group  = var.resource_group_id

@@ -49,6 +49,4 @@ module "slz_vpc" {
   existing_storage_bucket_name           = ibm_cos_bucket.cos_bucket[0].bucket_name
   address_prefixes                       = var.address_prefixes
   network_cidrs                          = var.network_cidrs
-  create_vpc                             = false
-  existing_vpc_id                        = null
 }

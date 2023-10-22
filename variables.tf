@@ -10,11 +10,13 @@ variable "name" {
 variable "create_vpc" {
   description = "Indicates whether user wants to use an existing vpc or create a new one. Set it to true to create a new vpc"
   type        = bool
+  default     = true
 }
 
 variable "existing_vpc_id" {
   description = "The ID of the existing vpc. Required if 'create_vpc' is false."
   type        = string
+  default     = null
 }
 
 variable "resource_group_id" {

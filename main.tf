@@ -5,7 +5,8 @@ locals {
   # input variable validation
   # tflint-ignore: terraform_unused_declarations
   validate_default_secgroup_rules = var.clean_default_sg_acl && (var.security_group_rules != null && length(var.security_group_rules) > 0) ? tobool("var.clean_default_sg_acl is true and var.security_group_rules are not empty, which are in direct conflict of each other. If you would like the default VPC Security Group to be empty, you must remove default rules from var.security_group_rules.") : true
-  validate_existing_vpc_id        = !var.create_vpc && var.existing_vpc_id == null ? tobool("If var.create_vpc is false, then provide a value for var.existing_vpc_id to create vpc.") : true
+  # tflint-ignore: terraform_unused_declarations
+  validate_existing_vpc_id = !var.create_vpc && var.existing_vpc_id == null ? tobool("If var.create_vpc is false, then provide a value for var.existing_vpc_id to create vpc.") : true
 }
 
 ##############################################################################
@@ -27,7 +28,7 @@ resource "ibm_is_vpc" "vpc" {
 }
 
 locals {
-  vpc_id = var.create_vpc ? var.existing_vpc_id : ibm_is_vpc.vpc.id
+  vpc_id = var.create_vpc ? var.existing_vpc_id : ibm_is_vpc.vpc[0].id
 }
 
 ##############################################################################
@@ -48,14 +49,14 @@ locals {
 resource "ibm_is_vpc_address_prefix" "address_prefixes" {
   for_each = local.address_prefixes
   name     = each.value.name
-  vpc      = vpc_id
+  vpc      = local.vpc_id
   zone     = each.value.zone
   cidr     = each.value.cidr
 }
 
 data "ibm_is_vpc_address_prefixes" "get_address_prefixes" {
   depends_on = [ibm_is_vpc_address_prefix.address_prefixes, ibm_is_vpc_address_prefix.subnet_prefix]
-  vpc        = vpc_id
+  vpc        = local.vpc_id
 }
 ##############################################################################
 
@@ -73,7 +74,7 @@ resource "time_sleep" "wait_for_authorization_policy" {
 resource "ibm_is_vpc_routing_table" "route_table" {
   for_each                      = module.dynamic_values.routing_table_map
   name                          = var.prefix != null ? "${var.prefix}-${var.name}-route-${each.value.name}" : "${var.name}-route-${each.value.name}"
-  vpc                           = vpc_id
+  vpc                           = local.vpc_id
   route_direct_link_ingress     = each.value.route_direct_link_ingress
   route_transit_gateway_ingress = each.value.route_transit_gateway_ingress
   route_vpc_zone_ingress        = each.value.route_vpc_zone_ingress
@@ -81,7 +82,7 @@ resource "ibm_is_vpc_routing_table" "route_table" {
 
 resource "ibm_is_vpc_routing_table_route" "routing_table_routes" {
   for_each      = module.dynamic_values.routing_table_route_map
-  vpc           = vpc_id
+  vpc           = local.vpc_id
   routing_table = ibm_is_vpc_routing_table.route_table[each.value.route_table].routing_table
   zone          = "${var.region}-${each.value.zone}"
   name          = each.key
@@ -108,7 +109,7 @@ locals {
 resource "ibm_is_public_gateway" "gateway" {
   for_each       = local.gateway_object
   name           = var.prefix != null ? "${var.prefix}-${var.name}-public-gateway-${each.key}" : "${var.name}-public-gateway-${each.key}"
-  vpc            = vpc_id
+  vpc            = local.vpc_id
   resource_group = var.resource_group_id
   zone           = each.value
   tags           = var.tags
@@ -142,7 +143,7 @@ resource "ibm_is_flow_log" "flow_logs" {
   count = (var.enable_vpc_flow_logs) ? 1 : 0
 
   name           = var.prefix != null ? "${var.prefix}-${var.name}-logs" : "${var.name}-logs"
-  target         = vpc_id
+  target         = local.vpc_id
   active         = var.is_flow_log_collector_active
   storage_bucket = var.existing_storage_bucket_name
   resource_group = var.resource_group_id

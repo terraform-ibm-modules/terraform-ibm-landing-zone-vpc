@@ -4,17 +4,17 @@
 
 output "vpc_name" {
   description = "Name of VPC created"
-  value       = ibm_is_vpc.vpc.name
+  value       = ibm_is_vpc.vpc[0].name
 }
 
 output "vpc_id" {
   description = "ID of VPC created"
-  value       = ibm_is_vpc.vpc.id
+  value       = ibm_is_vpc.vpc[0].id
 }
 
 output "vpc_crn" {
   description = "CRN of VPC created"
-  value       = ibm_is_vpc.vpc.crn
+  value       = ibm_is_vpc.vpc[0].crn
 }
 
 ##############################################################################
