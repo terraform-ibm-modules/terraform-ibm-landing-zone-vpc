@@ -7,6 +7,10 @@ locals {
   validate_default_secgroup_rules = var.clean_default_sg_acl && (var.security_group_rules != null && length(var.security_group_rules) > 0) ? tobool("var.clean_default_sg_acl is true and var.security_group_rules are not empty, which are in direct conflict of each other. If you would like the default VPC Security Group to be empty, you must remove default rules from var.security_group_rules.") : true
   # tflint-ignore: terraform_unused_declarations
   validate_existing_vpc_id = !var.create_vpc && var.existing_vpc_id == null ? tobool("If var.create_vpc is false, then provide a value for var.existing_vpc_id to create vpc.") : true
+  # tflint-ignore: terraform_unused_declarations
+  validate_existing_subnet_id = !var.create_subnets && var.existing_subnet_ids == null ? tobool("If var.create_subnet is false, then provide a value for var.existing_subnet_ids to create subnets.") : true
+  # tflint-ignore: terraform_unused_declarations
+  validate_existing_vpc_and_subnet = var.create_vpc == true && var.create_subnets == false ? tobool("If user is not providing a vpc then they should also not be providing a subnet") : true
 }
 
 ##############################################################################
@@ -25,6 +29,11 @@ resource "ibm_is_vpc" "vpc" {
   tags                        = var.tags
   access_tags                 = var.access_tags
   no_sg_acl_rules             = var.clean_default_sg_acl
+}
+
+data "ibm_is_vpc" "vpc" {
+  count = var.create_vpc == false ? 1 : 0
+  id    = var.existing_vpc_id
 }
 
 locals {
@@ -107,7 +116,6 @@ locals {
 }
 
 resource "ibm_is_public_gateway" "gateway" {
-  for_each       = local.gateway_object
   name           = var.prefix != null ? "${var.prefix}-${var.name}-public-gateway-${each.key}" : "${var.name}-public-gateway-${each.key}"
   vpc            = local.vpc_id
   resource_group = var.resource_group_id

@@ -5,6 +5,7 @@
 variable "name" {
   description = "Name for VPC."
   type        = string
+  default     = null
 }
 
 variable "create_vpc" {
@@ -32,6 +33,7 @@ variable "region" {
 variable "prefix" {
   description = "The prefix that you would like to append to your resources. Explicitly set to null if you do not wish to use a prefix."
   type        = string
+  default     = null
 }
 
 variable "tags" {
@@ -321,6 +323,18 @@ variable "subnets" {
     error_message = "Keys for `subnets` must be in the order `zone-1`, `zone-2`, `zone-3`."
     condition     = keys(var.subnets)[0] == "zone-1" && keys(var.subnets)[1] == "zone-2" && keys(var.subnets)[2] == "zone-3"
   }
+}
+
+variable "create_subnets" {
+  description = "Indicates whether user wants to use existing subnets or create new. Set it to true to create new subnets."
+  type        = bool
+  default     = true
+}
+
+variable "existing_subnet_ids" {
+  description = "The IDs of the existing subnets. Required if 'create_subnets' is false."
+  type        = map(string)
+  default     = null
 }
 
 ##############################################################################

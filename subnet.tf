@@ -30,7 +30,7 @@ resource "ibm_is_vpc_address_prefix" "subnet_prefix" {
 ##############################################################################
 
 resource "ibm_is_subnet" "subnet" {
-  for_each        = local.subnet_object
+  for_each        = var.create_subnets ? local.subnet_object : []
   vpc             = local.vpc_id
   name            = each.key
   zone            = each.value.zone_name
