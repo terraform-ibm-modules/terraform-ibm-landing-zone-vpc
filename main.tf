@@ -28,17 +28,21 @@ resource "ibm_is_vpc" "vpc" {
 
   dns {
     enable_hub = var.enable_hub
-    # Creates a delegated resolver. Requires dns.enable_hub to be false.
-    resolver {
-      type    = (var.enable_hub == false && (var.hub_vpc_id != null || var.hub_vpc_crn != null)) ? "delegated" : null
-      vpc_id  = (var.enable_hub == false && var.hub_vpc_id != null) ? var.hub_vpc_id : null
-      vpc_crn = (var.enable_hub == false && var.hub_vpc_crn != null) ? var.hub_vpc_crn : null
+
+    dynamic "resolver" {
+      for_each = var.enable_hub == false && (var.hub_vpc_id != null || var.hub_vpc_crn != null) ? [1] : []
+      content {
+        type    = "delegated"
+        vpc_id  = var.hub_vpc_id != null ? var.hub_vpc_id : null
+        vpc_crn = var.hub_vpc_crn != null ? var.hub_vpc_crn : null
+      }
     }
   }
+
 }
 
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
-  count  = var.hub_vpc_id != null ? 1 : 0
+  count  = (var.enable_hub == false && var.hub_vpc_id != null) ? 1 : 0
   name   = "${var.prefix}-dns-binding"
   vpc_id = ibm_is_vpc.vpc.id # Source VPC
   vpc {
@@ -47,7 +51,7 @@ resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
 }
 
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
-  count  = var.hub_vpc_crn != null ? 1 : 0
+  count  = (var.enable_hub == false && var.hub_vpc_crn != null) ? 1 : 0
   name   = "${var.prefix}-dns-binding"
   vpc_id = ibm_is_vpc.vpc.id # Source VPC
   vpc {
