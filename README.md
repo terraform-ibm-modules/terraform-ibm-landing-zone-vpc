@@ -116,6 +116,8 @@ To attach access management tags to resources in this module, you need the follo
 | [ibm_is_vpc.vpc](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc) | resource |
 | [ibm_is_vpc_address_prefix.address_prefixes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_address_prefix) | resource |
 | [ibm_is_vpc_address_prefix.subnet_prefix](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_address_prefix) | resource |
+| [ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_dns_resolution_binding) | resource |
+| [ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_id](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_dns_resolution_binding) | resource |
 | [ibm_is_vpc_routing_table.route_table](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_routing_table) | resource |
 | [ibm_is_vpc_routing_table_route.routing_table_routes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_routing_table_route) | resource |
 | [time_sleep.wait_for_authorization_policy](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
@@ -137,6 +139,8 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_enable_vpc_flow_logs"></a> [enable\_vpc\_flow\_logs](#input\_enable\_vpc\_flow\_logs) | Flag to enable vpc flow logs. If true, flow log collector will be created | `bool` | `false` | no |
 | <a name="input_existing_cos_instance_guid"></a> [existing\_cos\_instance\_guid](#input\_existing\_cos\_instance\_guid) | GUID of the COS instance to create Flow log collector | `string` | `null` | no |
 | <a name="input_existing_storage_bucket_name"></a> [existing\_storage\_bucket\_name](#input\_existing\_storage\_bucket\_name) | Name of the COS bucket to collect VPC flow logs | `string` | `null` | no |
+| <a name="input_hub_vpc_crn"></a> [hub\_vpc\_crn](#input\_hub\_vpc\_crn) | Hub VPC CRN | `string` | `null` | no |
+| <a name="input_hub_vpc_id"></a> [hub\_vpc\_id](#input\_hub\_vpc\_id) | Hub VPC ID | `string` | `null` | no |
 | <a name="input_ibmcloud_api_visibility"></a> [ibmcloud\_api\_visibility](#input\_ibmcloud\_api\_visibility) | IBM Cloud API visibility used by scripts run in this module. Must be 'public', 'private', or 'public-and-private' | `string` | `"public"` | no |
 | <a name="input_is_flow_log_collector_active"></a> [is\_flow\_log\_collector\_active](#input\_is\_flow\_log\_collector\_active) | Indicates whether the collector is active. If false, this collector is created in inactive mode. | `bool` | `true` | no |
 | <a name="input_name"></a> [name](#input\_name) | Name for VPC | `string` | n/a | yes |
