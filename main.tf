@@ -27,8 +27,9 @@ resource "ibm_is_vpc" "vpc" {
     enable_hub = var.enable_hub
     # Creates a delegated resolver. Requires dns.enable_hub to be false.
     resolver {
+      count  = var.hub_vpc_id != null ? 1 : 0
       type   = "delegated"
-      vpc_id = (var.enable_hub == false && var.hub_vpc_id != null) ? var.hub_vpc_id : null
+      vpc_id = (var.enable_hub == false) ? var.hub_vpc_id : null
     }
   }
 }
