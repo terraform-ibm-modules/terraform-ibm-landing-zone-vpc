@@ -460,8 +460,14 @@ variable "is_flow_log_collector_active" {
 # VPC Hub-Spoke support
 ##############################################################################
 
-variable "enable_hub_vpc" {
-  description = "Set up a hub spoke vpc"
+variable "enable_hub" {
+  description = "Indicates whether this VPC is enabled as a DNS name resolution hub."
   type        = bool
   default     = false
+}
+
+variable "hub_vpc_id" {
+  description = "Spoke VPC ID"
+  type        = string
+  default     = null
 }

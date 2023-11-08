@@ -22,6 +22,25 @@ resource "ibm_is_vpc" "vpc" {
   tags                        = var.tags
   access_tags                 = var.access_tags
   no_sg_acl_rules             = var.clean_default_sg_acl
+
+  dns {
+    enable_hub = var.enable_hub
+
+    # Creates a delegated resolver. Requires dns.enable_hub to be false.
+    resolver {
+      type   = "delegated"
+      vpc_id = (var.enable_hub == false && var.hub_vpc_id != null) ? var.hub_vpc_id : null
+    }
+  }
+}
+
+resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding" {
+  count  = var.hub_vpc_id != null ? 1 : 0
+  name   = "${var.prefix}-dns-binding"
+  vpc_id = ibm_is_vpc.vpc.id # Source VPC
+  vpc {
+    id = var.hub_vpc_id # Target VPC
+  }
 }
 
 ##############################################################################
@@ -150,26 +169,26 @@ resource "ibm_is_flow_log" "flow_logs" {
 # Create a hub spoke VPC with a delegated resolver
 ##############################################################################
 
-resource "ibm_is_vpc" "hub_spoke_vpc" {
-  count = (var.enable_hub_vpc) ? 1 : 0
-
-  name = "${var.prefix}-hub-spoke-vpc"
-  dns {
-    enable_hub = false # Requires enable_hub to be false to set up for "delegated" type resolver.
-
-    resolver {
-      type   = "delegated"
-      vpc_id = ibm_is_vpc.vpc.id
-    }
-  }
-}
-
-resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding" {
-  count = (var.enable_hub_vpc) ? 1 : 0
-
-  name   = "${var.prefix}-dns"
-  vpc_id = ibm_is_vpc.vpc.id
-  vpc {
-    id = ibm_is_vpc.hub_spoke_vpc.id
-  }
-}
+#resource "ibm_is_vpc" "hub_spoke_vpc" {
+#  count = (var.enable_hub_vpc) ? 1 : 0
+#
+#  name = "${var.prefix}-hub-spoke-vpc"
+#  dns {
+#    enable_hub = false # Requires enable_hub to be false to set up for "delegated" type resolver.
+#
+#    resolver {
+#      type   = "delegated"
+#      vpc_id = ibm_is_vpc.vpc.id
+#    }
+#  }
+#}
+#
+#resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding" {
+#  count = (var.enable_hub_vpc) ? 1 : 0
+#
+#  name   = "${var.prefix}-dns"
+#  vpc_id = ibm_is_vpc.vpc.id
+#  vpc {
+#    id = ibm_is_vpc.hub_spoke_vpc.id
+#  }
+#}
