@@ -5,6 +5,9 @@ locals {
   # input variable validation
   # tflint-ignore: terraform_unused_declarations
   validate_default_secgroup_rules = var.clean_default_sg_acl && (var.security_group_rules != null && length(var.security_group_rules) > 0) ? tobool("var.clean_default_sg_acl is true and var.security_group_rules are not empty, which are in direct conflict of each other. If you would like the default VPC Security Group to be empty, you must remove default rules from var.security_group_rules.") : true
+
+  # tflint-ignore: terraform_unused_declarations
+  validate_hub_vpc_input = (length(var.hub_vpc_id) > 0 && length(var.hub_vpc_crn) > 0) ? tobool("var.hub_vpc_id and var.hub_vpc_crn cannot have values at the same time.") : true
 }
 
 ##############################################################################
@@ -27,19 +30,27 @@ resource "ibm_is_vpc" "vpc" {
     enable_hub = var.enable_hub
     # Creates a delegated resolver. Requires dns.enable_hub to be false.
     resolver {
-      count  = var.hub_vpc_id != null ? 1 : 0
-      type   = "delegated"
-      vpc_id = (var.enable_hub == false) ? var.hub_vpc_id : null
+      type   = (var.enable_hub == false && var.hub_vpc_id != null) ? "delegated" : null
+      vpc_id = (var.enable_hub == false && var.hub_vpc_id != null) ? var.hub_vpc_id : null
     }
   }
 }
 
-resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding" {
+resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
   count  = var.hub_vpc_id != null ? 1 : 0
   name   = "${var.prefix}-dns-binding"
   vpc_id = ibm_is_vpc.vpc.id # Source VPC
   vpc {
-    id = var.hub_vpc_id # Target VPC
+    id = var.hub_vpc_id # Target VPC ID
+  }
+}
+
+resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
+  count  = var.hub_vpc_crn != null ? 1 : 0
+  name   = "${var.prefix}-dns-binding"
+  vpc_id = ibm_is_vpc.vpc.id # Source VPC
+  vpc {
+    crn = var.hub_vpc_crn # Target VPC CRN
   }
 }
 

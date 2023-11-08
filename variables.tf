@@ -467,7 +467,13 @@ variable "enable_hub" {
 }
 
 variable "hub_vpc_id" {
-  description = "Spoke VPC ID"
+  description = "Hub VPC ID"
+  type        = string
+  default     = null
+}
+
+variable "hub_vpc_crn" {
+  description = "Hub VPC CRN"
   type        = string
   default     = null
 }
