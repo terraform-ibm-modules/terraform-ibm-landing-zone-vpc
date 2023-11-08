@@ -7,7 +7,7 @@ locals {
   validate_default_secgroup_rules = var.clean_default_sg_acl && (var.security_group_rules != null && length(var.security_group_rules) > 0) ? tobool("var.clean_default_sg_acl is true and var.security_group_rules are not empty, which are in direct conflict of each other. If you would like the default VPC Security Group to be empty, you must remove default rules from var.security_group_rules.") : true
 
   # tflint-ignore: terraform_unused_declarations
-  validate_hub_vpc_input = (length(var.hub_vpc_id) > 0 && length(var.hub_vpc_crn) > 0) ? tobool("var.hub_vpc_id and var.hub_vpc_crn cannot have values at the same time.") : true
+  validate_hub_vpc_input = (var.hub_vpc_id != null && var.hub_vpc_crn != null) ? tobool("var.hub_vpc_id and var.hub_vpc_crn are mutually exclusive. Hence cannot have values at the same time.") : true
 }
 
 ##############################################################################
@@ -30,7 +30,8 @@ resource "ibm_is_vpc" "vpc" {
     enable_hub = var.enable_hub
     # Creates a delegated resolver. Requires dns.enable_hub to be false.
     resolver {
-      type    = (var.enable_hub == false && var.hub_vpc_id != null) ? "delegated" : null
+      type = (var.enable_hub == false && var.hub_vpc_id != null) ? "delegated" : null
+      #
       vpc_id  = (var.enable_hub == false && var.hub_vpc_id != null) ? var.hub_vpc_id : null
       vpc_crn = (var.enable_hub == false && var.hub_vpc_crn != null) ? var.hub_vpc_crn : null
     }
