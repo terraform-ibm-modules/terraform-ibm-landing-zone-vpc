@@ -25,7 +25,6 @@ resource "ibm_is_vpc" "vpc" {
 
   dns {
     enable_hub = var.enable_hub
-
     # Creates a delegated resolver. Requires dns.enable_hub to be false.
     resolver {
       type   = "delegated"
