@@ -164,31 +164,3 @@ resource "ibm_is_flow_log" "flow_logs" {
 }
 
 ##############################################################################
-
-##############################################################################
-# Create a hub spoke VPC with a delegated resolver
-##############################################################################
-
-#resource "ibm_is_vpc" "hub_spoke_vpc" {
-#  count = (var.enable_hub_vpc) ? 1 : 0
-#
-#  name = "${var.prefix}-hub-spoke-vpc"
-#  dns {
-#    enable_hub = false # Requires enable_hub to be false to set up for "delegated" type resolver.
-#
-#    resolver {
-#      type   = "delegated"
-#      vpc_id = ibm_is_vpc.vpc.id
-#    }
-#  }
-#}
-#
-#resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding" {
-#  count = (var.enable_hub_vpc) ? 1 : 0
-#
-#  name   = "${var.prefix}-dns"
-#  vpc_id = ibm_is_vpc.vpc.id
-#  vpc {
-#    id = ibm_is_vpc.hub_spoke_vpc.id
-#  }
-#}
