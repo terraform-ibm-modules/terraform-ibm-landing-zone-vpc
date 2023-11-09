@@ -466,14 +466,50 @@ variable "enable_hub" {
   default     = false
 }
 
+variable "enable_hub_vpc_id" {
+  description = "Indicates whether Hub VPC ID is passed."
+  type        = bool
+  default     = false
+}
+
 variable "hub_vpc_id" {
   description = "Hub VPC ID"
   type        = string
   default     = null
 }
 
+variable "enable_hub_vpc_crn" {
+  description = "Indicates whether Hub VPC CRN is passed."
+  type        = bool
+  default     = false
+}
+
 variable "hub_vpc_crn" {
   description = "Hub VPC CRN"
   type        = string
   default     = null
+}
+
+variable "resolver_type" {
+  description = "Resolver type. Could be delegated, system or manual"
+  type        = string
+  default     = null
+  validation {
+    condition = anytrue([
+      var.resolver_type == null,
+      var.resolver_type == "delegated",
+      var.resolver_type == "system",
+      var.resolver_type == "manual",
+    ])
+    error_message = "var.resolver_type either be null or have one of the value from delegated, system or manual."
+  }
+}
+
+variable "manual_servers" {
+  description = "The DNS servers to use for the VPC, replacing any existing servers. All the DNS servers must either: have a unique zone_affinity, or not have a zone_affinity."
+  type = list(object({
+    address       = string
+    zone_affinity = optional(list(string))
+  }))
+  default = []
 }

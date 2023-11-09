@@ -8,6 +8,21 @@ locals {
 
   # tflint-ignore: terraform_unused_declarations
   validate_hub_vpc_input = (var.hub_vpc_id != null && var.hub_vpc_crn != null) ? tobool("var.hub_vpc_id and var.hub_vpc_crn are mutually exclusive. Hence cannot have values at the same time.") : true
+
+  # tflint-ignore: terraform_unused_declarations
+  validate_hub_vpc_id_input = (var.enable_hub_vpc_id && var.hub_vpc_id == null) ? tobool("var.hub_vpc_id must be passed when var.enable_hub_vpc_id is True.") : true
+
+  # tflint-ignore: terraform_unused_declarations
+  validate_enable_hub_vpc_id_input = (!var.enable_hub_vpc_id && var.hub_vpc_id != null) ? tobool("var.enable_hub_vpc_id must be true when var.hub_vpc_id is not null.") : true
+
+  # tflint-ignore: terraform_unused_declarations
+  validate_hub_vpc_crn_input = (var.enable_hub_vpc_crn && var.hub_vpc_crn == null) ? tobool("var.hub_vpc_crn must be passed when var.enable_hub_vpc_crn is True.") : true
+
+  # tflint-ignore: terraform_unused_declarations
+  validate_enable_hub_vpc_crn_input = (!var.enable_hub_vpc_crn && var.hub_vpc_crn != null) ? tobool("var.enable_hub_vpc_crn must be true when var.hub_vpc_crn is not null.") : true
+
+  # tflint-ignore: terraform_unused_declarations
+  validate_manual_servers_input = (var.resolver_type == "manual" && length(var.manual_servers) == 0) ? tobool("var.manual_servers must be set when var.resolver_type is manual") : true
 }
 
 ##############################################################################
@@ -30,19 +45,35 @@ resource "ibm_is_vpc" "vpc" {
     enable_hub = var.enable_hub
 
     dynamic "resolver" {
-      for_each = var.enable_hub == false && (var.hub_vpc_id != null || var.hub_vpc_crn != null) ? [1] : []
+      # creates "delegated" resolver
+      for_each = var.enable_hub == false && var.resolver_type == "delegated" && (var.enable_hub_vpc_id || var.enable_hub_vpc_crn) ? [1] : []
       content {
-        type    = "delegated"
+        type    = var.resolver_type
         vpc_id  = var.hub_vpc_id != null ? var.hub_vpc_id : null
         vpc_crn = var.hub_vpc_crn != null ? var.hub_vpc_crn : null
       }
     }
-  }
 
+    dynamic "resolver" {
+      # creates "manual" resolver
+      for_each = var.resolver_type == "manual" ? [1] : []
+      content {
+        type = var.resolver_type
+        dynamic "manual_servers" {
+          for_each = length(var.manual_servers) > 0 ? var.manual_servers : []
+          content {
+            address       = manual_servers.value.address
+            zone_affinity = manual_servers.value.zone_affinity
+          }
+        }
+      }
+    }
+  }
 }
 
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
-  count  = (var.enable_hub == false && var.hub_vpc_id != null) ? 1 : 0
+  count = (var.enable_hub == false && var.enable_hub_vpc_id) ? 1 : 0
+
   name   = "${var.prefix}-dns-binding"
   vpc_id = ibm_is_vpc.vpc.id # Source VPC
   vpc {
@@ -51,7 +82,7 @@ resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
 }
 
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
-  count  = (var.enable_hub == false && var.hub_vpc_crn != null) ? 1 : 0
+  count  = (var.enable_hub == false && var.enable_hub_vpc_crn) ? 1 : 0
   name   = "${var.prefix}-dns-binding"
   vpc_id = ibm_is_vpc.vpc.id # Source VPC
   vpc {
