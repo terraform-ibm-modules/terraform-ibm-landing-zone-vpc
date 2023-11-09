@@ -4,7 +4,7 @@
 
 output "vpc_name" {
   description = "Name of VPC created"
-  value       = data.ibm_is_vpc.vpc[0].name
+  value       = var.create_vpc == true ? var.name : data.ibm_is_vpc.vpc[0].name
 }
 
 output "vpc_id" {
@@ -14,7 +14,7 @@ output "vpc_id" {
 
 output "vpc_crn" {
   description = "CRN of VPC created"
-  value       = data.ibm_is_vpc.vpc[0].crn
+  value       = var.create_vpc == true ? resource.ibm_is_vpc.vpc[0].crn : data.ibm_is_vpc.vpc[0].crn
 }
 
 ##############################################################################

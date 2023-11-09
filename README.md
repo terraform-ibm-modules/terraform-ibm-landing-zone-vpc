@@ -82,7 +82,7 @@ To attach access management tags to resources in this module, you need the follo
 
 - [ Basic Example](examples/basic)
 - [ Default Example](examples/default)
-- [ Basic Example](examples/existing_vpc)
+- [ Existing VPC and subnets Example](examples/existing_vpc)
 - [ Landing Zone example](examples/landing_zone)
 - [ No Prefix Example](examples/no-prefix)
 <!-- END EXAMPLES HOOK -->
