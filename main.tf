@@ -11,6 +11,9 @@ locals {
   validate_existing_subnet_id = !var.create_subnets && var.existing_subnet_ids == null ? tobool("If var.create_subnet is false, then provide a value for var.existing_subnet_ids to create subnets.") : true
   # tflint-ignore: terraform_unused_declarations
   validate_existing_vpc_and_subnet = var.create_vpc == true && var.create_subnets == false ? tobool("If user is not providing a vpc then they should also not be providing a subnet") : true
+
+  # tflint-ignore: terraform_unused_declarations
+  validate_hub_vpc_input = (var.hub_vpc_id != null && var.hub_vpc_crn != null) ? tobool("var.hub_vpc_id and var.hub_vpc_crn are mutually exclusive. Hence cannot have values at the same time.") : true
 }
 
 ##############################################################################
@@ -32,6 +35,34 @@ resource "ibm_is_vpc" "vpc" {
 
   dns {
     enable_hub = var.enable_hub
+
+    dynamic "resolver" {
+      for_each = var.enable_hub == false && (var.hub_vpc_id != null || var.hub_vpc_crn != null) ? [1] : []
+      content {
+        type    = "delegated"
+        vpc_id  = var.hub_vpc_id != null ? var.hub_vpc_id : null
+        vpc_crn = var.hub_vpc_crn != null ? var.hub_vpc_crn : null
+      }
+    }
+  }
+
+}
+
+resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
+  count  = (var.enable_hub == false && var.hub_vpc_id != null) ? 1 : 0
+  name   = "${var.prefix}-dns-binding"
+  vpc_id = ibm_is_vpc.vpc.id # Source VPC
+  vpc {
+    id = var.hub_vpc_id # Target VPC ID
+  }
+}
+
+resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
+  count  = (var.enable_hub == false && var.hub_vpc_crn != null) ? 1 : 0
+  name   = "${var.prefix}-dns-binding"
+  vpc_id = ibm_is_vpc.vpc.id # Source VPC
+  vpc {
+    crn = var.hub_vpc_crn # Target VPC CRN
   }
 }
 

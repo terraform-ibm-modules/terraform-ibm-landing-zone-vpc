@@ -491,3 +491,15 @@ variable "enable_hub" {
   type        = bool
   default     = false
 }
+
+variable "hub_vpc_id" {
+  description = "Hub VPC ID"
+  type        = string
+  default     = null
+}
+
+variable "hub_vpc_crn" {
+  description = "Hub VPC CRN"
+  type        = string
+  default     = null
+}
