@@ -481,3 +481,13 @@ variable "is_flow_log_collector_active" {
 }
 
 ##############################################################################
+
+##############################################################################
+# VPC Hub-Spoke support
+##############################################################################
+
+variable "enable_hub" {
+  description = "Indicates whether this VPC is enabled as a DNS name resolution hub."
+  type        = bool
+  default     = false
+}

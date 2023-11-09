@@ -29,6 +29,10 @@ resource "ibm_is_vpc" "vpc" {
   tags                        = var.tags
   access_tags                 = var.access_tags
   no_sg_acl_rules             = var.clean_default_sg_acl
+
+  dns {
+    enable_hub = var.enable_hub
+  }
 }
 
 data "ibm_is_vpc" "vpc" {

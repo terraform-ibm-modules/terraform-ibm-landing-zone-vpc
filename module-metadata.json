@@ -141,6 +141,16 @@
       "matches": "^([a-z]|[a-z][-a-z0-9]*[a-z0-9])$",
       "computed": true
     },
+    "enable_hub": {
+      "name": "enable_hub",
+      "type": "bool",
+      "description": "Indicates whether this VPC is enabled as a DNS name resolution hub.",
+      "default": false,
+      "pos": {
+        "filename": "variables.tf",
+        "line": 463
+      }
+    },
     "enable_vpc_flow_logs": {
       "name": "enable_vpc_flow_logs",
       "type": "bool",
@@ -541,7 +551,7 @@
     "ibm": {
       "source": "IBM-Cloud/ibm",
       "version_constraints": [
-        "\u003e= 1.56.0"
+        "\u003e= 1.58.0"
       ]
     },
     "time": {
@@ -565,7 +575,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 130
+        "line": 128
       }
     },
     "ibm_is_flow_log.flow_logs": {
@@ -586,7 +596,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 141
+        "line": 139
       }
     },
     "ibm_is_network_acl.network_acl": {
@@ -621,7 +631,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 108
+        "line": 106
       }
     },
     "ibm_is_security_group_rule.default_vpc_rule": {
@@ -687,7 +697,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 48
+        "line": 46
       }
     },
     "ibm_is_vpc_address_prefix.subnet_prefix": {
@@ -714,7 +724,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 73
+        "line": 71
       }
     },
     "ibm_is_vpc_routing_table_route.routing_table_routes": {
@@ -729,7 +739,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 82
+        "line": 80
       }
     },
     "time_sleep.wait_for_authorization_policy": {
@@ -741,7 +751,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 63
+        "line": 61
       }
     }
   },
@@ -755,7 +765,7 @@
       },
       "pos": {
         "filename": "main.tf",
-        "line": 56
+        "line": 54
       }
     }
   },
