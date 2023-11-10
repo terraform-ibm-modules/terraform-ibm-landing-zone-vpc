@@ -47,4 +47,11 @@ module "slz_vpc" {
       }
     ]
   }
+  resolver_type = "manual"
+  manual_servers = [{
+    address = "161.26.0.10"
+    },
+    {
+      address = "161.26.0.11"
+  }]
 }

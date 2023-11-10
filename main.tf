@@ -23,6 +23,9 @@ locals {
 
   # tflint-ignore: terraform_unused_declarations
   validate_manual_servers_input = (var.resolver_type == "manual" && length(var.manual_servers) == 0) ? tobool("var.manual_servers must be set when var.resolver_type is manual") : true
+
+  # tflint-ignore: terraform_unused_declarations
+  validate_resolver_type_input = (var.resolver_type != null && var.update_delegated_resolver == true) ? tobool("var.resolver_type cannot be set if var.update_delegated_resolver is set to true. Only one type of resolver can be created by VPC.") : true
 }
 
 ##############################################################################
@@ -44,8 +47,8 @@ resource "ibm_is_vpc" "vpc" {
   dns {
     enable_hub = var.enable_hub
 
+    # Delegated resolver
     dynamic "resolver" {
-      # creates "delegated" resolver if VPC is a "dns-shared" spoke
       for_each = (var.enable_hub_vpc_id || var.enable_hub_vpc_crn) && var.update_delegated_resolver ? [1] : []
       content {
         type    = "delegated"
@@ -54,9 +57,9 @@ resource "ibm_is_vpc" "vpc" {
       }
     }
 
+    # Manual resolver
     dynamic "resolver" {
-      # creates "manual" resolver
-      for_each = var.resolver_type == "manual" ? [1] : []
+      for_each = var.resolver_type == "manual" && !var.update_delegated_resolver ? [1] : []
       content {
         type = var.resolver_type
         dynamic "manual_servers" {
@@ -66,6 +69,14 @@ resource "ibm_is_vpc" "vpc" {
             zone_affinity = manual_servers.value.zone_affinity
           }
         }
+      }
+    }
+
+    # Static resolver
+    dynamic "resolver" {
+      for_each = var.resolver_type == "static" && !var.update_delegated_resolver ? [1] : []
+      content {
+        type = var.resolver_type
       }
     }
   }

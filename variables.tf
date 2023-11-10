@@ -515,17 +515,16 @@ variable "use_existing_dns_instance" {
 }
 
 variable "resolver_type" {
-  description = "Resolver type. Could be delegated, system or manual"
+  description = "Resolver type. Can be system or manual. For delegated resolver type, see the update_delegated_resolver variable instead. "
   type        = string
   default     = null
   validation {
     condition = anytrue([
       var.resolver_type == null,
-      var.resolver_type == "delegated",
       var.resolver_type == "system",
       var.resolver_type == "manual",
     ])
-    error_message = "var.resolver_type either be null or have one of the value from delegated, system or manual."
+    error_message = "var.resolver_type either be null, or set to the string 'system' or 'manual'."
   }
 }
 

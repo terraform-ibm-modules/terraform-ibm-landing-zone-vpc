@@ -82,6 +82,7 @@ To attach access management tags to resources in this module, you need the follo
 
 - [ Basic Example](examples/basic)
 - [ Default Example](examples/default)
+- [ Hub and Spoke VPC with manual DNS resolver Example](examples/hub-spoke-manual-resolver)
 - [ Hub and Spoke VPC Example](examples/hub-spoke)
 - [ Landing Zone example](examples/landing_zone)
 - [ No Prefix Example](examples/no-prefix)
@@ -94,7 +95,7 @@ To attach access management tags to resources in this module, you need the follo
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0, <1.6.0 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.58.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.59.0 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9.1 |
 
 ### Modules
@@ -157,7 +158,7 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_network_cidrs"></a> [network\_cidrs](#input\_network\_cidrs) | List of Network CIDRs for the VPC. This is used to manage network ACL rules for cluster provisioning. | `list(string)` | <pre>[<br>  "10.0.0.0/8"<br>]</pre> | no |
 | <a name="input_prefix"></a> [prefix](#input\_prefix) | The prefix that you would like to append to your resources. Explicitly set to null if you do not wish to use a prefix. | `string` | n/a | yes |
 | <a name="input_region"></a> [region](#input\_region) | The region to which to deploy the VPC | `string` | n/a | yes |
-| <a name="input_resolver_type"></a> [resolver\_type](#input\_resolver\_type) | Resolver type. Could be delegated, system or manual | `string` | `null` | no |
+| <a name="input_resolver_type"></a> [resolver\_type](#input\_resolver\_type) | Resolver type. Can be system or manual. For delegated resolver type, see the update\_delegated\_resolver variable instead. | `string` | `null` | no |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The resource group ID where the VPC to be created | `string` | n/a | yes |
 | <a name="input_routes"></a> [routes](#input\_routes) | OPTIONAL - Allows you to specify the next hop for packets based on their destination address | <pre>list(<br>    object({<br>      name                          = string<br>      route_direct_link_ingress     = optional(bool)<br>      route_transit_gateway_ingress = optional(bool)<br>      route_vpc_zone_ingress        = optional(bool)<br>      routes = optional(<br>        list(<br>          object({<br>            action      = optional(string)<br>            zone        = number<br>            destination = string<br>            next_hop    = string<br>          })<br>      ))<br>    })<br>  )</pre> | `[]` | no |
 | <a name="input_security_group_rules"></a> [security\_group\_rules](#input\_security\_group\_rules) | A list of security group rules to be added to the default vpc security group (default empty) | <pre>list(<br>    object({<br>      name      = string<br>      direction = string<br>      remote    = string<br>      tcp = optional(<br>        object({<br>          port_max = optional(number)<br>          port_min = optional(number)<br>        })<br>      )<br>      udp = optional(<br>        object({<br>          port_max = optional(number)<br>          port_min = optional(number)<br>        })<br>      )<br>      icmp = optional(<br>        object({<br>          type = optional(number)<br>          code = optional(number)<br>        })<br>      )<br>    })<br>  )</pre> | `[]` | no |
@@ -173,6 +174,7 @@ To attach access management tags to resources in this module, you need the follo
 | Name | Description |
 |------|-------------|
 | <a name="output_cidr_blocks"></a> [cidr\_blocks](#output\_cidr\_blocks) | List of CIDR blocks present in VPC stack |
+| <a name="output_custom_resolver_hub"></a> [custom\_resolver\_hub](#output\_custom\_resolver\_hub) | The custom resolver created for the hub vpc. Only set if enable\_hub is set and skip\_custom\_resolver\_hub\_creation is false. |
 | <a name="output_network_acls"></a> [network\_acls](#output\_network\_acls) | List of shortnames and IDs of network ACLs |
 | <a name="output_public_gateways"></a> [public\_gateways](#output\_public\_gateways) | Map of public gateways by zone |
 | <a name="output_subnet_detail_list"></a> [subnet\_detail\_list](#output\_subnet\_detail\_list) | A list of subnets containing names, CIDR blocks, and zones. |
