@@ -72,9 +72,9 @@ resource "ibm_is_vpc" "vpc" {
       }
     }
 
-    # Static resolver
+    # System resolver
     dynamic "resolver" {
-      for_each = var.resolver_type == "static" && !var.update_delegated_resolver ? [1] : []
+      for_each = var.resolver_type == "system" && !var.update_delegated_resolver ? [1] : []
       content {
         type = var.resolver_type
       }

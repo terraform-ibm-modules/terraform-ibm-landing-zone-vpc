@@ -55,7 +55,7 @@ module "spoke_vpc" {
   source                    = "../../"
   resource_group_id         = module.resource_group.resource_group_id
   region                    = var.region
-  name                      = "spoke-vpc"
+  name                      = "spoke"
   prefix                    = var.prefix
   tags                      = var.resource_tags
   hub_vpc_crn               = module.hub_vpc.vpc_crn
