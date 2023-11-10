@@ -98,17 +98,15 @@ resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
   }
 }
 
-
 # Configure custom resolver on the hub vpc
 resource "ibm_resource_instance" "dns_instance_hub" {
   count             = var.enable_hub && !var.skip_custom_resolver_hub_creation && !var.use_existing_dns_instance ? 1 : 0
   name              = "${var.prefix}-dns-instance"
   resource_group_id = var.resource_group_id
-  location          = "global" # to do: expose variable
+  location          = var.dns_location
   service           = "dns-svcs"
-  plan              = "standard-dns" # to do: expose variable
+  plan              = var.dns_plan
 }
-
 
 resource "ibm_dns_custom_resolver" "custom_resolver_hub" {
   count             = var.enable_hub && !var.skip_custom_resolver_hub_creation ? 1 : 0

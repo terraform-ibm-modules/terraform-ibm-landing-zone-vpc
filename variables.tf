@@ -537,3 +537,23 @@ variable "manual_servers" {
   }))
   default = []
 }
+
+variable "dns_location" {
+  description = "Target location or environment to create the DNS resource instance."
+  type        = string
+  default     = "global"
+}
+
+variable "dns_plan" {
+  description = "DNS plan."
+  type        = string
+  default     = "standard-dns"
+  validation {
+    condition = anytrue([
+      var.dns_plan == "standard-dns",
+      var.dns_plan == "free-plan",
+    ])
+    error_message = "var.dns_plan can either be standard-dns or free-plan."
+  }
+
+}

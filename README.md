@@ -138,6 +138,8 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_default_network_acl_name"></a> [default\_network\_acl\_name](#input\_default\_network\_acl\_name) | OPTIONAL - Name of the Default ACL. If null, a name will be automatically generated | `string` | `null` | no |
 | <a name="input_default_routing_table_name"></a> [default\_routing\_table\_name](#input\_default\_routing\_table\_name) | OPTIONAL - Name of the Default Routing Table. If null, a name will be automatically generated | `string` | `null` | no |
 | <a name="input_default_security_group_name"></a> [default\_security\_group\_name](#input\_default\_security\_group\_name) | OPTIONAL - Name of the Default Security Group. If null, a name will be automatically generated | `string` | `null` | no |
+| <a name="input_dns_location"></a> [dns\_location](#input\_dns\_location) | Target location or environment to create the DNS resource instance. | `string` | `"global"` | no |
+| <a name="input_dns_plan"></a> [dns\_plan](#input\_dns\_plan) | DNS plan. | `string` | `"standard-dns"` | no |
 | <a name="input_enable_hub"></a> [enable\_hub](#input\_enable\_hub) | Indicates whether this VPC is enabled as a DNS name resolution hub. | `bool` | `false` | no |
 | <a name="input_enable_hub_vpc_crn"></a> [enable\_hub\_vpc\_crn](#input\_enable\_hub\_vpc\_crn) | Indicates whether Hub VPC CRN is passed. | `bool` | `false` | no |
 | <a name="input_enable_hub_vpc_id"></a> [enable\_hub\_vpc\_id](#input\_enable\_hub\_vpc\_id) | Indicates whether Hub VPC ID is passed. | `bool` | `false` | no |

@@ -18,7 +18,7 @@ module "hub_vpc" {
   source            = "../../"
   resource_group_id = module.resource_group.resource_group_id
   region            = var.region
-  name              = "hub-vpc"
+  name              = "hub"
   prefix            = var.prefix
   tags              = var.resource_tags
   enable_hub        = true
@@ -55,11 +55,14 @@ module "spoke_vpc" {
   source             = "../../"
   resource_group_id  = module.resource_group.resource_group_id
   region             = var.region
-  name               = "spoke-vpc"
+  name               = "spoke"
   prefix             = var.prefix
   tags               = var.resource_tags
   hub_vpc_crn        = module.hub_vpc.vpc_crn
   enable_hub_vpc_crn = true
+  # MANUAL STEP: The default setting for the Spoke VPC is "system" resolver. Uncomment the following line
+  # and re-apply this example to configure the spoke VPC with the delegated resolver.
+  #  update_delegated_resolver = true
   subnets = {
     zone-1 = [
       {
