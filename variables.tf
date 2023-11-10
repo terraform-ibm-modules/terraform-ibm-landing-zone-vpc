@@ -473,7 +473,7 @@ variable "enable_hub_vpc_id" {
 }
 
 variable "hub_vpc_id" {
-  description = "Hub VPC ID"
+  description = "Indicates the id of the hub VPC for DNS resolution. See https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model. Mutually exclusive with hub_vpc_crn."
   type        = string
   default     = null
 }
@@ -485,9 +485,33 @@ variable "enable_hub_vpc_crn" {
 }
 
 variable "hub_vpc_crn" {
-  description = "Hub VPC CRN"
+  description = "Indicates the crn of the hub VPC for DNS resolution. See https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model. Mutually exclusive with hub_vpc_id."
   type        = string
   default     = null
+}
+
+variable "update_delegated_resolver" {
+  description = "If set to true, and if the vpc is configured to be a spoke for DNS resolution (enable_hub_vpc_crn or enable_hub_vpc_id set), then the spoke VPC resolver will be updated to a delegated resolver."
+  type        = bool
+  default     = false
+}
+
+variable "skip_custom_resolver_hub_creation" {
+  description = "Indicates whether to skip the configuration of a custom resolver in the hub VPC. Only relevant if enable_hub is set to true."
+  type        = bool
+  default     = false
+}
+
+variable "existing_dns_instance_id" {
+  description = "Id of an existing dns instance in which the custom resolver is created. Only relevant if enable_hub is set to true."
+  type        = string
+  default     = null
+}
+
+variable "use_existing_dns_instance" {
+  description = "Whether to use an existing dns instance. If true, existing_dns_instance_id must be set."
+  type        = bool
+  default     = false
 }
 
 variable "resolver_type" {

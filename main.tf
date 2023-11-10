@@ -45,10 +45,10 @@ resource "ibm_is_vpc" "vpc" {
     enable_hub = var.enable_hub
 
     dynamic "resolver" {
-      # creates "delegated" resolver
-      for_each = var.enable_hub == false && var.resolver_type == "delegated" && (var.enable_hub_vpc_id || var.enable_hub_vpc_crn) ? [1] : []
+      # creates "delegated" resolver if VPC is a "dns-shared" spoke
+      for_each = (var.enable_hub_vpc_id || var.enable_hub_vpc_crn) && var.update_delegated_resolver ? [1] : []
       content {
-        type    = var.resolver_type
+        type    = "delegated"
         vpc_id  = var.hub_vpc_id != null ? var.hub_vpc_id : null
         vpc_crn = var.hub_vpc_crn != null ? var.hub_vpc_crn : null
       }
@@ -71,6 +71,14 @@ resource "ibm_is_vpc" "vpc" {
   }
 }
 
+###############################################################################
+
+##############################################################################
+# Hub and Spoke specific configuration
+# See https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model for context
+##############################################################################
+
+# Enable Hub to dns resolve in spoke VPC
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
   count = (var.enable_hub == false && var.enable_hub_vpc_id) ? 1 : 0
 
@@ -87,6 +95,34 @@ resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
   vpc_id = ibm_is_vpc.vpc.id # Source VPC
   vpc {
     crn = var.hub_vpc_crn # Target VPC CRN
+  }
+}
+
+
+# Configure custom resolver on the hub vpc
+resource "ibm_resource_instance" "dns_instance_hub" {
+  count             = var.enable_hub && !var.skip_custom_resolver_hub_creation && !var.use_existing_dns_instance ? 1 : 0
+  name              = "${var.prefix}-dns-instance"
+  resource_group_id = var.resource_group_id
+  location          = "global" # to do: expose variable
+  service           = "dns-svcs"
+  plan              = "standard-dns" # to do: expose variable
+}
+
+
+resource "ibm_dns_custom_resolver" "custom_resolver_hub" {
+  count             = var.enable_hub && !var.skip_custom_resolver_hub_creation ? 1 : 0
+  name              = "${var.prefix}-custom-resolver"
+  instance_id       = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
+  high_availability = true
+  enabled           = true
+
+  dynamic "locations" {
+    for_each = ibm_is_subnet.subnet
+    content {
+      subnet_crn = locations.value.crn
+      enabled    = true
+    }
   }
 }
 
