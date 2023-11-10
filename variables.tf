@@ -529,7 +529,7 @@ variable "resolver_type" {
 }
 
 variable "manual_servers" {
-  description = "The DNS servers to use for the VPC, replacing any existing servers. All the DNS servers must either: have a unique zone_affinity, or not have a zone_affinity."
+  description = "The DNS server addresses to use for the VPC, replacing any existing servers. All the entries must either have a unique zone_affinity, or not have a zone_affinity."
   type = list(object({
     address       = string
     zone_affinity = optional(string)
@@ -538,13 +538,13 @@ variable "manual_servers" {
 }
 
 variable "dns_location" {
-  description = "Target location or environment to create the DNS resource instance."
+  description = "The target location or environment for the DNS instance created to host the custom resolver in a hub-spoke DNS resolution topology. Only used if enable_hub is true and skip_custom_resolver_hub_creation is false (defaults). "
   type        = string
   default     = "global"
 }
 
 variable "dns_plan" {
-  description = "DNS plan."
+  description = "The plan for the DNS resource instance created to host the custom resolver in a hub-spoke DNS resolution topology. Only used if enable_hub is true and skip_custom_resolver_hub_creation is false (defaults)."
   type        = string
   default     = "standard-dns"
   validation {
@@ -554,5 +554,4 @@ variable "dns_plan" {
     ])
     error_message = "var.dns_plan can either be standard-dns or free-plan."
   }
-
 }
