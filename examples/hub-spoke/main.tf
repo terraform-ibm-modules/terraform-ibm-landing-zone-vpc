@@ -52,14 +52,15 @@ module "hub_vpc" {
 
 
 module "spoke_vpc" {
-  source             = "../../"
-  resource_group_id  = module.resource_group.resource_group_id
-  region             = var.region
-  name               = "spoke-vpc"
-  prefix             = var.prefix
-  tags               = var.resource_tags
-  hub_vpc_crn        = module.hub_vpc.vpc_crn
-  enable_hub_vpc_crn = true
+  source                    = "../../"
+  resource_group_id         = module.resource_group.resource_group_id
+  region                    = var.region
+  name                      = "spoke-vpc"
+  prefix                    = var.prefix
+  tags                      = var.resource_tags
+  hub_vpc_crn               = module.hub_vpc.vpc_crn
+  enable_hub_vpc_crn        = true
+  update_delegated_resolver = var.update_delegated_resolver
   subnets = {
     zone-1 = [
       {
