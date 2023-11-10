@@ -533,7 +533,7 @@ variable "manual_servers" {
   description = "The DNS servers to use for the VPC, replacing any existing servers. All the DNS servers must either: have a unique zone_affinity, or not have a zone_affinity."
   type = list(object({
     address       = string
-    zone_affinity = optional(list(string))
+    zone_affinity = optional(string)
   }))
   default = []
 }
