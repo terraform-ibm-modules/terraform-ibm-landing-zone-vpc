@@ -157,11 +157,11 @@ output "custom_resolver_hub" {
 }
 
 output "dns_endpoint_gateways_id" {
-  description = "The endpoint gateways in the bound to VPC that are allowed to participate in this DNS resolution binding. Only set if enable_hub is false and enable_hub_vpc_id are true. "
-  value       = length(ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_id) == 1 ? ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_id[0].endpoint_gateways : null
+  description = "The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable_hub is false and enable_hub_vpc_id are true."
+  value       = length(ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_id) == 1 ? ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_id[0] : null
 }
 
 output "dns_endpoint_gateways_crn" {
-  description = "The endpoint gateways in the bound to VPC that are allowed to participate in this DNS resolution binding. Only set if enable_hub is false and enable_hub_vpc_crn are true. "
-  value       = length(ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn) == 1 ? ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn[0].endpoint_gateways : null
+  description = "The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable_hub is false and enable_hub_vpc_id are true."
+  value       = length(ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn) == 1 ? ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn[0] : null
 }

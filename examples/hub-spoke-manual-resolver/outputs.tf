@@ -44,10 +44,10 @@ output "custom_resolver_hub_vpc" {
 
 output "dns_endpoint_gateways_spoke_vpc_crn" {
   value       = module.spoke_vpc.dns_endpoint_gateways_crn
-  description = "The endpoint gateways in the bound to VPC that are allowed to participate in this DNS resolution binding."
+  description = "The list of VPEs that are made available for DNS resolution in the created VPC."
 }
 
 output "dns_endpoint_gateways_spoke_vpc_id" {
   value       = module.spoke_vpc.dns_endpoint_gateways_id
-  description = "The endpoint gateways in the bound to VPC that are allowed to participate in this DNS resolution binding."
+  description = "The list of VPEs that are made available for DNS resolution in the created VPC."
 }
