@@ -83,8 +83,8 @@ To attach access management tags to resources in this module, you need the follo
 
 - [ Basic Example](examples/basic)
 - [ Default Example](examples/default)
+- [ Hub and Spoke VPC Example](examples/hub-spoke-delegated-resolver)
 - [ Hub and Spoke VPC with manual DNS resolver Example](examples/hub-spoke-manual-resolver)
-- [ Hub and Spoke VPC Example](examples/hub-spoke)
 - [ Landing Zone example](examples/landing_zone)
 - [ No Prefix Example](examples/no-prefix)
 <!-- END EXAMPLES HOOK -->

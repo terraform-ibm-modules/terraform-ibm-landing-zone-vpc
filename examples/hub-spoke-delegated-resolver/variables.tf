@@ -13,7 +13,7 @@ variable "region" {
 variable "prefix" {
   description = "The prefix that you would like to append to your resources"
   type        = string
-  default     = "hs-vpc"
+  default     = "hs-delegated"
 }
 
 variable "resource_group" {

@@ -37,7 +37,7 @@ output "vpc_connection_ids" {
   description = "List of VPC connection IDs."
 }
 
-output "custom_resolver_hub" {
+output "custom_resolver_hub_vpc" {
   value       = module.hub_vpc.custom_resolver_hub
   description = "The custom resolver created for the hub vpc."
 }
