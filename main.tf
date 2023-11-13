@@ -14,6 +14,24 @@ locals {
 
   # tflint-ignore: terraform_unused_declarations
   validate_hub_vpc_input = (var.hub_vpc_id != null && var.hub_vpc_crn != null) ? tobool("var.hub_vpc_id and var.hub_vpc_crn are mutually exclusive. Hence cannot have values at the same time.") : true
+
+  # tflint-ignore: terraform_unused_declarations
+  validate_hub_vpc_id_input = (var.enable_hub_vpc_id && var.hub_vpc_id == null) ? tobool("var.hub_vpc_id must be passed when var.enable_hub_vpc_id is True.") : true
+
+  # tflint-ignore: terraform_unused_declarations
+  validate_enable_hub_vpc_id_input = (!var.enable_hub_vpc_id && var.hub_vpc_id != null) ? tobool("var.enable_hub_vpc_id must be true when var.hub_vpc_id is not null.") : true
+
+  # tflint-ignore: terraform_unused_declarations
+  validate_hub_vpc_crn_input = (var.enable_hub_vpc_crn && var.hub_vpc_crn == null) ? tobool("var.hub_vpc_crn must be passed when var.enable_hub_vpc_crn is True.") : true
+
+  # tflint-ignore: terraform_unused_declarations
+  validate_enable_hub_vpc_crn_input = (!var.enable_hub_vpc_crn && var.hub_vpc_crn != null) ? tobool("var.enable_hub_vpc_crn must be true when var.hub_vpc_crn is not null.") : true
+
+  # tflint-ignore: terraform_unused_declarations
+  validate_manual_servers_input = (var.resolver_type == "manual" && length(var.manual_servers) == 0) ? tobool("var.manual_servers must be set when var.resolver_type is manual") : true
+
+  # tflint-ignore: terraform_unused_declarations
+  validate_resolver_type_input = (var.resolver_type != null && var.update_delegated_resolver == true) ? tobool("var.resolver_type cannot be set if var.update_delegated_resolver is set to true. Only one type of resolver can be created by VPC.") : true
 }
 
 ##############################################################################
@@ -36,20 +54,52 @@ resource "ibm_is_vpc" "vpc" {
   dns {
     enable_hub = var.enable_hub
 
+    # Delegated resolver
     dynamic "resolver" {
-      for_each = var.enable_hub == false && (var.hub_vpc_id != null || var.hub_vpc_crn != null) ? [1] : []
+      for_each = (var.enable_hub_vpc_id || var.enable_hub_vpc_crn) && var.update_delegated_resolver ? [1] : []
       content {
         type    = "delegated"
         vpc_id  = var.hub_vpc_id != null ? var.hub_vpc_id : null
         vpc_crn = var.hub_vpc_crn != null ? var.hub_vpc_crn : null
       }
     }
-  }
 
+    # Manual resolver
+    dynamic "resolver" {
+      for_each = var.resolver_type == "manual" && !var.update_delegated_resolver ? [1] : []
+      content {
+        type = var.resolver_type
+        dynamic "manual_servers" {
+          for_each = length(var.manual_servers) > 0 ? var.manual_servers : []
+          content {
+            address       = manual_servers.value.address
+            zone_affinity = manual_servers.value.zone_affinity
+          }
+        }
+      }
+    }
+
+    # System resolver
+    dynamic "resolver" {
+      for_each = var.resolver_type == "system" && !var.update_delegated_resolver ? [1] : []
+      content {
+        type = var.resolver_type
+      }
+    }
+  }
 }
 
+###############################################################################
+
+##############################################################################
+# Hub and Spoke specific configuration
+# See https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model for context
+##############################################################################
+
+# Enable Hub to dns resolve in spoke VPC
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
-  count  = (var.enable_hub == false && var.hub_vpc_id != null) ? 1 : 0
+  count = (var.enable_hub == false && var.enable_hub_vpc_id) ? 1 : 0
+
   name   = "${var.prefix}-dns-binding"
   vpc_id = ibm_is_vpc.vpc.id # Source VPC
   vpc {
@@ -58,7 +108,7 @@ resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
 }
 
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
-  count  = (var.enable_hub == false && var.hub_vpc_crn != null) ? 1 : 0
+  count  = (var.enable_hub == false && var.enable_hub_vpc_crn) ? 1 : 0
   name   = "${var.prefix}-dns-binding"
   vpc_id = ibm_is_vpc.vpc.id # Source VPC
   vpc {
@@ -73,6 +123,32 @@ data "ibm_is_vpc" "vpc" {
 
 locals {
   vpc_id = var.create_vpc ? var.existing_vpc_id : ibm_is_vpc.vpc[0].id
+}
+
+# Configure custom resolver on the hub vpc
+resource "ibm_resource_instance" "dns_instance_hub" {
+  count             = var.enable_hub && !var.skip_custom_resolver_hub_creation && !var.use_existing_dns_instance ? 1 : 0
+  name              = "${var.prefix}-dns-instance"
+  resource_group_id = var.resource_group_id
+  location          = var.dns_location
+  service           = "dns-svcs"
+  plan              = var.dns_plan
+}
+
+resource "ibm_dns_custom_resolver" "custom_resolver_hub" {
+  count             = var.enable_hub && !var.skip_custom_resolver_hub_creation ? 1 : 0
+  name              = "${var.prefix}-custom-resolver"
+  instance_id       = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
+  high_availability = true
+  enabled           = true
+
+  dynamic "locations" {
+    for_each = ibm_is_subnet.subnet
+    content {
+      subnet_crn = locations.value.crn
+      enabled    = true
+    }
+  }
 }
 
 ##############################################################################

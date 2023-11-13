@@ -22,3 +22,19 @@ func TestRunBasicExample(t *testing.T) {
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
 }
+
+func TestRunHubAndSpokeExample(t *testing.T) {
+	t.Parallel()
+
+	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
+		Testing:       t,
+		TerraformDir:  hubAndSpokeExampleTerraformDir,
+		Prefix:        "has-slz",
+		ResourceGroup: resourceGroup,
+		Region:        "us-south",
+	})
+
+	output, err := options.RunTestConsistency()
+	assert.Nil(t, err, "This should not have errored")
+	assert.NotNil(t, output, "Expected some output")
+}

@@ -146,3 +146,12 @@ output "vpc_data" {
   description = "Data of the VPC created."
   value       = ibm_is_vpc.vpc
 }
+
+##############################################################################
+# Hub and Spoke specific configuration
+##############################################################################
+
+output "custom_resolver_hub" {
+  description = "The custom resolver created for the hub vpc. Only set if enable_hub is set and skip_custom_resolver_hub_creation is false."
+  value       = length(ibm_dns_custom_resolver.custom_resolver_hub) == 1 ? ibm_dns_custom_resolver.custom_resolver_hub[0] : null
+}

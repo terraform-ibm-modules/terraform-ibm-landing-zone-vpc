@@ -492,14 +492,92 @@ variable "enable_hub" {
   default     = false
 }
 
+variable "enable_hub_vpc_id" {
+  description = "Indicates whether Hub VPC ID is passed."
+  type        = bool
+  default     = false
+}
+
 variable "hub_vpc_id" {
-  description = "Hub VPC ID"
+  description = "Indicates the id of the hub VPC for DNS resolution. See https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model. Mutually exclusive with hub_vpc_crn."
   type        = string
   default     = null
 }
 
+variable "enable_hub_vpc_crn" {
+  description = "Indicates whether Hub VPC CRN is passed."
+  type        = bool
+  default     = false
+}
+
 variable "hub_vpc_crn" {
-  description = "Hub VPC CRN"
+  description = "Indicates the crn of the hub VPC for DNS resolution. See https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model. Mutually exclusive with hub_vpc_id."
   type        = string
   default     = null
+}
+
+variable "update_delegated_resolver" {
+  description = "If set to true, and if the vpc is configured to be a spoke for DNS resolution (enable_hub_vpc_crn or enable_hub_vpc_id set), then the spoke VPC resolver will be updated to a delegated resolver."
+  type        = bool
+  default     = false
+}
+
+variable "skip_custom_resolver_hub_creation" {
+  description = "Indicates whether to skip the configuration of a custom resolver in the hub VPC. Only relevant if enable_hub is set to true."
+  type        = bool
+  default     = false
+}
+
+variable "existing_dns_instance_id" {
+  description = "Id of an existing dns instance in which the custom resolver is created. Only relevant if enable_hub is set to true."
+  type        = string
+  default     = null
+}
+
+variable "use_existing_dns_instance" {
+  description = "Whether to use an existing dns instance. If true, existing_dns_instance_id must be set."
+  type        = bool
+  default     = false
+}
+
+variable "resolver_type" {
+  description = "Resolver type. Can be system or manual. For delegated resolver type, see the update_delegated_resolver variable instead. "
+  type        = string
+  default     = null
+  validation {
+    condition = anytrue([
+      var.resolver_type == null,
+      var.resolver_type == "system",
+      var.resolver_type == "manual",
+    ])
+    error_message = "var.resolver_type either be null, or set to the string 'system' or 'manual'."
+  }
+}
+
+variable "manual_servers" {
+  description = "The DNS server addresses to use for the VPC, replacing any existing servers. All the entries must either have a unique zone_affinity, or not have a zone_affinity."
+  type = list(object({
+    address       = string
+    zone_affinity = optional(string)
+  }))
+  default = []
+}
+
+variable "dns_location" {
+  description = "The target location or environment for the DNS instance created to host the custom resolver in a hub-spoke DNS resolution topology. Only used if enable_hub is true and skip_custom_resolver_hub_creation is false (defaults). "
+  type        = string
+  default     = "global"
+}
+
+variable "dns_plan" {
+  description = "The plan for the DNS resource instance created to host the custom resolver in a hub-spoke DNS resolution topology. Only used if enable_hub is true and skip_custom_resolver_hub_creation is false (defaults)."
+  type        = string
+  default     = "standard-dns"
+  validation {
+    condition = anytrue([
+      var.dns_plan == "standard-dns",
+      var.dns_plan == "free-plan",
+    ])
+    error_message = "var.dns_plan can either be standard-dns or free-plan."
+  }
 }
