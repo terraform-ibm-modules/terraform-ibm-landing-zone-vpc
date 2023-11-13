@@ -22,9 +22,19 @@ output "spoke_vpc_crn" {
   description = "Hub VPC crn"
 }
 
+output "transit_gateway_id" {
+  value       = module.tg_gateway_connection.tg_id
+  description = "The ID of the transit gateway"
+}
+
 output "transit_gateway_crn" {
   value       = module.tg_gateway_connection.tg_crn
   description = "The CRN of the transit gateway"
+}
+
+output "vpc_connection_ids" {
+  value       = module.tg_gateway_connection.vpc_conn_ids
+  description = "List of VPC connection IDs."
 }
 
 output "custom_resolver_hub_vpc" {
