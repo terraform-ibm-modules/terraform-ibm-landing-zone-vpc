@@ -38,8 +38,8 @@ output "vpc_connection_ids" {
 }
 
 output "custom_resolver_hub_vpc" {
-  description = "The custom resolver created for the hub vpc. Only set if enable_hub is set and skip_custom_resolver_hub_creation is false."
   value       = module.hub_vpc.custom_resolver_hub
+  description = "The custom resolver created for the hub vpc."
 }
 
 output "dns_endpoint_gateways_spoke_vpc_crn" {
