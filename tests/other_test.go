@@ -38,3 +38,19 @@ func TestRunHubAndSpokeExample(t *testing.T) {
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
 }
+
+func TestRunHubAndSpokeManualResolverExample(t *testing.T) {
+	t.Parallel()
+
+	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
+		Testing:       t,
+		TerraformDir:  hubAndSpokeManualResolverExampleTerraformDir,
+		Prefix:        "has-manual-slz",
+		ResourceGroup: resourceGroup,
+		Region:        "us-south",
+	})
+
+	output, err := options.RunTestConsistency()
+	assert.Nil(t, err, "This should not have errored")
+	assert.NotNil(t, output, "Expected some output")
+}
