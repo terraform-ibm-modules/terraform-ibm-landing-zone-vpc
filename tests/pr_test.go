@@ -17,7 +17,6 @@ const basicExampleTerraformDir = "examples/basic"
 const defaultExampleTerraformDir = "examples/default"
 const landingZoneExampleTerraformDir = "examples/landing_zone"
 const hubAndSpokeExampleTerraformDir = "examples/hub-spoke"
-const hubAndSpokeManualResolverExampleTerraformDir = "example/hub-spoke-manual-resolver"
 const resourceGroup = "geretain-test-resources"
 
 // Define a struct with fields that match the structure of the YAML data
