@@ -3,9 +3,9 @@
 ##############################################################################
 
 variable "name" {
-  description = "Name for VPC."
+  description = "The name to give the newly provisioned VPC. Only used if 'create_vpc' is true."
   type        = string
-  default     = null
+  default     = "dev"
 }
 
 variable "create_vpc" {
@@ -31,7 +31,7 @@ variable "region" {
 }
 
 variable "prefix" {
-  description = "The prefix that you would like to append to your resources. Explicitly set to null if you do not wish to use a prefix."
+  description = "The value that you would like to prefix to the name of the resources provisioned by this module. Explicitly set to null if you do not wish to use a prefix."
   type        = string
   default     = null
 }
