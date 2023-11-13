@@ -42,12 +42,12 @@ output "custom_resolver_hub_vpc" {
   description = "The custom resolver created for the hub vpc."
 }
 
-output "dns_endpoint_gateways_spoke_vpc_crn" {
-  value       = module.spoke_vpc.dns_endpoint_gateways_crn
+output "dns_endpoint_gateways_by_spoke_vpc_crn" {
+  value       = module.spoke_vpc.dns_endpoint_gateways_by_crn
   description = "The list of VPEs that are made available for DNS resolution in the created VPC."
 }
 
-output "dns_endpoint_gateways_spoke_vpc_id" {
-  value       = module.spoke_vpc.dns_endpoint_gateways_id
+output "dns_endpoint_gateways_by_spoke_vpc_id" {
+  value       = module.spoke_vpc.dns_endpoint_gateways_by_id
   description = "The list of VPEs that are made available for DNS resolution in the created VPC."
 }
