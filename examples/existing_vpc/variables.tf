@@ -9,27 +9,16 @@ variable "region" {
   type        = string
   default     = "us-south"
 }
-
-variable "prefix" {
-  description = "The prefix that you would like to append to your resources"
+variable "vpc_id" {
+  description = "The ID of the VPC where the VSI will be created."
   type        = string
-  default     = "basic-slz-vpc"
 }
-
-variable "name" {
-  description = "The name of the vpc"
-  type        = string
-  default     = "vpc"
-}
-
-variable "resource_group" {
-  type        = string
-  description = "An existing resource group name to use for this example, if unset a new resource group will be created"
-  default     = null
-}
-
-variable "resource_tags" {
-  description = "List of Tags for the resource created"
+variable "subnet_ids" {
+  description = "The ID of the VPC where the VSI will be created."
   type        = list(string)
-  default     = null
+}
+
+variable "existing_resource_group_name" {
+  type        = string
+  description = "An existing resource group name to use for this example."
 }

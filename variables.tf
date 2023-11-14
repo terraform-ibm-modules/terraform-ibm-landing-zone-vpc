@@ -333,7 +333,7 @@ variable "create_subnets" {
 
 variable "existing_subnet_ids" {
   description = "The IDs of the existing subnets. Required if 'create_subnets' is false."
-  type        = map(string)
+  type        = list(string)
   default     = null
 }
 

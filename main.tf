@@ -101,7 +101,7 @@ resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
   count = (var.enable_hub == false && var.enable_hub_vpc_id) ? 1 : 0
 
   name   = "${var.prefix}-dns-binding"
-  vpc_id = ibm_is_vpc.vpc.id # Source VPC
+  vpc_id = local.vpc_id # Source VPC
   vpc {
     id = var.hub_vpc_id # Target VPC ID
   }
@@ -110,19 +110,19 @@ resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
   count  = (var.enable_hub == false && var.enable_hub_vpc_crn) ? 1 : 0
   name   = "${var.prefix}-dns-binding"
-  vpc_id = ibm_is_vpc.vpc.id # Source VPC
+  vpc_id = local.vpc_id # Source VPC
   vpc {
     crn = var.hub_vpc_crn # Target VPC CRN
   }
 }
 
 data "ibm_is_vpc" "vpc" {
-  count = var.create_vpc == false ? 1 : 0
-  id    = var.existing_vpc_id
+  count      = var.create_vpc == false ? 1 : 0
+  identifier = var.existing_vpc_id
 }
 
 locals {
-  vpc_id = var.create_vpc ? var.existing_vpc_id : ibm_is_vpc.vpc[0].id
+  vpc_id = var.create_vpc ? ibm_is_vpc.vpc[0].id : var.existing_vpc_id
 }
 
 # Configure custom resolver on the hub vpc
@@ -143,7 +143,7 @@ resource "ibm_dns_custom_resolver" "custom_resolver_hub" {
   enabled           = true
 
   dynamic "locations" {
-    for_each = ibm_is_subnet.subnet
+    for_each = local.subnets
     content {
       subnet_crn = locations.value.crn
       enabled    = true
@@ -182,8 +182,8 @@ data "ibm_is_vpc_address_prefixes" "get_address_prefixes" {
 
 # workaround for https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4478
 resource "time_sleep" "wait_for_authorization_policy" {
-  depends_on = [ibm_iam_authorization_policy.policy]
-
+  depends_on      = [ibm_iam_authorization_policy.policy]
+  count           = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? 1 : 0) : 0
   create_duration = "30s"
 }
 
@@ -227,6 +227,7 @@ locals {
 }
 
 resource "ibm_is_public_gateway" "gateway" {
+  for_each       = local.gateway_object
   name           = var.prefix != null ? "${var.prefix}-${var.name}-public-gateway-${each.key}" : "${var.name}-public-gateway-${each.key}"
   vpc            = local.vpc_id
   resource_group = var.resource_group_id
