@@ -23,12 +23,12 @@ func TestRunBasicExample(t *testing.T) {
 	assert.NotNil(t, output, "Expected some output")
 }
 
-func TestRunHubAndSpokeExample(t *testing.T) {
+func TestRunHubAndSpokeDelegatedExample(t *testing.T) {
 	t.Parallel()
 
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
 		Testing:       t,
-		TerraformDir:  hubAndSpokeExampleTerraformDir,
+		TerraformDir:  hubAndSpokeDelegatedExampleTerraformDir,
 		Prefix:        "has-slz",
 		ResourceGroup: resourceGroup,
 		Region:        "us-south",

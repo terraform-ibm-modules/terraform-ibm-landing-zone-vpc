@@ -21,7 +21,7 @@ import (
 const basicExampleTerraformDir = "examples/basic"
 const defaultExampleTerraformDir = "examples/default"
 const landingZoneExampleTerraformDir = "examples/landing_zone"
-const hubAndSpokeExampleTerraformDir = "examples/hub-spoke"
+const hubAndSpokeDelegatedExampleTerraformDir = "examples/hub-spoke-delegated-resolver"
 const existingVPCExampleTerraformDir = "examples/existing_vpc"
 const resourceGroup = "geretain-test-resources"
 
