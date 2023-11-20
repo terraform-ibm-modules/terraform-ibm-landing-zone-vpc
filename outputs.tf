@@ -4,17 +4,17 @@
 
 output "vpc_name" {
   description = "Name of VPC created"
-  value       = ibm_is_vpc.vpc.name
+  value       = var.create_vpc == true ? ibm_is_vpc.vpc[0].name : data.ibm_is_vpc.vpc[0].name
 }
 
 output "vpc_id" {
   description = "ID of VPC created"
-  value       = ibm_is_vpc.vpc.id
+  value       = local.vpc_id
 }
 
 output "vpc_crn" {
   description = "CRN of VPC created"
-  value       = ibm_is_vpc.vpc.crn
+  value       = var.create_vpc == true ? ibm_is_vpc.vpc[0].crn : data.ibm_is_vpc.vpc[0].crn
 }
 
 ##############################################################################
@@ -112,7 +112,7 @@ output "network_acls" {
     {
       shortname = network_acl.name
       id        = ibm_is_network_acl.network_acl[network_acl.name].id
-    }
+    } if var.create_subnets
   ]
 }
 

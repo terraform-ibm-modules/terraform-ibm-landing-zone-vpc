@@ -83,6 +83,7 @@ To attach access management tags to resources in this module, you need the follo
 
 - [ Basic Example](examples/basic)
 - [ Default Example](examples/default)
+- [ Existing VPC and subnets Example](examples/existing_vpc)
 - [ Hub and Spoke VPC Example](examples/hub-spoke-delegated-resolver)
 - [ Hub and Spoke VPC with manual DNS resolver Example](examples/hub-spoke-manual-resolver)
 - [ Landing Zone example](examples/landing_zone)
@@ -126,6 +127,8 @@ To attach access management tags to resources in this module, you need the follo
 | [ibm_is_vpc_routing_table_route.routing_table_routes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_routing_table_route) | resource |
 | [ibm_resource_instance.dns_instance_hub](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/resource_instance) | resource |
 | [time_sleep.wait_for_authorization_policy](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
+| [ibm_is_subnet.subnet](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_subnet) | data source |
+| [ibm_is_vpc.vpc](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_vpc) | data source |
 | [ibm_is_vpc_address_prefixes.get_address_prefixes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_vpc_address_prefixes) | data source |
 
 ### Inputs
@@ -137,6 +140,8 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_classic_access"></a> [classic\_access](#input\_classic\_access) | OPTIONAL - Classic Access to the VPC | `bool` | `false` | no |
 | <a name="input_clean_default_sg_acl"></a> [clean\_default\_sg\_acl](#input\_clean\_default\_sg\_acl) | Remove all rules from the default VPC security group and VPC ACL (less permissive) | `bool` | `false` | no |
 | <a name="input_create_authorization_policy_vpc_to_cos"></a> [create\_authorization\_policy\_vpc\_to\_cos](#input\_create\_authorization\_policy\_vpc\_to\_cos) | Create authorisation policy for VPC to access COS. Set as false if authorization policy exists already | `bool` | `false` | no |
+| <a name="input_create_subnets"></a> [create\_subnets](#input\_create\_subnets) | Indicates whether user wants to use existing subnets or create new. Set it to true to create new subnets. | `bool` | `true` | no |
+| <a name="input_create_vpc"></a> [create\_vpc](#input\_create\_vpc) | Indicates whether user wants to use an existing vpc or create a new one. Set it to true to create a new vpc | `bool` | `true` | no |
 | <a name="input_default_network_acl_name"></a> [default\_network\_acl\_name](#input\_default\_network\_acl\_name) | OPTIONAL - Name of the Default ACL. If null, a name will be automatically generated | `string` | `null` | no |
 | <a name="input_default_routing_table_name"></a> [default\_routing\_table\_name](#input\_default\_routing\_table\_name) | OPTIONAL - Name of the Default Routing Table. If null, a name will be automatically generated | `string` | `null` | no |
 | <a name="input_default_security_group_name"></a> [default\_security\_group\_name](#input\_default\_security\_group\_name) | OPTIONAL - Name of the Default Security Group. If null, a name will be automatically generated | `string` | `null` | no |
@@ -149,15 +154,17 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_existing_cos_instance_guid"></a> [existing\_cos\_instance\_guid](#input\_existing\_cos\_instance\_guid) | GUID of the COS instance to create Flow log collector | `string` | `null` | no |
 | <a name="input_existing_dns_instance_id"></a> [existing\_dns\_instance\_id](#input\_existing\_dns\_instance\_id) | Id of an existing dns instance in which the custom resolver is created. Only relevant if enable\_hub is set to true. | `string` | `null` | no |
 | <a name="input_existing_storage_bucket_name"></a> [existing\_storage\_bucket\_name](#input\_existing\_storage\_bucket\_name) | Name of the COS bucket to collect VPC flow logs | `string` | `null` | no |
+| <a name="input_existing_subnet_ids"></a> [existing\_subnet\_ids](#input\_existing\_subnet\_ids) | The IDs of the existing subnets. Required if 'create\_subnets' is false. | `list(string)` | `null` | no |
+| <a name="input_existing_vpc_id"></a> [existing\_vpc\_id](#input\_existing\_vpc\_id) | The ID of the existing vpc. Required if 'create\_vpc' is false. | `string` | `null` | no |
 | <a name="input_hub_vpc_crn"></a> [hub\_vpc\_crn](#input\_hub\_vpc\_crn) | Indicates the crn of the hub VPC for DNS resolution. See https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model. Mutually exclusive with hub\_vpc\_id. | `string` | `null` | no |
 | <a name="input_hub_vpc_id"></a> [hub\_vpc\_id](#input\_hub\_vpc\_id) | Indicates the id of the hub VPC for DNS resolution. See https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model. Mutually exclusive with hub\_vpc\_crn. | `string` | `null` | no |
 | <a name="input_ibmcloud_api_visibility"></a> [ibmcloud\_api\_visibility](#input\_ibmcloud\_api\_visibility) | IBM Cloud API visibility used by scripts run in this module. Must be 'public', 'private', or 'public-and-private' | `string` | `"public"` | no |
 | <a name="input_is_flow_log_collector_active"></a> [is\_flow\_log\_collector\_active](#input\_is\_flow\_log\_collector\_active) | Indicates whether the collector is active. If false, this collector is created in inactive mode. | `bool` | `true` | no |
 | <a name="input_manual_servers"></a> [manual\_servers](#input\_manual\_servers) | The DNS server addresses to use for the VPC, replacing any existing servers. All the entries must either have a unique zone\_affinity, or not have a zone\_affinity. | <pre>list(object({<br>    address       = string<br>    zone_affinity = optional(string)<br>  }))</pre> | `[]` | no |
-| <a name="input_name"></a> [name](#input\_name) | Name for VPC | `string` | n/a | yes |
+| <a name="input_name"></a> [name](#input\_name) | The name to give the newly provisioned VPC. Only used if 'create\_vpc' is true. | `string` | `"dev"` | no |
 | <a name="input_network_acls"></a> [network\_acls](#input\_network\_acls) | The list of ACLs to create. Provide at least one rule for each ACL. | <pre>list(<br>    object({<br>      name                         = string<br>      add_ibm_cloud_internal_rules = optional(bool)<br>      add_vpc_connectivity_rules   = optional(bool)<br>      prepend_ibm_rules            = optional(bool)<br>      rules = list(<br>        object({<br>          name        = string<br>          action      = string<br>          destination = string<br>          direction   = string<br>          source      = string<br>          tcp = optional(<br>            object({<br>              port_max        = optional(number)<br>              port_min        = optional(number)<br>              source_port_max = optional(number)<br>              source_port_min = optional(number)<br>            })<br>          )<br>          udp = optional(<br>            object({<br>              port_max        = optional(number)<br>              port_min        = optional(number)<br>              source_port_max = optional(number)<br>              source_port_min = optional(number)<br>            })<br>          )<br>          icmp = optional(<br>            object({<br>              type = optional(number)<br>              code = optional(number)<br>            })<br>          )<br>        })<br>      )<br>    })<br>  )</pre> | <pre>[<br>  {<br>    "add_ibm_cloud_internal_rules": true,<br>    "add_vpc_connectivity_rules": true,<br>    "name": "vpc-acl",<br>    "prepend_ibm_rules": true,<br>    "rules": []<br>  }<br>]</pre> | no |
 | <a name="input_network_cidrs"></a> [network\_cidrs](#input\_network\_cidrs) | List of Network CIDRs for the VPC. This is used to manage network ACL rules for cluster provisioning. | `list(string)` | <pre>[<br>  "10.0.0.0/8"<br>]</pre> | no |
-| <a name="input_prefix"></a> [prefix](#input\_prefix) | The prefix that you would like to append to your resources. Explicitly set to null if you do not wish to use a prefix. | `string` | n/a | yes |
+| <a name="input_prefix"></a> [prefix](#input\_prefix) | The value that you would like to prefix to the name of the resources provisioned by this module. Explicitly set to null if you do not wish to use a prefix. | `string` | `null` | no |
 | <a name="input_region"></a> [region](#input\_region) | The region to which to deploy the VPC | `string` | n/a | yes |
 | <a name="input_resolver_type"></a> [resolver\_type](#input\_resolver\_type) | Resolver type. Can be system or manual. For delegated resolver type, see the update\_delegated\_resolver variable instead. | `string` | `null` | no |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The resource group ID where the VPC to be created | `string` | n/a | yes |

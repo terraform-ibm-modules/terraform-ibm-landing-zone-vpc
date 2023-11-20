@@ -5,6 +5,12 @@ locals {
   # input variable validation
   # tflint-ignore: terraform_unused_declarations
   validate_default_secgroup_rules = var.clean_default_sg_acl && (var.security_group_rules != null && length(var.security_group_rules) > 0) ? tobool("var.clean_default_sg_acl is true and var.security_group_rules are not empty, which are in direct conflict of each other. If you would like the default VPC Security Group to be empty, you must remove default rules from var.security_group_rules.") : true
+  # tflint-ignore: terraform_unused_declarations
+  validate_existing_vpc_id = !var.create_vpc && var.existing_vpc_id == null ? tobool("If var.create_vpc is false, then provide a value for var.existing_vpc_id to create vpc.") : true
+  # tflint-ignore: terraform_unused_declarations
+  validate_existing_subnet_id = !var.create_subnets && var.existing_subnet_ids == null ? tobool("If var.create_subnet is false, then provide a value for var.existing_subnet_ids to create subnets.") : true
+  # tflint-ignore: terraform_unused_declarations
+  validate_existing_vpc_and_subnet = var.create_vpc == true && var.create_subnets == false ? tobool("If user is not providing a vpc then they should also not be providing a subnet") : true
 
   # tflint-ignore: terraform_unused_declarations
   validate_hub_vpc_input = (var.hub_vpc_id != null && var.hub_vpc_crn != null) ? tobool("var.hub_vpc_id and var.hub_vpc_crn are mutually exclusive. Hence cannot have values at the same time.") : true
@@ -33,6 +39,7 @@ locals {
 ##############################################################################
 
 resource "ibm_is_vpc" "vpc" {
+  count                       = var.create_vpc == true ? 1 : 0
   name                        = var.prefix != null ? "${var.prefix}-${var.name}-vpc" : "${var.name}-vpc"
   resource_group              = var.resource_group_id
   classic_access              = var.classic_access
@@ -94,7 +101,7 @@ resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
   count = (var.enable_hub == false && var.enable_hub_vpc_id) ? 1 : 0
 
   name   = "${var.prefix}-dns-binding"
-  vpc_id = ibm_is_vpc.vpc.id # Source VPC
+  vpc_id = local.vpc_id # Source VPC
   vpc {
     id = var.hub_vpc_id # Target VPC ID
   }
@@ -103,10 +110,19 @@ resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
   count  = (var.enable_hub == false && var.enable_hub_vpc_crn) ? 1 : 0
   name   = "${var.prefix}-dns-binding"
-  vpc_id = ibm_is_vpc.vpc.id # Source VPC
+  vpc_id = local.vpc_id # Source VPC
   vpc {
     crn = var.hub_vpc_crn # Target VPC CRN
   }
+}
+
+data "ibm_is_vpc" "vpc" {
+  count      = var.create_vpc == false ? 1 : 0
+  identifier = var.existing_vpc_id
+}
+
+locals {
+  vpc_id = var.create_vpc ? ibm_is_vpc.vpc[0].id : var.existing_vpc_id
 }
 
 # Configure custom resolver on the hub vpc
@@ -127,7 +143,7 @@ resource "ibm_dns_custom_resolver" "custom_resolver_hub" {
   enabled           = true
 
   dynamic "locations" {
-    for_each = ibm_is_subnet.subnet
+    for_each = local.subnets
     content {
       subnet_crn = locations.value.crn
       enabled    = true
@@ -153,21 +169,21 @@ locals {
 resource "ibm_is_vpc_address_prefix" "address_prefixes" {
   for_each = local.address_prefixes
   name     = each.value.name
-  vpc      = ibm_is_vpc.vpc.id
+  vpc      = local.vpc_id
   zone     = each.value.zone
   cidr     = each.value.cidr
 }
 
 data "ibm_is_vpc_address_prefixes" "get_address_prefixes" {
   depends_on = [ibm_is_vpc_address_prefix.address_prefixes, ibm_is_vpc_address_prefix.subnet_prefix]
-  vpc        = ibm_is_vpc.vpc.id
+  vpc        = local.vpc_id
 }
 ##############################################################################
 
 # workaround for https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4478
 resource "time_sleep" "wait_for_authorization_policy" {
-  depends_on = [ibm_iam_authorization_policy.policy]
-
+  depends_on      = [ibm_iam_authorization_policy.policy]
+  count           = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? 1 : 0) : 0
   create_duration = "30s"
 }
 
@@ -178,7 +194,7 @@ resource "time_sleep" "wait_for_authorization_policy" {
 resource "ibm_is_vpc_routing_table" "route_table" {
   for_each                      = module.dynamic_values.routing_table_map
   name                          = var.prefix != null ? "${var.prefix}-${var.name}-route-${each.value.name}" : "${var.name}-route-${each.value.name}"
-  vpc                           = ibm_is_vpc.vpc.id
+  vpc                           = local.vpc_id
   route_direct_link_ingress     = each.value.route_direct_link_ingress
   route_transit_gateway_ingress = each.value.route_transit_gateway_ingress
   route_vpc_zone_ingress        = each.value.route_vpc_zone_ingress
@@ -186,7 +202,7 @@ resource "ibm_is_vpc_routing_table" "route_table" {
 
 resource "ibm_is_vpc_routing_table_route" "routing_table_routes" {
   for_each      = module.dynamic_values.routing_table_route_map
-  vpc           = ibm_is_vpc.vpc.id
+  vpc           = local.vpc_id
   routing_table = ibm_is_vpc_routing_table.route_table[each.value.route_table].routing_table
   zone          = "${var.region}-${each.value.zone}"
   name          = each.key
@@ -213,7 +229,7 @@ locals {
 resource "ibm_is_public_gateway" "gateway" {
   for_each       = local.gateway_object
   name           = var.prefix != null ? "${var.prefix}-${var.name}-public-gateway-${each.key}" : "${var.name}-public-gateway-${each.key}"
-  vpc            = ibm_is_vpc.vpc.id
+  vpc            = local.vpc_id
   resource_group = var.resource_group_id
   zone           = each.value
   tags           = var.tags
@@ -247,7 +263,7 @@ resource "ibm_is_flow_log" "flow_logs" {
   count = (var.enable_vpc_flow_logs) ? 1 : 0
 
   name           = var.prefix != null ? "${var.prefix}-${var.name}-logs" : "${var.name}-logs"
-  target         = ibm_is_vpc.vpc.id
+  target         = local.vpc_id
   active         = var.is_flow_log_collector_active
   storage_bucket = var.existing_storage_bucket_name
   resource_group = var.resource_group_id

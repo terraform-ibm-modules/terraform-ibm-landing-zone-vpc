@@ -3,8 +3,21 @@
 ##############################################################################
 
 variable "name" {
-  description = "Name for VPC"
+  description = "The name to give the newly provisioned VPC. Only used if 'create_vpc' is true."
   type        = string
+  default     = "dev"
+}
+
+variable "create_vpc" {
+  description = "Indicates whether user wants to use an existing vpc or create a new one. Set it to true to create a new vpc"
+  type        = bool
+  default     = true
+}
+
+variable "existing_vpc_id" {
+  description = "The ID of the existing vpc. Required if 'create_vpc' is false."
+  type        = string
+  default     = null
 }
 
 variable "resource_group_id" {
@@ -18,8 +31,9 @@ variable "region" {
 }
 
 variable "prefix" {
-  description = "The prefix that you would like to append to your resources. Explicitly set to null if you do not wish to use a prefix."
+  description = "The value that you would like to prefix to the name of the resources provisioned by this module. Explicitly set to null if you do not wish to use a prefix."
   type        = string
+  default     = null
 }
 
 variable "tags" {
@@ -309,6 +323,18 @@ variable "subnets" {
     error_message = "Keys for `subnets` must be in the order `zone-1`, `zone-2`, `zone-3`."
     condition     = keys(var.subnets)[0] == "zone-1" && keys(var.subnets)[1] == "zone-2" && keys(var.subnets)[2] == "zone-3"
   }
+}
+
+variable "create_subnets" {
+  description = "Indicates whether user wants to use existing subnets or create new. Set it to true to create new subnets."
+  type        = bool
+  default     = true
+}
+
+variable "existing_subnet_ids" {
+  description = "The IDs of the existing subnets. Required if 'create_subnets' is false."
+  type        = list(string)
+  default     = null
 }
 
 ##############################################################################
