@@ -1,3 +1,8 @@
 # Basic Example
 
-A very basic example to provision SLZ VPC. It creates VPC with 3 subnets with 1 subnet is publically exposed.
+A simple example to provision a Secure Landing Zone (SLZ) Virtual Private Cloud (VPC).
+
+The following resources are provisioned by this example:
+
+* A new resource group, if an existing one is not passed in.
+* An IBM Virtual Private Cloud (VPC) with a publicly exposed subnet.

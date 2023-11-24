@@ -21,9 +21,9 @@ locals {
 
 locals {
   # tflint-ignore: terraform_unused_declarations
-  assert_route_key_exists = lookup(module.unit_tests.routes, "test-route")
+  assert_route_key_exists = lookup(module.unit_tests.routes, "test-route", [])
   # tflint-ignore: terraform_unused_declarations
-  assert_route_has_route_table = lookup(module.unit_tests.routing_table_route_map, "ut-test-route-route-1")
+  assert_route_has_route_table = lookup(module.unit_tests.routing_table_route_map, "ut-test-route-route-1", [])
 }
 
 ##############################################################################
@@ -36,7 +36,7 @@ locals {
   # tflint-ignore: terraform_unused_declarations
   assert_null_gateways_not_returned = regex("2", tostring(length(keys(module.unit_tests.use_public_gateways))))
   # tflint-ignore: terraform_unused_declarations
-  assert_zone_found_in_map = lookup(module.unit_tests.use_public_gateways, "zone-1")
+  assert_zone_found_in_map = lookup(module.unit_tests.use_public_gateways, "zone-1", [])
   # tflint-ignore: terraform_unused_declarations
   assert_zone_correct_name = regex("us-south-1", module.unit_tests.use_public_gateways["zone-1"])
 }
@@ -49,7 +49,7 @@ locals {
 
 locals {
   # tflint-ignore: terraform_unused_declarations
-  assert_rule_exists_in_map = lookup(module.unit_tests.security_group_rules, "test-rule")
+  assert_rule_exists_in_map = lookup(module.unit_tests.security_group_rules, "test-rule", [])
   # tflint-ignore: terraform_unused_declarations
   assert_rule_has_correct_field = regex("test-rule", module.unit_tests.security_group_rules["test-rule"].name)
 }
@@ -62,7 +62,7 @@ locals {
 
 locals {
   # tflint-ignore: terraform_unused_declarations
-  assert_acl_exists_in_map = lookup(module.unit_tests.acl_map, "acl")
+  assert_acl_exists_in_map = lookup(module.unit_tests.acl_map, "acl", [])
   # tflint-ignore: terraform_unused_declarations
   assert_cluster_rule_exists_in_position_0 = regex("roks-create-worker-nodes-inbound", module.unit_tests.acl_map["acl"].rules[0].name)
   # tflint-ignore: terraform_unused_declarations
@@ -97,7 +97,7 @@ locals {
   # tflint-ignore: terraform_unused_declarations
   assert_even_if_gateway_true_no_pgw_provision_zone_return_null = regex("null", lookup(module.unit_tests.subnet_list[2], "public_gateway", null) == null ? "null" : "error")
   # tflint-ignore: terraform_unused_declarations
-  assert_subnet_exists_in_map = lookup(module.unit_tests.subnet_map, "ut-subnet-1")
+  assert_subnet_exists_in_map = lookup(module.unit_tests.subnet_map, "ut-subnet-1", [])
 }
 
 ##############################################################################

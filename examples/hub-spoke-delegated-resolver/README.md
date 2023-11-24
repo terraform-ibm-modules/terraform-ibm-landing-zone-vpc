@@ -1,6 +1,6 @@
 # Hub and Spoke VPC Example
 
-This example demostrates how to deploy hub and spoke VPCs, inclusive of enabling DNS-sharing. See https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model for details.
+This example demonstrates how to deploy hub and spoke VPCs, inclusive of enabling DNS-sharing. See https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model for details.
 - The 2 VPCs are connected through a transit gateway.
 - The hub VPC is configured with a custom resolver.
 - The spoke VPC is configured with a delegated DNS resolver. DNS requests are resolved by the hub VPC.
