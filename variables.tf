@@ -105,7 +105,11 @@ variable "address_prefixes" {
   }
   validation {
     error_message = "Keys for `use_public_gateways` must be in the order `zone-1`, `zone-2`, `zone-3`."
-    condition     = var.address_prefixes == null ? true : (keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2" && keys(var.address_prefixes)[2] == "zone-3")
+    condition = var.address_prefixes == null ? true : (
+      (length(var.address_prefixes) == 1 && keys(var.address_prefixes)[0] == "zone-1") ||
+      (length(var.address_prefixes) == 2 && keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2") ||
+      (length(var.address_prefixes) == 3 && keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2") && keys(var.address_prefixes)[2] == "zone-3"
+    )
   }
 }
 
@@ -258,7 +262,11 @@ variable "use_public_gateways" {
 
   validation {
     error_message = "Keys for `use_public_gateways` must be in the order `zone-1`, `zone-2`, `zone-3`."
-    condition     = keys(var.use_public_gateways)[0] == "zone-1" && keys(var.use_public_gateways)[1] == "zone-2" && keys(var.use_public_gateways)[2] == "zone-3"
+    condition = (
+      (length(var.use_public_gateways) == 1 && keys(var.use_public_gateways)[0] == "zone-1") ||
+      (length(var.use_public_gateways) == 2 && keys(var.use_public_gateways)[0] == "zone-1" && keys(var.use_public_gateways)[1] == "zone-2") ||
+      (length(var.use_public_gateways) == 3 && keys(var.use_public_gateways)[0] == "zone-1" && keys(var.use_public_gateways)[1] == "zone-2") && keys(var.use_public_gateways)[2] == "zone-3"
+    )
   }
 }
 
@@ -278,18 +286,18 @@ variable "subnets" {
       public_gateway = optional(bool)
       acl_name       = string
     }))
-    zone-2 = list(object({
+    zone-2 = optional(list(object({
       name           = string
       cidr           = string
       public_gateway = optional(bool)
       acl_name       = string
-    }))
-    zone-3 = list(object({
+    })))
+    zone-3 = optional(list(object({
       name           = string
       cidr           = string
       public_gateway = optional(bool)
       acl_name       = string
-    }))
+    })))
   })
 
   default = {
@@ -320,8 +328,12 @@ variable "subnets" {
   }
 
   validation {
-    error_message = "Keys for `subnets` must be in the order `zone-1`, `zone-2`, `zone-3`."
-    condition     = keys(var.subnets)[0] == "zone-1" && keys(var.subnets)[1] == "zone-2" && keys(var.subnets)[2] == "zone-3"
+    error_message = "Keys for `subnets` must be in the order `zone-1`, `zone-2`, `zone-3`. "
+    condition = (
+      (length(var.subnets) == 1 && keys(var.subnets)[0] == "zone-1") ||
+      (length(var.subnets) == 2 && keys(var.subnets)[0] == "zone-1" && keys(var.subnets)[1] == "zone-2") ||
+      (length(var.subnets) == 3 && keys(var.subnets)[0] == "zone-1" && keys(var.subnets)[1] == "zone-2") && keys(var.subnets)[2] == "zone-3"
+    )
   }
 }
 
@@ -402,17 +414,6 @@ variable "clean_default_sg_acl" {
   description = "Remove all rules from the default VPC security group and VPC ACL (less permissive)"
   type        = bool
   default     = false
-}
-
-variable "ibmcloud_api_visibility" {
-  description = "IBM Cloud API visibility used by scripts run in this module. Must be 'public', 'private', or 'public-and-private'"
-  type        = string
-  default     = "public"
-
-  validation {
-    error_message = "IBM Cloud API visibility must be either 'public', 'private', or 'public-and-private'"
-    condition     = (var.ibmcloud_api_visibility == "public") || (var.ibmcloud_api_visibility == "private") || (var.ibmcloud_api_visibility == "public-and-private")
-  }
 }
 
 ##############################################################################

@@ -29,22 +29,6 @@ module "slz_vpc" {
         public_gateway = true
         acl_name       = "vpc-acl"
       }
-    ],
-    zone-2 = [
-      {
-        name           = "subnet-b"
-        cidr           = "10.20.10.0/24"
-        public_gateway = false
-        acl_name       = "vpc-acl"
-      }
-    ],
-    zone-3 = [
-      {
-        name           = "subnet-c"
-        cidr           = "10.30.10.0/24"
-        public_gateway = false
-        acl_name       = "vpc-acl"
-      }
     ]
   }
 }

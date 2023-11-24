@@ -25,5 +25,4 @@ module "management_vpc" {
   existing_cos_instance_guid             = var.existing_cos_instance_guid
   existing_storage_bucket_name           = var.existing_cos_bucket_name
   clean_default_sg_acl                   = var.clean_default_sg_acl
-  ibmcloud_api_visibility                = var.ibmcloud_api_visibility
 }
