@@ -31,6 +31,21 @@ If the `clean_default_security_group` or `clean_default_acl` input variables are
 - Install or update the [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-getting-started)
 - Install of update the [VPC infrastructure CLI plug-in](https://cloud.ibm.com/docs/cli?topic=cli-vpc-reference)
 
+<!-- Below content is automatically populated via pre-commit hook -->
+<!-- BEGIN OVERVIEW HOOK -->
+## Overview
+* [terraform-ibm-landing-zone-vpc](#terraform-ibm-landing-zone-vpc)
+* [Examples](./examples)
+    * [Basic Example](./examples/basic)
+    * [Default Example](./examples/default)
+    * [Existing VPC and subnets Example](./examples/existing_vpc)
+    * [Hub and Spoke VPC Example](./examples/hub-spoke-delegated-resolver)
+    * [Hub and Spoke VPC with manual DNS resolver Example](./examples/hub-spoke-manual-resolver)
+    * [Landing Zone example](./examples/landing_zone)
+    * [No Prefix Example](./examples/no-prefix)
+* [Contributing](#contributing)
+<!-- END OVERVIEW HOOK -->
+
 ## Usage
 ```terraform
 module vpc {
@@ -78,18 +93,6 @@ To attach access management tags to resources in this module, you need the follo
     - **Tagging** service
         - `Administrator` platform access
 
-<!-- BEGIN EXAMPLES HOOK -->
-## Examples
-
-- [ Basic Example](examples/basic)
-- [ Default Example](examples/default)
-- [ Existing VPC and subnets Example](examples/existing_vpc)
-- [ Hub and Spoke VPC Example](examples/hub-spoke-delegated-resolver)
-- [ Hub and Spoke VPC with manual DNS resolver Example](examples/hub-spoke-manual-resolver)
-- [ Landing Zone example](examples/landing_zone)
-- [ No Prefix Example](examples/no-prefix)
-<!-- END EXAMPLES HOOK -->
----
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ### Requirements
