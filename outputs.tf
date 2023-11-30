@@ -143,8 +143,8 @@ output "cidr_blocks" {
 }
 
 output "vpc_data" {
-  description = "Data of the VPC created."
-  value       = ibm_is_vpc.vpc
+  description = "Data of the VPC used in this module, created or existing."
+  value       = var.create_vpc == true ? ibm_is_vpc.vpc[0] : data.ibm_is_vpc.vpc[0]
 }
 
 ##############################################################################
