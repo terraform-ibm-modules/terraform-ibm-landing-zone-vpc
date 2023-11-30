@@ -33,10 +33,11 @@ locals {
 ##############################################################################
 
 resource "ibm_is_vpc" "vpc" {
-  name                        = var.prefix != null ? "${var.prefix}-${var.name}-vpc" : "${var.name}-vpc"
-  resource_group              = var.resource_group_id
-  classic_access              = var.classic_access
-  address_prefix_management   = length([for prefix in values(coalesce(var.address_prefixes, {})) : prefix if prefix != null]) != 0 ? "manual" : null
+  name           = var.prefix != null ? "${var.prefix}-${var.name}-vpc" : "${var.name}-vpc"
+  resource_group = var.resource_group_id
+  classic_access = var.classic_access
+  # automatic manamement only if address prefix AND subnets are not specified
+  address_prefix_management   = (length([for prefix in values(coalesce(var.address_prefixes, {})) : prefix if prefix != null]) != 0) || (length([for subnet in values(coalesce(var.subnets, {})) : subnet if subnet != null]) != 0) ? "manual" : null
   default_network_acl_name    = var.default_network_acl_name
   default_security_group_name = var.default_security_group_name
   default_routing_table_name  = var.default_routing_table_name
