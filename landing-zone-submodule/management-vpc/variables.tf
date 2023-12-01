@@ -98,37 +98,6 @@ variable "clean_default_sg_acl" {
   default     = false
 }
 
-variable "clean_default_security_group" {
-  description = "DEPRECATED: if you wish to remove all rules from default VPC Security Groups and VPC ACL, you can use the `clean_default_sg_acl` setting."
-  type        = bool
-  default     = false
-  validation {
-    error_message = "DEPRECATED: if you wish to remove all rules from default VPC Security Groups and VPC ACL, you can use the `clean_default_sg_acl` setting."
-    condition     = var.clean_default_security_group == false
-  }
-}
-
-variable "clean_default_acl" {
-  description = "DEPRECATED: if you wish to remove all rules from default VPC ACL and VPC Security Group, you can use the `clean_default_sg_acl` setting."
-  type        = bool
-  default     = false
-  validation {
-    error_message = "DEPRECATED: if you wish to remove all rules from default VPC ACL and VPC Security Group, you can use the `clean_default_sg_acl` setting."
-    condition     = var.clean_default_acl == false
-  }
-}
-
-variable "ibmcloud_api_visibility" {
-  description = "IBM Cloud API visibility used by scripts run in this module. Must be 'public', 'private', or 'public-and-private'"
-  type        = string
-  default     = "public"
-
-  validation {
-    error_message = "IBM Cloud API visibility must be either 'public', 'private', or 'public-and-private'"
-    condition     = (var.ibmcloud_api_visibility == "public") || (var.ibmcloud_api_visibility == "private") || (var.ibmcloud_api_visibility == "public-and-private")
-  }
-}
-
 variable "address_prefixes" {
   description = "Use `address_prefixes` only if `use_manual_address_prefixes` is true otherwise prefixes will not be created. Use only if you need to manage prefixes manually."
   type = object({

@@ -4,17 +4,17 @@
 
 output "vpc_name" {
   description = "Name of VPC created"
-  value       = ibm_is_vpc.vpc.name
+  value       = var.create_vpc == true ? ibm_is_vpc.vpc[0].name : data.ibm_is_vpc.vpc[0].name
 }
 
 output "vpc_id" {
   description = "ID of VPC created"
-  value       = ibm_is_vpc.vpc.id
+  value       = local.vpc_id
 }
 
 output "vpc_crn" {
   description = "CRN of VPC created"
-  value       = ibm_is_vpc.vpc.crn
+  value       = var.create_vpc == true ? ibm_is_vpc.vpc[0].crn : data.ibm_is_vpc.vpc[0].crn
 }
 
 ##############################################################################
@@ -112,7 +112,7 @@ output "network_acls" {
     {
       shortname = network_acl.name
       id        = ibm_is_network_acl.network_acl[network_acl.name].id
-    }
+    } if var.create_subnets
   ]
 }
 
@@ -154,4 +154,14 @@ output "vpc_data" {
 output "custom_resolver_hub" {
   description = "The custom resolver created for the hub vpc. Only set if enable_hub is set and skip_custom_resolver_hub_creation is false."
   value       = length(ibm_dns_custom_resolver.custom_resolver_hub) == 1 ? ibm_dns_custom_resolver.custom_resolver_hub[0] : null
+}
+
+output "dns_endpoint_gateways_by_id" {
+  description = "The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable_hub is false and enable_hub_vpc_id are true."
+  value       = length(ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_id) == 1 ? ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_id[0] : null
+}
+
+output "dns_endpoint_gateways_by_crn" {
+  description = "The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable_hub is false and enable_hub_vpc_id are true."
+  value       = length(ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn) == 1 ? ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn[0] : null
 }

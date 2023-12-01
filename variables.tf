@@ -3,8 +3,21 @@
 ##############################################################################
 
 variable "name" {
-  description = "Name for VPC"
+  description = "The name to give the newly provisioned VPC. Only used if 'create_vpc' is true."
   type        = string
+  default     = "dev"
+}
+
+variable "create_vpc" {
+  description = "Indicates whether user wants to use an existing vpc or create a new one. Set it to true to create a new vpc"
+  type        = bool
+  default     = true
+}
+
+variable "existing_vpc_id" {
+  description = "The ID of the existing vpc. Required if 'create_vpc' is false."
+  type        = string
+  default     = null
 }
 
 variable "resource_group_id" {
@@ -18,8 +31,9 @@ variable "region" {
 }
 
 variable "prefix" {
-  description = "The prefix that you would like to append to your resources. Explicitly set to null if you do not wish to use a prefix."
+  description = "The value that you would like to prefix to the name of the resources provisioned by this module. Explicitly set to null if you do not wish to use a prefix."
   type        = string
+  default     = null
 }
 
 variable "tags" {
@@ -91,7 +105,11 @@ variable "address_prefixes" {
   }
   validation {
     error_message = "Keys for `use_public_gateways` must be in the order `zone-1`, `zone-2`, `zone-3`."
-    condition     = var.address_prefixes == null ? true : (keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2" && keys(var.address_prefixes)[2] == "zone-3")
+    condition = var.address_prefixes == null ? true : (
+      (length(var.address_prefixes) == 1 && keys(var.address_prefixes)[0] == "zone-1") ||
+      (length(var.address_prefixes) == 2 && keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2") ||
+      (length(var.address_prefixes) == 3 && keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2") && keys(var.address_prefixes)[2] == "zone-3"
+    )
   }
 }
 
@@ -244,7 +262,11 @@ variable "use_public_gateways" {
 
   validation {
     error_message = "Keys for `use_public_gateways` must be in the order `zone-1`, `zone-2`, `zone-3`."
-    condition     = keys(var.use_public_gateways)[0] == "zone-1" && keys(var.use_public_gateways)[1] == "zone-2" && keys(var.use_public_gateways)[2] == "zone-3"
+    condition = (
+      (length(var.use_public_gateways) == 1 && keys(var.use_public_gateways)[0] == "zone-1") ||
+      (length(var.use_public_gateways) == 2 && keys(var.use_public_gateways)[0] == "zone-1" && keys(var.use_public_gateways)[1] == "zone-2") ||
+      (length(var.use_public_gateways) == 3 && keys(var.use_public_gateways)[0] == "zone-1" && keys(var.use_public_gateways)[1] == "zone-2") && keys(var.use_public_gateways)[2] == "zone-3"
+    )
   }
 }
 
@@ -264,18 +286,18 @@ variable "subnets" {
       public_gateway = optional(bool)
       acl_name       = string
     }))
-    zone-2 = list(object({
+    zone-2 = optional(list(object({
       name           = string
       cidr           = string
       public_gateway = optional(bool)
       acl_name       = string
-    }))
-    zone-3 = list(object({
+    })))
+    zone-3 = optional(list(object({
       name           = string
       cidr           = string
       public_gateway = optional(bool)
       acl_name       = string
-    }))
+    })))
   })
 
   default = {
@@ -306,9 +328,25 @@ variable "subnets" {
   }
 
   validation {
-    error_message = "Keys for `subnets` must be in the order `zone-1`, `zone-2`, `zone-3`."
-    condition     = keys(var.subnets)[0] == "zone-1" && keys(var.subnets)[1] == "zone-2" && keys(var.subnets)[2] == "zone-3"
+    error_message = "Keys for `subnets` must be in the order `zone-1`, `zone-2`, `zone-3`. "
+    condition = (
+      (length(var.subnets) == 1 && keys(var.subnets)[0] == "zone-1") ||
+      (length(var.subnets) == 2 && keys(var.subnets)[0] == "zone-1" && keys(var.subnets)[1] == "zone-2") ||
+      (length(var.subnets) == 3 && keys(var.subnets)[0] == "zone-1" && keys(var.subnets)[1] == "zone-2") && keys(var.subnets)[2] == "zone-3"
+    )
   }
+}
+
+variable "create_subnets" {
+  description = "Indicates whether user wants to use existing subnets or create new. Set it to true to create new subnets."
+  type        = bool
+  default     = true
+}
+
+variable "existing_subnet_ids" {
+  description = "The IDs of the existing subnets. Required if 'create_subnets' is false."
+  type        = list(string)
+  default     = null
 }
 
 ##############################################################################
@@ -376,17 +414,6 @@ variable "clean_default_sg_acl" {
   description = "Remove all rules from the default VPC security group and VPC ACL (less permissive)"
   type        = bool
   default     = false
-}
-
-variable "ibmcloud_api_visibility" {
-  description = "IBM Cloud API visibility used by scripts run in this module. Must be 'public', 'private', or 'public-and-private'"
-  type        = string
-  default     = "public"
-
-  validation {
-    error_message = "IBM Cloud API visibility must be either 'public', 'private', or 'public-and-private'"
-    condition     = (var.ibmcloud_api_visibility == "public") || (var.ibmcloud_api_visibility == "private") || (var.ibmcloud_api_visibility == "public-and-private")
-  }
 }
 
 ##############################################################################
@@ -535,23 +562,4 @@ variable "manual_servers" {
     zone_affinity = optional(string)
   }))
   default = []
-}
-
-variable "dns_location" {
-  description = "The target location or environment for the DNS instance created to host the custom resolver in a hub-spoke DNS resolution topology. Only used if enable_hub is true and skip_custom_resolver_hub_creation is false (defaults). "
-  type        = string
-  default     = "global"
-}
-
-variable "dns_plan" {
-  description = "The plan for the DNS resource instance created to host the custom resolver in a hub-spoke DNS resolution topology. Only used if enable_hub is true and skip_custom_resolver_hub_creation is false (defaults)."
-  type        = string
-  default     = "standard-dns"
-  validation {
-    condition = anytrue([
-      var.dns_plan == "standard-dns",
-      var.dns_plan == "free-plan",
-    ])
-    error_message = "var.dns_plan can either be standard-dns or free-plan."
-  }
 }

@@ -12,7 +12,7 @@ locals {
 
 resource "ibm_is_security_group_rule" "default_vpc_rule" {
   for_each  = local.security_group_rule_object
-  group     = ibm_is_vpc.vpc.default_security_group
+  group     = var.create_vpc == true ? ibm_is_vpc.vpc[0].default_security_group : data.ibm_is_vpc.vpc[0].default_security_group
   direction = each.value.direction
   remote    = each.value.remote
 

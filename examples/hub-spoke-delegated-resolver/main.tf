@@ -60,14 +60,7 @@ module "spoke_vpc" {
   tags                      = var.resource_tags
   hub_vpc_crn               = module.hub_vpc.vpc_crn
   enable_hub_vpc_crn        = true
-  update_delegated_resolver = false
-  resolver_type             = "manual"
-  # Point to the custom resolver in the hub VPC
-  manual_servers = [for location in module.hub_vpc.custom_resolver_hub.locations :
-    {
-      address = location.dns_server_ip
-    }
-  ]
+  update_delegated_resolver = var.update_delegated_resolver
   subnets = {
     zone-1 = [
       {
