@@ -283,7 +283,7 @@ variable "network_acls" {
 # Public Gateways
 ##############################################################################
 
-variable "test" {
+variable "test1" {
   description = "test"
   type        = string
   default     = null
