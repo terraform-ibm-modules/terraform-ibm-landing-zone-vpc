@@ -9,10 +9,17 @@ variable "region" {
   type        = string
   default     = "us-south"
 }
+
 variable "vpc_id" {
   description = "The ID of the VPC where the VSI will be created."
   type        = string
 }
+
+variable "public_gateway_name" {
+  description = "The name of the public gateway"
+  type        = string
+}
+
 variable "subnet_ids" {
   description = "The ID of the VPC where the VSI will be created."
   type        = list(string)
