@@ -283,12 +283,6 @@ variable "network_acls" {
 # Public Gateways
 ##############################################################################
 
-variable "test1" {
-  description = "test"
-  type        = string
-  default     = null
-}
-
 variable "use_public_gateways" {
   description = "Create a public gateway in any of the three zones with `true`."
   type = object({
