@@ -3,9 +3,45 @@
 ##############################################################################
 
 variable "name" {
-  description = "The name to give the newly provisioned VPC. Only used if 'create_vpc' is true."
+  description = "The name to give the provisioned VPC. Only used if 'create_vpc' is true."
   type        = string
   default     = "dev"
+}
+
+variable "dns_binding_name" {
+  description = "The name to give the provisioned VPC DNS resolution binding. Only used if 'enable_hub' is false and either of 'enable_hub_vpc_id' or 'enable_hub_vpc_crn' is set."
+  type        = string
+  default     = null
+}
+
+variable "dns_instance_name" {
+  description = "The name to give the provisioned DNS instance. Only used if 'enable_hub' is true and both of 'skip_custom_resolver_hub_creation' or 'use_existing_dns_instance' are false."
+  type        = string
+  default     = null
+}
+
+variable "dns_custom_resolver_name" {
+  description = "The name to give the provisioned DNS custom resolver instance. Only used if 'enable_hub' is true and 'skip_custom_resolver_hub_creation'is false."
+  type        = string
+  default     = null
+}
+
+variable "routing_table_name" {
+  description = "The name to give the provisioned Routing table."
+  type        = string
+  default     = null
+}
+
+variable "public_gateway_name" {
+  description = "The name to give the provisioned VPC Public Gateway."
+  type        = string
+  default     = null
+}
+
+variable "vpc_flow_logs_name" {
+  description = "The name to give the provisioned VPC flow logs."
+  type        = string
+  default     = null
 }
 
 variable "create_vpc" {
