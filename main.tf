@@ -54,7 +54,7 @@ locals {
 
 resource "ibm_is_vpc" "vpc" {
   count                       = var.create_vpc == true ? 1 : 0
-  name                        = var.prefix != null ? "${var.prefix}-vpc" : var.name
+  name                        = var.prefix != null ? "${var.prefix}-${var.name}-vpc" : var.name
   resource_group              = var.resource_group_id
   classic_access              = var.classic_access
   address_prefix_management   = length([for prefix in values(coalesce(var.address_prefixes, {})) : prefix if prefix != null]) != 0 ? "manual" : null
