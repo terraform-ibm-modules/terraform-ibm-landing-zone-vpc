@@ -54,7 +54,7 @@ locals {
 
 resource "ibm_is_vpc" "vpc" {
   count                       = var.create_vpc == true ? 1 : 0
-  name                        = var.prefix != null ? "${var.prefix}-${var.name}-vpc" : var.name
+  name                        = var.name != null ? var.name : "${var.prefix}-vpc"
   resource_group              = var.resource_group_id
   classic_access              = var.classic_access
   address_prefix_management   = length([for prefix in values(coalesce(var.address_prefixes, {})) : prefix if prefix != null]) != 0 ? "manual" : null
@@ -114,7 +114,7 @@ resource "ibm_is_vpc" "vpc" {
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
   count = (var.enable_hub == false && var.enable_hub_vpc_id) ? 1 : 0
 
-  name   = var.prefix != null ? "${var.prefix}-dns-binding" : var.dns_binding_name
+  name   = var.dns_binding_name != null ? var.dns_binding_name : (var.prefix != null ? "${var.prefix}-dns-binding" : "${var.name}-dns-binding")
   vpc_id = local.vpc_id # Source VPC
   vpc {
     id = var.hub_vpc_id # Target VPC ID
@@ -122,8 +122,9 @@ resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
 }
 
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
-  count  = (var.enable_hub == false && var.enable_hub_vpc_crn) ? 1 : 0
-  name   = var.prefix != null ? "${var.prefix}-dns-binding" : var.dns_binding_name
+  count = (var.enable_hub == false && var.enable_hub_vpc_crn) ? 1 : 0
+
+  name   = var.dns_binding_name != null ? var.dns_binding_name : (var.prefix != null ? "${var.prefix}-dns-binding" : "${var.name}-dns-binding")
   vpc_id = local.vpc_id # Source VPC
   vpc {
     crn = var.hub_vpc_crn # Target VPC CRN
@@ -132,8 +133,9 @@ resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
 
 # Configure custom resolver on the hub vpc
 resource "ibm_resource_instance" "dns_instance_hub" {
-  count             = var.enable_hub && !var.skip_custom_resolver_hub_creation && !var.use_existing_dns_instance ? 1 : 0
-  name              = var.prefix != null ? "${var.prefix}-dns-instance" : var.dns_instance_name
+  count = var.enable_hub && !var.skip_custom_resolver_hub_creation && !var.use_existing_dns_instance ? 1 : 0
+
+  name              = var.dns_instance_name != null ? var.dns_instance_name : (var.prefix != null ? "${var.prefix}-dns-instance" : "${var.name}-dns-instance")
   resource_group_id = var.resource_group_id
   location          = var.dns_location
   service           = "dns-svcs"
@@ -141,8 +143,9 @@ resource "ibm_resource_instance" "dns_instance_hub" {
 }
 
 resource "ibm_dns_custom_resolver" "custom_resolver_hub" {
-  count             = var.enable_hub && !var.skip_custom_resolver_hub_creation ? 1 : 0
-  name              = var.prefix != null ? "${var.prefix}-custom-resolver" : var.dns_custom_resolver_name
+  count = var.enable_hub && !var.skip_custom_resolver_hub_creation ? 1 : 0
+
+  name              = var.dns_custom_resolver_name != null ? var.dns_custom_resolver_name : (var.prefix != null ? "${var.prefix}-custom-resolver" : "${var.name}-custom-resolver")
   instance_id       = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
   high_availability = true
   enabled           = true
@@ -198,7 +201,7 @@ resource "time_sleep" "wait_for_authorization_policy" {
 
 resource "ibm_is_vpc_routing_table" "route_table" {
   for_each                      = module.dynamic_values.routing_table_map
-  name                          = var.prefix != null ? "${var.prefix}-${var.name}-route-${each.value.name}" : "${var.routing_table_name}-${each.value.name}"
+  name                          = var.routing_table_name != null ? "${var.routing_table_name}-${each.value.name}" : (var.prefix != null ? "${var.prefix}-route-${each.value.name}" : "${var.name}-route-${each.value.name}")
   vpc                           = local.vpc_id
   route_direct_link_ingress     = each.value.route_direct_link_ingress
   route_transit_gateway_ingress = each.value.route_transit_gateway_ingress
@@ -233,7 +236,7 @@ locals {
 
 resource "ibm_is_public_gateway" "gateway" {
   for_each       = local.gateway_object
-  name           = var.prefix != null ? "${var.prefix}-${var.name}-public-gateway-${each.key}" : "${var.public_gateway_name}-${each.key}"
+  name           = var.public_gateway_name != null ? "${var.public_gateway_name}-${each.key}" : (var.prefix != null ? "${var.prefix}-public-gateway-${each.key}" : "${var.name}-public-gateway-${each.key}")
   vpc            = local.vpc_id
   resource_group = var.resource_group_id
   zone           = each.value
@@ -267,7 +270,7 @@ resource "ibm_iam_authorization_policy" "policy" {
 resource "ibm_is_flow_log" "flow_logs" {
   count = (var.enable_vpc_flow_logs) ? 1 : 0
 
-  name           = var.prefix != null ? "${var.prefix}-${var.name}-logs" : var.vpc_flow_logs_name
+  name           = var.vpc_flow_logs_name != null ? var.vpc_flow_logs_name : (var.prefix != null ? "${var.prefix}-logs" : "${var.name}-logs")
   target         = local.vpc_id
   active         = var.is_flow_log_collector_active
   storage_bucket = var.existing_storage_bucket_name
