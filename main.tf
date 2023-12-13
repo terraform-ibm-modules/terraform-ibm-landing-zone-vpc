@@ -122,7 +122,8 @@ data "ibm_is_vpc" "vpc" {
 }
 
 locals {
-  vpc_id = var.create_vpc ? ibm_is_vpc.vpc[0].id : var.existing_vpc_id
+  vpc_id   = var.create_vpc ? ibm_is_vpc.vpc[0].id : var.existing_vpc_id
+  vpc_data = var.create_vpc ? ibm_is_vpc.vpc[0] : data.ibm_is_vpc.vpc[0]
 }
 
 # Configure custom resolver on the hub vpc

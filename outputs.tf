@@ -4,7 +4,7 @@
 
 output "vpc_name" {
   description = "Name of VPC created"
-  value       = var.create_vpc == true ? ibm_is_vpc.vpc[0].name : data.ibm_is_vpc.vpc[0].name
+  value       = local.vpc_data.name
 }
 
 output "vpc_id" {
@@ -14,7 +14,7 @@ output "vpc_id" {
 
 output "vpc_crn" {
   description = "CRN of VPC created"
-  value       = var.create_vpc == true ? ibm_is_vpc.vpc[0].crn : data.ibm_is_vpc.vpc[0].crn
+  value       = local.vpc_data.crn
 }
 
 ##############################################################################
@@ -44,7 +44,7 @@ output "public_gateways" {
 output "subnet_ids" {
   description = "The IDs of the subnets"
   value = [
-    for subnet in ibm_is_subnet.subnet :
+    for subnet in local.subnets :
     subnet.id
   ]
 }
@@ -53,11 +53,11 @@ output "subnet_detail_list" {
   description = "A list of subnets containing names, CIDR blocks, and zones."
   value = {
     for zone_name in distinct([
-      for subnet in ibm_is_subnet.subnet :
+      for subnet in local.subnets :
       subnet.zone
     ]) :
     zone_name => {
-      for subnet in ibm_is_subnet.subnet :
+      for subnet in local.subnets :
       subnet.name => {
         id   = subnet.id
         cidr = subnet.ipv4_cidr_block
@@ -70,7 +70,7 @@ output "subnet_detail_list" {
 output "subnet_zone_list" {
   description = "A list containing subnet IDs and subnet zones"
   value = [
-    for subnet in ibm_is_subnet.subnet : {
+    for subnet in local.subnets : {
       name = subnet.name
       id   = subnet.id
       zone = subnet.zone
@@ -84,11 +84,11 @@ output "subnet_detail_map" {
   description = "A map of subnets containing IDs, CIDR blocks, and zones"
   value = {
     for zone_name in distinct([
-      for subnet in ibm_is_subnet.subnet :
+      for subnet in local.subnets :
       subnet.zone
     ]) :
     "zone-${substr(zone_name, -1, length(zone_name))}" => [
-      for subnet in ibm_is_subnet.subnet :
+      for subnet in local.subnets :
       {
         id         = subnet.id
         zone       = subnet.zone
@@ -144,7 +144,7 @@ output "cidr_blocks" {
 
 output "vpc_data" {
   description = "Data of the VPC used in this module, created or existing."
-  value       = var.create_vpc == true ? ibm_is_vpc.vpc[0] : data.ibm_is_vpc.vpc[0]
+  value       = local.vpc_data
 }
 
 ##############################################################################
