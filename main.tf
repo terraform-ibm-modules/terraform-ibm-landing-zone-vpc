@@ -131,6 +131,16 @@ resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
   }
 }
 
+data "ibm_is_vpc" "vpc" {
+  count      = var.create_vpc == false ? 1 : 0
+  identifier = var.existing_vpc_id
+}
+
+locals {
+  vpc_id   = var.create_vpc ? ibm_is_vpc.vpc[0].id : var.existing_vpc_id
+  vpc_data = var.create_vpc ? ibm_is_vpc.vpc[0] : data.ibm_is_vpc.vpc[0]
+}
+
 # Configure custom resolver on the hub vpc
 resource "ibm_resource_instance" "dns_instance_hub" {
   count = var.enable_hub && !var.skip_custom_resolver_hub_creation && !var.use_existing_dns_instance ? 1 : 0
