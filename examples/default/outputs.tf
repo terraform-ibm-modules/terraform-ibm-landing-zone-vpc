@@ -12,6 +12,16 @@ output "vpc_crn" {
   description = "VPC crn"
 }
 
+output "vpc_name" {
+  value       = module.slz_vpc.vpc_data.name
+  description = "VPC name property taken from the larger data element"
+}
+
+output "subnet_ids" {
+  value       = module.slz_vpc.subnet_ids
+  description = "list of VPC subnet ids created"
+}
+
 output "vpc_flow_logs_collector" {
   value       = module.slz_vpc.vpc_flow_logs
   description = "VPC flow logs collector"

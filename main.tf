@@ -39,11 +39,12 @@ locals {
 ##############################################################################
 
 resource "ibm_is_vpc" "vpc" {
-  count                       = var.create_vpc == true ? 1 : 0
-  name                        = var.prefix != null ? "${var.prefix}-${var.name}-vpc" : "${var.name}-vpc"
-  resource_group              = var.resource_group_id
-  classic_access              = var.classic_access
-  address_prefix_management   = length([for prefix in values(coalesce(var.address_prefixes, {})) : prefix if prefix != null]) != 0 ? "manual" : null
+  count          = var.create_vpc == true ? 1 : 0
+  name           = var.prefix != null ? "${var.prefix}-${var.name}-vpc" : "${var.name}-vpc"
+  resource_group = var.resource_group_id
+  classic_access = var.classic_access
+  # address prefix is set to auto only if no address prefixes NOR any subnet is passed as input
+  address_prefix_management   = (length([for prefix in values(coalesce(var.address_prefixes, {})) : prefix if prefix != null]) != 0) || (length([for subnet in values(coalesce(var.subnets, {})) : subnet if subnet != null]) != 0) ? "manual" : null
   default_network_acl_name    = var.default_network_acl_name
   default_security_group_name = var.default_security_group_name
   default_routing_table_name  = var.default_routing_table_name
@@ -122,7 +123,8 @@ data "ibm_is_vpc" "vpc" {
 }
 
 locals {
-  vpc_id = var.create_vpc ? ibm_is_vpc.vpc[0].id : var.existing_vpc_id
+  vpc_id   = var.create_vpc ? ibm_is_vpc.vpc[0].id : var.existing_vpc_id
+  vpc_data = var.create_vpc ? ibm_is_vpc.vpc[0] : data.ibm_is_vpc.vpc[0]
 }
 
 # Configure custom resolver on the hub vpc
