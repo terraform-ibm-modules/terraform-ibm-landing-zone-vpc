@@ -40,7 +40,7 @@ This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) net
 
 In addition to this root module, this repository provides two submodules that call the root module with presets and defaults that are aligned with the general [Framework for Financial Services](https://cloud.ibm.com/docs/framework-financial-services?topic=framework-financial-services-vpc-architecture-about) management and workload VPC topologies. See the [landing-zone-submodules](/landing-zone-submodule/) for details.
 
-#### Usage
+### Usage
 ```terraform
 module vpc {
   source              = "terraform-ibm-modules/landing-zone-vpc/ibm"
