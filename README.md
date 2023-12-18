@@ -16,20 +16,7 @@ This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) net
 - VPN gateway connections: Add connections to a VPN gateway.
 - Hub and spoke DNS-sharing model: Optionally create a hub or spoke VPC, with associated custom resolver and DNS resolution binding. See [About DNS sharing for VPE gateways](https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model) in the IBM Cloud docs for details.
 
-![vpc-module](./.docs/vpc-module.png)
-
-## Presets
-
-In addition to this root module, this repository provides two submodules that call the root module with presets and defaults that are aligned with the general [Framework for Financial Services](https://cloud.ibm.com/docs/framework-financial-services?topic=framework-financial-services-vpc-architecture-about) management and workload VPC topologies. See the [landing-zone-submodules](/landing-zone-submodule/) for details.
-
-## Before you begin
-
-In addition to the [Terraform CLI](https://www.terraform.io/), some features of this module require additional software.
-
-If the `clean_default_security_group` or `clean_default_acl` input variables are set to `true`, you need the IBM Cloud CLI and VPC plug-in:
-
-- Install or update the [IBM Cloud CLI](https://cloud.ibm.com/docs/cli?topic=cli-getting-started)
-- Install of update the [VPC infrastructure CLI plug-in](https://cloud.ibm.com/docs/cli?topic=cli-vpc-reference)
+![vpc-module](https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/.docs/vpc-module.png)
 
 <!-- Below content is automatically populated via pre-commit hook -->
 <!-- BEGIN OVERVIEW HOOK -->
@@ -46,25 +33,32 @@ If the `clean_default_security_group` or `clean_default_acl` input variables are
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
-## Usage
+<!-- Match this heading to the name of the root level module (the repo name) -->
+## terraform-ibm-landing-zone-vpc
+
+### Presets
+
+In addition to this root module, this repository provides two submodules that call the root module with presets and defaults that are aligned with the general [Framework for Financial Services](https://cloud.ibm.com/docs/framework-financial-services?topic=framework-financial-services-vpc-architecture-about) management and workload VPC topologies. See the [landing-zone-submodules](/landing-zone-submodule/) for details.
+
+#### Usage
 ```terraform
 module vpc {
-  source  = "terraform-ibm-modules/landing-zone-vpc/ibm"
-  version = "latest" # Replace "latest" with a release version to lock into a specific release
-  resource_group_id           = var.resource_group_id
-  region                      = var.region
-  prefix                      = var.prefix
-  tags                        = var.tags
-  vpc_name                    = var.vpc_name
-  classic_access              = var.classic_access
-  network_acls                = var.network_acls
-  use_public_gateways         = var.use_public_gateways
-  subnets                     = var.subnets
-  vpn_gateways                = var.vpn_gateways
+  source              = "terraform-ibm-modules/landing-zone-vpc/ibm"
+  version             = "X.X.X" # Replace "X.X.X" with a release version to lock into a specific release
+  resource_group_id   = var.resource_group_id
+  region              = var.region
+  prefix              = var.prefix
+  tags                = var.tags
+  vpc_name            = var.vpc_name
+  classic_access      = var.classic_access
+  network_acls        = var.network_acls
+  use_public_gateways = var.use_public_gateways
+  subnets             = var.subnets
+  vpn_gateways        = var.vpn_gateways
 }
 ```
 
-## Subnets
+### Subnets
 
  You can create a maximum of three zones in the [subnet.tf](subnet.tf) file. The zones are defined as lists in the file, and then are converted to objects before the resources are provisioned. The conversion ensures that the addition or deletion of subnets affects only the added or deleted subnets, as shown in the following example.
 
@@ -77,7 +71,7 @@ module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-b"
 module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-c"]
 ```
 
-## Required IAM access policies
+### Required IAM access policies
 You need the following permissions to run this module.
 
 - IAM services
