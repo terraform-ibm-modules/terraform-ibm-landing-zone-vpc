@@ -51,7 +51,8 @@ data "ibm_is_vpc" "vpc" {
 }
 
 locals {
-  vpc_id = var.create_vpc ? ibm_is_vpc.vpc[0].id : var.existing_vpc_id
+  vpc_id   = var.create_vpc ? ibm_is_vpc.vpc[0].id : var.existing_vpc_id
+  vpc_data = var.create_vpc ? ibm_is_vpc.vpc[0] : data.ibm_is_vpc.vpc[0]
 }
 
 ##############################################################################
@@ -59,10 +60,10 @@ locals {
 ##############################################################################
 
 resource "ibm_is_vpc" "vpc" {
-  count                       = var.create_vpc == true ? 1 : 0
-  name                        = var.name != null ? var.name : "${var.prefix}-vpc"
-  resource_group              = var.resource_group_id
-  classic_access              = var.classic_access
+  count          = var.create_vpc == true ? 1 : 0
+  name           = var.name != null ? var.name : "${var.prefix}-vpc"
+  resource_group = var.resource_group_id
+  classic_access = var.classic_access
   # address prefix is set to auto only if no address prefixes NOR any subnet is passed as input
   address_prefix_management   = length([for prefix in values(coalesce(var.address_prefixes, {})) : prefix if prefix != null]) != 0 ? "manual" : null
   default_network_acl_name    = var.default_network_acl_name
@@ -138,16 +139,6 @@ resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
   vpc {
     crn = var.hub_vpc_crn # Target VPC CRN
   }
-}
-
-data "ibm_is_vpc" "vpc" {
-  count      = var.create_vpc == false ? 1 : 0
-  identifier = var.existing_vpc_id
-}
-
-locals {
-  vpc_id   = var.create_vpc ? ibm_is_vpc.vpc[0].id : var.existing_vpc_id
-  vpc_data = var.create_vpc ? ibm_is_vpc.vpc[0] : data.ibm_is_vpc.vpc[0]
 }
 
 # Configure custom resolver on the hub vpc
