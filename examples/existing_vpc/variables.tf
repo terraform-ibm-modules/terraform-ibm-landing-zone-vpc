@@ -29,3 +29,9 @@ variable "existing_resource_group_name" {
   type        = string
   description = "An existing resource group name to use for this example."
 }
+
+variable "name" {
+  description = "The string is used as a prefix for the naming of VPC resources."
+  type        = string
+  default     = null
+}

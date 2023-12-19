@@ -158,6 +158,7 @@ func TestRunExistingVPCExample(t *testing.T) {
 			"subnet_ids":                   terraform.OutputJson(t, existingTerraformOptions, "subnet_id"),
 			"public_gateway_name":          fmt.Sprintf("%s-public-gateway", prefix),
 			"existing_resource_group_name": fmt.Sprintf("%s-resource-group", prefix),
+			"name":                         prefix,
 		}
 
 		output, err := options.RunTestConsistency()

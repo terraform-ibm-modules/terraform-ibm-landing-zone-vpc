@@ -16,6 +16,7 @@ module "slz_vpc" {
   create_vpc          = false
   existing_vpc_id     = var.vpc_id
   create_subnets      = false
+  name                = var.name
   public_gateway_name = var.public_gateway_name
   existing_subnet_ids = var.subnet_ids
 }
