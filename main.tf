@@ -63,6 +63,7 @@ resource "ibm_is_vpc" "vpc" {
   name                        = var.name != null ? var.name : "${var.prefix}-vpc"
   resource_group              = var.resource_group_id
   classic_access              = var.classic_access
+  # address prefix is set to auto only if no address prefixes NOR any subnet is passed as input
   address_prefix_management   = length([for prefix in values(coalesce(var.address_prefixes, {})) : prefix if prefix != null]) != 0 ? "manual" : null
   default_network_acl_name    = var.default_network_acl_name
   default_security_group_name = var.default_security_group_name
