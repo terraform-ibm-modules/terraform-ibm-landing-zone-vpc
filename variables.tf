@@ -5,7 +5,7 @@
 variable "name" {
   description = "The string to use for the naming of VPC, when var.create_vpc is true. This string also use for the naming of VPC resources."
   type        = string
-  default     = "dev"
+  default     = null
 }
 
 variable "dns_binding_name" {
