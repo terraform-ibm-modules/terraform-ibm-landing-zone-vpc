@@ -1,6 +1,6 @@
 # Landing Zone example
 
-This example demonstrates how to use the management and workload VPC [modules](../../landing-zone-submodule/) to create a network VPC topology that is aligned with the network segregation key principles of the IBM Cloud [Framework for Financial Services](https://cloud.ibm.com/docs/framework-financial-services?topic=framework-financial-services-vpc-architecture-connectivity-overview).
+This example demonstrates how to use the management and workload VPC [modules](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vsi/tree/main/modules/fscloud) to create a network VPC topology that is aligned with the network segregation key principles of the IBM Cloud [Framework for Financial Services](https://cloud.ibm.com/docs/framework-financial-services?topic=framework-financial-services-vpc-architecture-connectivity-overview).
 
 The example shows how to use the base modules to create the following topology:
 - A management VPC

@@ -33,7 +33,7 @@ module "cos_bucket" {
 #############################################################################
 
 module "workload_vpc" {
-  source                                 = "../../landing-zone-submodule/workload-vpc/"
+  source                                 = "../../modules/workload-vpc/"
   resource_group_id                      = module.resource_group.resource_group_id
   region                                 = var.region
   prefix                                 = var.prefix
@@ -48,7 +48,7 @@ module "workload_vpc" {
 
 
 module "management_vpc" {
-  source               = "../../landing-zone-submodule/management-vpc/"
+  source               = "../../modules/management-vpc/"
   resource_group_id    = module.resource_group.resource_group_id
   region               = var.region
   prefix               = var.prefix
