@@ -84,7 +84,7 @@ func TestRunNoPrefixExample(t *testing.T) {
 
 	// check if name is the same
 	outputs := terraform.OutputAll(options.Testing, options.TerraformOptions)
-	assert.Equal(t, testName+"-vpc", outputs["vpc_name"], "VPC name was altered, and should not have been.")
+	assert.Equal(t, testName, outputs["vpc_name"], "VPC name was altered, and should not have been.")
 	options.TestTearDown()
 }
 
@@ -156,7 +156,9 @@ func TestRunExistingVPCExample(t *testing.T) {
 			"region":                       region,
 			"vpc_id":                       terraform.Output(t, existingTerraformOptions, "vpc_id"),
 			"subnet_ids":                   terraform.OutputJson(t, existingTerraformOptions, "subnet_id"),
+			"public_gateway_name":          fmt.Sprintf("%s-public-gateway", prefix),
 			"existing_resource_group_name": fmt.Sprintf("%s-resource-group", prefix),
+			"name":                         prefix,
 		}
 
 		output, err := options.RunTestConsistency()
