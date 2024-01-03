@@ -54,43 +54,42 @@ variable "prefix" {
 }
 
 variable "name" {
-  description = "The string to use for the naming of VPC, when var.create_vpc is true. This string is also used as a prefix for the naming of VPC resources. If var.prefix is null, this variable value will be required for naming the VPC."
+  description = "If `create_vpc` is true, this string names both the VPC and associated resources. If false, it names only the associated resources."
   type        = string
-  default     = null
 }
 
 variable "dns_binding_name" {
-  description = "The name to give the provisioned VPC DNS resolution binding. If not set, the module generates a name based on the var.prefix and var.name variables."
+  description = "The name to give the provisioned VPC DNS resolution binding. If not set, the module generates a name based on the `prefix` and `name` variables."
   type        = string
   default     = null
 }
 
 variable "dns_instance_name" {
-  description = "The name to give the provisioned DNS instance. If not set, the module generates a name based on the var.prefix and var.name variables."
+  description = "The name to give the provisioned DNS instance. If not set, the module generates a name based on the `prefix` and `name` variables."
   type        = string
   default     = null
 }
 
 variable "dns_custom_resolver_name" {
-  description = "The name to give the provisioned DNS custom resolver instance. If not set, the module generates a name based on the var.prefix and var.name variables."
+  description = "The name to give the provisioned DNS custom resolver instance. If not set, the module generates a name based on the `prefix` and `name` variables."
   type        = string
   default     = null
 }
 
 variable "routing_table_name" {
-  description = "The name to give the provisioned routing tables. If not set, the module generates a name based on the var.prefix and var.name variables."
+  description = "The name to give the provisioned routing tables. If not set, the module generates a name based on the `prefix` and `name` variables."
   type        = string
   default     = null
 }
 
 variable "public_gateway_name" {
-  description = "The name to give the provisioned VPC public gateways. If not set, the module generates a name based on the var.prefix and var.name variables."
+  description = "The name to give the provisioned VPC public gateways. If not set, the module generates a name based on the `prefix` and `name` variables."
   type        = string
   default     = null
 }
 
 variable "vpc_flow_logs_name" {
-  description = "The name to give the provisioned VPC flow logs. If not set, the module generates a name based on the var.prefix and var.name variables."
+  description = "The name to give the provisioned VPC flow logs. If not set, the module generates a name based on the `prefix` and `name` variables."
   type        = string
   default     = null
 }
@@ -591,7 +590,7 @@ variable "resolver_type" {
       var.resolver_type == "system",
       var.resolver_type == "manual",
     ])
-    error_message = "var.resolver_type either be null, or set to the string 'system' or 'manual'."
+    error_message = "`resolver_type` either be null, or set to the string 'system' or 'manual'."
   }
 }
 
@@ -619,6 +618,6 @@ variable "dns_plan" {
       var.dns_plan == "standard-dns",
       var.dns_plan == "free-plan",
     ])
-    error_message = "var.dns_plan can either be standard-dns or free-plan."
+    error_message = "`dns_plan` can either be standard-dns or free-plan."
   }
 }
