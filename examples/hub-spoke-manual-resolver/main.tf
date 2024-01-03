@@ -19,7 +19,7 @@ module "hub_vpc" {
   resource_group_id = module.resource_group.resource_group_id
   region            = var.region
   name              = "hub"
-  prefix            = var.prefix
+  prefix            = "${var.prefix}-hub"
   tags              = var.resource_tags
   enable_hub        = true
   subnets = {
@@ -56,7 +56,7 @@ module "spoke_vpc" {
   resource_group_id         = module.resource_group.resource_group_id
   region                    = var.region
   name                      = "spoke"
-  prefix                    = var.prefix
+  prefix                    = "${var.prefix}-spoke"
   tags                      = var.resource_tags
   hub_vpc_crn               = module.hub_vpc.vpc_crn
   enable_hub_vpc_crn        = true

@@ -16,12 +16,6 @@ variable "prefix" {
   default     = "def-slz-vpc"
 }
 
-variable "name" {
-  description = "The name of the vpc"
-  type        = string
-  default     = "vpc"
-}
-
 variable "resource_group" {
   type        = string
   description = "An existing resource group name to use for this example, if unset a new resource group will be created"

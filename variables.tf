@@ -2,12 +2,6 @@
 # Module Level Variables
 ##############################################################################
 
-variable "name" {
-  description = "The name to give the newly provisioned VPC. Only used if 'create_vpc' is true."
-  type        = string
-  default     = "dev"
-}
-
 variable "create_vpc" {
   description = "Indicates whether user wants to use an existing vpc or create a new one. Set it to true to create a new vpc"
   type        = bool
@@ -30,12 +24,6 @@ variable "region" {
   type        = string
 }
 
-variable "prefix" {
-  description = "The value that you would like to prefix to the name of the resources provisioned by this module. Explicitly set to null if you do not wish to use a prefix."
-  type        = string
-  default     = null
-}
-
 variable "tags" {
   description = "List of Tags for the resource created"
   type        = list(string)
@@ -53,6 +41,58 @@ variable "access_tags" {
     ])
     error_message = "Tags must match the regular expression \"[\\w\\-_\\.]+:[\\w\\-_\\.]+\". For more information, see https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#limits."
   }
+}
+
+##############################################################################
+# Naming Variables
+##############################################################################
+
+variable "prefix" {
+  description = "The value that you would like to prefix to the name of the resources provisioned by this module. Explicitly set to null if you do not wish to use a prefix."
+  type        = string
+  default     = null
+}
+
+variable "name" {
+  description = "The string to use for the naming of VPC, when var.create_vpc is true. This string is also used as a prefix for the naming of VPC resources. If var.prefix is null, this variable value will be required for naming the VPC."
+  type        = string
+  default     = null
+}
+
+variable "dns_binding_name" {
+  description = "The name to give the provisioned VPC DNS resolution binding. If not set, the module generates a name based on the var.prefix and var.name variables."
+  type        = string
+  default     = null
+}
+
+variable "dns_instance_name" {
+  description = "The name to give the provisioned DNS instance. If not set, the module generates a name based on the var.prefix and var.name variables."
+  type        = string
+  default     = null
+}
+
+variable "dns_custom_resolver_name" {
+  description = "The name to give the provisioned DNS custom resolver instance. If not set, the module generates a name based on the var.prefix and var.name variables."
+  type        = string
+  default     = null
+}
+
+variable "routing_table_name" {
+  description = "The name to give the provisioned routing tables. If not set, the module generates a name based on the var.prefix and var.name variables."
+  type        = string
+  default     = null
+}
+
+variable "public_gateway_name" {
+  description = "The name to give the provisioned VPC public gateways. If not set, the module generates a name based on the var.prefix and var.name variables."
+  type        = string
+  default     = null
+}
+
+variable "vpc_flow_logs_name" {
+  description = "The name to give the provisioned VPC flow logs. If not set, the module generates a name based on the var.prefix and var.name variables."
+  type        = string
+  default     = null
 }
 
 ##############################################################################
