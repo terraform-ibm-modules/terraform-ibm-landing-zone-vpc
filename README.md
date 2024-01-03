@@ -60,7 +60,7 @@ module vpc {
 
 ### Resource naming
 
-The module automatically generates names for the all provisioned VPC resources using the `var.prefix` input variable. You can selectively override this behavior by giving explicit names through the following input variables: `name(for VPC name)`, `dns_binding_name`, `dns_instance_name`, `dns_custom_resolver_name`, `routing_table_name`, `public_gateway_name`, and `vpc_flow_logs_name`.
+The module automatically generates names for the all provisioned VPC resources using the `var.prefix` input variable. You can selectively override this behavior by giving explicit names through the following input variables: `name` (for VPC name), `dns_binding_name`, `dns_instance_name`, `dns_custom_resolver_name`, `routing_table_name`, `public_gateway_name`, and `vpc_flow_logs_name`.
 
 ### Subnets
 
