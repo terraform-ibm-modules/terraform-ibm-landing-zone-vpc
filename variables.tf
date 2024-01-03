@@ -48,13 +48,13 @@ variable "access_tags" {
 ##############################################################################
 
 variable "prefix" {
-  description = "The value that you would like to prefix to the name of the resources provisioned by this module. Explicitly set to null if you do not wish to use a prefix."
+  description = "The value that you would like to prefix to the name of the resources provisioned by this module. Explicitly set to null if you do not wish to use a prefix. This value is ignored if using one of the optional variables for explicit control over naming."
   type        = string
   default     = null
 }
 
 variable "name" {
-  description = "If `create_vpc` is true, this string names both the VPC and associated resources. If false, it names only the associated resources."
+  description = "Used for the naming of the VPC (if create_vpc is set to true), as well as in the naming for any resources created inside the VPC (unless using one of the optional variables for explicit control over naming)."
   type        = string
 }
 
@@ -590,7 +590,7 @@ variable "resolver_type" {
       var.resolver_type == "system",
       var.resolver_type == "manual",
     ])
-    error_message = "`resolver_type` either be null, or set to the string 'system' or 'manual'."
+    error_message = "`resolver_type` can either be null, or set to the string 'system' or 'manual'."
   }
 }
 
