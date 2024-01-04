@@ -5,8 +5,10 @@ locals {
   # input variable validation
   # tflint-ignore: terraform_unused_declarations
   validate_default_secgroup_rules = var.clean_default_sg_acl && (var.security_group_rules != null && length(var.security_group_rules) > 0) ? tobool("var.clean_default_sg_acl is true and var.security_group_rules are not empty, which are in direct conflict of each other. If you would like the default VPC Security Group to be empty, you must remove default rules from var.security_group_rules.") : true
+
   # tflint-ignore: terraform_unused_declarations
   validate_existing_vpc_id = !var.create_vpc && var.existing_vpc_id == null ? tobool("If var.create_vpc is false, then provide a value for var.existing_vpc_id to create vpc.") : true
+
   # tflint-ignore: terraform_unused_declarations
   validate_existing_subnet_id = !var.create_subnets && length(var.existing_subnets) == 0 ? tobool("If var.create_subnet is false, then provide a value for var.existing_subnets to create subnets.") : true
   # tflint-ignore: terraform_unused_declarations
@@ -32,6 +34,23 @@ locals {
 
   # tflint-ignore: terraform_unused_declarations
   validate_resolver_type_input = (var.resolver_type != null && var.update_delegated_resolver == true) ? tobool("var.resolver_type cannot be set if var.update_delegated_resolver is set to true. Only one type of resolver can be created by VPC.") : true
+
+  # tflint-ignore: terraform_unused_declarations
+  validate_vpc_flow_logs_inputs = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? ((var.existing_cos_instance_guid != null && var.existing_storage_bucket_name != null) ? true : tobool("Please provide COS instance & bucket name to create flow logs collector.")) : ((var.existing_storage_bucket_name != null) ? true : tobool("Please provide COS bucket name to create flow logs collector"))) : false
+}
+
+##############################################################################
+# Check if existing vpc id is passed
+##############################################################################
+
+data "ibm_is_vpc" "vpc" {
+  count      = var.create_vpc == false ? 1 : 0
+  identifier = var.existing_vpc_id
+}
+
+locals {
+  vpc_id   = var.create_vpc ? ibm_is_vpc.vpc[0].id : var.existing_vpc_id
+  vpc_data = var.create_vpc ? ibm_is_vpc.vpc[0] : data.ibm_is_vpc.vpc[0]
 }
 
 ##############################################################################
@@ -40,7 +59,7 @@ locals {
 
 resource "ibm_is_vpc" "vpc" {
   count          = var.create_vpc == true ? 1 : 0
-  name           = var.prefix != null ? "${var.prefix}-${var.name}-vpc" : "${var.name}-vpc"
+  name           = var.prefix != null ? "${var.prefix}-${var.name}-vpc" : var.name
   resource_group = var.resource_group_id
   classic_access = var.classic_access
   # address prefix is set to auto only if no address prefixes NOR any subnet is passed as input
@@ -101,7 +120,11 @@ resource "ibm_is_vpc" "vpc" {
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
   count = (var.enable_hub == false && var.enable_hub_vpc_id) ? 1 : 0
 
-  name   = "${var.prefix}-dns-binding"
+  # Use var.dns_binding_name if not null, otherwise, use var.prefix and var.name combination.
+  name = coalesce(
+    var.dns_binding_name,
+    "${var.prefix != null ? "${var.prefix}-${var.name}" : var.name}-dns-binding"
+  )
   vpc_id = local.vpc_id # Source VPC
   vpc {
     id = var.hub_vpc_id # Target VPC ID
@@ -109,28 +132,28 @@ resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
 }
 
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
-  count  = (var.enable_hub == false && var.enable_hub_vpc_crn) ? 1 : 0
-  name   = "${var.prefix}-dns-binding"
+  count = (var.enable_hub == false && var.enable_hub_vpc_crn) ? 1 : 0
+
+  # Use var.dns_binding_name if not null, otherwise, use var.prefix and var.name combination.
+  name = coalesce(
+    var.dns_binding_name,
+    "${var.prefix != null ? "${var.prefix}-${var.name}" : var.name}-dns-binding"
+  )
   vpc_id = local.vpc_id # Source VPC
   vpc {
     crn = var.hub_vpc_crn # Target VPC CRN
   }
 }
 
-data "ibm_is_vpc" "vpc" {
-  count      = var.create_vpc == false ? 1 : 0
-  identifier = var.existing_vpc_id
-}
-
-locals {
-  vpc_id   = var.create_vpc ? ibm_is_vpc.vpc[0].id : var.existing_vpc_id
-  vpc_data = var.create_vpc ? ibm_is_vpc.vpc[0] : data.ibm_is_vpc.vpc[0]
-}
-
 # Configure custom resolver on the hub vpc
 resource "ibm_resource_instance" "dns_instance_hub" {
-  count             = var.enable_hub && !var.skip_custom_resolver_hub_creation && !var.use_existing_dns_instance ? 1 : 0
-  name              = "${var.prefix}-dns-instance"
+  count = var.enable_hub && !var.skip_custom_resolver_hub_creation && !var.use_existing_dns_instance ? 1 : 0
+
+  # Use var.dns_instance_name if not null, otherwise, use var.prefix and var.name combination.
+  name = coalesce(
+    var.dns_instance_name,
+    "${var.prefix != null ? "${var.prefix}-${var.name}" : var.name}-dns-instance"
+  )
   resource_group_id = var.resource_group_id
   location          = var.dns_location
   service           = "dns-svcs"
@@ -138,8 +161,13 @@ resource "ibm_resource_instance" "dns_instance_hub" {
 }
 
 resource "ibm_dns_custom_resolver" "custom_resolver_hub" {
-  count             = var.enable_hub && !var.skip_custom_resolver_hub_creation ? 1 : 0
-  name              = "${var.prefix}-custom-resolver"
+  count = var.enable_hub && !var.skip_custom_resolver_hub_creation ? 1 : 0
+
+  # Use var.dns_custom_resolver_name if not null, otherwise, use var.prefix and var.name combination.
+  name = coalesce(
+    var.dns_custom_resolver_name,
+    "${var.prefix != null ? "${var.prefix}-${var.name}" : var.name}-custom-resolver"
+  )
   instance_id       = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
   high_availability = true
   enabled           = true
@@ -194,8 +222,9 @@ resource "time_sleep" "wait_for_authorization_policy" {
 ##############################################################################
 
 resource "ibm_is_vpc_routing_table" "route_table" {
-  for_each                      = module.dynamic_values.routing_table_map
-  name                          = var.prefix != null ? "${var.prefix}-${var.name}-route-${each.value.name}" : "${var.name}-route-${each.value.name}"
+  for_each = module.dynamic_values.routing_table_map
+  # Use var.routing_table_name if not null, otherwise, use var.prefix and var.name combination.
+  name                          = var.routing_table_name != null ? "${var.routing_table_name}-${each.value.name}" : var.prefix != null ? "${var.prefix}-${var.name}-route-${each.value.name}" : "${var.name}-route-${each.value.name}"
   vpc                           = local.vpc_id
   route_direct_link_ingress     = each.value.route_direct_link_ingress
   route_transit_gateway_ingress = each.value.route_transit_gateway_ingress
@@ -229,8 +258,9 @@ locals {
 }
 
 resource "ibm_is_public_gateway" "gateway" {
-  for_each       = local.gateway_object
-  name           = var.prefix != null ? "${var.prefix}-${var.name}-public-gateway-${each.key}" : "${var.name}-public-gateway-${each.key}"
+  for_each = local.gateway_object
+  # Use var.public_gateway_name if not null, otherwise, use var.prefix and var.name combination.
+  name           = var.public_gateway_name != null ? "${var.public_gateway_name}-${each.key}" : var.prefix != null ? "${var.prefix}-${var.name}-public-gateway-${each.key}" : "${var.name}-public-gateway-${each.key}"
   vpc            = local.vpc_id
   resource_group = var.resource_group_id
   zone           = each.value
@@ -243,11 +273,6 @@ resource "ibm_is_public_gateway" "gateway" {
 ##############################################################################
 # Add VPC to Flow Logs
 ##############################################################################
-
-locals {
-  # tflint-ignore: terraform_unused_declarations
-  validate_vpc_flow_logs_inputs = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? ((var.existing_cos_instance_guid != null && var.existing_storage_bucket_name != null) ? true : tobool("Please provide COS instance & bucket name to create flow logs collector.")) : ((var.existing_storage_bucket_name != null) ? true : tobool("Please provide COS bucket name to create flow logs collector"))) : false
-}
 
 # Create authorization policy to allow VPC to access COS instance
 resource "ibm_iam_authorization_policy" "policy" {
@@ -264,7 +289,11 @@ resource "ibm_iam_authorization_policy" "policy" {
 resource "ibm_is_flow_log" "flow_logs" {
   count = (var.enable_vpc_flow_logs) ? 1 : 0
 
-  name           = var.prefix != null ? "${var.prefix}-${var.name}-logs" : "${var.name}-logs"
+  # Use var.vpc_flow_logs_name if not null, otherwise, use var.prefix and var.name combination.
+  name = coalesce(
+    var.vpc_flow_logs_name,
+    "${var.prefix != null ? "${var.prefix}-${var.name}" : var.name}-logs"
+  )
   target         = local.vpc_id
   active         = var.is_flow_log_collector_active
   storage_bucket = var.existing_storage_bucket_name

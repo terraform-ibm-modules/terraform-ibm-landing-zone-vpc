@@ -12,7 +12,7 @@ locals {
 
 
 ##############################################################################
-# Create New Prefixes
+# Create new address prefixes
 ##############################################################################
 
 resource "ibm_is_vpc_address_prefix" "subnet_prefix" {
