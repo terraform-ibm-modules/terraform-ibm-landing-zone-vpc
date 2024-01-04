@@ -382,10 +382,14 @@ variable "create_subnets" {
   default     = true
 }
 
-variable "existing_subnet_ids" {
-  description = "The IDs of the existing subnets. Required if 'create_subnets' is false."
-  type        = list(string)
-  default     = null
+variable "existing_subnets" {
+  description = "The detail of the existing subnets and required mappings to other resources. Required if 'create_subnets' is false."
+  type = list(object({
+    id             = string
+    public_gateway = optional(bool, false)
+  }))
+  default  = []
+  nullable = false
 }
 
 ##############################################################################

@@ -10,8 +10,7 @@ locals {
   validate_existing_vpc_id = !var.create_vpc && var.existing_vpc_id == null ? tobool("If var.create_vpc is false, then provide a value for var.existing_vpc_id to create vpc.") : true
 
   # tflint-ignore: terraform_unused_declarations
-  validate_existing_subnet_id = !var.create_subnets && var.existing_subnet_ids == null ? tobool("If var.create_subnet is false, then provide a value for var.existing_subnet_ids to create subnets.") : true
-
+  validate_existing_subnet_id = !var.create_subnets && length(var.existing_subnets) == 0 ? tobool("If var.create_subnet is false, then provide a value for var.existing_subnets to create subnets.") : true
   # tflint-ignore: terraform_unused_declarations
   validate_existing_vpc_and_subnet = var.create_vpc == true && var.create_subnets == false ? tobool("If user is not providing a vpc then they should also not be providing a subnet") : true
 
