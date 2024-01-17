@@ -1,3 +1,3 @@
-# No Prefix Example
+## No Prefix Example
 
-An example similar to the default example except in this example the prefix is hard-coded to be null.
+An example similar to the default example, but in this case, the prefix is hardcoded to be null.
