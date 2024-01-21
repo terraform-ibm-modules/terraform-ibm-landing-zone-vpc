@@ -12,7 +12,7 @@ locals {
 
 
 ##############################################################################
-# Create New Prefixes
+# Create new address prefixes
 ##############################################################################
 
 resource "ibm_is_vpc_address_prefix" "subnet_prefix" {
@@ -46,7 +46,17 @@ resource "ibm_is_subnet" "subnet" {
 }
 
 data "ibm_is_subnet" "subnet" {
-  count      = var.create_subnets == false ? length(var.existing_subnet_ids) : 0
-  identifier = var.existing_subnet_ids[count.index]
+  for_each   = var.create_subnets == false ? { for subnet in var.existing_subnets : subnet.id => subnet } : {}
+  identifier = each.key
 }
+
+# if using existing subnets, attach public gateways as configured
+resource "ibm_is_subnet_public_gateway_attachment" "exist_subnet_gw" {
+  # only choose subnets marked for gateways
+  for_each = var.create_subnets == false ? { for subnet in var.existing_subnets : subnet.id => subnet if subnet.public_gateway } : {}
+  subnet   = each.key
+  # find gateway detail using format of 'zone-#', determine '#' by getting last character of the 'zone' value of an existing subnet
+  public_gateway = ibm_is_public_gateway.gateway["zone-${substr(data.ibm_is_subnet.subnet[each.key].zone, length(data.ibm_is_subnet.subnet[each.key].zone) - 1, 1)}"].id
+}
+
 ##############################################################################

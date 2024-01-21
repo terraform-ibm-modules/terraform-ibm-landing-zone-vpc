@@ -17,7 +17,7 @@ module "resource_group" {
 module "cos_bucket" {
   count                  = var.enable_vpc_flow_logs ? 1 : 0
   source                 = "terraform-ibm-modules/cos/ibm"
-  version                = "7.1.3"
+  version                = "7.1.5"
   resource_group_id      = module.resource_group.resource_group_id
   region                 = var.region
   cross_region_location  = null
@@ -36,7 +36,7 @@ module "workload_vpc" {
   source                                 = "../../modules/workload-vpc/"
   resource_group_id                      = module.resource_group.resource_group_id
   region                                 = var.region
-  prefix                                 = var.prefix
+  prefix                                 = "${var.prefix}-workload"
   tags                                   = var.resource_tags
   access_tags                            = var.access_tags
   enable_vpc_flow_logs                   = var.enable_vpc_flow_logs
@@ -51,7 +51,7 @@ module "management_vpc" {
   source               = "../../modules/management-vpc/"
   resource_group_id    = module.resource_group.resource_group_id
   region               = var.region
-  prefix               = var.prefix
+  prefix               = "${var.prefix}-management"
   tags                 = var.resource_tags
   clean_default_sg_acl = true
 }
