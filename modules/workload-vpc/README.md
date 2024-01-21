@@ -6,6 +6,15 @@ You can use this submodule when you need more modularity to create your topology
 
 See the [Landing Zone example](../../examples/landing_zone/) for runnable code.
 
+### Usage
+```terraform
+module workload_vpc {
+  source              = https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/modules/workload-vpc
+  name                = "workload"
+  region              = "us-south"
+  prefix              = "workload-vpc"
+}
+```
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ### Requirements
