@@ -9,7 +9,7 @@ See the [Landing Zone example](../../examples/landing_zone/) for runnable code.
 ### Usage
 ```terraform
 module management_vpc {
-  source              = "terraform-ibm-modules/terraform-ibm-landing-zone-vpc/ibm//modules/management-vpc"
+  source              = "terraform-ibm-modules/landing-zone-vpc/ibm//modules/management-vpc"
   version             = "X.X.X" # replace X.X.X with a release version to lock into an exact release
   name                = "management"
   region              = "us-south"
