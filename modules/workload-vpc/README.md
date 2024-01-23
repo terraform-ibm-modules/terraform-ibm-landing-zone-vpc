@@ -9,7 +9,8 @@ See the [Landing Zone example](../../examples/landing_zone/) for runnable code.
 ### Usage
 ```terraform
 module workload_vpc {
-  source              = https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/modules/workload-vpc
+  source              = "terraform-ibm-modules/terraform-ibm-landing-zone-vpc/ibm//modules/workload-vpc"
+  version             = "X.X.X" # replace X.X.X with a release version to lock into an exact release
   name                = "workload"
   region              = "us-south"
   prefix              = "workload-vpc"
