@@ -50,17 +50,35 @@ module "hub_vpc" {
   }
 }
 
+# Configure custom resolver on the hub vpc
+resource "ibm_dns_custom_resolver" "custom_resolver_hub" {
+  name = "${var.prefix}-custom-resolver"
+
+  instance_id       = module.hub_vpc.dns_guid
+  high_availability = true
+  enabled           = true
+
+  dynamic "locations" {
+    for_each = module.hub_vpc.subnets
+    content {
+      subnet_crn = locations.value.crn
+      enabled    = true
+    }
+  }
+}
 
 module "spoke_vpc" {
-  source                    = "../../"
-  resource_group_id         = module.resource_group.resource_group_id
-  region                    = var.region
-  name                      = "spoke"
-  prefix                    = "${var.prefix}-spoke"
-  tags                      = var.resource_tags
-  hub_vpc_crn               = module.hub_vpc.vpc_crn
-  enable_hub_vpc_crn        = true
-  update_delegated_resolver = var.update_delegated_resolver
+  depends_on         = [ibm_dns_custom_resolver.custom_resolver_hub]
+  source             = "../../"
+  resource_group_id  = module.resource_group.resource_group_id
+  region             = var.region
+  name               = "spoke"
+  prefix             = "${var.prefix}-spoke"
+  tags               = var.resource_tags
+  hub_vpc_crn        = module.hub_vpc.vpc_crn
+  enable_hub_vpc_crn = true
+  is_spoke_vpc       = true
+  #  update_delegated_resolver = var.update_delegated_resolver
   subnets = {
     zone-1 = [
       {

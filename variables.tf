@@ -58,11 +58,11 @@ variable "name" {
   type        = string
 }
 
-variable "dns_binding_name" {
-  description = "The name to give the provisioned VPC DNS resolution binding. If not set, the module generates a name based on the `prefix` and `name` variables."
-  type        = string
-  default     = null
-}
+#variable "dns_binding_name" {
+#  description = "The name to give the provisioned VPC DNS resolution binding. If not set, the module generates a name based on the `prefix` and `name` variables."
+#  type        = string
+#  default     = null
+#}
 
 variable "dns_instance_name" {
   description = "The name to give the provisioned DNS instance. If not set, the module generates a name based on the `prefix` and `name` variables."
@@ -70,11 +70,11 @@ variable "dns_instance_name" {
   default     = null
 }
 
-variable "dns_custom_resolver_name" {
-  description = "The name to give the provisioned DNS custom resolver instance. If not set, the module generates a name based on the `prefix` and `name` variables."
-  type        = string
-  default     = null
-}
+#variable "dns_custom_resolver_name" {
+#  description = "The name to give the provisioned DNS custom resolver instance. If not set, the module generates a name based on the `prefix` and `name` variables."
+#  type        = string
+#  default     = null
+#}
 
 variable "routing_table_name" {
   description = "The name to give the provisioned routing tables. If not set, the module generates a name based on the `prefix` and `name` variables."
@@ -566,17 +566,23 @@ variable "update_delegated_resolver" {
   default     = false
 }
 
+variable "is_spoke_vpc" {
+  description = "If set to true, and if the vpc is configured to be a spoke for DNS resolution (enable_hub_vpc_crn or enable_hub_vpc_id set), then the spoke VPC resolver will be updated to a delegated resolver."
+  type        = bool
+  default     = false
+}
+
 variable "skip_custom_resolver_hub_creation" {
   description = "Indicates whether to skip the configuration of a custom resolver in the hub VPC. Only relevant if enable_hub is set to true."
   type        = bool
   default     = false
 }
 
-variable "existing_dns_instance_id" {
-  description = "Id of an existing dns instance in which the custom resolver is created. Only relevant if enable_hub is set to true."
-  type        = string
-  default     = null
-}
+#variable "existing_dns_instance_id" {
+#  description = "Id of an existing dns instance in which the custom resolver is created. Only relevant if enable_hub is set to true."
+#  type        = string
+#  default     = null
+#}
 
 variable "use_existing_dns_instance" {
   description = "Whether to use an existing dns instance. If true, existing_dns_instance_id must be set."
@@ -591,6 +597,7 @@ variable "resolver_type" {
   validation {
     condition = anytrue([
       var.resolver_type == null,
+      var.resolver_type == "delegated",
       var.resolver_type == "system",
       var.resolver_type == "manual",
     ])

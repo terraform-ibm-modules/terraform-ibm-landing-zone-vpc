@@ -13,7 +13,7 @@ variable "region" {
 variable "prefix" {
   description = "The prefix that you would like to append to your resources"
   type        = string
-  default     = "hs-delegated"
+  default     = "rajat-del"
 }
 
 variable "resource_group" {
@@ -27,9 +27,9 @@ variable "resource_tags" {
   type        = list(string)
   default     = null
 }
-
-variable "update_delegated_resolver" {
-  description = "If set to true, and if the vpc is configured to be a spoke for DNS resolution (enable_hub_vpc_crn or enable_hub_vpc_id set), then the spoke VPC resolver will be updated to a delegated resolver."
-  type        = bool
-  default     = false
-}
+#
+#variable "update_delegated_resolver" {
+#  description = "If set to true, and if the vpc is configured to be a spoke for DNS resolution (enable_hub_vpc_crn or enable_hub_vpc_id set), then the spoke VPC resolver will be updated to a delegated resolver."
+#  type        = bool
+#  default     = false
+#}

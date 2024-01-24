@@ -37,17 +37,17 @@ output "vpc_connection_ids" {
   description = "List of VPC connection IDs."
 }
 
-output "custom_resolver_hub_vpc" {
-  value       = module.hub_vpc.custom_resolver_hub
-  description = "The custom resolver created for the hub vpc."
-}
+#output "custom_resolver_hub_vpc" {
+#  value       = module.hub_vpc.custom_resolver_hub
+#  description = "The custom resolver created for the hub vpc."
+#}
 
-output "dns_endpoint_gateways_by_spoke_vpc_crn" {
-  value       = module.spoke_vpc.dns_endpoint_gateways_by_crn
-  description = "The list of VPEs that are made available for DNS resolution in the created VPC."
-}
-
-output "dns_endpoint_gateways_by_spoke_vpc_id" {
-  value       = module.spoke_vpc.dns_endpoint_gateways_by_id
-  description = "The list of VPEs that are made available for DNS resolution in the created VPC."
-}
+#output "dns_endpoint_gateways_by_spoke_vpc_crn" {
+#  value       = module.spoke_vpc.dns_endpoint_gateways_by_crn
+#  description = "The list of VPEs that are made available for DNS resolution in the created VPC."
+#}
+#
+#output "dns_endpoint_gateways_by_spoke_vpc_id" {
+#  value       = module.spoke_vpc.dns_endpoint_gateways_by_id
+#  description = "The list of VPEs that are made available for DNS resolution in the created VPC."
+#}

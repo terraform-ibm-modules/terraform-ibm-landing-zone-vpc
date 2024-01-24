@@ -151,17 +151,32 @@ output "vpc_data" {
 # Hub and Spoke specific configuration
 ##############################################################################
 
-output "custom_resolver_hub" {
-  description = "The custom resolver created for the hub vpc. Only set if enable_hub is set and skip_custom_resolver_hub_creation is false."
-  value       = length(ibm_dns_custom_resolver.custom_resolver_hub) == 1 ? ibm_dns_custom_resolver.custom_resolver_hub[0] : null
+#output "custom_resolver_hub" {
+#  description = "The custom resolver created for the hub vpc. Only set if enable_hub is set and skip_custom_resolver_hub_creation is false."
+#  value       = length(ibm_dns_custom_resolver.custom_resolver_hub) == 1 ? ibm_dns_custom_resolver.custom_resolver_hub[0] : null
+#}
+
+#output "dns_endpoint_gateways_by_id" {
+#  description = "The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable_hub is false and enable_hub_vpc_id are true."
+#  value       = length(ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_id) == 1 ? ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_id[0] : null
+#}
+#
+#output "dns_endpoint_gateways_by_crn" {
+#  description = "The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable_hub is false and enable_hub_vpc_id are true."
+#  value       = length(ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn) == 1 ? ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn[0] : null
+#}
+
+#output "custom_resolver_id" {
+#  value       = length(ibm_dns_custom_resolver.custom_resolver_hub) == 1 ? ibm_dns_custom_resolver.custom_resolver_hub[0].custom_resolver_id : null
+#  description = "Custom resolver ID"
+#}
+
+output "dns_guid" {
+  value       = length(ibm_resource_instance.dns_instance_hub) == 1 ? ibm_resource_instance.dns_instance_hub[0].guid : null
+  description = "DNS GUID"
 }
 
-output "dns_endpoint_gateways_by_id" {
-  description = "The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable_hub is false and enable_hub_vpc_id are true."
-  value       = length(ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_id) == 1 ? ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_id[0] : null
-}
-
-output "dns_endpoint_gateways_by_crn" {
-  description = "The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable_hub is false and enable_hub_vpc_id are true."
-  value       = length(ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn) == 1 ? ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn[0] : null
+output "subnets" {
+  value       = local.subnets
+  description = "subnets"
 }

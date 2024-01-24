@@ -112,7 +112,6 @@ To attach access management tags to resources in this module, you need the follo
 
 | Name | Type |
 |------|------|
-| [ibm_dns_custom_resolver.custom_resolver_hub](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/dns_custom_resolver) | resource |
 | [ibm_iam_authorization_policy.policy](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/iam_authorization_policy) | resource |
 | [ibm_is_flow_log.flow_logs](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_flow_log) | resource |
 | [ibm_is_network_acl.network_acl](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_network_acl) | resource |
@@ -120,11 +119,10 @@ To attach access management tags to resources in this module, you need the follo
 | [ibm_is_security_group_rule.default_vpc_rule](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_security_group_rule) | resource |
 | [ibm_is_subnet.subnet](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_subnet) | resource |
 | [ibm_is_subnet_public_gateway_attachment.exist_subnet_gw](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_subnet_public_gateway_attachment) | resource |
+| [ibm_is_vpc.spoke_vpc](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc) | resource |
 | [ibm_is_vpc.vpc](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc) | resource |
 | [ibm_is_vpc_address_prefix.address_prefixes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_address_prefix) | resource |
 | [ibm_is_vpc_address_prefix.subnet_prefix](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_address_prefix) | resource |
-| [ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_dns_resolution_binding) | resource |
-| [ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_id](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_dns_resolution_binding) | resource |
 | [ibm_is_vpc_routing_table.route_table](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_routing_table) | resource |
 | [ibm_is_vpc_routing_table_route.routing_table_routes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_routing_table_route) | resource |
 | [ibm_resource_instance.dns_instance_hub](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/resource_instance) | resource |
@@ -147,8 +145,6 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_default_network_acl_name"></a> [default\_network\_acl\_name](#input\_default\_network\_acl\_name) | OPTIONAL - Name of the Default ACL. If null, a name will be automatically generated | `string` | `null` | no |
 | <a name="input_default_routing_table_name"></a> [default\_routing\_table\_name](#input\_default\_routing\_table\_name) | OPTIONAL - Name of the Default Routing Table. If null, a name will be automatically generated | `string` | `null` | no |
 | <a name="input_default_security_group_name"></a> [default\_security\_group\_name](#input\_default\_security\_group\_name) | OPTIONAL - Name of the Default Security Group. If null, a name will be automatically generated | `string` | `null` | no |
-| <a name="input_dns_binding_name"></a> [dns\_binding\_name](#input\_dns\_binding\_name) | The name to give the provisioned VPC DNS resolution binding. If not set, the module generates a name based on the `prefix` and `name` variables. | `string` | `null` | no |
-| <a name="input_dns_custom_resolver_name"></a> [dns\_custom\_resolver\_name](#input\_dns\_custom\_resolver\_name) | The name to give the provisioned DNS custom resolver instance. If not set, the module generates a name based on the `prefix` and `name` variables. | `string` | `null` | no |
 | <a name="input_dns_instance_name"></a> [dns\_instance\_name](#input\_dns\_instance\_name) | The name to give the provisioned DNS instance. If not set, the module generates a name based on the `prefix` and `name` variables. | `string` | `null` | no |
 | <a name="input_dns_location"></a> [dns\_location](#input\_dns\_location) | The target location or environment for the DNS instance created to host the custom resolver in a hub-spoke DNS resolution topology. Only used if enable\_hub is true and skip\_custom\_resolver\_hub\_creation is false (defaults). | `string` | `"global"` | no |
 | <a name="input_dns_plan"></a> [dns\_plan](#input\_dns\_plan) | The plan for the DNS resource instance created to host the custom resolver in a hub-spoke DNS resolution topology. Only used if enable\_hub is true and skip\_custom\_resolver\_hub\_creation is false (defaults). | `string` | `"standard-dns"` | no |
@@ -157,13 +153,13 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_enable_hub_vpc_id"></a> [enable\_hub\_vpc\_id](#input\_enable\_hub\_vpc\_id) | Indicates whether Hub VPC ID is passed. | `bool` | `false` | no |
 | <a name="input_enable_vpc_flow_logs"></a> [enable\_vpc\_flow\_logs](#input\_enable\_vpc\_flow\_logs) | Flag to enable vpc flow logs. If true, flow log collector will be created | `bool` | `false` | no |
 | <a name="input_existing_cos_instance_guid"></a> [existing\_cos\_instance\_guid](#input\_existing\_cos\_instance\_guid) | GUID of the COS instance to create Flow log collector | `string` | `null` | no |
-| <a name="input_existing_dns_instance_id"></a> [existing\_dns\_instance\_id](#input\_existing\_dns\_instance\_id) | Id of an existing dns instance in which the custom resolver is created. Only relevant if enable\_hub is set to true. | `string` | `null` | no |
 | <a name="input_existing_storage_bucket_name"></a> [existing\_storage\_bucket\_name](#input\_existing\_storage\_bucket\_name) | Name of the COS bucket to collect VPC flow logs | `string` | `null` | no |
 | <a name="input_existing_subnets"></a> [existing\_subnets](#input\_existing\_subnets) | The detail of the existing subnets and required mappings to other resources. Required if 'create\_subnets' is false. | <pre>list(object({<br>    id             = string<br>    public_gateway = optional(bool, false)<br>  }))</pre> | `[]` | no |
 | <a name="input_existing_vpc_id"></a> [existing\_vpc\_id](#input\_existing\_vpc\_id) | The ID of the existing vpc. Required if 'create\_vpc' is false. | `string` | `null` | no |
 | <a name="input_hub_vpc_crn"></a> [hub\_vpc\_crn](#input\_hub\_vpc\_crn) | Indicates the crn of the hub VPC for DNS resolution. See https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model. Mutually exclusive with hub\_vpc\_id. | `string` | `null` | no |
 | <a name="input_hub_vpc_id"></a> [hub\_vpc\_id](#input\_hub\_vpc\_id) | Indicates the id of the hub VPC for DNS resolution. See https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model. Mutually exclusive with hub\_vpc\_crn. | `string` | `null` | no |
 | <a name="input_is_flow_log_collector_active"></a> [is\_flow\_log\_collector\_active](#input\_is\_flow\_log\_collector\_active) | Indicates whether the collector is active. If false, this collector is created in inactive mode. | `bool` | `true` | no |
+| <a name="input_is_spoke_vpc"></a> [is\_spoke\_vpc](#input\_is\_spoke\_vpc) | If set to true, and if the vpc is configured to be a spoke for DNS resolution (enable\_hub\_vpc\_crn or enable\_hub\_vpc\_id set), then the spoke VPC resolver will be updated to a delegated resolver. | `bool` | `false` | no |
 | <a name="input_manual_servers"></a> [manual\_servers](#input\_manual\_servers) | The DNS server addresses to use for the VPC, replacing any existing servers. All the entries must either have a unique zone\_affinity, or not have a zone\_affinity. | <pre>list(object({<br>    address       = string<br>    zone_affinity = optional(string)<br>  }))</pre> | `[]` | no |
 | <a name="input_name"></a> [name](#input\_name) | Used for the naming of the VPC (if create\_vpc is set to true), as well as in the naming for any resources created inside the VPC (unless using one of the optional variables for explicit control over naming). | `string` | n/a | yes |
 | <a name="input_network_acls"></a> [network\_acls](#input\_network\_acls) | The list of ACLs to create. Provide at least one rule for each ACL. | <pre>list(<br>    object({<br>      name                         = string<br>      add_ibm_cloud_internal_rules = optional(bool)<br>      add_vpc_connectivity_rules   = optional(bool)<br>      prepend_ibm_rules            = optional(bool)<br>      rules = list(<br>        object({<br>          name        = string<br>          action      = string<br>          destination = string<br>          direction   = string<br>          source      = string<br>          tcp = optional(<br>            object({<br>              port_max        = optional(number)<br>              port_min        = optional(number)<br>              source_port_max = optional(number)<br>              source_port_min = optional(number)<br>            })<br>          )<br>          udp = optional(<br>            object({<br>              port_max        = optional(number)<br>              port_min        = optional(number)<br>              source_port_max = optional(number)<br>              source_port_min = optional(number)<br>            })<br>          )<br>          icmp = optional(<br>            object({<br>              type = optional(number)<br>              code = optional(number)<br>            })<br>          )<br>        })<br>      )<br>    })<br>  )</pre> | <pre>[<br>  {<br>    "add_ibm_cloud_internal_rules": true,<br>    "add_vpc_connectivity_rules": true,<br>    "name": "vpc-acl",<br>    "prepend_ibm_rules": true,<br>    "rules": []<br>  }<br>]</pre> | no |
@@ -189,15 +185,14 @@ To attach access management tags to resources in this module, you need the follo
 | Name | Description |
 |------|-------------|
 | <a name="output_cidr_blocks"></a> [cidr\_blocks](#output\_cidr\_blocks) | List of CIDR blocks present in VPC stack |
-| <a name="output_custom_resolver_hub"></a> [custom\_resolver\_hub](#output\_custom\_resolver\_hub) | The custom resolver created for the hub vpc. Only set if enable\_hub is set and skip\_custom\_resolver\_hub\_creation is false. |
-| <a name="output_dns_endpoint_gateways_by_crn"></a> [dns\_endpoint\_gateways\_by\_crn](#output\_dns\_endpoint\_gateways\_by\_crn) | The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable\_hub is false and enable\_hub\_vpc\_id are true. |
-| <a name="output_dns_endpoint_gateways_by_id"></a> [dns\_endpoint\_gateways\_by\_id](#output\_dns\_endpoint\_gateways\_by\_id) | The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable\_hub is false and enable\_hub\_vpc\_id are true. |
+| <a name="output_dns_guid"></a> [dns\_guid](#output\_dns\_guid) | DNS GUID |
 | <a name="output_network_acls"></a> [network\_acls](#output\_network\_acls) | List of shortnames and IDs of network ACLs |
 | <a name="output_public_gateways"></a> [public\_gateways](#output\_public\_gateways) | Map of public gateways by zone |
 | <a name="output_subnet_detail_list"></a> [subnet\_detail\_list](#output\_subnet\_detail\_list) | A list of subnets containing names, CIDR blocks, and zones. |
 | <a name="output_subnet_detail_map"></a> [subnet\_detail\_map](#output\_subnet\_detail\_map) | A map of subnets containing IDs, CIDR blocks, and zones |
 | <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | The IDs of the subnets |
 | <a name="output_subnet_zone_list"></a> [subnet\_zone\_list](#output\_subnet\_zone\_list) | A list containing subnet IDs and subnet zones |
+| <a name="output_subnets"></a> [subnets](#output\_subnets) | subnets |
 | <a name="output_vpc_crn"></a> [vpc\_crn](#output\_vpc\_crn) | CRN of VPC created |
 | <a name="output_vpc_data"></a> [vpc\_data](#output\_vpc\_data) | Data of the VPC used in this module, created or existing. |
 | <a name="output_vpc_flow_logs"></a> [vpc\_flow\_logs](#output\_vpc\_flow\_logs) | Details of VPC flow logs collector |
