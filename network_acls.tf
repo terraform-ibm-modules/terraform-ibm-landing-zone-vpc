@@ -160,7 +160,11 @@ locals {
 }
 
 resource "ibm_is_network_acl" "network_acl" {
-  for_each       = var.create_subnets ? local.acl_object : {}
+  # due to a bug in terraform ternary conditional and nested map objects, use a for loop with if condition to only apply
+  # ACLs if subnets are being created (not for existing subnets scenario)
+  # The old version of this that had the bug was:
+  # for_each       = var.create_subnets ? local.acl_object : {}
+  for_each       = { for acl_key, acl_value in local.acl_object : acl_key => acl_value if var.create_subnets }
   name           = var.prefix != null ? "${var.prefix}-${each.key}" : each.key #already has name of vpc in each.key
   vpc            = local.vpc_id
   resource_group = var.resource_group_id
