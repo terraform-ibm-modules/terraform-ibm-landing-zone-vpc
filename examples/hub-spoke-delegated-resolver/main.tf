@@ -96,7 +96,7 @@ module "spoke_vpc" {
 
 module "tg_gateway_connection" {
   source                    = "terraform-ibm-modules/transit-gateway/ibm"
-  version                   = "2.4.0"
+  version                   = "2.4.1"
   transit_gateway_name      = "${var.prefix}-tg"
   region                    = var.region
   global_routing            = false
