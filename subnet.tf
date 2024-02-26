@@ -17,7 +17,8 @@ locals {
 
 resource "ibm_is_vpc_address_prefix" "subnet_prefix" {
   # Address prefixes replace subnet prefixes
-  for_each = length(local.address_prefixes) > 0 || !var.create_subnets ? {} : local.subnet_object
+  # Only create prefix if creating subnets, flag not set to disable prefix creation, and no specific prefixes were supplied
+  for_each = { for k, v in local.subnet_object : k => v if(v.no_prefix == false && var.create_subnets == true && length(local.address_prefixes) == 0) }
   name     = each.value.prefix_name
   zone     = each.value.zone_name
   vpc      = local.vpc_id
