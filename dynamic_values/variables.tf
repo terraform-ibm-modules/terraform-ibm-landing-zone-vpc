@@ -183,22 +183,25 @@ variable "subnets" {
   description = "direct reference to network acls"
   type = object({
     zone-1 = list(object({
-      name           = string
-      cidr           = string
-      public_gateway = optional(bool)
-      acl_name       = string
+      name                     = string
+      cidr                     = string
+      public_gateway           = optional(bool)
+      acl_name                 = string
+      disable_auto_addr_prefix = optional(bool, false)
     }))
     zone-2 = list(object({
-      name           = string
-      cidr           = string
-      public_gateway = optional(bool)
-      acl_name       = string
+      name                     = string
+      cidr                     = string
+      public_gateway           = optional(bool)
+      acl_name                 = string
+      disable_auto_addr_prefix = optional(bool, false)
     }))
     zone-3 = list(object({
-      name           = string
-      cidr           = string
-      public_gateway = optional(bool)
-      acl_name       = string
+      name                     = string
+      cidr                     = string
+      public_gateway           = optional(bool)
+      acl_name                 = string
+      disable_auto_addr_prefix = optional(bool, false)
     }))
   })
 }
