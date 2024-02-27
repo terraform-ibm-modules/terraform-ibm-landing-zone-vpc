@@ -324,18 +324,21 @@ variable "subnets" {
       cidr           = string
       public_gateway = optional(bool)
       acl_name       = string
+      no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true
     }))
     zone-2 = optional(list(object({
       name           = string
       cidr           = string
       public_gateway = optional(bool)
       acl_name       = string
+      no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true
     })))
     zone-3 = optional(list(object({
       name           = string
       cidr           = string
       public_gateway = optional(bool)
       acl_name       = string
+      no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true
     })))
   })
 
@@ -346,6 +349,7 @@ variable "subnets" {
         cidr           = "10.10.10.0/24"
         public_gateway = true
         acl_name       = "vpc-acl"
+        no_addr_prefix = false
       }
     ],
     zone-2 = [
@@ -354,6 +358,7 @@ variable "subnets" {
         cidr           = "10.20.10.0/24"
         public_gateway = true
         acl_name       = "vpc-acl"
+        no_addr_prefix = false
       }
     ],
     zone-3 = [
@@ -362,6 +367,7 @@ variable "subnets" {
         cidr           = "10.30.10.0/24"
         public_gateway = false
         acl_name       = "vpc-acl"
+        no_addr_prefix = false
       }
     ]
   }
