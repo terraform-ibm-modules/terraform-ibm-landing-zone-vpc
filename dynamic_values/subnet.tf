@@ -16,6 +16,7 @@ locals {
         zone        = index(keys(var.subnets), zone) + 1                    # Zone 1, 2, or 3
         zone_name   = "${var.region}-${index(keys(var.subnets), zone) + 1}" # Contains region and zone
         cidr        = value.cidr                                            # CIDR Block
+        no_prefix   = value.no_addr_prefix                                  # If true will not create addr prefix for subnet under any circumstance
         count       = index(var.subnets[zone], value) + 1                   # Count of the subnet within the zone
         acl         = value.acl_name
         # Public gateway ID
