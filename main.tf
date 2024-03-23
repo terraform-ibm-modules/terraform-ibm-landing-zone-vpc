@@ -40,25 +40,11 @@ locals {
 }
 
 ##############################################################################
-# Check if existing vpc id is passed
-##############################################################################
-
-data "ibm_is_vpc" "vpc" {
-  count      = var.create_vpc == false ? 1 : 0
-  identifier = var.existing_vpc_id
-}
-
-locals {
-  vpc_id   = var.create_vpc ? ibm_is_vpc.vpc[0].id : var.existing_vpc_id
-  vpc_data = var.create_vpc ? ibm_is_vpc.vpc[0] : data.ibm_is_vpc.vpc[0]
-}
-
-##############################################################################
 # Create new VPC
 ##############################################################################
 
 resource "ibm_is_vpc" "vpc" {
-  count          = var.create_vpc == true ? 1 : 0
+  count          = var.create_vpc == true && !var.is_spoke_vpc ? 1 : 0
   name           = var.prefix != null ? "${var.prefix}-${var.name}-vpc" : var.name
   resource_group = var.resource_group_id
   classic_access = var.classic_access
@@ -116,36 +102,7 @@ resource "ibm_is_vpc" "vpc" {
 # See https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model for context
 ##############################################################################
 
-# Enable Hub to dns resolve in spoke VPC
-resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
-  count = (var.enable_hub == false && var.enable_hub_vpc_id) ? 1 : 0
-
-  # Use var.dns_binding_name if not null, otherwise, use var.prefix and var.name combination.
-  name = coalesce(
-    var.dns_binding_name,
-    "${var.prefix != null ? "${var.prefix}-${var.name}" : var.name}-dns-binding"
-  )
-  vpc_id = local.vpc_id # Source VPC
-  vpc {
-    id = var.hub_vpc_id # Target VPC ID
-  }
-}
-
-resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
-  count = (var.enable_hub == false && var.enable_hub_vpc_crn) ? 1 : 0
-
-  # Use var.dns_binding_name if not null, otherwise, use var.prefix and var.name combination.
-  name = coalesce(
-    var.dns_binding_name,
-    "${var.prefix != null ? "${var.prefix}-${var.name}" : var.name}-dns-binding"
-  )
-  vpc_id = local.vpc_id # Source VPC
-  vpc {
-    crn = var.hub_vpc_crn # Target VPC CRN
-  }
-}
-
-# Configure custom resolver on the hub vpc
+# Set up DNS Instance
 resource "ibm_resource_instance" "dns_instance_hub" {
   count = var.enable_hub && !var.skip_custom_resolver_hub_creation && !var.use_existing_dns_instance ? 1 : 0
 
@@ -160,25 +117,100 @@ resource "ibm_resource_instance" "dns_instance_hub" {
   plan              = var.dns_plan
 }
 
-resource "ibm_dns_custom_resolver" "custom_resolver_hub" {
-  count = var.enable_hub && !var.skip_custom_resolver_hub_creation ? 1 : 0
+# Configure custom resolver on the hub vpc
+#resource "ibm_dns_custom_resolver" "custom_resolver_hub" {
+#  count = var.enable_hub && !var.skip_custom_resolver_hub_creation ? 1 : 0
+#
+#  # Use var.dns_custom_resolver_name if not null, otherwise, use var.prefix and var.name combination.
+#  name = coalesce(
+#    var.dns_custom_resolver_name,
+#    "${var.prefix != null ? "${var.prefix}-${var.name}" : var.name}-custom-resolver"
+#  )
+#  instance_id       = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
+#  high_availability = true
+#  enabled           = true
+#
+#  dynamic "locations" {
+#    for_each = local.subnets
+#    content {
+#      subnet_crn = locations.value.crn
+#      enabled    = true
+#    }
+#  }
+#}
 
-  # Use var.dns_custom_resolver_name if not null, otherwise, use var.prefix and var.name combination.
-  name = coalesce(
-    var.dns_custom_resolver_name,
-    "${var.prefix != null ? "${var.prefix}-${var.name}" : var.name}-custom-resolver"
-  )
-  instance_id       = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
-  high_availability = true
-  enabled           = true
+## Enable Hub to dns resolve in spoke VPC
+#resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
+#  count = (var.enable_hub == false && var.enable_hub_vpc_id) ? 1 : 0
+#
+#  # Use var.dns_binding_name if not null, otherwise, use var.prefix and var.name combination.
+#  name = coalesce(
+#    var.dns_binding_name,
+#    "${var.prefix != null ? "${var.prefix}-${var.name}" : var.name}-dns-binding"
+#  )
+#  vpc_id = local.vpc_id # Source VPC
+#  vpc {
+#    id = var.hub_vpc_id # Target VPC ID
+#  }
+#}
+#
+#resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
+#  count = (var.enable_hub == false && var.enable_hub_vpc_crn) ? 1 : 0
+#
+#  # Use var.dns_binding_name if not null, otherwise, use var.prefix and var.name combination.
+#  name = coalesce(
+#    var.dns_binding_name,
+#    "${var.prefix != null ? "${var.prefix}-${var.name}" : var.name}-dns-binding"
+#  )
+#  vpc_id = local.vpc_id # Source VPC
+#  vpc {
+#    crn = var.hub_vpc_crn # Target VPC CRN
+#  }
+#}
 
-  dynamic "locations" {
-    for_each = local.subnets
-    content {
-      subnet_crn = locations.value.crn
-      enabled    = true
+# Spoke VPC
+resource "ibm_is_vpc" "spoke_vpc" {
+  count          = var.create_vpc && var.is_spoke_vpc ? 1 : 0
+  name           = var.prefix != null ? "${var.prefix}-${var.name}-vpc" : var.name
+  resource_group = var.resource_group_id
+  classic_access = var.classic_access
+  # address prefix is set to auto only if no address prefixes NOR any subnet is passed as input
+  address_prefix_management   = (length([for prefix in values(coalesce(var.address_prefixes, {})) : prefix if prefix != null]) != 0) || (length([for subnet in values(coalesce(var.subnets, {})) : subnet if subnet != null]) != 0) ? "manual" : null
+  default_network_acl_name    = var.default_network_acl_name
+  default_security_group_name = var.default_security_group_name
+  default_routing_table_name  = var.default_routing_table_name
+  tags                        = var.tags
+  access_tags                 = var.access_tags
+  no_sg_acl_rules             = var.clean_default_sg_acl
+
+  dns {
+    enable_hub = var.enable_hub
+
+    # Delegated resolver
+    dynamic "resolver" {
+      for_each = (var.enable_hub_vpc_id || var.enable_hub_vpc_crn) ? [1] : []
+      content {
+        type    = "delegated"
+        vpc_id  = var.hub_vpc_id != null ? var.hub_vpc_id : null
+        vpc_crn = var.hub_vpc_crn != null ? var.hub_vpc_crn : null
+      }
     }
   }
+}
+
+
+##############################################################################
+# Check if existing vpc id is passed
+##############################################################################
+
+data "ibm_is_vpc" "vpc" {
+  count      = !var.create_vpc && !var.is_spoke_vpc ? 1 : 0
+  identifier = var.existing_vpc_id
+}
+
+locals {
+  vpc_id   = var.create_vpc && !var.is_spoke_vpc ? ibm_is_vpc.vpc[0].id : var.create_vpc && var.is_spoke_vpc ? ibm_is_vpc.spoke_vpc[0].id : var.existing_vpc_id
+  vpc_data = var.create_vpc && !var.is_spoke_vpc ? ibm_is_vpc.vpc[0] : var.create_vpc && var.is_spoke_vpc ? ibm_is_vpc.spoke_vpc[0] : data.ibm_is_vpc.vpc[0]
 }
 
 ##############################################################################
