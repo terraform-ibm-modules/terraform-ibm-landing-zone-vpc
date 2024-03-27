@@ -7,7 +7,6 @@ variable "ibmcloud_api_key" {
 variable "region" {
   description = "The region to which to deploy the VPC"
   type        = string
-  default     = "us-south"
 }
 
 variable "vpc_id" {
@@ -30,7 +29,7 @@ variable "existing_resource_group_name" {
   description = "An existing resource group name to use for this example."
 }
 
-variable "name" {
+variable "vpc_name" {
   description = "The string is used as a prefix for the naming of VPC resources."
   type        = string
   default     = null
