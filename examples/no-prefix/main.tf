@@ -1,4 +1,11 @@
 ##############################################################################
+#Local variables
+##############################################################################
+locals {
+  vpc_name = "noprefix-vpc"
+}
+
+##############################################################################
 # Resource Group
 ##############################################################################
 
@@ -37,10 +44,10 @@ module "slz_vpc" {
   source                                 = "../../"
   resource_group_id                      = module.resource_group.resource_group_id
   region                                 = var.region
-  name                                   = var.name
-  routing_table_name                     = "${var.name}-routing-table"
-  public_gateway_name                    = "${var.name}-public-gateway"
-  vpc_flow_logs_name                     = "${var.name}-flow-logs"
+  name                                   = local.vpc_name
+  routing_table_name                     = "${local.vpc_name}-routing-table"
+  public_gateway_name                    = "${local.vpc_name}-public-gateway"
+  vpc_flow_logs_name                     = "${local.vpc_name}-flow-logs"
   prefix                                 = null
   tags                                   = var.resource_tags
   access_tags                            = []
