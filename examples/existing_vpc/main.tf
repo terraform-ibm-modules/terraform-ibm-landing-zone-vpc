@@ -1,9 +1,3 @@
-##############################################################################
-#Local variables
-##############################################################################
-locals {
-  vpc_name = "vpc"
-}
 
 ##############################################################################
 # Resource Group
@@ -23,7 +17,7 @@ module "slz_vpc" {
   create_vpc          = false
   existing_vpc_id     = var.vpc_id
   create_subnets      = false
-  name                = local.vpc_name
+  name                = var.name
   public_gateway_name = var.public_gateway_name
   existing_subnets    = [for id in var.subnet_ids : { "id" : id, "public_gateway" : false }]
 }
