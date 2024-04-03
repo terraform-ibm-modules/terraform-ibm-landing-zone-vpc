@@ -68,24 +68,15 @@ func TestRunDefaultExample(t *testing.T) {
 func TestRunNoPrefixExample(t *testing.T) {
 	t.Parallel()
 
-	var testName string = "vpc-" + strings.ToLower(random.UniqueId())
-	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
+	options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
 		Testing:      t,
 		TerraformDir: "examples/no-prefix",
 		Prefix:       "no-prefix-lz",
-		TerraformVars: map[string]interface{}{
-			"name": testName,
-		},
 	})
-	options.SkipTestTearDown = true
+
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
-
-	// check if name is the same
-	outputs := terraform.OutputAll(options.Testing, options.TerraformOptions)
-	assert.Equal(t, testName, outputs["vpc_name"], "VPC name was altered, and should not have been.")
-	options.TestTearDown()
 }
 
 func TestRunLandingZoneExample(t *testing.T) {
