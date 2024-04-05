@@ -23,6 +23,7 @@ const defaultExampleTerraformDir = "examples/default"
 const landingZoneExampleTerraformDir = "examples/landing_zone"
 const hubAndSpokeDelegatedExampleTerraformDir = "examples/hub-spoke-delegated-resolver"
 const existingVPCExampleTerraformDir = "examples/existing_vpc"
+const noprefixExampleTerraformDir = "examples/no-prefix"
 const resourceGroup = "geretain-test-resources"
 
 // Define a struct with fields that match the structure of the YAML data
@@ -68,11 +69,7 @@ func TestRunDefaultExample(t *testing.T) {
 func TestRunNoPrefixExample(t *testing.T) {
 	t.Parallel()
 
-	options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
-		Testing:      t,
-		TerraformDir: "examples/no-prefix",
-		Prefix:       "no-prefix-lz",
-	})
+	options := setupOptions(t, "no-prefix-lz", noprefixExampleTerraformDir)
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
