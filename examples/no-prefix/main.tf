@@ -1,3 +1,4 @@
+
 ##############################################################################
 # Resource Group
 ##############################################################################
@@ -37,13 +38,13 @@ module "slz_vpc" {
   source                                 = "../../"
   resource_group_id                      = module.resource_group.resource_group_id
   region                                 = var.region
-  name                                   = var.name
-  routing_table_name                     = "${var.name}-routing-table"
-  public_gateway_name                    = "${var.name}-public-gateway"
-  vpc_flow_logs_name                     = "${var.name}-flow-logs"
+  name                                   = "vpc"
+  routing_table_name                     = "vpc-routing-table"
+  public_gateway_name                    = "vpc-public-gateway"
+  vpc_flow_logs_name                     = "vpc-flow-logs"
   prefix                                 = null
   tags                                   = var.resource_tags
-  access_tags                            = []
+  access_tags                            = var.access_tags
   enable_vpc_flow_logs                   = true
   create_authorization_policy_vpc_to_cos = true
   existing_cos_instance_guid             = ibm_resource_instance.cos_instance.guid

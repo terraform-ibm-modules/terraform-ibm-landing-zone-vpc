@@ -7,19 +7,11 @@ variable "ibmcloud_api_key" {
 variable "region" {
   description = "The region to which to deploy the VPC"
   type        = string
-  default     = "us-south"
 }
 
 variable "prefix" {
   description = "The prefix that you would like to append to your resources except ones created in the VPC module itself"
   type        = string
-  default     = "test-no-prefix-lz-vpc"
-}
-
-variable "name" {
-  description = "The name of the vpc"
-  type        = string
-  default     = "vpc"
 }
 
 variable "resource_group" {
@@ -32,4 +24,10 @@ variable "resource_tags" {
   description = "List of Tags for the resource created"
   type        = list(string)
   default     = null
+}
+
+variable "access_tags" {
+  type        = list(string)
+  description = "Optional list of access tags to add to the VPC resources that are created"
+  default     = []
 }
