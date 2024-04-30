@@ -116,6 +116,43 @@ resource "ibm_is_vpc" "vpc" {
 # See https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model for context
 ##############################################################################
 
+# fetch this account ID
+data "ibm_iam_account_settings" "iam_account_settings" {}
+
+# spoke -> hub auth policy based on https://cloud.ibm.com/docs/vpc?topic=vpc-vpe-dns-sharing-s2s-auth&interface=terraform
+resource "ibm_iam_authorization_policy" "vpc_dns_resolution_auth_policy" {
+  count = (var.enable_hub == false && var.skip_spoke_auth_policy == false) ? 1 : 0
+  roles = ["DNS Binding Connector"]
+  subject_attributes {
+    name  = "accountId"
+    value = data.ibm_iam_account_settings.iam_account_settings.account_id
+  }
+  subject_attributes {
+    name  = "serviceName"
+    value = "is"
+  }
+  subject_attributes {
+    name  = "resourceType"
+    value = "vpc"
+  }
+  subject_attributes {
+    name  = "resource"
+    value = local.vpc_id
+  }
+  resource_attributes {
+    name  = "accountId"
+    value = var.hub_account_id
+  }
+  resource_attributes {
+    name  = "serviceName"
+    value = "is"
+  }
+  resource_attributes {
+    name  = "vpcId"
+    value = var.enable_hub_vpc_id ? var.hub_vpc_id : split(":", var.hub_vpc_crn)[7]
+  }
+}
+
 # Enable Hub to dns resolve in spoke VPC
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
   count = (var.enable_hub == false && var.enable_hub_vpc_id) ? 1 : 0
