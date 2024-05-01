@@ -155,7 +155,8 @@ resource "ibm_iam_authorization_policy" "vpc_dns_resolution_auth_policy" {
 
 # Enable Hub to dns resolve in spoke VPC
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
-  count      = (var.enable_hub == false && var.enable_hub_vpc_id) ? 1 : 0
+  count = (var.enable_hub == false && var.enable_hub_vpc_id) ? 1 : 0
+  # Depends on required as the authorization policy cannot be directly referenced
   depends_on = [ibm_iam_authorization_policy.vpc_dns_resolution_auth_policy]
 
   # Use var.dns_binding_name if not null, otherwise, use var.prefix and var.name combination.
@@ -170,7 +171,8 @@ resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
 }
 
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
-  count      = (var.enable_hub == false && var.enable_hub_vpc_crn) ? 1 : 0
+  count = (var.enable_hub == false && var.enable_hub_vpc_crn) ? 1 : 0
+  # Depends on required as the authorization policy cannot be directly referenced
   depends_on = [ibm_iam_authorization_policy.vpc_dns_resolution_auth_policy]
 
   # Use var.dns_binding_name if not null, otherwise, use var.prefix and var.name combination.
