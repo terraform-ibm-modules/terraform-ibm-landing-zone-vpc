@@ -121,7 +121,7 @@ data "ibm_iam_account_settings" "iam_account_settings" {}
 
 # spoke -> hub auth policy based on https://cloud.ibm.com/docs/vpc?topic=vpc-vpe-dns-sharing-s2s-auth&interface=terraform
 resource "ibm_iam_authorization_policy" "vpc_dns_resolution_auth_policy" {
-  count = (var.enable_hub == false && var.skip_spoke_auth_policy == false) ? 1 : 0
+  count = (var.enable_hub == false && var.skip_spoke_auth_policy == false && (var.enable_hub_vpc_id || var.enable_hub_vpc_crn)) ? 1 : 0
   roles = ["DNS Binding Connector"]
   subject_attributes {
     name  = "accountId"
