@@ -37,6 +37,9 @@ locals {
 
   # tflint-ignore: terraform_unused_declarations
   validate_vpc_flow_logs_inputs = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? ((var.existing_cos_instance_guid != null && var.existing_storage_bucket_name != null) ? true : tobool("Please provide COS instance & bucket name to create flow logs collector.")) : ((var.existing_storage_bucket_name != null) ? true : tobool("Please provide COS bucket name to create flow logs collector"))) : false
+
+  # tflint-ignore: terraform_unused_declarations
+  validate_skip_spoke_auth_policy_input = (!var.skip_spoke_auth_policy && var.hub_account_id == null) ? tobool("var.hub_account_id must be set when var.skip_spoke_auth_policy is False.") : true
 }
 
 ##############################################################################
@@ -123,6 +126,7 @@ data "ibm_iam_account_settings" "iam_account_settings" {}
 resource "ibm_iam_authorization_policy" "vpc_dns_resolution_auth_policy" {
   count = (var.enable_hub == false && var.skip_spoke_auth_policy == false && (var.enable_hub_vpc_id || var.enable_hub_vpc_crn)) ? 1 : 0
   roles = ["DNS Binding Connector"]
+  # subject is the spoke
   subject_attributes {
     name  = "accountId"
     value = data.ibm_iam_account_settings.iam_account_settings.account_id
@@ -139,6 +143,7 @@ resource "ibm_iam_authorization_policy" "vpc_dns_resolution_auth_policy" {
     name  = "resource"
     value = local.vpc_id
   }
+  # resource is the hub
   resource_attributes {
     name  = "accountId"
     value = var.hub_account_id
