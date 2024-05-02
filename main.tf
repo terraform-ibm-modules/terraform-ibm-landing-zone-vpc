@@ -39,7 +39,7 @@ locals {
   validate_vpc_flow_logs_inputs = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? ((var.existing_cos_instance_guid != null && var.existing_storage_bucket_name != null) ? true : tobool("Please provide COS instance & bucket name to create flow logs collector.")) : ((var.existing_storage_bucket_name != null) ? true : tobool("Please provide COS bucket name to create flow logs collector"))) : false
 
   # tflint-ignore: terraform_unused_declarations
-  validate_skip_spoke_auth_policy_input = (!var.skip_spoke_auth_policy && var.hub_account_id == null) ? tobool("var.hub_account_id must be set when var.skip_spoke_auth_policy is False.") : true
+  validate_skip_spoke_auth_policy_input = (var.hub_account_id == null && !var.skip_spoke_auth_policy && !var.enable_hub && (var.enable_hub_vpc_id || var.enable_hub_vpc_crn)) ? tobool("var.hub_account_id must be set when var.skip_spoke_auth_policy is False and either var.enable_hub_vpc_id or var.enable_hub_vpc_crn is true.") : true
 }
 
 ##############################################################################
