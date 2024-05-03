@@ -542,6 +542,18 @@ variable "enable_hub" {
   default     = false
 }
 
+variable "skip_spoke_auth_policy" {
+  description = "Set to true to skip the creation of an authorization policy between the DNS resolution spoke and hub, only enable this if a policy already exists between these two VPCs. See https://cloud.ibm.com/docs/vpc?topic=vpc-vpe-dns-sharing-s2s-auth&interface=ui for more details."
+  type        = bool
+  default     = false
+}
+
+variable "hub_account_id" {
+  description = "ID of the hub account for DNS resolution, required if 'skip_spoke_auth_policy' is false."
+  type        = string
+  default     = null
+}
+
 variable "enable_hub_vpc_id" {
   description = "Indicates whether Hub VPC ID is passed."
   type        = bool
