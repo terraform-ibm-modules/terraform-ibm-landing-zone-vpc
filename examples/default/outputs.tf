@@ -13,7 +13,12 @@ output "vpc_crn" {
 }
 
 output "vpc_name" {
-  value       = module.slz_vpc.vpc_data.name
+  value       = module.slz_vpc.vpc_name
+  description = "VPC name property taken from the larger data element"
+}
+
+output "vpc_data" {
+  value       = module.slz_vpc.vpc_data
   description = "VPC name property taken from the larger data element"
 }
 

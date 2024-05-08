@@ -4,7 +4,7 @@
 
 output "vpc_name" {
   description = "Name of VPC created"
-  value       = local.vpc_data.name
+  value       = data.ibm_is_vpc.vpc.name
 }
 
 output "vpc_id" {
@@ -14,7 +14,7 @@ output "vpc_id" {
 
 output "vpc_crn" {
   description = "CRN of VPC created"
-  value       = local.vpc_data.crn
+  value       = data.ibm_is_vpc.vpc.crn
 }
 
 ##############################################################################
@@ -137,6 +137,7 @@ output "vpc_flow_logs" {
 }
 
 ##############################################################################
+
 output "cidr_blocks" {
   description = "List of CIDR blocks present in VPC stack"
   value       = [for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes : address.cidr]
@@ -144,7 +145,7 @@ output "cidr_blocks" {
 
 output "vpc_data" {
   description = "Data of the VPC used in this module, created or existing."
-  value       = local.vpc_data
+  value       = data.ibm_is_vpc.vpc
 }
 
 ##############################################################################
