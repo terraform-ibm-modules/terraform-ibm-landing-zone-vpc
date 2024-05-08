@@ -19,7 +19,7 @@ output "vpc_name" {
 
 output "vpc_data" {
   value       = module.slz_vpc.vpc_data
-  description = "VPC name property taken from the larger data element"
+  description = "Data of the VPC used in this module, created or existing."
 }
 
 output "subnet_ids" {
