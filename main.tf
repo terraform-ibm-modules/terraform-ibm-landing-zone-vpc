@@ -49,6 +49,7 @@ locals {
 data "ibm_is_vpc" "vpc" {
   depends_on = [time_sleep.wait_for_vpc_creation_data]
   identifier = local.vpc_id
+  name       = var.create_vpc == true ? resource.ibm_is_vpc.vpc[0].name : var.name
 }
 
 locals {
