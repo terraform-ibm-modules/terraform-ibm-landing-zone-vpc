@@ -26,7 +26,7 @@ resource "ibm_resource_instance" "cos_instance" {
 
 resource "ibm_cos_bucket" "cos_bucket" {
   count                = var.enable_vpc_flow_logs ? 1 : 0
-  bucket_name          = "${var.prefix}-vpc-logs-cos-bucket"
+  bucket_name          = "${var.prefix}-vpc-logs-cos-bucket4"
   resource_instance_id = ibm_resource_instance.cos_instance[0].id
   region_location      = var.region
   storage_class        = "standard"
@@ -40,7 +40,7 @@ module "slz_vpc" {
   source                                 = "../../"
   resource_group_id                      = module.resource_group.resource_group_id
   region                                 = var.region
-  name                                   = "vpc"
+  name                                   = "defaultv2"
   prefix                                 = var.prefix
   tags                                   = var.resource_tags
   access_tags                            = var.access_tags

@@ -7,19 +7,17 @@ variable "ibmcloud_api_key" {
 variable "region" {
   description = "The region to which to deploy the VPC"
   type        = string
-  default     = "us-south"
 }
 
 variable "prefix" {
   description = "The prefix that you would like to append to your resources"
   type        = string
-  default     = "test"
 }
 
 variable "resource_group" {
   type        = string
   description = "An existing resource group name to use for this example, if unset a new resource group will be created"
-  default     = "geretain-test-resources"
+  default     = null
 }
 
 variable "resource_tags" {

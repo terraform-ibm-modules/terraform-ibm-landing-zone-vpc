@@ -49,7 +49,6 @@ locals {
 data "ibm_is_vpc" "vpc" {
   depends_on = [time_sleep.wait_for_vpc_creation_data]
   identifier = local.vpc_id
-  name       = var.create_vpc == true ? resource.ibm_is_vpc.vpc[0].name : var.name
 }
 
 locals {
@@ -62,7 +61,7 @@ locals {
 
 resource "time_sleep" "wait_for_vpc_creation_data" {
   depends_on      = [resource.ibm_is_vpc.vpc, resource.ibm_is_subnet.subnet]
-  count           = var.create_vpc == true ? 1 : 0
+  count           = var.create_vpc == true || var.create_subnets ? 1 : 0
   create_duration = "30s"
 }
 
