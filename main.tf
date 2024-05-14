@@ -47,18 +47,23 @@ locals {
 ##############################################################################
 
 data "ibm_is_vpc" "vpc" {
-  count      = var.create_vpc == false ? 1 : 0
-  identifier = var.existing_vpc_id
+  depends_on = [time_sleep.wait_for_vpc_creation_data]
+  identifier = local.vpc_id
 }
 
 locals {
-  vpc_id   = var.create_vpc ? ibm_is_vpc.vpc[0].id : var.existing_vpc_id
-  vpc_data = var.create_vpc ? ibm_is_vpc.vpc[0] : data.ibm_is_vpc.vpc[0]
+  vpc_id = var.create_vpc ? resource.ibm_is_vpc.vpc[0].id : var.existing_vpc_id
 }
 
 ##############################################################################
 # Create new VPC
 ##############################################################################
+
+resource "time_sleep" "wait_for_vpc_creation_data" {
+  depends_on      = [resource.ibm_is_vpc.vpc, resource.ibm_is_subnet.subnet]
+  count           = var.create_vpc == true || var.create_subnets ? 1 : 0
+  create_duration = "30s"
+}
 
 resource "ibm_is_vpc" "vpc" {
   count          = var.create_vpc == true ? 1 : 0
