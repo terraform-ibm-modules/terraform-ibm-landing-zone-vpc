@@ -12,10 +12,10 @@ module "resource_group" {
 
 #############################################################################
 # Delay between hub and spoke creation/destruction
-# 
+#
 # You can adjust these delay timings if needed.
 # This block will put a slight delay between the Hub and Spoke VPC operations.
-# This will help if there are resources (such as DNS resolver) that need some 
+# This will help if there are resources (such as DNS resolver) that need some
 # extra time to fully complete before the other VPC operations continue.
 #############################################################################
 resource "time_sleep" "delay_between_hub_spoke" {
