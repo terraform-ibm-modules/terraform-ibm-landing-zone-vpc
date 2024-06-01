@@ -17,7 +17,7 @@ module "resource_group" {
 module "cos_bucket" {
   count                  = var.enable_vpc_flow_logs ? 1 : 0
   source                 = "terraform-ibm-modules/cos/ibm"
-  version                = "8.2.10"
+  version                = "8.2.11"
   resource_group_id      = module.resource_group.resource_group_id
   region                 = var.region
   cross_region_location  = null
