@@ -4,7 +4,7 @@
 
 output "vpc_name" {
   description = "Name of VPC created"
-  value       = data.ibm_is_vpc.vpc.resource_name
+  value       = local.vpc_name
 }
 
 output "vpc_id" {
@@ -14,7 +14,7 @@ output "vpc_id" {
 
 output "vpc_crn" {
   description = "CRN of VPC created"
-  value       = data.ibm_is_vpc.vpc.crn
+  value       = local.vpc_crn
 }
 
 ##############################################################################

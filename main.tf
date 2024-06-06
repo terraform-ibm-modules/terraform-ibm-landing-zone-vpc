@@ -52,7 +52,9 @@ data "ibm_is_vpc" "vpc" {
 }
 
 locals {
-  vpc_id = var.create_vpc ? resource.ibm_is_vpc.vpc[0].id : var.existing_vpc_id
+  vpc_id   = var.create_vpc ? resource.ibm_is_vpc.vpc[0].id : var.existing_vpc_id
+  vpc_name = var.create_vpc ? resource.ibm_is_vpc.vpc[0].name : data.ibm_is_vpc.vpc.name
+  vpc_crn  = var.create_vpc ? resource.ibm_is_vpc.vpc[0].crn : data.ibm_is_vpc.vpc.crn
 }
 
 ##############################################################################
