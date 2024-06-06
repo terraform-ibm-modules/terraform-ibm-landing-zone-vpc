@@ -11,6 +11,20 @@ module "resource_group" {
 }
 
 #############################################################################
+# Delay between hub and spoke creation/destruction
+#
+# You can adjust these delay timings if needed.
+# This block will put a slight delay between the Hub and Spoke VPC operations.
+# This will help if there are resources (such as DNS resolver) that need some
+# extra time to fully complete before the other VPC operations continue.
+#############################################################################
+resource "time_sleep" "delay_between_hub_spoke" {
+  depends_on       = [module.hub_vpc]
+  create_duration  = "30s"
+  destroy_duration = "60s"
+}
+
+#############################################################################
 # Provision VPC
 #############################################################################
 
@@ -55,6 +69,7 @@ data "ibm_iam_account_settings" "iam_account_settings" {}
 
 module "spoke_vpc" {
   source                    = "../../"
+  depends_on                = [time_sleep.delay_between_hub_spoke]
   resource_group_id         = module.resource_group.resource_group_id
   region                    = var.region
   name                      = "spoke"
