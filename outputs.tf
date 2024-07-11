@@ -166,3 +166,13 @@ output "dns_endpoint_gateways_by_crn" {
   description = "The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable_hub is false and enable_hub_vpc_id are true."
   value       = length(ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn) == 1 ? ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn[0] : null
 }
+
+output "dns_instance_id" {
+  description = "The ID of the DNS instance."
+  value       = (var.enable_hub && !var.skip_custom_resolver_hub_creation) ? (var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid) : null
+}
+
+output "dns_custom_resolver_id" {
+  description = "The ID of the DNS Custom Resolver."
+  value       = (var.enable_hub && !var.skip_custom_resolver_hub_creation) ? one(ibm_dns_custom_resolver.custom_resolver_hub[*].instance_id) : null
+}
