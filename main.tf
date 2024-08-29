@@ -37,6 +37,9 @@ locals {
 
   # tflint-ignore: terraform_unused_declarations
   validate_vpc_flow_logs_inputs = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? ((var.existing_cos_instance_guid != null && var.existing_storage_bucket_name != null) ? true : tobool("Please provide COS instance & bucket name to create flow logs collector.")) : ((var.existing_storage_bucket_name != null) ? true : tobool("Please provide COS bucket name to create flow logs collector"))) : false
+
+  # tflint-ignore: terraform_unused_declarations
+  validate_skip_spoke_auth_policy_input = (var.hub_account_id == null && !var.skip_spoke_auth_policy && !var.enable_hub && (var.enable_hub_vpc_id || var.enable_hub_vpc_crn)) ? tobool("var.hub_account_id must be set when var.skip_spoke_auth_policy is False and either var.enable_hub_vpc_id or var.enable_hub_vpc_crn is true.") : true
 }
 
 ##############################################################################
@@ -44,18 +47,25 @@ locals {
 ##############################################################################
 
 data "ibm_is_vpc" "vpc" {
-  count      = var.create_vpc == false ? 1 : 0
-  identifier = var.existing_vpc_id
+  depends_on = [time_sleep.wait_for_vpc_creation_data]
+  identifier = local.vpc_id
 }
 
 locals {
-  vpc_id   = var.create_vpc ? ibm_is_vpc.vpc[0].id : var.existing_vpc_id
-  vpc_data = var.create_vpc ? ibm_is_vpc.vpc[0] : data.ibm_is_vpc.vpc[0]
+  vpc_id   = var.create_vpc ? resource.ibm_is_vpc.vpc[0].id : var.existing_vpc_id
+  vpc_name = var.create_vpc ? resource.ibm_is_vpc.vpc[0].name : data.ibm_is_vpc.vpc.name
+  vpc_crn  = var.create_vpc ? resource.ibm_is_vpc.vpc[0].crn : data.ibm_is_vpc.vpc.crn
 }
 
 ##############################################################################
 # Create new VPC
 ##############################################################################
+
+resource "time_sleep" "wait_for_vpc_creation_data" {
+  depends_on      = [resource.ibm_is_vpc.vpc, resource.ibm_is_subnet.subnet]
+  count           = var.create_vpc == true || var.create_subnets ? 1 : 0
+  create_duration = "30s"
+}
 
 resource "ibm_is_vpc" "vpc" {
   count          = var.create_vpc == true ? 1 : 0
@@ -116,9 +126,50 @@ resource "ibm_is_vpc" "vpc" {
 # See https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model for context
 ##############################################################################
 
+# fetch this account ID
+data "ibm_iam_account_settings" "iam_account_settings" {}
+
+# spoke -> hub auth policy based on https://cloud.ibm.com/docs/vpc?topic=vpc-vpe-dns-sharing-s2s-auth&interface=terraform
+resource "ibm_iam_authorization_policy" "vpc_dns_resolution_auth_policy" {
+  count = (var.enable_hub == false && var.skip_spoke_auth_policy == false && (var.enable_hub_vpc_id || var.enable_hub_vpc_crn)) ? 1 : 0
+  roles = ["DNS Binding Connector"]
+  # subject is the spoke
+  subject_attributes {
+    name  = "accountId"
+    value = data.ibm_iam_account_settings.iam_account_settings.account_id
+  }
+  subject_attributes {
+    name  = "serviceName"
+    value = "is"
+  }
+  subject_attributes {
+    name  = "resourceType"
+    value = "vpc"
+  }
+  subject_attributes {
+    name  = "resource"
+    value = local.vpc_id
+  }
+  # resource is the hub
+  resource_attributes {
+    name  = "accountId"
+    value = var.hub_account_id
+  }
+  resource_attributes {
+    name  = "serviceName"
+    value = "is"
+  }
+  resource_attributes {
+    name  = "vpcId"
+    value = var.enable_hub_vpc_id ? var.hub_vpc_id : split(":", var.hub_vpc_crn)[9]
+  }
+}
+
 # Enable Hub to dns resolve in spoke VPC
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
   count = (var.enable_hub == false && var.enable_hub_vpc_id) ? 1 : 0
+  # Depends on required as the authorization policy cannot be directly referenced
+  depends_on = [ibm_iam_authorization_policy.vpc_dns_resolution_auth_policy]
 
   # Use var.dns_binding_name if not null, otherwise, use var.prefix and var.name combination.
   name = coalesce(
@@ -133,6 +184,8 @@ resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
 
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
   count = (var.enable_hub == false && var.enable_hub_vpc_crn) ? 1 : 0
+  # Depends on required as the authorization policy cannot be directly referenced
+  depends_on = [ibm_iam_authorization_policy.vpc_dns_resolution_auth_policy]
 
   # Use var.dns_binding_name if not null, otherwise, use var.prefix and var.name combination.
   name = coalesce(

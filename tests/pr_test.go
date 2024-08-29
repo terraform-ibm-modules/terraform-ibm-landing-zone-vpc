@@ -23,6 +23,7 @@ const defaultExampleTerraformDir = "examples/default"
 const landingZoneExampleTerraformDir = "examples/landing_zone"
 const hubAndSpokeDelegatedExampleTerraformDir = "examples/hub-spoke-delegated-resolver"
 const existingVPCExampleTerraformDir = "examples/existing_vpc"
+const noprefixExampleTerraformDir = "examples/no-prefix"
 const resourceGroup = "geretain-test-resources"
 
 // Define a struct with fields that match the structure of the YAML data
@@ -63,29 +64,20 @@ func TestRunDefaultExample(t *testing.T) {
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
+
+	expectedOutputs := []string{"vpc_data"}
+	missingOutputs, outputErr := testhelper.ValidateTerraformOutputs(options.LastTestTerraformOutputs, expectedOutputs...)
+	assert.Empty(t, outputErr, fmt.Sprintf("Missing expected outputs: %s", missingOutputs))
 }
 
 func TestRunNoPrefixExample(t *testing.T) {
 	t.Parallel()
 
-	var testName string = "vpc-" + strings.ToLower(random.UniqueId())
-	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
-		Testing:      t,
-		TerraformDir: "examples/no-prefix",
-		Prefix:       "no-prefix-lz",
-		TerraformVars: map[string]interface{}{
-			"name": testName,
-		},
-	})
-	options.SkipTestTearDown = true
+	options := setupOptions(t, "no-prefix-lz", noprefixExampleTerraformDir)
+
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
-
-	// check if name is the same
-	outputs := terraform.OutputAll(options.Testing, options.TerraformOptions)
-	assert.Equal(t, testName, outputs["vpc_name"], "VPC name was altered, and should not have been.")
-	options.TestTearDown()
 }
 
 func TestRunLandingZoneExample(t *testing.T) {
