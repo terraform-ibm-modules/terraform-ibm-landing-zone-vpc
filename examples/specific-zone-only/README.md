@@ -1,6 +1,6 @@
 # Specific Zone Only Example
 
-A simple example to provision a Secure Landing Zone (SLZ) Virtual Private Cloud (VPC) in a specific zone other than Zone 1. Also, shows how to use public gateways with a specific zone. In this example Zone 2 is used.
+A simple example to provision a Secure Landing Zone (SLZ) Virtual Private Cloud (VPC) in a specific zone other than Zone 1. Also, shows how to use public gateways with a specific zone. In this example Zone 2 is used. A network ACL is specifically defined to allow all internet traffic.
 
 The following resources are provisioned by this example:
 

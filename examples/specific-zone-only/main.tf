@@ -28,7 +28,7 @@ module "slz_vpc" {
         name           = "subnet-a"
         cidr           = "10.10.10.0/24"
         public_gateway = true
-        acl_name       = "vpc-acl"
+        acl_name       = "my-acl"
       }
     ]
   }
