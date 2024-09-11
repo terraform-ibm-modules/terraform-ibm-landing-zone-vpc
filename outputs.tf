@@ -4,7 +4,7 @@
 
 output "vpc_name" {
   description = "Name of VPC created"
-  value       = local.vpc_data.name
+  value       = local.vpc_name
 }
 
 output "vpc_id" {
@@ -14,7 +14,7 @@ output "vpc_id" {
 
 output "vpc_crn" {
   description = "CRN of VPC created"
-  value       = local.vpc_data.crn
+  value       = local.vpc_crn
 }
 
 ##############################################################################
@@ -137,6 +137,7 @@ output "vpc_flow_logs" {
 }
 
 ##############################################################################
+
 output "cidr_blocks" {
   description = "List of CIDR blocks present in VPC stack"
   value       = [for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes : address.cidr]
@@ -144,7 +145,7 @@ output "cidr_blocks" {
 
 output "vpc_data" {
   description = "Data of the VPC used in this module, created or existing."
-  value       = local.vpc_data
+  value       = data.ibm_is_vpc.vpc
 }
 
 ##############################################################################
@@ -164,4 +165,14 @@ output "dns_endpoint_gateways_by_id" {
 output "dns_endpoint_gateways_by_crn" {
   description = "The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable_hub is false and enable_hub_vpc_id are true."
   value       = length(ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn) == 1 ? ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn[0] : null
+}
+
+output "dns_instance_id" {
+  description = "The ID of the DNS instance."
+  value       = (var.enable_hub && !var.skip_custom_resolver_hub_creation) ? (var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid) : null
+}
+
+output "dns_custom_resolver_id" {
+  description = "The ID of the DNS Custom Resolver."
+  value       = (var.enable_hub && !var.skip_custom_resolver_hub_creation) ? one(ibm_dns_custom_resolver.custom_resolver_hub[*].instance_id) : null
 }

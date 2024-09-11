@@ -7,19 +7,11 @@ variable "ibmcloud_api_key" {
 variable "region" {
   description = "The region to which to deploy the VPC"
   type        = string
-  default     = "us-south"
 }
 
 variable "prefix" {
   description = "The prefix that you would like to append to your resources"
   type        = string
-  default     = "def-slz-vpc"
-}
-
-variable "name" {
-  description = "The name of the vpc"
-  type        = string
-  default     = "vpc"
 }
 
 variable "resource_group" {
@@ -51,7 +43,7 @@ variable "cos_plan" {
   type        = string
   default     = "standard"
   validation {
-    condition     = contains(["standard", "lite"], var.cos_plan)
+    condition     = contains(["standard"], var.cos_plan)
     error_message = "The specified cos_plan is not a valid selection!"
   }
 }

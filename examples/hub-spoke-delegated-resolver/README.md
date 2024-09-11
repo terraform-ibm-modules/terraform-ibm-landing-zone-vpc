@@ -4,6 +4,7 @@ This example demonstrates how to deploy hub and spoke VPCs, inclusive of enablin
 - The 2 VPCs are connected through a transit gateway.
 - The hub VPC is configured with a custom resolver.
 - The spoke VPC is configured with a delegated DNS resolver. DNS requests are resolved by the hub VPC.
+- An authorization policy for the DNS Binding Connector role is created to allow the spoke VPC to use the DNS resolution of the hub VPC, this also allows the hub and spoke VPCs to be in separate accounts.
 - A DNS resolution binding relationship is configured to enable the hub VPC to DNS resolve VPE in the spoke VPC.
 
 

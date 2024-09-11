@@ -51,3 +51,13 @@ output "dns_endpoint_gateways_by_spoke_vpc_id" {
   value       = module.spoke_vpc.dns_endpoint_gateways_by_id
   description = "The list of VPEs that are made available for DNS resolution in the created VPC."
 }
+
+output "dns_instance_id" {
+  description = "The ID of the DNS instance."
+  value       = module.hub_vpc.dns_instance_id
+}
+
+output "dns_custom_resolver_id" {
+  description = "The ID of the DNS Custom Resolver."
+  value       = module.hub_vpc.dns_custom_resolver_id
+}
