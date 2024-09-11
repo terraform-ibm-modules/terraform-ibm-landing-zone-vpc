@@ -23,6 +23,7 @@ const defaultExampleTerraformDir = "examples/default"
 const landingZoneExampleTerraformDir = "examples/landing_zone"
 const hubAndSpokeDelegatedExampleTerraformDir = "examples/hub-spoke-delegated-resolver"
 const existingVPCExampleTerraformDir = "examples/existing_vpc"
+const specificZoneExampleTerraformDir = "examples/specific-zone-only"
 const resourceGroup = "geretain-test-resources"
 
 // Define a struct with fields that match the structure of the YAML data

@@ -37,4 +37,26 @@ module "slz_vpc" {
     zone-2 = true
     zone-3 = false
   }
+  network_acls = [{
+    name                         = "my-acl"
+    add_ibm_cloud_internal_rules = false
+    add_vpc_connectivity_rules   = false
+    prepend_ibm_rules            = false
+    rules = [{
+      name        = "inbound"
+      action      = "allow"
+      source      = "0.0.0.0/0"
+      destination = "0.0.0.0/0"
+      direction   = "inbound"
+      },
+      {
+        name        = "outbound"
+        action      = "allow"
+        source      = "0.0.0.0/0"
+        destination = "0.0.0.0/0"
+        direction   = "outbound"
+      }
+    ]
+    }
+  ]
 }
