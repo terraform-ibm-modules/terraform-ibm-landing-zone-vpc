@@ -48,16 +48,49 @@ In addition to this root module, this repository provides two submodules that ca
 module vpc {
   source              = "terraform-ibm-modules/landing-zone-vpc/ibm"
   version             = "X.X.X" # Replace "X.X.X" with a release version to lock into a specific release
-  resource_group_id   = var.resource_group_id
-  region              = var.region
-  prefix              = var.prefix
-  tags                = var.tags
-  vpc_name            = var.vpc_name
-  classic_access      = var.classic_access
-  network_acls        = var.network_acls
-  use_public_gateways = var.use_public_gateways
-  subnets             = var.subnets
-  vpn_gateways        = var.vpn_gateways
+  resource_group_id   = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX"
+  region              = "us-south"
+  prefix              = "my-test"
+  tags                = ["tag1", "tag2"]
+  vpc_name            = "my-vpc"
+  classic_access      = true
+  network_acls = [
+    {
+      name                         = "acl1"
+      add_ibm_cloud_internal_rules = true
+      add_vpc_connectivity_rules   = true
+      prepend_ibm_rules            = true
+      rules = [
+        {
+          name        = "rule1"
+          action      = "allow"
+          direction   = "inbound"
+          source      = "0.0.0.0/0"
+          destination = "10.0.0.0/24"
+          tcp = {
+            port_min        = 80
+            port_max        = 80
+            source_port_min = 1024
+            source_port_max = 65535
+          }
+        }
+      ]
+    }
+  ]
+  use_public_gateways = {
+    zone-1 = true
+  }
+  subnets = {
+    zone-1 = [
+      {
+        name           = "subnet1"
+        cidr           = "10.10.10.0/24"
+        public_gateway = true
+        acl_name       = "acl1"
+      }
+    ]
+  }
+  vpn_gateways        = ["vpn-gateway1", "vpn-gateway2"]
 }
 ```
 
