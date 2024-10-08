@@ -28,7 +28,7 @@ module "slz_vpc" {
         name           = "subnet-a"
         cidr           = "10.10.10.0/24"
         public_gateway = true
-        acl_name       = "my-acl"
+        acl_name       = "${var.prefix}-acl"
       }
     ]
   }
@@ -38,7 +38,7 @@ module "slz_vpc" {
     zone-3 = false
   }
   network_acls = [{
-    name                         = "my-acl"
+    name                         = "${var.prefix}-acl"
     add_ibm_cloud_internal_rules = false
     add_vpc_connectivity_rules   = false
     prepend_ibm_rules            = false
