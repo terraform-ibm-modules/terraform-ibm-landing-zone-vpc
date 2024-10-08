@@ -33,6 +33,7 @@ This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) net
     * [Hub and Spoke VPC with manual DNS resolver Example](./examples/hub-spoke-manual-resolver)
     * [Landing Zone example](./examples/landing_zone)
     * [No Prefix Example](./examples/no-prefix)
+    * [Specific Zone Only Example](./examples/specific-zone-only)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
