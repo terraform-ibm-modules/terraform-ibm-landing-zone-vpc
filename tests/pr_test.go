@@ -23,6 +23,7 @@ const defaultExampleTerraformDir = "examples/default"
 const landingZoneExampleTerraformDir = "examples/landing_zone"
 const hubAndSpokeDelegatedExampleTerraformDir = "examples/hub-spoke-delegated-resolver"
 const existingVPCExampleTerraformDir = "examples/existing_vpc"
+const specificZoneExampleTerraformDir = "examples/specific-zone-only"
 const noprefixExampleTerraformDir = "examples/no-prefix"
 const resourceGroup = "geretain-test-resources"
 
