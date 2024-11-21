@@ -11,7 +11,6 @@ module "management_vpc" {
   region                                 = var.region
   prefix                                 = var.prefix
   network_cidrs                          = var.network_cidrs
-  classic_access                         = var.classic_access
   default_network_acl_name               = var.default_network_acl_name
   default_security_group_name            = var.default_security_group_name
   security_group_rules                   = var.default_security_group_rules == null ? [] : var.default_security_group_rules

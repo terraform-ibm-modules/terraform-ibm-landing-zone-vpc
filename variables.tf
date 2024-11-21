@@ -106,12 +106,6 @@ variable "network_cidrs" {
   default     = ["10.0.0.0/8"]
 }
 
-variable "classic_access" {
-  description = "OPTIONAL - Classic Access to the VPC"
-  type        = bool
-  default     = false
-}
-
 variable "default_network_acl_name" {
   description = "OPTIONAL - Name of the Default ACL. If null, a name will be automatically generated"
   type        = string

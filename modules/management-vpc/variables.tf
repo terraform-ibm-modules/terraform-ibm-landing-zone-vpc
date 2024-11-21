@@ -37,12 +37,6 @@ variable "network_cidrs" {
   default     = ["10.0.0.0/8"]
 }
 
-variable "classic_access" {
-  description = "Optionally allow VPC to access classic infrastructure network"
-  type        = bool
-  default     = null
-}
-
 variable "default_network_acl_name" {
   description = "Override default ACL name"
   type        = string
