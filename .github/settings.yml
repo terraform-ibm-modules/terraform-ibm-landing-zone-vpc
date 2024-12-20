@@ -15,5 +15,5 @@ repository:
 
   # The description is displayed under the repository name on the
   # organization page and in the 'About' section of the repository.
-  description: "Creates virtual servers across subnets in a single VPC connected by a single security group. Supports floating IP addresses and multiple load balancers."
+  description: "This module creates the Virtual Private Cloud (VPC) resources in a cloud environment, including subnets and security groups. Also Supports floating IP addresses and multiple load balancers."
   topics: core-team, terraform, ibm-cloud, terraform-module, slz-vpc, slz, landing-zone, supported, graduated
