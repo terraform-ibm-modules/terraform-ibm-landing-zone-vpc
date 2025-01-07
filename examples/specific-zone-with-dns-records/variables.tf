@@ -7,33 +7,33 @@ variable "ibmcloud_api_key" {
 variable "region" {
   description = "The region to which to deploy the VPC"
   type        = string
+  default     = "us-south"
 }
 
-variable "vpc_id" {
-  description = "The ID of the VPC where the VSI will be created."
+variable "prefix" {
+  description = "The prefix that you would like to append to your resources"
   type        = string
-}
-
-variable "public_gateway_name" {
-  description = "The name of the public gateway"
-  type        = string
-}
-
-variable "subnet_ids" {
-  description = "The ID of the VPC where the VSI will be created."
-  type        = list(string)
-}
-
-variable "existing_resource_group_name" {
-  type        = string
-  description = "An existing resource group name to use for this example."
+  default     = "lz-vpc-with-dns"
 }
 
 variable "name" {
-  description = "The string is used as a prefix for the naming of VPC resources."
+  description = "The name of the vpc"
   type        = string
+  default     = "vpc-with-dns"
 }
 
+variable "resource_group" {
+  type        = string
+  description = "An existing resource group name to use for this example, if unset a new resource group will be created"
+  default     = null
+}
+
+variable "resource_tags" {
+  description = "List of Tags for the resource created"
+  type        = list(string)
+  default     = null
+}
+########
 variable "dns_records" {
   description = "List of DNS records to create"
   type = list(object({
@@ -54,4 +54,3 @@ variable "dns_zone_name" {
   description = "The name of the DNS zone to be created."
   type        = string
 }
-

@@ -20,4 +20,8 @@ module "slz_vpc" {
   name                = var.name
   public_gateway_name = var.public_gateway_name
   existing_subnets    = [for id in var.subnet_ids : { "id" : id, "public_gateway" : false }]
+  dns_records = var.dns_records
+  dns_zone_name = var.dns_zone_name
+  # dns_zone_description = var.dns_zone_description
+  # dns_zone_label       = var.dns_zone_label
 }

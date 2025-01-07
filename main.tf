@@ -58,6 +58,60 @@ locals {
 }
 
 ##############################################################################
+# DNS ZONE
+##############################################################################
+
+resource "ibm_dns_zone" "dns_zone" {
+  name = var.dns_zone_name
+  instance_id = (var.enable_hub && !var.skip_custom_resolver_hub_creation) ? (var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid) : null
+  # instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
+  description = var.dns_zone_description
+  label       = var.dns_zone_label
+}
+
+##############################################################################
+# DNS Records
+##############################################################################
+
+# resource "ibm_dns_record" "dns_record" {
+#   for_each           = var.dns_records
+#   data               = each.value.data
+#   domain_id          = each.value.domain_id
+#   host               = each.value.host
+#   responsible_person = replace(each.value.responsible_person, "@", ".")
+#   ttl                = each.value.ttl
+#   type               = each.value.type
+#   expire             = each.value.expire
+#   minimum_ttl        = each.value.minimum_ttl
+#   mx_priority        = each.value.mx_priority
+#   protocol           = each.value.protocol
+#   port               = each.value.port
+#   priority           = each.value.priority
+#   refresh            = each.value.refresh
+#   retry              = each.value.retry
+#   service            = each.value.service
+#   tags               = each.value.tags
+#   # txt                = each.value.txt #TODO: This is present in doc but gives error.Check.
+#   weight = each.value.weight
+# }
+
+resource "ibm_dns_resource_record" "dns_record" {
+  count          = length(var.dns_records) # Loop through a list of DNS records
+  instance_id    = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
+  zone_id        = ibm_dns_zone.dns_zone.id # Reference to the zone created above
+  name           = var.dns_records[count.index].name
+  type           = var.dns_records[count.index].type
+  rdata          = var.dns_records[count.index].rdata
+  ttl            = var.dns_records[count.index].ttl
+  preference     = var.dns_records[count.index].preference
+  priority       = var.dns_records[count.index].priority
+  port           = var.dns_records[count.index].port
+  protocol       = var.dns_records[count.index].protocol
+  service        = var.dns_records[count.index].service
+  weight         = var.dns_records[count.index].weight
+}
+
+##############################################################################
 # Create new VPC
 ##############################################################################
 
