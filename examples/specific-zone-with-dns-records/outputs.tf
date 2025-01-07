@@ -50,5 +50,5 @@ output "dns_zone_id" {
 }
 output "dns_record_ids" {
   description = "List of all the domain resource records."
-  value = module.slz_vpc.dns_record_ids
+  value       = module.slz_vpc.dns_record_ids
 }

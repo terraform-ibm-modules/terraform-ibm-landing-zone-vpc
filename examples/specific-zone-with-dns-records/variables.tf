@@ -54,3 +54,8 @@ variable "dns_zone_name" {
   description = "The name of the DNS zone to be created."
   type        = string
 }
+
+variable "existing_dns_instance_id" {
+  description = "Id of an existing dns instance in which the custom resolver is created. Only relevant if enable_hub is set to true."
+  type        = string
+}

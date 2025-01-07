@@ -34,6 +34,7 @@ This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) net
     * [Landing Zone example](./examples/landing_zone)
     * [No Prefix Example](./examples/no-prefix)
     * [Specific Zone Only Example](./examples/specific-zone-only)
+    * [Specific Zone Only Example](./examples/specific-zone-with-dns-records)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
@@ -150,7 +151,7 @@ To attach access management tags to resources in this module, you need the follo
 | Name | Type |
 |------|------|
 | [ibm_dns_custom_resolver.custom_resolver_hub](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/dns_custom_resolver) | resource |
-| [ibm_dns_record.dns_record](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/dns_record) | resource |
+| [ibm_dns_resource_record.dns_record](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/dns_resource_record) | resource |
 | [ibm_dns_zone.dns_zone](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/dns_zone) | resource |
 | [ibm_iam_authorization_policy.policy](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/iam_authorization_policy) | resource |
 | [ibm_iam_authorization_policy.vpc_dns_resolution_auth_policy](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/iam_authorization_policy) | resource |
@@ -193,9 +194,9 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_dns_instance_name"></a> [dns\_instance\_name](#input\_dns\_instance\_name) | The name to give the provisioned DNS instance. If not set, the module generates a name based on the `prefix` and `name` variables. | `string` | `null` | no |
 | <a name="input_dns_location"></a> [dns\_location](#input\_dns\_location) | The target location or environment for the DNS instance created to host the custom resolver in a hub-spoke DNS resolution topology. Only used if enable\_hub is true and skip\_custom\_resolver\_hub\_creation is false (defaults). | `string` | `"global"` | no |
 | <a name="input_dns_plan"></a> [dns\_plan](#input\_dns\_plan) | The plan for the DNS resource instance created to host the custom resolver in a hub-spoke DNS resolution topology. Only used if enable\_hub is true and skip\_custom\_resolver\_hub\_creation is false (defaults). | `string` | `"standard-dns"` | no |
-| <a name="input_dns_records"></a> [dns\_records](#input\_dns\_records) | Map of DNS record configurations | <pre>map(object({<br/>    data               = string<br/>    domain_id          = number<br/>    expire             = optional(number)<br/>    host               = string<br/>    minimum_ttl        = optional(number)<br/>    mx_priority        = optional(number, 0)<br/>    refresh            = optional(number)<br/>    responsible_person = string<br/>    retry              = optional(number)<br/>    tags               = optional(list(string))<br/>    txt                = optional(string)<br/>    ttl                = number<br/>    type               = string<br/>    # Below field are required for SRV records only<br/>    protocol = optional(string)<br/>    port     = optional(number)<br/>    priority = optional(number)<br/>    service  = optional(string)<br/>    weight   = optional(number)<br/>  }))</pre> | `null` | no |
-| <a name="input_dns_zone_description"></a> [dns\_zone\_description](#input\_dns\_zone\_description) | The description of the DNS zone. | `string` | `null` | no |
-| <a name="input_dns_zone_label"></a> [dns\_zone\_label](#input\_dns\_zone\_label) | Label associated with the DNS zone. | `string` | `null` | no |
+| <a name="input_dns_records"></a> [dns\_records](#input\_dns\_records) | List of DNS records to create | <pre>list(object({<br/>    name       = string<br/>    type       = string<br/>    rdata      = string<br/>    ttl        = optional(number)<br/>    preference = optional(number)<br/>    priority   = optional(number)<br/>    port       = optional(number)<br/>    protocol   = optional(string)<br/>    service    = optional(string)<br/>    weight     = optional(number)<br/>  }))</pre> | `[]` | no |
+| <a name="input_dns_zone_description"></a> [dns\_zone\_description](#input\_dns\_zone\_description) | The description of the DNS zone. | `string` | `"Default DNS Zone"` | no |
+| <a name="input_dns_zone_label"></a> [dns\_zone\_label](#input\_dns\_zone\_label) | Label associated with the DNS zone. | `string` | `"dns-zone"` | no |
 | <a name="input_dns_zone_name"></a> [dns\_zone\_name](#input\_dns\_zone\_name) | The name of the DNS zone to be created. | `string` | `null` | no |
 | <a name="input_enable_hub"></a> [enable\_hub](#input\_enable\_hub) | Indicates whether this VPC is enabled as a DNS name resolution hub. | `bool` | `false` | no |
 | <a name="input_enable_hub_vpc_crn"></a> [enable\_hub\_vpc\_crn](#input\_enable\_hub\_vpc\_crn) | Indicates whether Hub VPC CRN is passed. | `bool` | `false` | no |
