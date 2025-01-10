@@ -178,23 +178,23 @@ output "dns_custom_resolver_id" {
 }
 
 ## DNS Zone and Records
-output "dns_zone_state" {
-  description = "The state of the DNS zone."
-  value       = ibm_dns_zone.dns_zone.state
-}
+# output "dns_zone_state" {
+#   description = "The state of the DNS zone."
+#   value       = ibm_dns_zone.dns_zone.state
+# }
 
-output "dns_zone" {
-  description = "The ID of the DNS zone. The ID is composed of <instance_id>/<zone_id>"
-  value       = ibm_dns_zone.dns_zone.id
-}
+# output "dns_zone" {
+#   description = "The ID of the DNS zone. The ID is composed of <instance_id>/<zone_id>"
+#   value       = ibm_dns_zone.dns_zone.id
+# }
 
-output "dns_zone_id" {
-  description = "The ID of the zone that is associated with the DNS zone."
-  value       = ibm_dns_zone.dns_zone.zone_id
-}
+# output "dns_zone_id" {
+#   description = "The ID of the zone that is associated with the DNS zone."
+#   value       = ibm_dns_zone.dns_zone.zone_id
+# }
 
-output "dns_record_ids" {
-  description = "List of all the domain resource records."
-  # value       = [for record in ibm_dns_record.dns_record : record.id]
-  value = [for record in ibm_dns_resource_record.dns_record : record.id]
-}
+# output "dns_record_ids" {
+#   description = "List of all the domain resource records."
+#   # value       = [for record in ibm_dns_record.dns_record : record.id]
+#   value = [for record in ibm_dns_resource_record.dns_record : record.id]
+# }

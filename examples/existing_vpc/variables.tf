@@ -33,24 +33,3 @@ variable "name" {
   description = "The string is used as a prefix for the naming of VPC resources."
   type        = string
 }
-
-variable "dns_records" {
-  description = "List of DNS records to create"
-  type = list(object({
-    name       = string
-    type       = string
-    rdata      = string
-    ttl        = optional(number)
-    preference = optional(number)
-    priority   = optional(number)
-    port       = optional(number)
-    protocol   = optional(string)
-    service    = optional(string)
-    weight     = optional(number)
-  }))
-}
-
-variable "dns_zone_name" {
-  description = "The name of the DNS zone to be created."
-  type        = string
-}
