@@ -70,6 +70,14 @@ resource "ibm_dns_zone" "dns_zone" {
   label       = var.dns_zone_label
 }
 
+##
+
+resource "ibm_dns_permitted_network" "dns-permitted-nw" {
+  instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
+  zone_id     = ibm_dns_zone.dns_zone.id
+  vpc_crn     = local.vpc_crn
+}
+##
 ##############################################################################
 # DNS Records
 ##############################################################################
