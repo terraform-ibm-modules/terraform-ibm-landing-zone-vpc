@@ -75,7 +75,7 @@ resource "ibm_dns_zone" "dns_zone" {
 resource "ibm_dns_permitted_network" "dns-permitted-nw" {
   depends_on  = [ibm_dns_zone.dns_zone]
   instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
-  zone_id     = ibm_dns_zone.dns_zone.id
+  zone_id     = ibm_dns_zone.dns_zone.zone_id
   vpc_crn     = local.vpc_crn
 }
 ##
@@ -84,10 +84,10 @@ resource "ibm_dns_permitted_network" "dns-permitted-nw" {
 ##############################################################################
 
 resource "ibm_dns_resource_record" "dns_record" {
-  depends_on  = [ibm_dns_zone.dns_zone]
+  depends_on  = [ibm_dns_zone.dns_zone, ibm_dns_permitted_network.dns-permitted-nw]
   for_each    = { for idx, record in var.dns_records : idx => record } # Loop through a list of DNS records
   instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
-  zone_id     = ibm_dns_zone.dns_zone.id # Reference to the zone created above
+  zone_id     = ibm_dns_zone.dns_zone.zone_id # Reference to the zone created above
   name        = each.value.name
   type        = each.value.type
   rdata       = each.value.rdata
