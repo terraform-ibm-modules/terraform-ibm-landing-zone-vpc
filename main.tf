@@ -61,35 +61,35 @@ locals {
 # DNS ZONE
 ##############################################################################
 
-# resource "ibm_dns_zone" "dns_zone" {
-#   name = var.dns_zone_name
-#   # instance_id = (var.enable_hub && !var.skip_custom_resolver_hub_creation) ? (var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid) : null
-#   instance_id = var.existing_dns_instance_id
-#   # var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
-#   description = var.dns_zone_description
-#   label       = var.dns_zone_label
-# }
+resource "ibm_dns_zone" "dns_zone" {
+  name = var.dns_zone_name
+  # instance_id = (var.enable_hub && !var.skip_custom_resolver_hub_creation) ? (var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid) : null
+  instance_id = var.existing_dns_instance_id
+  # var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
+  description = var.dns_zone_description
+  label       = var.dns_zone_label
+}
 
 ##############################################################################
 # DNS Records
 ##############################################################################
 
-# resource "ibm_dns_resource_record" "dns_record" {
-#   depends_on  = [ibm_dns_zone.dns_zone]
-#   for_each    = { for idx, record in var.dns_records : idx => record } # Loop through a list of DNS records
-#   instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
-#   zone_id     = ibm_dns_zone.dns_zone.id # Reference to the zone created above
-#   name        = each.value.name
-#   type        = each.value.type
-#   rdata       = each.value.rdata
-#   ttl         = each.value.ttl
-#   preference  = each.value.preference
-#   priority    = each.value.priority
-#   port        = each.value.port
-#   protocol    = each.value.protocol
-#   service     = each.value.service
-#   weight      = each.value.weight
-# }
+resource "ibm_dns_resource_record" "dns_record" {
+  depends_on  = [ibm_dns_zone.dns_zone]
+  for_each    = { for idx, record in var.dns_records : idx => record } # Loop through a list of DNS records
+  instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
+  zone_id     = ibm_dns_zone.dns_zone.id # Reference to the zone created above
+  name        = each.value.name
+  type        = each.value.type
+  rdata       = each.value.rdata
+  ttl         = each.value.ttl
+  preference  = each.value.preference
+  priority    = each.value.priority
+  port        = each.value.port
+  protocol    = each.value.protocol
+  service     = each.value.service
+  weight      = each.value.weight
+}
 
 ##############################################################################
 # Create new VPC

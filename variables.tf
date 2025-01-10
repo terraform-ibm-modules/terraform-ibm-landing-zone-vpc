@@ -638,28 +638,28 @@ variable "dns_plan" {
   }
 }
 
-# variable "dns_zone_name" {
-#   description = "The name of the DNS zone to be created."
-#   default     = null
+variable "dns_zone_name" {
+  description = "The name of the DNS zone to be created."
+  default     = null
+  type        = string
+}
+
+# variable "instance_id" {
+#   description = "The GUID of the IBM Cloud DNS service instance where DNS zone will be created."
 #   type        = string
 # }
 
-# # variable "instance_id" {
-# #   description = "The GUID of the IBM Cloud DNS service instance where DNS zone will be created."
-# #   type        = string
-# # }
+variable "dns_zone_description" {
+  description = "The description of the DNS zone."
+  type        = string
+  default     = "Default DNS Zone"
+}
 
-# variable "dns_zone_description" {
-#   description = "The description of the DNS zone."
-#   type        = string
-#   default     = "Default DNS Zone"
-# }
-
-# variable "dns_zone_label" {
-#   description = "Label associated with the DNS zone."
-#   type        = string
-#   default     = "dns-zone"
-# }
+variable "dns_zone_label" {
+  description = "Label associated with the DNS zone."
+  type        = string
+  default     = "dns-zone"
+}
 
 # variable "dns_records" {
 #   description = "Map of DNS record configurations"
@@ -707,19 +707,19 @@ variable "dns_plan" {
 
 # }
 
-# variable "dns_records" {
-#   description = "List of DNS records to create"
-#   type = list(object({
-#     name       = string
-#     type       = string
-#     rdata      = string
-#     ttl        = optional(number)
-#     preference = optional(number)
-#     priority   = optional(number)
-#     port       = optional(number)
-#     protocol   = optional(string)
-#     service    = optional(string)
-#     weight     = optional(number)
-#   }))
-#   default = []
-# }
+variable "dns_records" {
+  description = "List of DNS records to create"
+  type = list(object({
+    name       = string
+    type       = string
+    rdata      = string
+    ttl        = optional(number)
+    preference = optional(number)
+    priority   = optional(number)
+    port       = optional(number)
+    protocol   = optional(string)
+    service    = optional(string)
+    weight     = optional(number)
+  }))
+  default = []
+}
