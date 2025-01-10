@@ -73,6 +73,7 @@ resource "ibm_dns_zone" "dns_zone" {
 ##
 
 resource "ibm_dns_permitted_network" "dns-permitted-nw" {
+  depends_on  = [ibm_dns_zone.dns_zone]
   instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
   zone_id     = ibm_dns_zone.dns_zone.id
   vpc_crn     = local.vpc_crn
