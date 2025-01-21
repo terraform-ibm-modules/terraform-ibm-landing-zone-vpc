@@ -59,11 +59,10 @@ module "slz_vpc" {
     ]
     }
   ]
-  enable_hub                = true
-  use_existing_dns_instance = true
-  existing_dns_instance_id  = var.existing_dns_instance_id
-  dns_records               = var.dns_records
-  dns_zone_name             = var.dns_zone_name
-  # dns_zone_description = var.dns_zone_description
-  # dns_zone_label       = var.dns_zone_label
+  enable_hub = true
+  # skip_custom_resolver_hub_creation = false # TODO: Remove (default value)
+  # use_existing_dns_instance = true #TODO: Remove after verifying existing instance.
+  dns_zone_name = var.dns_zone_name
+  # existing_dns_instance_id  = var.existing_dns_instance_id #TODO: Remove after verifying existing instance.
+  dns_records = var.dns_records
 }
