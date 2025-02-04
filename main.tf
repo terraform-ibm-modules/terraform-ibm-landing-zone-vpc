@@ -389,7 +389,8 @@ resource "ibm_dns_resource_record" "dns_record" {
   zone_id     = ibm_dns_zone.dns_zone[0].zone_id
   name        = each.value.name
   type        = each.value.type
-  # Setting the default TTL to 15 mins as seen in UI. This is not mentioned in the documentation.
+
+  # Default ttl is 15 minutes [Refer](https://cloud.ibm.com/docs/dns-svcs?topic=dns-svcs-managing-dns-records&interface=ui)
   ttl   = try(each.value.ttl, 900)
   rdata = each.value.rdata
 

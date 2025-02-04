@@ -34,7 +34,7 @@ This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) net
     * [Landing Zone example](./examples/landing_zone)
     * [No Prefix Example](./examples/no-prefix)
     * [Specific Zone Only Example](./examples/specific-zone-only)
-    * [Specific Zone Only Example](./examples/with-dns-records)
+    * [VPC with DNS example](./examples/vpc-with-dns)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 

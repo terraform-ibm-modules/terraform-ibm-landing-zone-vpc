@@ -1,4 +1,4 @@
-# Specific Zone Only Example
+# VPC with DNS example
 
 A simple example to provision a Secure Landing Zone (SLZ) Virtual Private Cloud (`VPC`) in two zones (Zone1 and Zone2). Allows creation of Domain Name System (`DNS`) `Zones` and `Records` linking the created `VPC` as a permitted network to the `DNS.`
 
