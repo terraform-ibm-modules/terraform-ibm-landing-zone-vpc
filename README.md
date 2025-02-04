@@ -34,7 +34,7 @@ This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) net
     * [Landing Zone example](./examples/landing_zone)
     * [No Prefix Example](./examples/no-prefix)
     * [Specific Zone Only Example](./examples/specific-zone-only)
-    * [Specific Zone Only Example](./examples/specific-zone-with-dns-records)
+    * [Specific Zone Only Example](./examples/with-dns-records)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
@@ -195,7 +195,7 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_dns_instance_name"></a> [dns\_instance\_name](#input\_dns\_instance\_name) | The name to give the provisioned DNS instance. If not set, the module generates a name based on the `prefix` and `name` variables. | `string` | `null` | no |
 | <a name="input_dns_location"></a> [dns\_location](#input\_dns\_location) | The target location or environment for the DNS instance created to host the custom resolver in a hub-spoke DNS resolution topology. Only used if enable\_hub is true and skip\_custom\_resolver\_hub\_creation is false (defaults). | `string` | `"global"` | no |
 | <a name="input_dns_plan"></a> [dns\_plan](#input\_dns\_plan) | The plan for the DNS resource instance created to host the custom resolver in a hub-spoke DNS resolution topology. Only used if enable\_hub is true and skip\_custom\_resolver\_hub\_creation is false (defaults). | `string` | `"standard-dns"` | no |
-| <a name="input_dns_records"></a> [dns\_records](#input\_dns\_records) | List of DNS records to create | <pre>list(object({<br/>    name  = string<br/>    type  = string<br/>    ttl   = number<br/>    rdata = any<br/>    # preference     = optional(number,null)<br/>    service  = optional(string, null)<br/>    protocol = optional(string, null)<br/>    # priority       = optional(number, null)<br/>    # weight         = optional(number, null)<br/>    # port           = optional(number, null)<br/>  }))</pre> | `[]` | no |
+| <a name="input_dns_records"></a> [dns\_records](#input\_dns\_records) | List of DNS records to be created. | <pre>list(object({<br/>    name       = string<br/>    type       = string<br/>    ttl        = number<br/>    rdata      = string<br/>    preference = optional(number, null)<br/>    service    = optional(string, null)<br/>    protocol   = optional(string, null)<br/>    priority   = optional(number, null)<br/>    weight     = optional(number, null)<br/>    port       = optional(number, null)<br/>  }))</pre> | `[]` | no |
 | <a name="input_dns_zone_description"></a> [dns\_zone\_description](#input\_dns\_zone\_description) | The description of the DNS zone. | `string` | `"Default DNS Zone"` | no |
 | <a name="input_dns_zone_label"></a> [dns\_zone\_label](#input\_dns\_zone\_label) | Label associated with the DNS zone. | `string` | `"dns-zone"` | no |
 | <a name="input_dns_zone_name"></a> [dns\_zone\_name](#input\_dns\_zone\_name) | The name of the DNS zone to be created. | `string` | `null` | no |

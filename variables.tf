@@ -644,12 +644,6 @@ variable "dns_zone_name" {
   type        = string
 }
 
-#TODO: Remove after validation
-# variable "instance_id" {
-#   description = "The GUID of the IBM Cloud DNS service instance where DNS zone will be created."
-#   type        = string
-# }
-
 variable "dns_zone_description" {
   description = "The description of the DNS zone."
   type        = string
@@ -663,38 +657,42 @@ variable "dns_zone_label" {
 }
 
 variable "dns_records" {
-  description = "List of DNS records to create"
+  description = "List of DNS records to be created."
   type = list(object({
-    name  = string
-    type  = string
-    ttl   = number
-    rdata = any
-    # preference     = optional(number,null)
-    service  = optional(string, null)
-    protocol = optional(string, null)
-    # priority       = optional(number, null)
-    # weight         = optional(number, null)
-    # port           = optional(number, null)
+    name       = string
+    type       = string
+    ttl        = number
+    rdata      = string
+    preference = optional(number, null)
+    service    = optional(string, null)
+    protocol   = optional(string, null)
+    priority   = optional(number, null)
+    weight     = optional(number, null)
+    port       = optional(number, null)
   }))
   default = []
   validation {
-    condition     = var.dns_records == [] || alltrue([for record in var.dns_records != null ? var.dns_records : [] : (contains(["A", "AAAA", "CNAME", "MX", "PTR", "TXT", "SRV"], record.type))])
+    condition     = length(var.dns_records) == 0 || alltrue([for record in var.dns_records != null ? var.dns_records : [] : (contains(["A", "AAAA", "CNAME", "MX", "PTR", "TXT", "SRV"], record.type))])
     error_message = "Invalid domain resource record type is provided."
   }
-  #TODO: Prateek - correct the validation, as of now error is not clear
-  # validation {
-  #   condition = var.dns_records == [] || alltrue([
-  #     for record in var.dns_records != null ? var.dns_records : [] : (
-  #       record.type != "SRV" || (
-  #         # (record.protocol != null && contains(["tcp", "udp", "tls"], record.protocol)) &&
-  #         # (record.protocol == null || contains(["tcp", "udp", "tls"], lower(record.protocol))) &&
-  #         contains(["tcp", "udp", "tls"], lower(coalesce(record.protocol, ""))) &&
-  #         record.service != null &&
-  #         record.priority != null &&
-  #         record.weight != null
-  #       )
-  #     )
-  #   ])
-  #   error_message = "Invalid DNS record configuration. For 'SRV' records, 'protocol' must be 'tcp', 'udp' or 'tls' , and 'service', 'priority', and 'weight' must not be null."
-  # }
+
+  validation {
+    condition = length(var.dns_records) == 0 || alltrue([
+      for record in var.dns_records == null ? [] : var.dns_records : (
+        record.type != "SRV" || (
+          record.protocol != null && record.port != null &&
+          record.service != null && record.priority != null && record.weight != null
+        )
+      )
+    ])
+    error_message = "Invalid SRV record configuration. For 'SRV' records, 'protocol' , 'service', 'priority', 'port' and 'weight' values must be provided."
+  }
+  validation {
+    condition = length(var.dns_records) == 0 || alltrue([
+      for record in var.dns_records == null ? [] : var.dns_records : (
+        record.type != "MX" || record.preference != null
+      )
+    ])
+    error_message = "Invalid MX record configuration. For 'MX' records, value for 'preference' must be provided."
+  }
 }

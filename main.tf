@@ -357,17 +357,7 @@ resource "ibm_is_flow_log" "flow_logs" {
 ##############################################################################
 # DNS ZONE
 # ##############################################################################
-#TODO: PRATEEK - remove after finalizing the type (fixing type error)
-# locals {
-#   rdata_map = {
-#     A     = "ipv4_address"
-#     AAAA  = "ipv6_address"
-#     CNAME = "canonical_name"
-#     MX    = "mail_server"
-#     TXT   = "content"
-#     SRV   = "target"
-#   }
-# }
+
 resource "ibm_dns_zone" "dns_zone" {
   count       = var.enable_hub && !var.skip_custom_resolver_hub_creation ? 1 : 0
   name        = var.dns_zone_name
@@ -391,45 +381,27 @@ resource "ibm_dns_permitted_network" "dns_permitted_nw" {
 ##############################################################################
 # DNS Records
 ##############################################################################
-# resource "ibm_dns_resource_record" "dns_record" {
-#   # count = var.enable_hub && !var.skip_custom_resolver_hub_creation ? 1 : 0
-#   for_each    = { for idx, record in var.dns_records : idx => record }
-#   instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
-#   zone_id     = ibm_dns_zone.dns_zone[0].zone_id
-#   name = each.value.type != "ptr" ? each.value.name : null
-#   type = each.value.type
-#   ttl  = each.value.ttl
-#   # rdata = try(each.value[lookup(local.rdata_map, each.value.type, "")], "")
-#   rdata = each.value.type == "A" ? each.value.ipv4_address : each.value.type == "AAAA" ? each.value.ipv6_address : each.value.type == "CNAME" ? each.value.canonical_name : each.value.type == "MX" ? each.value.mail_server : each.value.type == "TXT" ? each.value.content : each.value.type == "SRV" ? each.value.target : ""
-#   preference = each.value.type == "MX" ? each.value.preference : null
-#   priority   = each.value.type == "SRV" ? each.value.priority : null
-#   port       = each.value.type == "SRV" ? each.value.port : null
-#   protocol   = each.value.type == "SRV" ? startswith(each.value.protocol, "_") ? each.value.protocol : "_${each.value.protocol}" : null
-#   service    = each.value.type == "SRV" ? startswith(each.value.service, "_") ? each.value.service : "_${each.value.service}" : null
-#   weight     = each.value.type == "SRV" ? each.value.weight : null
-# }
 
 resource "ibm_dns_resource_record" "dns_record" {
+
   for_each    = { for idx, record in var.dns_records : idx => record }
   instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
   zone_id     = ibm_dns_zone.dns_zone[0].zone_id
+  name        = each.value.name
+  type        = each.value.type
+  # Setting the default TTL to 15 mins as seen in UI. This is not mentioned in the documentation.
+  ttl   = try(each.value.ttl, 900)
+  rdata = each.value.rdata
 
-  # Set name to null for PTR records
-  name     = each.value.type != "PTR" ? each.value.name : null
-  type     = each.value.type
-  ttl      = each.value.ttl
+  # SRV values
+  port     = each.value.type == "SRV" ? each.value.port : null
+  priority = each.value.type == "SRV" ? each.value.priority : null
   protocol = each.value.type == "SRV" ? each.value.protocol : null
-  service  = each.value.type == "SRV" ? each.value.service : null
-  # Dynamically set rdata based on record type
-  rdata = each.value.type == "A" || each.value.type == "AAAA" ? each.value.rdata["ip"] : each.value.type == "CNAME" ? each.value.rdata["cname"] : each.value.type == "MX" ? {
-    exchange   = each.value.rdata["exchange"]
-    preference = each.value.rdata["preference"]
-    } : each.value.type == "TXT" ? each.value.rdata["txtdata"] : each.value.type == "SRV" ? {
-    priority = each.value.rdata["priority"]
-    weight   = each.value.rdata["weight"]
-    port     = each.value.rdata["port"]
-    target   = each.value.rdata["target"]
-  } : each.value.type == "PTR" ? each.value.rdata["ptrdname"] : null
+  service  = each.value.type == "SRV" ? startswith(each.value.service, "_") ? each.value.service : "_${each.value.service}" : null
+  weight   = each.value.type == "SRV" ? each.value.weight : null
+
+  # MX record
+  preference = each.value.type == "MX" ? each.value.preference : null
 }
 
 ##############################################################################
