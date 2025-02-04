@@ -13,8 +13,8 @@ import (
 var dnsRecordsMap = []map[string]interface{}{
 	{"name": "testA", "type": "A", "rdata": "1.2.3.4", "ttl": 3600},
 	{"name": "testAAAA", "type": "AAAA", "rdata": "2001:0db8:0012:0001:3c5e:7354:0000:5db5"},
-	{"name": "testTXT", "type": "TXT", "rdata": "textinformation", "ttl": 900},
 	{"name": "testCNAME", "type": "CNAME", "rdata": "test.com"},
+	{"name": "testTXT", "type": "TXT", "rdata": "textinformation", "ttl": 900},
 	{"name": "testMX", "type": "MX", "rdata": "mailserver.test.com", "preference": 10},
 	{"name": "testSRV", "type": "SRV", "rdata": "tester.com", "priority": 100, "weight": 100, "port": 8000, "service": "_sip", "protocol": "udp"},
 }
