@@ -195,5 +195,5 @@ output "dns_zone_id" {
 
 output "dns_record_ids" {
   description = "List of all the domain resource records."
-  value = [for record in ibm_dns_resource_record.dns_record : record.id]
+  value       = [for record in ibm_dns_resource_record.dns_record : record.id]
 }
