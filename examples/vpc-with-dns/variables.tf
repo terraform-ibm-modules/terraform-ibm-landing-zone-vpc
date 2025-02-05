@@ -13,13 +13,13 @@ variable "region" {
 variable "prefix" {
   description = "The prefix that you would like to append to your resources"
   type        = string
-  default     = "sz-vpc-with-dns"
+  default     = "dns"
 }
 
 variable "name" {
   description = "The name of the vpc"
   type        = string
-  default     = "vpc-with-dns"
+  default     = "sz-vpc"
 }
 
 variable "resource_group" {
@@ -33,7 +33,7 @@ variable "resource_tags" {
   type        = list(string)
   default     = null
 }
-########
+
 variable "dns_records" {
   description = "List of DNS records to create"
   type = list(object({
@@ -53,10 +53,4 @@ variable "dns_records" {
 variable "dns_zone_name" {
   description = "The name of the DNS zone to be created."
   type        = string
-}
-
-variable "existing_dns_instance_id" {
-  description = "Id of an existing dns instance in which the custom resolver is created. Only relevant if enable_hub is set to true."
-  type        = string
-  default     = null
 }

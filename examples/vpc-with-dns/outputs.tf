@@ -32,8 +32,6 @@ output "subnet_detail_map" {
   description = "VPC subnet detail map"
 }
 
-###############
-
 output "dns_zone_state" {
   description = "The state of the DNS zone."
   value       = module.slz_vpc.dns_zone_state
