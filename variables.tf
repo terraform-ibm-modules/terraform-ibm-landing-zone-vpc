@@ -637,3 +637,62 @@ variable "dns_plan" {
     error_message = "`dns_plan` can either be standard-dns or free-plan."
   }
 }
+
+variable "dns_zone_name" {
+  description = "The name of the DNS zone to be created."
+  default     = "slz.com"
+  type        = string
+}
+
+variable "dns_zone_description" {
+  description = "The description of the DNS zone."
+  type        = string
+  default     = "Default DNS Zone"
+}
+
+variable "dns_zone_label" {
+  description = "Label associated with the DNS zone."
+  type        = string
+  default     = "dns-zone"
+}
+
+variable "dns_records" {
+  description = "List of DNS records to be created."
+  type = list(object({
+    name       = string
+    type       = string
+    ttl        = number
+    rdata      = string
+    preference = optional(number, null)
+    service    = optional(string, null)
+    protocol   = optional(string, null)
+    priority   = optional(number, null)
+    weight     = optional(number, null)
+    port       = optional(number, null)
+  }))
+  default = []
+  validation {
+    condition     = length(var.dns_records) == 0 || alltrue([for record in var.dns_records != null ? var.dns_records : [] : (contains(["A", "AAAA", "CNAME", "MX", "PTR", "TXT", "SRV"], record.type))])
+    error_message = "Invalid domain resource record type is provided."
+  }
+
+  validation {
+    condition = length(var.dns_records) == 0 || alltrue([
+      for record in var.dns_records == null ? [] : var.dns_records : (
+        record.type != "SRV" || (
+          record.protocol != null && record.port != null &&
+          record.service != null && record.priority != null && record.weight != null
+        )
+      )
+    ])
+    error_message = "Invalid SRV record configuration. For 'SRV' records, 'protocol' , 'service', 'priority', 'port' and 'weight' values must be provided."
+  }
+  validation {
+    condition = length(var.dns_records) == 0 || alltrue([
+      for record in var.dns_records == null ? [] : var.dns_records : (
+        record.type != "MX" || record.preference != null
+      )
+    ])
+    error_message = "Invalid MX record configuration. For 'MX' records, value for 'preference' must be provided."
+  }
+}

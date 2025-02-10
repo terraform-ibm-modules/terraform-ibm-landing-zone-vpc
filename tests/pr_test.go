@@ -25,6 +25,7 @@ const hubAndSpokeDelegatedExampleTerraformDir = "examples/hub-spoke-delegated-re
 const existingVPCExampleTerraformDir = "examples/existing_vpc"
 const specificZoneExampleTerraformDir = "examples/specific-zone-only"
 const noprefixExampleTerraformDir = "examples/no-prefix"
+const vpcWithDnsExampleTerraformDir = "examples/vpc-with-dns"
 const resourceGroup = "geretain-test-resources"
 
 // Define a struct with fields that match the structure of the YAML data
