@@ -640,7 +640,7 @@ variable "dns_plan" {
 
 variable "dns_zone_name" {
   description = "The name of the DNS zone to be created."
-  default     = null
+  default     = "slz.com"
   type        = string
 }
 

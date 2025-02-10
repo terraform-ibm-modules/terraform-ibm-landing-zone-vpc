@@ -19,7 +19,7 @@ variable "prefix" {
 variable "name" {
   description = "The name of the vpc"
   type        = string
-  default     = "sz-vpc"
+  default     = "slz-vpc"
 }
 
 variable "resource_group" {
@@ -48,9 +48,40 @@ variable "dns_records" {
     service    = optional(string)
     weight     = optional(number)
   }))
+  default = [
+    {
+      name  = "testA"
+      type  = "A"
+      rdata = "1.2.3.4"
+      ttl   = 3600
+    },
+    {
+      name       = "testMX"
+      type       = "MX"
+      rdata      = "mailserver.test.com"
+      preference = 10
+    },
+    {
+      type     = "SRV"
+      name     = "testSRV"
+      rdata    = "tester.com"
+      priority = 100
+      weight   = 100
+      port     = 8000
+      service  = "_sip"
+      protocol = "udp"
+    },
+    {
+      name  = "testTXT"
+      type  = "TXT"
+      rdata = "textinformation"
+      ttl   = 900
+    }
+  ]
 }
 
 variable "dns_zone_name" {
   description = "The name of the DNS zone to be created."
   type        = string
+  default     = "dns-example.com"
 }

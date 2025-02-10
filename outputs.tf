@@ -183,17 +183,12 @@ output "dns_zone_state" {
   value       = length(ibm_dns_zone.dns_zone) > 0 ? ibm_dns_zone.dns_zone[0].state : null
 }
 
-output "dns_zone" {
-  description = "The ID of the DNS zone. The ID is composed of <instance_id>/<zone_id>"
-  value       = length(ibm_dns_zone.dns_zone) > 0 ? ibm_dns_zone.dns_zone[0].id : null
-}
-
 output "dns_zone_id" {
-  description = "The ID of the zone that is associated with the DNS zone."
+  description = "The ID of the DNS zone."
   value       = length(ibm_dns_zone.dns_zone) > 0 ? ibm_dns_zone.dns_zone[0].zone_id : null
 }
 
 output "dns_record_ids" {
   description = "List of all the domain resource records."
-  value       = [for record in ibm_dns_resource_record.dns_record : record.id]
+  value       = length(ibm_dns_resource_record.dns_record) > 0 ? local.record_ids : null
 }

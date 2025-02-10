@@ -370,7 +370,7 @@ resource "ibm_dns_zone" "dns_zone" {
 # DNS PERMITTED NETWORK
 ##############################################################################
 
-resource "ibm_dns_permitted_network" "dns_permitted_nw" {
+resource "ibm_dns_permitted_network" "dns_permitted_network" {
   count       = var.enable_hub && !var.skip_custom_resolver_hub_creation ? 1 : 0
   instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
   zone_id     = ibm_dns_zone.dns_zone[0].zone_id
@@ -382,6 +382,9 @@ resource "ibm_dns_permitted_network" "dns_permitted_nw" {
 # DNS Records
 ##############################################################################
 
+locals {
+  record_ids = [for record in ibm_dns_resource_record.dns_record : element(split("/", record.id), 2)]
+}
 resource "ibm_dns_resource_record" "dns_record" {
 
   for_each    = { for idx, record in var.dns_records : idx => record }

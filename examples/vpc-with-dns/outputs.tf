@@ -37,13 +37,8 @@ output "dns_zone_state" {
   value       = module.slz_vpc.dns_zone_state
 }
 
-output "dns_zone" {
-  description = "The ID of the DNS zone. The ID is composed of <instance_id>/<zone_id>"
-  value       = module.slz_vpc.dns_zone
-}
-
 output "dns_zone_id" {
-  description = "The ID of the zone that is associated with the DNS zone."
+  description = "The ID of the DNS zone."
   value       = module.slz_vpc.dns_zone_id
 }
 output "dns_record_ids" {

@@ -1,6 +1,6 @@
 # VPC with DNS example
 
-A simple example to provision a Secure Landing Zone (SLZ) Virtual Private Cloud (`VPC`) in two zones (Zone1 and Zone2). Allows creation of Domain Name System (`DNS`) `Zones` and `Records` linking the created `VPC` as a permitted network to the `DNS.`
+A simple example demonstrating the provisioning of a `Secure Landing Zone (SLZ) Virtual Private Cloud (VPC)` across two zones (`Zone 1` and `Zone 2`). This setup includes the creation of `Domain Name System (DNS) Zones and Records`, linking the provisioned VPC as a permitted network for DNS operations.
 
 The following resources are provisioned by this example:
 
