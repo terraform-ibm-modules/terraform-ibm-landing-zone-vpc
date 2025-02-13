@@ -45,3 +45,8 @@ output "dns_record_ids" {
   description = "List of all the domain resource records."
   value       = module.slz_vpc.dns_record_ids
 }
+
+output "dns_zone" {
+  description = "A map representing DNS zone information."
+  value       = module.slz_vpc.dns_zone
+}

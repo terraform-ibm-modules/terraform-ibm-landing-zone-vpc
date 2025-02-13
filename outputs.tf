@@ -188,6 +188,11 @@ output "dns_zone_id" {
   value       = length(ibm_dns_zone.dns_zone) > 0 ? ibm_dns_zone.dns_zone[0].zone_id : null
 }
 
+output "dns_zone" {
+  description = "A map representing DNS zone information."
+  value       = length(ibm_dns_zone.dns_zone) > 0 ? ibm_dns_zone.dns_zone[0] : null
+}
+
 output "dns_record_ids" {
   description = "List of all the domain resource records."
   value       = length(ibm_dns_resource_record.dns_record) > 0 ? local.record_ids : null

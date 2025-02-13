@@ -382,9 +382,6 @@ resource "ibm_dns_permitted_network" "dns_permitted_network" {
 # DNS Records
 ##############################################################################
 
-locals {
-  record_ids = [for record in ibm_dns_resource_record.dns_record : element(split("/", record.id), 2)]
-}
 resource "ibm_dns_resource_record" "dns_record" {
 
   for_each    = { for idx, record in var.dns_records : idx => record }
@@ -406,6 +403,10 @@ resource "ibm_dns_resource_record" "dns_record" {
 
   # MX record
   preference = each.value.type == "MX" ? each.value.preference : null
+}
+
+locals {
+  record_ids = [for record in ibm_dns_resource_record.dns_record : element(split("/", record.id), 2)]
 }
 
 ##############################################################################

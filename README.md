@@ -244,6 +244,7 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="output_dns_endpoint_gateways_by_id"></a> [dns\_endpoint\_gateways\_by\_id](#output\_dns\_endpoint\_gateways\_by\_id) | The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable\_hub is false and enable\_hub\_vpc\_id are true. |
 | <a name="output_dns_instance_id"></a> [dns\_instance\_id](#output\_dns\_instance\_id) | The ID of the DNS instance. |
 | <a name="output_dns_record_ids"></a> [dns\_record\_ids](#output\_dns\_record\_ids) | List of all the domain resource records. |
+| <a name="output_dns_zone"></a> [dns\_zone](#output\_dns\_zone) | A map representing DNS zone information. |
 | <a name="output_dns_zone_id"></a> [dns\_zone\_id](#output\_dns\_zone\_id) | The ID of the DNS zone. |
 | <a name="output_dns_zone_state"></a> [dns\_zone\_state](#output\_dns\_zone\_state) | The state of the DNS zone. |
 | <a name="output_network_acls"></a> [network\_acls](#output\_network\_acls) | List of shortnames and IDs of network ACLs |

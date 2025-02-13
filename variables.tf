@@ -642,6 +642,22 @@ variable "dns_zone_name" {
   description = "The name of the DNS zone to be created."
   default     = "slz.com"
   type        = string
+  validation {
+    condition = !contains([
+      "ibm.com",
+      "softlayer.com",
+      "bluemix.net",
+      "softlayer.local",
+      "mybluemix.net",
+      "networklayer.com",
+      "ibmcloud.com",
+      "pdnsibm.net",
+      "appdomain.cloud",
+      "compass.cobaltiron.com"
+    ], var.dns_zone_name)
+
+    error_message = "The specified DNS zone name is not permitted. Please choose a different domain name. [Learn more](https://cloud.ibm.com/docs/dns-svcs?topic=dns-svcs-managing-dns-zones&interface=ui#restricted-dns-zone-names)"
+  }
 }
 
 variable "dns_zone_description" {
