@@ -383,8 +383,7 @@ resource "ibm_dns_permitted_network" "dns_permitted_network" {
 ##############################################################################
 
 resource "ibm_dns_resource_record" "dns_record" {
-
-  for_each    = { for idx, record in var.dns_records : idx => record }
+  for_each    = length(ibm_dns_zone.dns_zone) > 0 ? { for idx, record in var.dns_records : idx => record } : {}
   instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
   zone_id     = ibm_dns_zone.dns_zone[0].zone_id
   name        = each.value.name
