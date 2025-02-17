@@ -22,12 +22,12 @@ variable "provider_visibility" {
 variable "use_existing_resource_group" {
   type        = bool
   description = "Whether to use an existing resource group."
-  default     = true
+  default     = false
 }
 
 variable "resource_group_name" {
   type        = string
-  description = "The name of a new or an existing resource group to provision the watsonx.ai resources. If a prefix input variable is specified, the prefix is added to the name in the `<prefix>-<name>` format."
+  description = "The name of a new or an existing resource group to provision the resources. If a prefix input variable is specified, the prefix is added to the name in the `<prefix>-<name>` format."
 }
 
 variable "prefix" {
@@ -38,7 +38,7 @@ variable "prefix" {
 
 variable "vpc_name" {
   default     = "simple"
-  description = "Name of the VPC."
+  description = "Name of the VPC. If a prefix input variable is specified, the prefix is added to the name in the `<prefix>-<name>` format."
   type        = string
 }
 
@@ -56,7 +56,7 @@ variable "resource_tags" {
 
 variable "access_tags" {
   type        = list(string)
-  description = "A list of access tags to apply to the VPC resources created by the module. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial."
+  description = "A list of access tags to apply to the VPC resources created by this solution. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial."
   default     = []
 
   validation {
@@ -285,42 +285,42 @@ variable "network_acls" {
 
 
 ##############################################################################
-# VPC Flow Logs Variables
+# VPC Flow Logs
 ##############################################################################
 
 variable "enable_vpc_flow_logs" {
-  description = "Flag to enable vpc flow logs. If true, flow log collector will be created"
+  description = "To enable vpc flow logs, set this to true."
   type        = bool
   default     = false
 }
 
-variable "create_authorization_policy_vpc_to_cos" {
-  description = "Create authorisation policy for VPC to access COS. Set as false if authorization policy exists already"
+variable "skip_vpc_cos_authorization_policy" {
+  description = "To skip creating an IAM authorization policy that allows the VPC to access the Cloud Object Storage, set this variable to `true`."
   type        = bool
   default     = true
 }
 
 variable "existing_cos_instance_crn" {
-  description = "GUID of the COS instance to create Flow log collector"
+  description = "CRN of the existing COS instance. It is required to create the bucket used for flow logs."
   type        = string
   default     = null
 }
 
 variable "cos_bucket_name" {
-  description = "Name of the COS bucket to collect VPC flow logs"
+  description = "Name of the Cloud Object Storage bucket to be created collect VPC flow logs."
   type        = string
   default     = "cos-bucket"
 }
 
 variable "kms_encryption_enabled_bucket" {
-  description = "Set to true if bucket needs to be KMS encryption enabled"
+  description = "Set to true if Cloud Object Storage bucket needs to be KMS encryption enabled."
   type        = bool
   default     = false
 }
 
 variable "skip_cos_kms_auth_policy" {
   type        = bool
-  description = "To skip creating auth policy that allows COS to access KMS key."
+  description = "To skip creating auth policy that allows Cloud Object Storage(COS) to access KMS key."
   default     = false
 }
 

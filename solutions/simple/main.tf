@@ -122,7 +122,7 @@ module "vpc" {
   network_acls                = var.network_acls
   # use_public_gateways = local.public_gateway_object
   enable_vpc_flow_logs                   = var.enable_vpc_flow_logs
-  create_authorization_policy_vpc_to_cos = var.create_authorization_policy_vpc_to_cos
+  create_authorization_policy_vpc_to_cos = !var.skip_vpc_cos_authorization_policy
   existing_cos_instance_guid             = var.enable_vpc_flow_logs ? module.existing_cos_crn_parser[0].service_instance : null
   existing_storage_bucket_name           = var.enable_vpc_flow_logs ? module.cos_buckets[0].buckets[0].bucket_name : null
 }
