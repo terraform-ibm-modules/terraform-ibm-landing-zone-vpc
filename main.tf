@@ -355,3 +355,57 @@ resource "ibm_is_flow_log" "flow_logs" {
 }
 
 ##############################################################################
+# DNS ZONE
+# ##############################################################################
+
+resource "ibm_dns_zone" "dns_zone" {
+  count       = var.enable_hub && !var.skip_custom_resolver_hub_creation ? 1 : 0
+  name        = var.dns_zone_name
+  instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
+  description = var.dns_zone_description
+  label       = var.dns_zone_label
+}
+
+##############################################################################
+# DNS PERMITTED NETWORK
+##############################################################################
+
+resource "ibm_dns_permitted_network" "dns_permitted_network" {
+  count       = var.enable_hub && !var.skip_custom_resolver_hub_creation ? 1 : 0
+  instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
+  zone_id     = ibm_dns_zone.dns_zone[0].zone_id
+  vpc_crn     = local.vpc_crn
+  type        = "vpc"
+}
+
+##############################################################################
+# DNS Records
+##############################################################################
+
+resource "ibm_dns_resource_record" "dns_record" {
+  for_each    = length(ibm_dns_zone.dns_zone) > 0 ? { for idx, record in var.dns_records : idx => record } : {}
+  instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
+  zone_id     = ibm_dns_zone.dns_zone[0].zone_id
+  name        = each.value.name
+  type        = each.value.type
+
+  # Default ttl is 15 minutes [Refer](https://cloud.ibm.com/docs/dns-svcs?topic=dns-svcs-managing-dns-records&interface=ui)
+  ttl   = try(each.value.ttl, 900)
+  rdata = each.value.rdata
+
+  # SRV values
+  port     = each.value.type == "SRV" ? each.value.port : null
+  priority = each.value.type == "SRV" ? each.value.priority : null
+  protocol = each.value.type == "SRV" ? each.value.protocol : null
+  service  = each.value.type == "SRV" ? startswith(each.value.service, "_") ? each.value.service : "_${each.value.service}" : null
+  weight   = each.value.type == "SRV" ? each.value.weight : null
+
+  # MX record
+  preference = each.value.type == "MX" ? each.value.preference : null
+}
+
+locals {
+  record_ids = [for record in ibm_dns_resource_record.dns_record : element(split("/", record.id), 2)]
+}
+
+##############################################################################
