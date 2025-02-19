@@ -643,7 +643,7 @@ variable "dns_zone_name" {
   default     = "slz.com"
   type        = string
   validation {
-    condition = !contains([
+    condition = var.dns_zone_name == null || !contains([
       "ibm.com",
       "softlayer.com",
       "bluemix.net",
