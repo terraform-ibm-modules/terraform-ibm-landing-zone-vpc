@@ -135,7 +135,7 @@ To attach access management tags to resources in this module, you need the follo
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.3.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
 | <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.59.0, < 2.0.0 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9.1, < 1.0.0 |
 
@@ -198,7 +198,7 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_dns_records"></a> [dns\_records](#input\_dns\_records) | List of DNS records to be created. | <pre>list(object({<br/>    name       = string<br/>    type       = string<br/>    ttl        = number<br/>    rdata      = string<br/>    preference = optional(number, null)<br/>    service    = optional(string, null)<br/>    protocol   = optional(string, null)<br/>    priority   = optional(number, null)<br/>    weight     = optional(number, null)<br/>    port       = optional(number, null)<br/>  }))</pre> | `[]` | no |
 | <a name="input_dns_zone_description"></a> [dns\_zone\_description](#input\_dns\_zone\_description) | The description of the DNS zone. | `string` | `"Default DNS Zone"` | no |
 | <a name="input_dns_zone_label"></a> [dns\_zone\_label](#input\_dns\_zone\_label) | Label associated with the DNS zone. | `string` | `"dns-zone"` | no |
-| <a name="input_dns_zone_name"></a> [dns\_zone\_name](#input\_dns\_zone\_name) | The name of the DNS zone to be created. | `string` | `"slz.com"` | no |
+| <a name="input_dns_zone_name"></a> [dns\_zone\_name](#input\_dns\_zone\_name) | The name of the DNS zone to be created. | `string` | `null` | no |
 | <a name="input_enable_hub"></a> [enable\_hub](#input\_enable\_hub) | Indicates whether this VPC is enabled as a DNS name resolution hub. | `bool` | `false` | no |
 | <a name="input_enable_hub_vpc_crn"></a> [enable\_hub\_vpc\_crn](#input\_enable\_hub\_vpc\_crn) | Indicates whether Hub VPC CRN is passed. | `bool` | `false` | no |
 | <a name="input_enable_hub_vpc_id"></a> [enable\_hub\_vpc\_id](#input\_enable\_hub\_vpc\_id) | Indicates whether Hub VPC ID is passed. | `bool` | `false` | no |
