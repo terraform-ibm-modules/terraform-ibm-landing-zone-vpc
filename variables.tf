@@ -642,6 +642,12 @@ variable "dns_zone_name" {
   description = "The name of the DNS zone to be created."
   default     = null
   type        = string
+
+  validation {
+    condition     = var.enable_hub && !var.skip_custom_resolver_hub_creation ? length(coalesce(var.dns_zone_name, "")) > 0 : true
+    error_message = "dns_zone_name must not be null or empty when enable_hub is true and skip_custom_resolver_hub_creation is false."
+  }
+
   validation {
     condition = var.dns_zone_name == null ? true : !contains([
       "ibm.com",
