@@ -359,7 +359,7 @@ resource "ibm_is_flow_log" "flow_logs" {
 # ##############################################################################
 
 resource "ibm_dns_zone" "dns_zone" {
-  count       = var.enable_hub && !var.skip_custom_resolver_hub_creation ? 1 : 0
+  count       = var.enable_hub && !var.skip_custom_resolver_hub_creation && length(var.dns_zone_name) > 0 ? 1 : 0
   name        = var.dns_zone_name
   instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
   description = var.dns_zone_description
