@@ -49,7 +49,7 @@ variable "region" {
 }
 
 variable "resource_tags" {
-  description = "Optional list of tags for the resources created by this solution."
+  description = "List of tags for the resources created by this solution."
   type        = list(string)
   default     = []
 }
@@ -283,6 +283,59 @@ variable "network_acls" {
 
 }
 
+variable "clean_default_sg_acl" {
+  description = "Remove all rules from the default VPC security group and VPC ACL (less permissive)"
+  type        = bool
+  default     = false
+}
+
+variable "address_prefixes" {
+  description = "The IP range that will be defined for the VPC for a certain location. Use only with manual address prefixes"
+  type = object({
+    zone-1 = optional(list(string))
+    zone-2 = optional(list(string))
+    zone-3 = optional(list(string))
+  })
+  default = {
+    zone-1 = null
+    zone-2 = null
+    zone-3 = null
+  }
+  validation {
+    error_message = "Keys for `use_public_gateways` must be in the order `zone-1`, `zone-2`, `zone-3`."
+    condition = var.address_prefixes == null ? true : (
+      (length(var.address_prefixes) == 1 && keys(var.address_prefixes)[0] == "zone-1") ||
+      (length(var.address_prefixes) == 2 && keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2") ||
+      (length(var.address_prefixes) == 3 && keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2") && keys(var.address_prefixes)[2] == "zone-3"
+    )
+  }
+}
+
+##############################################################################
+# Add routes to VPC
+##############################################################################
+
+variable "routes" {
+  description = "Allows you to specify the next hop for packets based on their destination address"
+  type = list(
+    object({
+      name                          = string
+      route_direct_link_ingress     = optional(bool)
+      route_transit_gateway_ingress = optional(bool)
+      route_vpc_zone_ingress        = optional(bool)
+      routes = optional(
+        list(
+          object({
+            action      = optional(string)
+            zone        = number
+            destination = string
+            next_hop    = string
+          })
+      ))
+    })
+  )
+  default = []
+}
 
 ##############################################################################
 # VPC Flow Logs
@@ -348,6 +401,12 @@ variable "cos_bucket_class" {
 # KMS
 ###############################################################################################################
 
+variable "existing_kms_key_crn" {
+  type        = string
+  default     = null
+  description = "The CRN of the existing root key of key management service (KMS) that is used to encrypt the Cloud Object Storage bucket."
+}
+
 variable "existing_kms_instance_crn" {
   type        = string
   default     = null
@@ -381,19 +440,19 @@ variable "kms_key_name" {
 ##############################################################################
 
 variable "default_network_acl_name" {
-  description = "OPTIONAL - Name of the Default ACL. If null, a name will be automatically generated"
+  description = "Name of the Default ACL. If null, a name will be automatically generated"
   type        = string
   default     = null
 }
 
 variable "default_security_group_name" {
-  description = "OPTIONAL - Name of the Default Security Group. If null, a name will be automatically generated"
+  description = "Name of the Default Security Group. If null, a name will be automatically generated"
   type        = string
   default     = null
 }
 
 variable "default_routing_table_name" {
-  description = "OPTIONAL - Name of the Default Routing Table. If null, a name will be automatically generated"
+  description = "Name of the Default Routing Table. If null, a name will be automatically generated"
   type        = string
   default     = null
 }

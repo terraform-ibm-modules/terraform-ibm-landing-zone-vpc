@@ -1,10 +1,10 @@
 terraform {
   required_version = ">= 1.9.0"
   required_providers {
-    # Use "greater than or equal to" range in modules
+    # Lock DA into an exact provider version - renovate automation will keep it updated
     ibm = {
       source  = "IBM-Cloud/ibm"
-      version = ">= 1.59.0, < 2.0.0"
+      version = "1.75.2"
     }
   }
 }
