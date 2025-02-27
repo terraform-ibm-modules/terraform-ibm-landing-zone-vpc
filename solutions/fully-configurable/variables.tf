@@ -357,6 +357,11 @@ variable "existing_cos_instance_crn" {
   description = "CRN of the existing COS instance. It is required to create the bucket used for flow logs."
   type        = string
   default     = null
+
+  validation {
+    condition     = var.enable_vpc_flow_logs ? (var.existing_cos_instance_crn != null ? true : false) : true
+    error_message = "'existing_cos_instance_crn' is required if 'enable_vpc_flow_logs' is set to true."
+  }
 }
 
 variable "cos_bucket_name" {
@@ -368,12 +373,22 @@ variable "cos_bucket_name" {
 variable "kms_encryption_enabled_bucket" {
   description = "Set to true if Cloud Object Storage bucket needs to be KMS encryption enabled."
   type        = bool
-  default     = false
+  default     = true
+
+  validation {
+    condition     = !var.enable_vpc_flow_logs ? (var.kms_encryption_enabled_bucket ? false : true) : true
+    error_message = "'kms_encryption_enabled_bucket' should be false if 'enable_vpc_flow_logs' is set to false."
+  }
+
+  validation {
+    condition     = var.kms_encryption_enabled_bucket ? ((var.existing_kms_key_crn != null || var.existing_kms_instance_crn != null) ? true : false) : true
+    error_message = "Either 'existing_kms_key_crn' or 'existing_kms_instance_crn' is required if 'kms_encryption_enabled_bucket' is set to true."
+  }
 }
 
 variable "skip_cos_kms_auth_policy" {
   type        = bool
-  description = "To skip creating auth policy that allows Cloud Object Storage(COS) to access KMS key."
+  description = "To skip creating an IAM authorization policy that allows Cloud Object Storage(COS) to access KMS key."
   default     = false
 }
 

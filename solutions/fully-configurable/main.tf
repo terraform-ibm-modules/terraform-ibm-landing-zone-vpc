@@ -32,7 +32,7 @@ locals {
     access_tags                   = var.access_tags
     bucket_name                   = local.bucket_name
     kms_encryption_enabled        = var.kms_encryption_enabled_bucket
-    kms_guid                      = var.kms_encryption_enabled_bucket ? module.existing_kms_crn_parser[0].service_instance : null
+    kms_guid                      = var.kms_encryption_enabled_bucket ? module.existing_kms_instance_crn_parser[0].service_instance : null
     kms_key_crn                   = var.kms_encryption_enabled_bucket ? var.existing_kms_instance_crn : null
     skip_iam_authorization_policy = var.skip_cos_kms_auth_policy
     management_endpoint_type      = var.management_endpoint_type_for_bucket
@@ -55,7 +55,7 @@ module "cos_buckets" {
 #######################################################################################################################
 
 # parse KMS details from the existing KMS instance CRN
-module "existing_kms_crn_parser" {
+module "existing_kms_instance_crn_parser" {
   count   = var.kms_encryption_enabled_bucket && var.existing_kms_instance_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
   version = "1.1.0"
@@ -64,7 +64,7 @@ module "existing_kms_crn_parser" {
 
 locals {
   # fetch KMS region from existing_kms_instance_crn if KMS resources are required
-  kms_region = var.kms_encryption_enabled_bucket && var.existing_kms_instance_crn != null ? module.existing_kms_crn_parser[0].region : null
+  kms_region = var.kms_encryption_enabled_bucket && var.existing_kms_instance_crn != null ? module.existing_kms_instance_crn_parser[0].region : null
 
   kms_key_ring_name = try("${var.prefix}-${var.kms_key_ring_name}", var.kms_key_ring_name)
   kms_key_name      = try("${var.prefix}-${var.kms_key_name}", var.kms_key_name)
