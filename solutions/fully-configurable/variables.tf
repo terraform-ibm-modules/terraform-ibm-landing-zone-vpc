@@ -19,15 +19,9 @@ variable "provider_visibility" {
   }
 }
 
-variable "use_existing_resource_group" {
-  type        = bool
-  description = "Whether to use an existing resource group."
-  default     = false
-}
-
-variable "resource_group_name" {
+variable "existing_resource_group_name" {
   type        = string
-  description = "The name of a new or an existing resource group to provision the resources. If a prefix input variable is specified, the prefix is added to the name in the `<prefix>-<name>` format."
+  description = "The name of an existing resource group to provision the resources."
 }
 
 variable "prefix" {
@@ -37,7 +31,7 @@ variable "prefix" {
 }
 
 variable "vpc_name" {
-  default     = "simple"
+  default     = "vpc"
   description = "Name of the VPC. If a prefix input variable is specified, the prefix is added to the name in the `<prefix>-<name>` format."
   type        = string
 }
@@ -107,6 +101,11 @@ variable "subnets" {
         no_addr_prefix = false
       }
     ]
+  }
+
+  validation {
+    condition     = alltrue([for key, value in var.subnets : value != null ? length([for subnet in value : subnet.public_gateway if subnet.public_gateway]) > 1 ? false : true : true])
+    error_message = "var.subnets has more than one public gateway in a zone. Only one public gateway can be attached to a zone for the virtual private cloud."
   }
 }
 
@@ -373,7 +372,7 @@ variable "cos_bucket_name" {
 variable "kms_encryption_enabled_bucket" {
   description = "Set to true if Cloud Object Storage bucket needs to be KMS encryption enabled."
   type        = bool
-  default     = true
+  default     = false
 
   validation {
     condition     = !var.enable_vpc_flow_logs ? (var.kms_encryption_enabled_bucket ? false : true) : true

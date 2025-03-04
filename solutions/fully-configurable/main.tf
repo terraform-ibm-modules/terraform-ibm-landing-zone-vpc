@@ -9,8 +9,7 @@ locals {
 module "resource_group" {
   source                       = "terraform-ibm-modules/resource-group/ibm"
   version                      = "1.1.6"
-  resource_group_name          = var.use_existing_resource_group == false ? try("${local.prefix}-${var.resource_group_name}", var.resource_group_name) : null
-  existing_resource_group_name = var.use_existing_resource_group == true ? var.resource_group_name : null
+  existing_resource_group_name = var.existing_resource_group_name
 }
 
 #############################################################################
@@ -104,26 +103,28 @@ module "kms" {
 #############################################################################
 
 locals {
-  # //TO DO
-  # to create use_public_gateways object
+  # create 'use_public_gateways' object
+  public_gateway_object = {
+    for key, value in var.subnets : key => value != null ? length([for sub in value : sub.public_gateway if sub.public_gateway]) > 0 ? [for sub in value : sub.public_gateway if sub.public_gateway][0] : false : false
+  }
 }
 
 module "vpc" {
-  source                      = "../../"
-  resource_group_id           = module.resource_group.resource_group_id
-  region                      = var.region
-  create_vpc                  = true
-  name                        = var.vpc_name
-  prefix                      = local.prefix
-  tags                        = var.resource_tags
-  access_tags                 = var.access_tags
-  subnets                     = var.subnets
-  default_network_acl_name    = var.default_network_acl_name
-  default_security_group_name = var.default_security_group_name
-  default_routing_table_name  = var.default_routing_table_name
-  network_acls                = var.network_acls
-  clean_default_sg_acl        = var.clean_default_sg_acl
-  # use_public_gateways = local.public_gateway_object
+  source                                 = "../../"
+  resource_group_id                      = module.resource_group.resource_group_id
+  region                                 = var.region
+  create_vpc                             = true
+  name                                   = var.vpc_name
+  prefix                                 = local.prefix
+  tags                                   = var.resource_tags
+  access_tags                            = var.access_tags
+  subnets                                = var.subnets
+  default_network_acl_name               = var.default_network_acl_name
+  default_security_group_name            = var.default_security_group_name
+  default_routing_table_name             = var.default_routing_table_name
+  network_acls                           = var.network_acls
+  clean_default_sg_acl                   = var.clean_default_sg_acl
+  use_public_gateways                    = local.public_gateway_object
   address_prefixes                       = var.address_prefixes
   routes                                 = var.routes
   enable_vpc_flow_logs                   = var.enable_vpc_flow_logs
