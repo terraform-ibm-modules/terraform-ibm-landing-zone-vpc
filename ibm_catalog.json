@@ -2,7 +2,7 @@
   "products": [
     {
       "name": "deploy-arch-ibm-slz-vpc",
-      "label": "Cloud automation for VPC on IBM Cloud",
+      "label": "[Dev]Cloud automation for VPC on IBM Cloud",
       "product_kind": "solution",
       "tags": [
         "network_vpc",
