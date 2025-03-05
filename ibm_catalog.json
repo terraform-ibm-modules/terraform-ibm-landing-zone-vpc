@@ -76,7 +76,7 @@
                 "diagram": {
                   "caption": "VPC for IBM Cloud.",
                   "url": "",
-                  "type": ""
+                  "type": "image/svg+xml"
                 },
                 "description": "This architecture creates a VPC."
               }
