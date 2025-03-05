@@ -37,32 +37,6 @@
           "name": "fully-configurable",
           "install_type": "fullstack",
           "working_directory": "solutions/fully-configurable",
-          "iam_permissions": [
-            {
-              "role_crns": ["crn:v1:bluemix:public:iam::::serviceRole:Manager"],
-              "service_name": "appid"
-            },
-            {
-              "role_crns": ["crn:v1:bluemix:public:iam::::serviceRole:Manager"],
-              "service_name": "cloud-object-storage"
-            },
-            {
-              "role_crns": ["crn:v1:bluemix:public:iam::::serviceRole:Manager"],
-              "service_name": "hs-crypto"
-            },
-            {
-              "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
-              "service_name": "iam-identity"
-            },
-            {
-              "role_crns": ["crn:v1:bluemix:public:iam::::serviceRole:Manager"],
-              "service_name": "kms"
-            },
-            {
-              "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
-              "service_name": "is.vpc"
-            }
-          ],
           "architecture": {
             "descriptions": "This architecture creates a VPC.",
             "features": [
