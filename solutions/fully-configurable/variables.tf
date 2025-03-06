@@ -26,8 +26,8 @@ variable "existing_resource_group_name" {
 
 variable "prefix" {
   type        = string
+  nullable    = true
   description = "Prefix to add to all the resources created by this solution. To not use any prefix value, you can set this value to `null` or an empty string."
-  default     = "dev"
 }
 
 variable "vpc_name" {
@@ -469,4 +469,24 @@ variable "default_routing_table_name" {
   description = "Name of the Default Routing Table. If null, a name will be automatically generated"
   type        = string
   default     = null
+}
+
+##############################################################################
+# VPN Gateways
+##############################################################################
+
+variable "vpn_gateways" {
+  description = "List of VPN Gateways to create."
+  type = list(
+    object({
+      name           = string
+      vpc_name       = string
+      subnet_name    = string # Do not include prefix, use same name as in `var.subnets`
+      mode           = optional(string)
+      resource_group = optional(string)
+      access_tags    = optional(list(string), [])
+    })
+  )
+
+  default = []
 }
