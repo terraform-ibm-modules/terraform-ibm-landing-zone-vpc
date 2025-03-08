@@ -356,7 +356,7 @@ resource "ibm_is_flow_log" "flow_logs" {
 
 ##############################################################################
 # DNS ZONE
-# ##############################################################################
+###############################################################################
 
 resource "ibm_dns_zone" "dns_zone" {
   count       = var.enable_hub && !var.skip_custom_resolver_hub_creation && alltrue([var.dns_zone_name != null, var.dns_zone_name != ""]) ? 1 : 0
@@ -406,6 +406,28 @@ resource "ibm_dns_resource_record" "dns_record" {
 
 locals {
   record_ids = [for record in ibm_dns_resource_record.dns_record : element(split("/", record.id), 2)]
+
+  # Convert the vpn_gateway input from list to a map
+  vpn_gateway_map = !var.enable_vpn_gateways ? {} : { for gateway in var.vpn_gateways : gateway.name => gateway }
+
+}
+
+##############################################################################
+# Create VPN Gateways
+##############################################################################
+
+resource "ibm_is_vpn_gateway" "gateway" {
+  for_each       = local.vpn_gateway_map
+  name           = "${var.prefix}-${each.key}"
+  subnet         = each.value.subnet_name
+  mode           = each.value.mode
+  resource_group = each.value.resource_group == null ? var.resource_group_id : each.value.resource_group
+  tags           = var.tags
+  access_tags    = each.value.access_tags
+
+  timeouts {
+    delete = "1h"
+  }
 }
 
 ##############################################################################
