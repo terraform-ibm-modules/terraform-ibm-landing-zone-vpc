@@ -2,31 +2,27 @@
   "products": [
     {
       "name": "deploy-arch-ibm-slz-vpc",
-      "label": "[Add-ons Beta] Cloud automation for VPC",
+      "label": "[Add-ons Beta] Cloud automation for VPC on IBM Cloud",
       "product_kind": "solution",
       "tags": [
-        "containers",
+        "network_vpc",
+        "ibm_created",
         "target_terraform",
         "terraform",
-        "solution",
         "support_ibm",
-        "ibm_created"
+        "solution"
       ],
-      "keywords": [
-        "terraform",
-        "ocp",
-        "cluster",
-        "red_hat_openshift"
-      ],
-      "short_description": "Provisions a Red Hat OpenShift VPC cluster on IBM Cloud",
-      "long_description": "This architecture supports creation and configuration of IBM Cloud Red Hat OpenShift cluster.",
-      "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc/blob/main/README.md",
-      "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/documentation/main/icons/RH_OpenShift.svg",
+      "keywords": ["vpc", "terraform"],
+
+      "short_description": "Provisions a VPC network on IBM Cloud",
+      "long_description": "The VPC landing zone deployable architecture deploys a simple Virtual Private Cloud (VPC) infrastructure without any compute resources, such as Virtual Server Instances (VSI) or Red Hat OpenShift clusters.",
+      "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/README.md",
+      "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/documentation/refs/heads/main/icons/CloudVPC.svg",
       "provider_name": "IBM",
       "features": [
         {
-          "title": "Create a Red Hat OpenShift VPC cluster on IBM Cloud",
-          "description": "Create a Red Hat OpenShift VPC cluster on IBM Cloud."
+          "title": "Create a VPC on IBM Cloud",
+          "description": "Create a VPC on IBM Cloud."
         }
       ],
       "flavors": [
@@ -36,21 +32,21 @@
           "install_type": "fullstack",
           "working_directory": "solutions/fully-configurable",
           "architecture": {
-            "descriptions": "This architecture creates a fully-configurable single zone OCP VPC cluster.",
+            "descriptions": "This architecture creates a VPC.",
             "features": [
               {
-                "title": "Creates an OCP VPC cluster",
-                "description": "Creates an OCP VPC cluster"
+                "title": "Creates a VPC",
+                "description": "Creates a VPC"
               }
             ],
             "diagrams": [
               {
                 "diagram": {
-                  "caption": "Red Hat OpenShift VPC cluster for IBM Cloud.",
+                  "caption": "VPC for IBM Cloud.",
                   "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc/main/reference-architecture/deployable-architecture-ocp-cluster-qs.svg",
                   "type": "image/svg+xml"
                 },
-                "description": "This architecture creates a fully-configurable single zone OCP VPC cluster."
+                "description": "This architecture creates a VPC."
               }
             ]
           },
