@@ -1,169 +1,166 @@
 {
-    "products": [
-      {
-        "name": "deploy-arch-ibm-slz-vpc",
-        "label": "Cloud automation for VPC on IBM Cloud",
-        "product_kind": "solution",
-        "tags": [
-          "network_vpc",
-          "ibm_created",
-          "target_terraform",
-          "terraform",
-          "reference_architecture",
-          "solution"
-        ],
-        "keywords": [
-          "vpc",
-          "slz",
-          "IaC",
-          "Infrastructure",
-          "terraform",
-          "solution"
-        ],
-        "short_description": "Provisions a VPC network on IBM Cloud",
-        "long_description": "The VPC landing zone deployable architecture deploys a simple Virtual Private Cloud (VPC) infrastructure without any compute resources, such as Virtual Server Instances (VSI) or Red Hat OpenShift clusters.",
-        "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/README.md",
-        "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/documentation/refs/heads/main/icons/CloudVPC.svg",
-        "provider_name": "IBM",
-        "features": [
-          {
-            "title": "Create a VPC on IBM Cloud",
-            "description": "Create a VPC on IBM Cloud."
-          }
-        ],
-        "flavors": [
-          {
-            "label": "Fully configurable",
-            "name": "fully-configurable",
-            "install_type": "fullstack",
-            "working_directory": "solutions/fully-configurable",
-            "architecture": {
-              "descriptions": "This architecture creates a VPC.",
-              "features": [
+  "products": [
+    {
+      "name": "addons-beta-deploy-arch-ibm-slz-vpc",
+      "label": "[Add-ons Beta] Cloud automation for VPC on IBM Cloud",
+      "product_kind": "solution",
+      "tags": [
+        "ibm_created",
+        "target_terraform",
+        "terraform",
+        "support_ibm",
+        "solution"
+      ],
+      "keywords": [
+        "vpc",
+        "terraform"
+      ],
+      "short_description": "Provisions a VPC network on IBM Cloud",
+      "long_description": "The VPC landing zone deployable architecture deploys a simple Virtual Private Cloud (VPC) infrastructure without any compute resources, such as Virtual Server Instances (VSI) or Red Hat OpenShift clusters.",
+      "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/README.md",
+      "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/documentation/refs/heads/main/icons/CloudVPC.svg",
+      "provider_name": "IBM",
+      "features": [
+        {
+          "title": "Create a VPC on IBM Cloud",
+          "description": "Create a VPC on IBM Cloud."
+        }
+      ],
+      "flavors": [
+        {
+          "label": "fully-configurable",
+          "name": "fully-configurable",
+          "install_type": "fullstack",
+          "working_directory": "solutions/fully-configurable",
+          "architecture": {
+            "descriptions": "This architecture creates a VPC.",
+            "features": [
+              {
+                "title": "Creates a VPC",
+                "description": "Creates a VPC"
+              }
+            ],
+            "diagrams": [
+              {
+                "diagram": {
+                  "caption": "VPC for IBM Cloud.",
+                  "url": "",
+                  "type": "image/svg+xml"
+                },
+                "description": "This architecture creates a VPC."
+              }
+            ]
+          },
+          "configuration": [
+            {
+              "key": "ibmcloud_api_key"
+            },
+            {
+              "key": "provider_visibility",
+              "options": [
                 {
-                  "title": "Creates a VPC",
-                  "description": "Creates a VPC"
-                }
-              ],
-              "diagrams": [
+                  "displayname": "private",
+                  "value": "private"
+                },
                 {
-                  "diagram": {
-                    "caption": "VPC for IBM Cloud.",
-                    "url": "",
-                    "type": "image/svg+xml"
-                  },
-                  "description": "This architecture creates a VPC."
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "public-and-private",
+                  "value": "public-and-private"
                 }
               ]
             },
-            "configuration": [
-              {
-                "key": "ibmcloud_api_key"
-              },
-              {
-                "key": "provider_visibility",
-                "options": [
-                  {
-                    "displayname": "private",
-                    "value": "private"
-                  },
-                  {
-                    "displayname": "public",
-                    "value": "public"
-                  },
-                  {
-                    "displayname": "public-and-private",
-                    "value": "public-and-private"
-                  }
-                ]
-              },
-              {
-                "key": "existing_resource_group_name",
-                "required": true
-              },
-              {
-                "key": "prefix",
-                "required": true,
-                "description": "The prefix to add to all resources that this solution creates. To not use any prefix value, you can enter the string `__NULL__`."
-              },
-              {
-                "key": "vpc_name"
-              },
-              {
-                "key": "region"
-              },
-              {
-                "key": "resource_tags"
-              },
-              {
-                "key": "access_tags"
-              },
-              {
-                "key": "subnets"
-              },
-              {
-                "key": "network_acls"
-              },
-              {
-                "key": "clean_default_sg_acl"
-              },
-              {
-                "key": "address_prefixes"
-              },
-              {
-                "key": "routes"
-              },
-              {
-                "key": "enable_vpc_flow_logs"
-              },
-              {
-                "key": "skip_vpc_cos_authorization_policy"
-              },
-              {
-                "key": "existing_cos_instance_crn"
-              },
-              {
-                "key": "cos_bucket_name"
-              },
-              {
-                "key": "kms_encryption_enabled_bucket"
-              },
-              {
-                "key": "skip_cos_kms_auth_policy"
-              },
-              {
-                "key": "management_endpoint_type_for_bucket"
-              },
-              {
-                "key": "cos_bucket_class"
-              },
-              {
-                "key": "existing_kms_key_crn"
-              },
-              {
-                "key": "existing_kms_instance_crn"
-              },
-              {
-                "key": "kms_endpoint_type"
-              },
-              {
-                "key": "kms_key_ring_name"
-              },
-              {
-                "key": "kms_key_name"
-              },
-              {
-                "key": "default_network_acl_name"
-              },
-              {
-                "key": "default_security_group_name"
-              },
-              {
-                "key": "default_routing_table_name"
-              }
-            ]
-          }
-        ]
-      }
-    ]
-  }
+            {
+              "key": "existing_resource_group_name",
+              "required": true
+            },
+            {
+              "key": "prefix",
+              "required": true,
+              "description": "The prefix to add to all resources that this solution creates. To not use any prefix value, you can enter the string `__NULL__`."
+            },
+            {
+              "key": "vpc_name"
+            },
+            {
+              "key": "region"
+            },
+            {
+              "key": "resource_tags"
+            },
+            {
+              "key": "access_tags"
+            },
+            {
+              "key": "subnets"
+            },
+            {
+              "key": "network_acls"
+            },
+            {
+              "key": "clean_default_sg_acl"
+            },
+            {
+              "key": "address_prefixes"
+            },
+            {
+              "key": "routes"
+            },
+            {
+              "key": "enable_vpc_flow_logs"
+            },
+            {
+              "key": "skip_vpc_cos_authorization_policy"
+            },
+            {
+              "key": "existing_cos_instance_crn"
+            },
+            {
+              "key": "cos_bucket_name"
+            },
+            {
+              "key": "kms_encryption_enabled_bucket"
+            },
+            {
+              "key": "skip_cos_kms_auth_policy"
+            },
+            {
+              "key": "management_endpoint_type_for_bucket"
+            },
+            {
+              "key": "cos_bucket_class"
+            },
+            {
+              "key": "existing_kms_key_crn"
+            },
+            {
+              "key": "existing_kms_instance_crn"
+            },
+            {
+              "key": "kms_endpoint_type"
+            },
+            {
+              "key": "kms_key_ring_name"
+            },
+            {
+              "key": "kms_key_name"
+            },
+            {
+              "key": "default_network_acl_name"
+            },
+            {
+              "key": "default_security_group_name"
+            },
+            {
+              "key": "default_routing_table_name"
+            }
+          ],
+          "dependencies": [],
+          "dependency_version_2": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 ---
 apiVersion: v1
-- name: deploy-arch-ibm-slz-vpc
+offerings:
+  - name: addons-beta-deploy-arch-ibm-slz-vpc
     kind: solution
     catalog_id: 7df1e4ca-d54c-4fd0-82ce-3d13247308cd
-    offering_id: // to be added
-    include_git_submodules: true
+    offering_id: 8531b562-91d5-4974-a195-5dff72ef2a5d
     variations:
       - name: fully-configurable
         mark_ready: true
