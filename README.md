@@ -169,6 +169,7 @@ To attach access management tags to resources in this module, you need the follo
 | [ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_id](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_dns_resolution_binding) | resource |
 | [ibm_is_vpc_routing_table.route_table](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_routing_table) | resource |
 | [ibm_is_vpc_routing_table_route.routing_table_routes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_routing_table_route) | resource |
+| [ibm_is_vpn_gateway.gateway](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpn_gateway) | resource |
 | [ibm_resource_instance.dns_instance_hub](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/resource_instance) | resource |
 | [time_sleep.wait_for_authorization_policy](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
 | [time_sleep.wait_for_vpc_creation_data](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
@@ -203,6 +204,7 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_enable_hub_vpc_crn"></a> [enable\_hub\_vpc\_crn](#input\_enable\_hub\_vpc\_crn) | Indicates whether Hub VPC CRN is passed. | `bool` | `false` | no |
 | <a name="input_enable_hub_vpc_id"></a> [enable\_hub\_vpc\_id](#input\_enable\_hub\_vpc\_id) | Indicates whether Hub VPC ID is passed. | `bool` | `false` | no |
 | <a name="input_enable_vpc_flow_logs"></a> [enable\_vpc\_flow\_logs](#input\_enable\_vpc\_flow\_logs) | Flag to enable vpc flow logs. If true, flow log collector will be created | `bool` | `false` | no |
+| <a name="input_enable_vpn_gateways"></a> [enable\_vpn\_gateways](#input\_enable\_vpn\_gateways) | Set to true to add VPN gateways. If true, VPN gateways will be created using the variable 'vpn\_gateways'. | `bool` | `false` | no |
 | <a name="input_existing_cos_instance_guid"></a> [existing\_cos\_instance\_guid](#input\_existing\_cos\_instance\_guid) | GUID of the COS instance to create Flow log collector | `string` | `null` | no |
 | <a name="input_existing_dns_instance_id"></a> [existing\_dns\_instance\_id](#input\_existing\_dns\_instance\_id) | Id of an existing dns instance in which the custom resolver is created. Only relevant if enable\_hub is set to true. | `string` | `null` | no |
 | <a name="input_existing_storage_bucket_name"></a> [existing\_storage\_bucket\_name](#input\_existing\_storage\_bucket\_name) | Name of the COS bucket to collect VPC flow logs | `string` | `null` | no |
@@ -232,6 +234,7 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_use_existing_dns_instance"></a> [use\_existing\_dns\_instance](#input\_use\_existing\_dns\_instance) | Whether to use an existing dns instance. If true, existing\_dns\_instance\_id must be set. | `bool` | `false` | no |
 | <a name="input_use_public_gateways"></a> [use\_public\_gateways](#input\_use\_public\_gateways) | Create a public gateway in any of the three zones with `true`. | <pre>object({<br/>    zone-1 = optional(bool)<br/>    zone-2 = optional(bool)<br/>    zone-3 = optional(bool)<br/>  })</pre> | <pre>{<br/>  "zone-1": true,<br/>  "zone-2": false,<br/>  "zone-3": false<br/>}</pre> | no |
 | <a name="input_vpc_flow_logs_name"></a> [vpc\_flow\_logs\_name](#input\_vpc\_flow\_logs\_name) | The name to give the provisioned VPC flow logs. If not set, the module generates a name based on the `prefix` and `name` variables. | `string` | `null` | no |
+| <a name="input_vpn_gateways"></a> [vpn\_gateways](#input\_vpn\_gateways) | List of VPN gateways to create. | <pre>list(<br/>    object({<br/>      name           = string<br/>      vpc_name       = string<br/>      subnet_name    = string # Do not include prefix, use same name as in `var.subnets`<br/>      mode           = optional(string)<br/>      resource_group = optional(string)<br/>      access_tags    = optional(list(string), [])<br/>    })<br/>  )</pre> | `[]` | no |
 
 ### Outputs
 

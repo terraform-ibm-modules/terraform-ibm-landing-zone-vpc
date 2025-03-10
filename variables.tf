@@ -718,3 +718,28 @@ variable "dns_records" {
     error_message = "Invalid MX record configuration. For 'MX' records, value for 'preference' must be provided."
   }
 }
+
+##############################################################################
+# VPN Gateways
+##############################################################################
+
+variable "enable_vpn_gateways" {
+  type        = bool
+  description = "Set to true to add VPN gateways. If true, VPN gateways will be created using the variable 'vpn_gateways'."
+  default     = false
+}
+
+variable "vpn_gateways" {
+  description = "List of VPN gateways to create."
+  type = list(
+    object({
+      name           = string
+      vpc_name       = string
+      subnet_name    = string # Do not include prefix, use same name as in `var.subnets`
+      mode           = optional(string)
+      resource_group = optional(string)
+      access_tags    = optional(list(string), [])
+    })
+  )
+  default = []
+}
