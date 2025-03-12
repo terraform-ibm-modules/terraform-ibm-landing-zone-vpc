@@ -2,7 +2,7 @@
   "products": [
     {
       "name": "deploy-arch-ibm-vpc",
-      "label": "[Add-ons Beta] Cloud automation for VPC on IBM Cloud",
+      "label": "[Add-ons Beta] Cloud automation for VPC",
       "product_kind": "solution",
       "tags": [
         "network_vpc",
@@ -114,19 +114,10 @@
               "key": "enable_vpc_flow_logs"
             },
             {
-              "key": "skip_vpc_cos_authorization_policy"
-            },
-            {
               "key": "existing_cos_instance_crn"
             },
             {
-              "key": "cos_bucket_name"
-            },
-            {
               "key": "kms_encryption_enabled_bucket"
-            },
-            {
-              "key": "skip_cos_kms_auth_policy"
             },
             {
               "key": "management_endpoint_type_for_bucket"
@@ -135,19 +126,10 @@
               "key": "cos_bucket_class"
             },
             {
-              "key": "existing_kms_key_crn"
-            },
-            {
               "key": "existing_kms_instance_crn"
             },
             {
               "key": "kms_endpoint_type"
-            },
-            {
-              "key": "kms_key_ring_name"
-            },
-            {
-              "key": "kms_key_name"
             },
             {
               "key": "default_network_acl_name"
@@ -157,6 +139,30 @@
             },
             {
               "key": "default_routing_table_name"
+            },
+            {
+                "key":"add_bucket_name_suffix"
+            },
+            {
+                "key":"existing_flow_logs_bucket_kms_key_crn"
+            },
+            {
+                "key":"flow_logs_cos_bucket_name"
+            },
+            {
+                "key":"flow_logs_cos_key_name"
+            },
+            {
+                "key":"flow_logs_cos_key_ring_name"
+            },
+            {
+                "key":"force_delete"
+            },
+            {
+                "key":"skip_cos_kms_iam_auth_policy"
+            },
+            {
+                "key":"skip_vpc_cos_iam_auth_policy"
             }
           ],
           "dependencies": [
