@@ -2,7 +2,7 @@
   "products": [
     {
       "name": "deploy-arch-ibm-vpc",
-      "label": "[Add-ons Beta] Cloud automation for VPC",
+      "label": "[Add-ons Beta] Cloud automation for VPC on IBM Cloud",
       "product_kind": "solution",
       "tags": [
         "network_vpc",
