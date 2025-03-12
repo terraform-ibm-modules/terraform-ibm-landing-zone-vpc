@@ -11,7 +11,7 @@ variable "ibmcloud_api_key" {
 variable "provider_visibility" {
   description = "Set the visibility value for the IBM terraform provider. Supported values are `public`, `private`, `public-and-private`. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints)."
   type        = string
-  default     = "public"
+  default     = "private"
 
   validation {
     condition     = contains(["public", "private", "public-and-private"], var.provider_visibility)
@@ -28,6 +28,16 @@ variable "prefix" {
   type        = string
   nullable    = true
   description = "Prefix to add to all the resources created by this solution. To not use any prefix value, you can set this value to `null` or an empty string."
+
+  validation {
+    condition = (var.prefix == null ? true :
+      alltrue([
+        can(regex("^[a-z]{0,1}[-a-z0-9]{0,14}[a-z0-9]{0,1}$", var.prefix)),
+        length(regexall("^.*--.*", var.prefix)) == 0
+      ])
+    )
+    error_message = "Prefix must begin with a lowercase letter, contain only lowercase letters, numbers, and - characters. Prefixes must end with a lowercase letter or number and be 16 or fewer characters."
+  }
 }
 
 variable "vpc_name" {
@@ -341,19 +351,19 @@ variable "routes" {
 ##############################################################################
 
 variable "enable_vpc_flow_logs" {
-  description = "To enable vpc flow logs, set this to true."
+  description = "To enable VPC Flow logs, set this to true."
   type        = bool
   default     = false
 }
 
-variable "skip_vpc_cos_authorization_policy" {
-  description = "To skip creating an IAM authorization policy that allows the VPC to access the Cloud Object Storage, set this variable to `true`."
+variable "skip_vpc_cos_iam_auth_policy" {
+  description = "To skip creating an IAM authorization policy that allows the VPC to access the Cloud Object Storage, set this variable to `true`. Required only if `enable_vpc_flow_logs` is set to true."
   type        = bool
   default     = true
 }
 
 variable "existing_cos_instance_crn" {
-  description = "CRN of the existing COS instance. It is required to create the bucket used for flow logs."
+  description = "CRN of the existing COS instance. It is only required if `enable_vpc_flow_logs` is set to true and will be used to create the flow logs bucket."
   type        = string
   default     = null
 
@@ -363,29 +373,29 @@ variable "existing_cos_instance_crn" {
   }
 }
 
-variable "cos_bucket_name" {
-  description = "Name of the Cloud Object Storage bucket to be created collect VPC flow logs."
+variable "flow_logs_cos_bucket_name" {
+  description = "Name of the Cloud Object Storage bucket to be created to collect VPC flow logs."
   type        = string
-  default     = "cos-bucket"
+  default     = "flow-logs-bucket"
 }
 
 variable "kms_encryption_enabled_bucket" {
-  description = "Set to true if Cloud Object Storage bucket needs to be KMS encryption enabled."
+  description = "Set to true to encrypt the Cloud Object Storage Flow Logs bucket with a KMS key. If set to true, a value must be passed for existing_flow_logs_bucket_kms_key_crn (to use that key) or existing_kms_instance_crn (to create a new key). Value cannot be set to true if enable_vpc_flow_logs is set to false."
   type        = bool
   default     = false
 
   validation {
     condition     = !var.enable_vpc_flow_logs ? (var.kms_encryption_enabled_bucket ? false : true) : true
-    error_message = "'kms_encryption_enabled_bucket' should be false if 'enable_vpc_flow_logs' is set to false."
+    error_message = "'kms_encryption_enabled_bucket' can not be true if 'enable_vpc_flow_logs' is set to false."
   }
 
   validation {
-    condition     = var.kms_encryption_enabled_bucket ? ((var.existing_kms_key_crn != null || var.existing_kms_instance_crn != null) ? true : false) : true
-    error_message = "Either 'existing_kms_key_crn' or 'existing_kms_instance_crn' is required if 'kms_encryption_enabled_bucket' is set to true."
+    condition     = var.enable_vpc_flow_logs && var.kms_encryption_enabled_bucket ? ((var.existing_flow_logs_bucket_kms_key_crn != null || var.existing_kms_instance_crn != null) ? true : false) : true
+    error_message = "Either 'existing_flow_logs_bucket_kms_key_crn' or 'existing_kms_instance_crn' is required if 'enable_vpc_flow_logs' and 'kms_encryption_enabled_bucket' are set to true."
   }
 }
 
-variable "skip_cos_kms_auth_policy" {
+variable "skip_cos_kms_iam_auth_policy" {
   type        = bool
   description = "To skip creating an IAM authorization policy that allows Cloud Object Storage(COS) to access KMS key."
   default     = false
@@ -394,7 +404,7 @@ variable "skip_cos_kms_auth_policy" {
 variable "management_endpoint_type_for_bucket" {
   description = "The type of endpoint for the IBM Terraform provider to use to manage Cloud Object Storage buckets (`public`, `private`, or `direct`). If you are using a private endpoint, make sure that you enable virtual routing and forwarding (VRF) in your account, and that the Terraform runtime can access the IBM Cloud Private network."
   type        = string
-  default     = "public"
+  default     = "direct"
   validation {
     condition     = contains(["public", "private", "direct"], var.management_endpoint_type_for_bucket)
     error_message = "The specified `management_endpoint_type_for_bucket` is not valid. Specify a valid type of endpoint for the IBM Terraform provider to use to manage Cloud Object Storage buckets."
@@ -411,42 +421,54 @@ variable "cos_bucket_class" {
   }
 }
 
+variable "force_delete" {
+  type        = bool
+  description = "Whether to delete all the objects in the flow logs Cloud Object Storage bucket before the bucket is deleted."
+  default     = false
+}
+
+variable "add_bucket_name_suffix" {
+  type        = bool
+  description = "Add a randomly generated suffix that is 4 characters in length, to the name of the newly provisioned Cloud Object Storage bucket. Do not use this suffix if you are passing the existing Cloud Object Storage bucket. To manage the name of the Cloud Object Storage bucket manually, use the `flow_logs_cos_bucket_name` variables."
+  default     = true
+}
+
 ###############################################################################################################
 # KMS
 ###############################################################################################################
 
-variable "existing_kms_key_crn" {
+variable "existing_flow_logs_bucket_kms_key_crn" {
   type        = string
   default     = null
-  description = "The CRN of the existing root key of key management service (KMS) that is used to encrypt the Cloud Object Storage bucket."
+  description = "The CRN of the existing root key of key management service (KMS) that is used to encrypt the flow logs Cloud Object Storage bucket."
 }
 
 variable "existing_kms_instance_crn" {
   type        = string
   default     = null
-  description = "The CRN of the existing key management service (KMS) that is used to create keys for encrypting the Cloud Object Storage bucket."
+  description = "The CRN of the existing key management service (KMS) that is used to create keys for encrypting the flow logs Cloud Object Storage bucket."
 }
 
 variable "kms_endpoint_type" {
   type        = string
-  description = "The type of endpoint to use for communicating with the Key Protect instance. Possible values: `public`, `private`. Applies only if `existing_cos_kms_key_crn` is not specified."
-  default     = "public"
+  description = "The type of endpoint to use for communicating with the KMS. Possible values: `public`, `private`. Applies only if `existing_flow_logs_bucket_kms_key_crn` is not specified."
+  default     = "private"
   validation {
     condition     = can(regex("public|private", var.kms_endpoint_type))
     error_message = "Valid values for the `kms_endpoint_type_value` are `public` or `private`."
   }
 }
 
-variable "kms_key_ring_name" {
+variable "flow_logs_cos_key_ring_name" {
   type        = string
-  default     = "cos-key-ring"
+  default     = "flow-logs-cos-key-ring"
   description = "The name of the key ring to create for the Cloud Object Storage bucket key. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key ring is prefixed to the value in the `<prefix>-value` format."
 }
 
-variable "kms_key_name" {
+variable "flow_logs_cos_key_name" {
   type        = string
-  default     = "cos-key"
-  description = "The name of the key to create for the Cloud Object Storage bucket. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key is prefixed to the value in the `<prefix>-value` format."
+  default     = "flow-logs-cos-key"
+  description = "The name of the key to encrypt the flow logs Cloud Object Storage bucket. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key is prefixed to the value in the `<prefix>-value` format."
 }
 
 ##############################################################################
@@ -454,19 +476,19 @@ variable "kms_key_name" {
 ##############################################################################
 
 variable "default_network_acl_name" {
-  description = "Name of the Default ACL. If null, a name will be automatically generated"
+  description = "Name of the Default ACL. If null, a name will be automatically generated."
   type        = string
   default     = null
 }
 
 variable "default_security_group_name" {
-  description = "Name of the Default Security Group. If null, a name will be automatically generated"
+  description = "Name of the Default Security Group. If null, a name will be automatically generated."
   type        = string
   default     = null
 }
 
 variable "default_routing_table_name" {
-  description = "Name of the Default Routing Table. If null, a name will be automatically generated"
+  description = "Name of the Default Routing Table. If null, a name will be automatically generated."
   type        = string
   default     = null
 }
@@ -490,3 +512,23 @@ variable "vpn_gateways" {
 
   default = []
 }
+
+##############################################################################
+# VPE Gateways
+##############################################################################
+
+# variable "vpe_gateways" {
+#   description = "List of VPE Gateways to create."
+#   type = list(
+#     object({
+#       name           = string
+#       vpc_name       = string
+#       subnet_name    = string # Do not include prefix, use same name as in `var.subnets`
+#       mode           = optional(string)
+#       resource_group = optional(string)
+#       access_tags    = optional(list(string), [])
+#     })
+#   )
+
+#   default = []
+# }
