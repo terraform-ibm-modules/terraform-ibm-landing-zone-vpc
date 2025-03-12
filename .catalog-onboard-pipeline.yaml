@@ -1,7 +1,7 @@
 ---
 apiVersion: v1
 offerings:
-  - name: deploy-arch-ibm-vpc
+  - name: deploy-arch-ibm-slz-vpc
     kind: solution
     catalog_id: f64499c8-eb50-4985-bf91-29f9e605a433
     offering_id: ae881fc1-273f-472e-8437-99099a6a753b

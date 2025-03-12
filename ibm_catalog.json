@@ -1,7 +1,7 @@
 {
     "products": [
       {
-        "name": "deploy-arch-ibm-vpc",
+        "name": "deploy-arch-ibm-slz-vpc",
         "label": "[Add-ons Beta] Cloud automation for VPC",
         "product_kind": "solution",
         "tags": [
