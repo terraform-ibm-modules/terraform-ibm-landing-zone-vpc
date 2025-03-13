@@ -67,3 +67,31 @@ output "subnet_detail_map" {
   description = "A map of subnets containing IDs, CIDR blocks, and zones"
   value       = module.vpc.subnet_detail_map
 }
+
+##############################################################################
+# VPN Gateways Outputs
+##############################################################################
+
+output "vpn_gateways_name" {
+  description = "List of names of VPN gateways."
+  value       = module.vpc.vpn_gateways_name
+}
+
+output "vpn_gateways_data" {
+  description = "Details of VPN gateways data"
+  value       = module.vpc.vpn_gateways_data
+}
+
+##############################################################################
+# VPE Outputs
+##############################################################################
+
+output "vpe_ips" {
+  description = "The reserved IPs for endpoint gateways."
+  value       = module.vpe_gateway.vpe_ips
+}
+
+output "vpe_crn" {
+  description = "The CRN of the endpoint gateway"
+  value       = module.vpe_gateway.crn
+}
