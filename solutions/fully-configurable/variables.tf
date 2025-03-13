@@ -179,8 +179,8 @@ variable "network_acls" {
           tcp = {
             port_min        = 443
             port_max        = 443
-            source_port_min = 1024
-            source_port_max = 65535
+            source_port_min = 443
+            source_port_max = 443
           }
           destination = "0.0.0.0/0"
           source      = "0.0.0.0/0"
@@ -192,8 +192,8 @@ variable "network_acls" {
           tcp = {
             port_min        = 80
             port_max        = 80
-            source_port_min = 1024
-            source_port_max = 65535
+            source_port_min = 80
+            source_port_max = 80
           }
           destination = "0.0.0.0/0"
           source      = "0.0.0.0/0"
@@ -205,8 +205,8 @@ variable "network_acls" {
           tcp = {
             port_min        = 22
             port_max        = 22
-            source_port_min = 1024
-            source_port_max = 65535
+            source_port_min = 22
+            source_port_max = 22
           }
           destination = "0.0.0.0/0"
           source      = "0.0.0.0/0"
@@ -218,8 +218,8 @@ variable "network_acls" {
           tcp = {
             source_port_min = 443
             source_port_max = 443
-            port_min        = 1024
-            port_max        = 65535
+            port_min        = 443
+            port_max        = 443
           }
           destination = "0.0.0.0/0"
           source      = "0.0.0.0/0"
@@ -231,8 +231,8 @@ variable "network_acls" {
           tcp = {
             source_port_min = 80
             source_port_max = 80
-            port_min        = 1024
-            port_max        = 65535
+            port_min        = 80
+            port_max        = 80
           }
           destination = "0.0.0.0/0"
           source      = "0.0.0.0/0"
@@ -244,8 +244,8 @@ variable "network_acls" {
           tcp = {
             source_port_min = 22
             source_port_max = 22
-            port_min        = 1024
-            port_max        = 65535
+            port_min        = 22
+            port_max        = 22
           }
           destination = "0.0.0.0/0"
           source      = "0.0.0.0/0"
@@ -295,7 +295,7 @@ variable "network_acls" {
 variable "clean_default_sg_acl" {
   description = "Remove all rules from the default VPC security group and VPC ACL (less permissive)"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "address_prefixes" {
@@ -517,18 +517,42 @@ variable "vpn_gateways" {
 # VPE Gateways
 ##############################################################################
 
-# variable "vpe_gateways" {
-#   description = "List of VPE Gateways to create."
-#   type = list(
-#     object({
-#       name           = string
-#       vpc_name       = string
-#       subnet_name    = string # Do not include prefix, use same name as in `var.subnets`
-#       mode           = optional(string)
-#       resource_group = optional(string)
-#       access_tags    = optional(list(string), [])
-#     })
-#   )
+variable "cloud_services" {
+  description = "The list of cloud services used to create endpoint gateways. If `vpe_name` is not specified in the list, VPE names are created in the format `<prefix>-<vpc_name>-<service_name>`."
+  type = set(object({
+    service_name                 = string
+    vpe_name                     = optional(string), # Full control on the VPE name. If not specified, the VPE name will be computed based on prefix, vpc name and service name.
+    allow_dns_resolution_binding = optional(bool, false)
+  }))
+  default = []
+}
 
-#   default = []
-# }
+variable "cloud_service_by_crn" {
+  description = "The list of cloud service CRNs used to create endpoint gateways. Use this list to identify services that are not supported by service name in the `cloud_services` variable. For a list of supported services, see [VPE-enabled services](https://cloud.ibm.com/docs/vpc?topic=vpc-vpe-supported-services). If `service_name` is not specified, the CRN is used to find the name. If `vpe_name` is not specified in the list, VPE names are created in the format `<prefix>-<vpc_name>-<service_name>`."
+  type = set(
+    object({
+      crn                          = string
+      vpe_name                     = optional(string) # Full control on the VPE name. If not specified, the VPE name will be computed based on prefix, vpc name and service name.
+      service_name                 = optional(string) # Name of the service used to compute the name of the VPE. If not specified, the service name will be obtained from the crn.
+      allow_dns_resolution_binding = optional(bool, true)
+    })
+  )
+  default = []
+}
+
+variable "vpe_service_endpoints" {
+  description = "Service endpoints to use to create endpoint gateways. Can be `public`, or `private`."
+  type        = string
+  default     = "private"
+
+  validation {
+    error_message = "Service endpoints can only be `public` or `private`."
+    condition     = contains(["public", "private"], var.vpe_service_endpoints)
+  }
+}
+
+variable "security_group_ids" {
+  description = "List of security group ids to attach to each endpoint gateway."
+  type        = list(string)
+  default     = []
+}

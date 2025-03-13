@@ -197,8 +197,17 @@ module "vpc" {
 # VPE Gateway
 #############################################################################
 
-# module "vpe_gateway" {
-#   source                      = "terraform-ibm-modules/vpe-gateway/ibm"
-#   version                     = "4.5.0"
-
-# }
+module "vpe_gateway" {
+  source               = "terraform-ibm-modules/vpe-gateway/ibm"
+  version              = "4.5.0"
+  resource_group_id    = module.resource_group.resource_group_id
+  region               = var.region
+  prefix               = local.prefix
+  security_group_ids   = var.security_group_ids
+  vpc_name             = module.vpc.vpc_name
+  vpc_id               = module.vpc.vpc_id
+  subnet_zone_list     = module.vpc.subnet_zone_list
+  cloud_services       = var.cloud_services
+  cloud_service_by_crn = var.cloud_service_by_crn
+  service_endpoints    = var.vpe_service_endpoints
+}
