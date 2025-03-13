@@ -29,7 +29,7 @@ locals {
   bucket_name                    = "${local.prefix}${var.flow_logs_cos_bucket_name}"
   kms_guid                       = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? module.existing_kms_key_crn_parser[0].service_instance : module.existing_kms_instance_crn_parser[0].service_instance) : null
   kms_account_id                 = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? module.existing_kms_key_crn_parser[0].account_id : module.existing_kms_instance_crn_parser[0].account_id) : null
-  kms_service                    = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? module.existing_kms_instance_crn_parser[0].service_name : module.existing_kms_key_crn_parser[0].service_name) : null
+  kms_service                    = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? module.existing_kms_key_crn_parser[0].service_name : module.existing_kms_instance_crn_parser[0].service_name) : null
   cos_kms_key_crn                = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? var.existing_flow_logs_bucket_kms_key_crn : module.kms[0].keys[format("%s.%s", local.kms_key_ring_name, local.kms_key_name)].crn) : null
   create_cos_kms_iam_auth_policy = var.enable_vpc_flow_logs && var.kms_encryption_enabled_bucket && !var.skip_cos_kms_iam_auth_policy
 
@@ -188,7 +188,7 @@ module "vpc" {
   enable_vpc_flow_logs                   = var.enable_vpc_flow_logs
   create_authorization_policy_vpc_to_cos = !var.skip_vpc_cos_iam_auth_policy
   existing_cos_instance_guid             = var.enable_vpc_flow_logs ? local.cos_instance_guid : null
-  existing_storage_bucket_name           = var.enable_vpc_flow_logs ? module.cos_buckets[0].buckets[0].bucket_name : null
+  existing_storage_bucket_name           = var.enable_vpc_flow_logs ? module.cos_buckets[0].buckets[local.bucket_name].bucket_name : null
   enable_vpn_gateways                    = true
   vpn_gateways                           = var.vpn_gateways
 }

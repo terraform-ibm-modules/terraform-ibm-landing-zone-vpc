@@ -359,7 +359,7 @@ variable "enable_vpc_flow_logs" {
 variable "skip_vpc_cos_iam_auth_policy" {
   description = "To skip creating an IAM authorization policy that allows the VPC to access the Cloud Object Storage, set this variable to `true`. Required only if `enable_vpc_flow_logs` is set to true."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "existing_cos_instance_crn" {
@@ -424,7 +424,7 @@ variable "cos_bucket_class" {
 variable "force_delete" {
   type        = bool
   description = "Whether to delete all the objects in the flow logs Cloud Object Storage bucket before the bucket is deleted."
-  default     = false
+  default     = true
 }
 
 variable "add_bucket_name_suffix" {
