@@ -43,7 +43,7 @@
               {
                 "diagram": {
                   "caption": "VPC for IBM Cloud.",
-                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-base-ocp-vpc/main/reference-architecture/deployable-architecture-ocp-cluster-qs.svg",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/ibm_catalog/reference-architecture/vpc.svg",
                   "type": "image/svg+xml"
                 },
                 "description": "This architecture creates a VPC."
