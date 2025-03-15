@@ -197,3 +197,23 @@ output "dns_record_ids" {
   description = "List of all the domain resource records."
   value       = length(ibm_dns_resource_record.dns_record) > 0 ? local.record_ids : null
 }
+
+##############################################################################
+# VPN Gateways
+##############################################################################
+
+output "vpn_gateways_name" {
+  description = "List of names of VPN gateways."
+  value = [
+    for gateway in ibm_is_vpn_gateway.vpn_gateway :
+    gateway.name
+  ]
+}
+
+output "vpn_gateways_data" {
+  description = "Details of VPN gateways data"
+  value = [
+    for gateway in ibm_is_vpn_gateway.vpn_gateway :
+    gateway
+  ]
+}
