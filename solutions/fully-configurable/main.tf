@@ -29,7 +29,7 @@ locals {
   bucket_name                    = "${local.prefix}${var.flow_logs_cos_bucket_name}"
   kms_guid                       = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? module.existing_kms_key_crn_parser[0].service_instance : module.existing_kms_instance_crn_parser[0].service_instance) : null
   kms_account_id                 = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? module.existing_kms_key_crn_parser[0].account_id : module.existing_kms_instance_crn_parser[0].account_id) : null
-  kms_service                    = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? module.existing_kms_instance_crn_parser[0].service_name : module.existing_kms_key_crn_parser[0].service_name) : null
+  kms_service                    = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? module.existing_kms_key_crn_parser[0].service_name : module.existing_kms_instance_crn_parser[0].service_name) : null
   cos_kms_key_crn                = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? var.existing_flow_logs_bucket_kms_key_crn : module.kms[0].keys[format("%s.%s", local.kms_key_ring_name, local.kms_key_name)].crn) : null
   create_cos_kms_iam_auth_policy = var.enable_vpc_flow_logs && var.kms_encryption_enabled_bucket && !var.skip_cos_kms_iam_auth_policy
 
@@ -46,10 +46,22 @@ locals {
     resource_instance_id          = var.existing_cos_instance_crn
     region_location               = var.region
     force_delete                  = var.force_delete
-    archive_days                  = null
-    expire_days                   = null
-    retention_enabled             = false
-    object_versioning_enabled     = true
+    archive_rule                  = var.flow_logs_cos_bucket_archive_days != null ? {
+      enable = true
+      days   = var.flow_logs_cos_bucket_archive_days
+      type   = var.flow_logs_cos_bucket_archive_type
+    } : null
+    expire_rule                   = var.flow_logs_cos_bucket_expire_days != null ? {
+      enable = true
+      days   = var.flow_logs_cos_bucket_expire_days
+    } : null
+    retention_rule                = var.flow_logs_cos_bucket_enable_retention ? {
+      default   = var.flow_logs_cos_bucket_default_retention_days
+      maximum   = var.flow_logs_cos_bucket_maximum_retention_days
+      minimum   = var.flow_logs_cos_bucket_minimum_retention_days
+      permanent = var.flow_logs_cos_bucket_enable_permanent_retention
+    } : null
+    object_versioning_enabled     = var.flow_logs_cos_bucket_enable_object_versioning
   }]
 }
 
@@ -123,8 +135,8 @@ locals {
   # fetch KMS region from existing_kms_instance_crn if KMS resources are required
   kms_region = var.kms_encryption_enabled_bucket && var.existing_kms_instance_crn != null ? module.existing_kms_instance_crn_parser[0].region : null
 
-  kms_key_ring_name = "${local.prefix}${var.flow_logs_cos_key_ring_name}"
-  kms_key_name      = "${local.prefix}${var.flow_logs_cos_key_name}"
+  kms_key_ring_name = "${local.prefix}${var.kms_key_ring_name}"
+  kms_key_name      = "${local.prefix}${var.kms_key_name}"
 
   create_kms_key = (var.enable_vpc_flow_logs && var.kms_encryption_enabled_bucket) ? (var.existing_flow_logs_bucket_kms_key_crn == null ? (var.existing_kms_instance_crn != null ? true : false) : false) : false
 }
@@ -188,7 +200,7 @@ module "vpc" {
   enable_vpc_flow_logs                   = var.enable_vpc_flow_logs
   create_authorization_policy_vpc_to_cos = !var.skip_vpc_cos_iam_auth_policy
   existing_cos_instance_guid             = var.enable_vpc_flow_logs ? local.cos_instance_guid : null
-  existing_storage_bucket_name           = var.enable_vpc_flow_logs ? module.cos_buckets[0].buckets[0].bucket_name : null
+  existing_storage_bucket_name           = var.enable_vpc_flow_logs ? module.cos_buckets[0].buckets[local.bucket_name].bucket_name : null
   enable_vpn_gateways                    = true
   vpn_gateways                           = var.vpn_gateways
 }
@@ -197,8 +209,17 @@ module "vpc" {
 # VPE Gateway
 #############################################################################
 
-# module "vpe_gateway" {
-#   source                      = "terraform-ibm-modules/vpe-gateway/ibm"
-#   version                     = "4.5.0"
-
-# }
+module "vpe_gateway" {
+  source               = "terraform-ibm-modules/vpe-gateway/ibm"
+  version              = "4.5.0"
+  resource_group_id    = module.resource_group.resource_group_id
+  region               = var.region
+  prefix               = local.prefix
+  security_group_ids   = var.security_group_ids
+  vpc_name             = module.vpc.vpc_name
+  vpc_id               = module.vpc.vpc_id
+  subnet_zone_list     = module.vpc.subnet_zone_list
+  cloud_services       = var.cloud_services
+  cloud_service_by_crn = var.cloud_service_by_crn
+  service_endpoints    = var.vpe_service_endpoints
+}

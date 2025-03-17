@@ -26,6 +26,7 @@ const existingVPCExampleTerraformDir = "examples/existing_vpc"
 const specificZoneExampleTerraformDir = "examples/specific-zone-only"
 const noprefixExampleTerraformDir = "examples/no-prefix"
 const vpcWithDnsExampleTerraformDir = "examples/vpc-with-dns"
+const fullyConfigFlavorDir = "solutions/fully-configurable"
 const resourceGroup = "geretain-test-resources"
 
 // Define a struct with fields that match the structure of the YAML data
@@ -193,12 +194,53 @@ func TestRunVpcWithDnsExample(t *testing.T) {
 		ResourceGroup: resourceGroup,
 		Region:        "us-south",
 	})
+
+	options.TerraformVars["dns_records"] = dnsRecordsMap
+	options.TerraformVars["name"] = "test-dns"
+	options.TerraformVars["dns_zone_name"] = "slz.com"
+	output, err := options.RunTestConsistency()
+	assert.Nil(t, err, "This should not have errored")
+	assert.NotNil(t, output, "Expected some output")
+}
+
+// Test the fully-configurable DA with defaults (no flow logs)
+func TestFullyConfigurable(t *testing.T) {
+	t.Parallel()
+
+	// Verify ibmcloud_api_key variable is set
+	checkVariable := "TF_VAR_ibmcloud_api_key"
+	val, present := os.LookupEnv(checkVariable)
+	require.True(t, present, checkVariable+" environment variable not set")
+	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
+
+	// Programmatically determine region to use based on availability
+	region, _ := testhelper.GetBestVpcRegion(val, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
+
+	options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
+		Testing:      t,
+		TerraformDir: fullyConfigFlavorDir,
+	})
+
 	options.TerraformVars = map[string]interface{}{
-		"dns_records":   dnsRecordsMap,
-		"name":          "test-dns",
-		"dns_zone_name": "slz.com",
+		"provider_visibility":          "public",
+		"existing_resource_group_name": resourceGroup,
+		"prefix":                       "fully-config",
+		"region":                       region,
 	}
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
+}
+
+// Test the upgrade of fully-configurable DA with defaults
+func TestRunUpgradeFullyConfigurable(t *testing.T) {
+	t.Parallel()
+
+	options := setupOptions(t, "fully-config-upg", fullyConfigFlavorDir)
+
+	output, err := options.RunTestUpgrade()
+	if !options.UpgradeTestSkipped {
+		assert.Nil(t, err, "This should not have errored")
+		assert.NotNil(t, output, "Expected some output")
+	}
 }

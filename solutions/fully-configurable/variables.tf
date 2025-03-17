@@ -179,8 +179,8 @@ variable "network_acls" {
           tcp = {
             port_min        = 443
             port_max        = 443
-            source_port_min = 1024
-            source_port_max = 65535
+            source_port_min = 443
+            source_port_max = 443
           }
           destination = "0.0.0.0/0"
           source      = "0.0.0.0/0"
@@ -192,8 +192,8 @@ variable "network_acls" {
           tcp = {
             port_min        = 80
             port_max        = 80
-            source_port_min = 1024
-            source_port_max = 65535
+            source_port_min = 80
+            source_port_max = 80
           }
           destination = "0.0.0.0/0"
           source      = "0.0.0.0/0"
@@ -205,8 +205,8 @@ variable "network_acls" {
           tcp = {
             port_min        = 22
             port_max        = 22
-            source_port_min = 1024
-            source_port_max = 65535
+            source_port_min = 22
+            source_port_max = 22
           }
           destination = "0.0.0.0/0"
           source      = "0.0.0.0/0"
@@ -218,8 +218,8 @@ variable "network_acls" {
           tcp = {
             source_port_min = 443
             source_port_max = 443
-            port_min        = 1024
-            port_max        = 65535
+            port_min        = 443
+            port_max        = 443
           }
           destination = "0.0.0.0/0"
           source      = "0.0.0.0/0"
@@ -231,8 +231,8 @@ variable "network_acls" {
           tcp = {
             source_port_min = 80
             source_port_max = 80
-            port_min        = 1024
-            port_max        = 65535
+            port_min        = 80
+            port_max        = 80
           }
           destination = "0.0.0.0/0"
           source      = "0.0.0.0/0"
@@ -244,8 +244,8 @@ variable "network_acls" {
           tcp = {
             source_port_min = 22
             source_port_max = 22
-            port_min        = 1024
-            port_max        = 65535
+            port_min        = 22
+            port_max        = 22
           }
           destination = "0.0.0.0/0"
           source      = "0.0.0.0/0"
@@ -295,7 +295,7 @@ variable "network_acls" {
 variable "clean_default_sg_acl" {
   description = "Remove all rules from the default VPC security group and VPC ACL (less permissive)"
   type        = bool
-  default     = false
+  default     = true
 }
 
 variable "address_prefixes" {
@@ -359,7 +359,7 @@ variable "enable_vpc_flow_logs" {
 variable "skip_vpc_cos_iam_auth_policy" {
   description = "To skip creating an IAM authorization policy that allows the VPC to access the Cloud Object Storage, set this variable to `true`. Required only if `enable_vpc_flow_logs` is set to true."
   type        = bool
-  default     = true
+  default     = false
 }
 
 variable "existing_cos_instance_crn" {
@@ -424,13 +424,72 @@ variable "cos_bucket_class" {
 variable "force_delete" {
   type        = bool
   description = "Whether to delete all the objects in the flow logs Cloud Object Storage bucket before the bucket is deleted."
-  default     = false
+  default     = true
 }
 
 variable "add_bucket_name_suffix" {
   type        = bool
   description = "Add a randomly generated suffix that is 4 characters in length, to the name of the newly provisioned Cloud Object Storage bucket. Do not use this suffix if you are passing the existing Cloud Object Storage bucket. To manage the name of the Cloud Object Storage bucket manually, use the `flow_logs_cos_bucket_name` variables."
   default     = true
+}
+
+variable "flow_logs_cos_bucket_archive_days" {
+  description = "The number of days before the `archive_type` rule action takes effect for the flow logs cloud object storage bucket."
+  type        = number
+  default     = null
+}
+
+variable "flow_logs_cos_bucket_archive_type" {
+  description = "The storage class or archive type you want the object to transition to in the flow logs cloud object storage bucket."
+  type        = string
+  default     = "Glacier"
+}
+
+variable "flow_logs_cos_bucket_expire_days" {
+  description = "The number of days before the expire rule action takes effect for the flow logs cloud object storage bucket."
+  type        = number
+  default     = null
+}
+
+variable "flow_logs_cos_bucket_enable_object_versioning" {
+  description = "Set it to true if object versioning is enabled so that multiple versions of an object are retained in the flow logs cloud object storage bucket. Cannot be used if `flow_logs_cos_bucket_enable_retention` is true."
+  type        = bool
+  default     = false
+
+  validation {
+    condition     = var.flow_logs_cos_bucket_enable_object_versioning ? (var.flow_logs_cos_bucket_enable_retention ? false : true) : true
+    error_message = "`flow_logs_cos_bucket_enable_object_versioning` cannot set true if `flow_logs_cos_bucket_enable_retention` is true."
+  }
+}
+
+variable "flow_logs_cos_bucket_enable_retention" {
+  description = "Set to true to enable retention for the flow logs cloud object storage bucket."
+  type        = bool
+  default     = false
+}
+
+variable "flow_logs_cos_bucket_default_retention_days" {
+  description = "The number of days that an object can remain unmodified in the flow logs cloud object storage bucket."
+  type        = number
+  default     = 90
+}
+
+variable "flow_logs_cos_bucket_maximum_retention_days" {
+  description = "The maximum number of days that an object can be kept unmodified in the flow logs cloud object storage."
+  type        = number
+  default     = 350
+}
+
+variable "flow_logs_cos_bucket_minimum_retention_days" {
+  description = "The minimum number of days that an object must be kept unmodified in the flow logs cloud object storage."
+  type        = number
+  default     = 90
+}
+
+variable "flow_logs_cos_bucket_enable_permanent_retention" {
+  description = "Whether permanent retention status is enabled for the flow logs cloud object storage bucket. [Learn more](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-immutable)."
+  type        = bool
+  default     = false
 }
 
 ###############################################################################################################
@@ -459,13 +518,13 @@ variable "kms_endpoint_type" {
   }
 }
 
-variable "flow_logs_cos_key_ring_name" {
+variable "kms_key_ring_name" {
   type        = string
   default     = "flow-logs-cos-key-ring"
   description = "The name of the key ring to create for the Cloud Object Storage bucket key. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key ring is prefixed to the value in the `<prefix>-value` format."
 }
 
-variable "flow_logs_cos_key_name" {
+variable "kms_key_name" {
   type        = string
   default     = "flow-logs-cos-key"
   description = "The name of the key to encrypt the flow logs Cloud Object Storage bucket. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key is prefixed to the value in the `<prefix>-value` format."
@@ -517,18 +576,42 @@ variable "vpn_gateways" {
 # VPE Gateways
 ##############################################################################
 
-# variable "vpe_gateways" {
-#   description = "List of VPE Gateways to create."
-#   type = list(
-#     object({
-#       name           = string
-#       vpc_name       = string
-#       subnet_name    = string # Do not include prefix, use same name as in `var.subnets`
-#       mode           = optional(string)
-#       resource_group = optional(string)
-#       access_tags    = optional(list(string), [])
-#     })
-#   )
+variable "cloud_services" {
+  description = "The list of cloud services used to create endpoint gateways. If `vpe_name` is not specified in the list, VPE names are created in the format `<prefix>-<vpc_name>-<service_name>`."
+  type = set(object({
+    service_name                 = string
+    vpe_name                     = optional(string), # Full control on the VPE name. If not specified, the VPE name will be computed based on prefix, vpc name and service name.
+    allow_dns_resolution_binding = optional(bool, false)
+  }))
+  default = []
+}
 
-#   default = []
-# }
+variable "cloud_service_by_crn" {
+  description = "The list of cloud service CRNs used to create endpoint gateways. Use this list to identify services that are not supported by service name in the `cloud_services` variable. For a list of supported services, see [VPE-enabled services](https://cloud.ibm.com/docs/vpc?topic=vpc-vpe-supported-services). If `service_name` is not specified, the CRN is used to find the name. If `vpe_name` is not specified in the list, VPE names are created in the format `<prefix>-<vpc_name>-<service_name>`."
+  type = set(
+    object({
+      crn                          = string
+      vpe_name                     = optional(string) # Full control on the VPE name. If not specified, the VPE name will be computed based on prefix, vpc name and service name.
+      service_name                 = optional(string) # Name of the service used to compute the name of the VPE. If not specified, the service name will be obtained from the crn.
+      allow_dns_resolution_binding = optional(bool, true)
+    })
+  )
+  default = []
+}
+
+variable "vpe_service_endpoints" {
+  description = "Service endpoints to use to create endpoint gateways. Can be `public`, or `private`."
+  type        = string
+  default     = "private"
+
+  validation {
+    error_message = "Service endpoints can only be `public` or `private`."
+    condition     = contains(["public", "private"], var.vpe_service_endpoints)
+  }
+}
+
+variable "security_group_ids" {
+  description = "List of security group ids to attach to each endpoint gateway."
+  type        = list(string)
+  default     = []
+}
