@@ -252,6 +252,7 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="output_dns_zone_state"></a> [dns\_zone\_state](#output\_dns\_zone\_state) | The state of the DNS zone. |
 | <a name="output_network_acls"></a> [network\_acls](#output\_network\_acls) | List of shortnames and IDs of network ACLs |
 | <a name="output_public_gateways"></a> [public\_gateways](#output\_public\_gateways) | Map of public gateways by zone |
+| <a name="output_security_group_details"></a> [security\_group\_details](#output\_security\_group\_details) | Details of security group. |
 | <a name="output_subnet_detail_list"></a> [subnet\_detail\_list](#output\_subnet\_detail\_list) | A list of subnets containing names, CIDR blocks, and zones. |
 | <a name="output_subnet_detail_map"></a> [subnet\_detail\_map](#output\_subnet\_detail\_map) | A map of subnets containing IDs, CIDR blocks, and zones |
 | <a name="output_subnet_ids"></a> [subnet\_ids](#output\_subnet\_ids) | The IDs of the subnets |
@@ -261,7 +262,7 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="output_vpc_flow_logs"></a> [vpc\_flow\_logs](#output\_vpc\_flow\_logs) | Details of VPC flow logs collector |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | ID of VPC created |
 | <a name="output_vpc_name"></a> [vpc\_name](#output\_vpc\_name) | Name of VPC created |
-| <a name="output_vpn_gateways_data"></a> [vpn\_gateways\_data](#output\_vpn\_gateways\_data) | Details of VPN gateways data |
+| <a name="output_vpn_gateways_data"></a> [vpn\_gateways\_data](#output\_vpn\_gateways\_data) | Details of VPN gateways data. |
 | <a name="output_vpn_gateways_name"></a> [vpn\_gateways\_name](#output\_vpn\_gateways\_name) | List of names of VPN gateways. |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
