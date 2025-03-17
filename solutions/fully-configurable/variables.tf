@@ -459,13 +459,13 @@ variable "kms_endpoint_type" {
   }
 }
 
-variable "flow_logs_cos_key_ring_name" {
+variable "kms_key_ring_name" {
   type        = string
   default     = "flow-logs-cos-key-ring"
   description = "The name of the key ring to create for the Cloud Object Storage bucket key. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key ring is prefixed to the value in the `<prefix>-value` format."
 }
 
-variable "flow_logs_cos_key_name" {
+variable "kms_key_name" {
   type        = string
   default     = "flow-logs-cos-key"
   description = "The name of the key to encrypt the flow logs Cloud Object Storage bucket. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key is prefixed to the value in the `<prefix>-value` format."

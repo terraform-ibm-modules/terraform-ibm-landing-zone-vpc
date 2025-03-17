@@ -123,8 +123,8 @@ locals {
   # fetch KMS region from existing_kms_instance_crn if KMS resources are required
   kms_region = var.kms_encryption_enabled_bucket && var.existing_kms_instance_crn != null ? module.existing_kms_instance_crn_parser[0].region : null
 
-  kms_key_ring_name = "${local.prefix}${var.flow_logs_cos_key_ring_name}"
-  kms_key_name      = "${local.prefix}${var.flow_logs_cos_key_name}"
+  kms_key_ring_name = "${local.prefix}${var.kms_key_ring_name}"
+  kms_key_name      = "${local.prefix}${var.kms_key_name}"
 
   create_kms_key = (var.enable_vpc_flow_logs && var.kms_encryption_enabled_bucket) ? (var.existing_flow_logs_bucket_kms_key_crn == null ? (var.existing_kms_instance_crn != null ? true : false) : false) : false
 }
