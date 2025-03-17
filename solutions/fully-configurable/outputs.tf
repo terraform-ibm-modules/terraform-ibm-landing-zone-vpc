@@ -95,3 +95,12 @@ output "vpe_crn" {
   description = "The CRN of the endpoint gateway"
   value       = module.vpe_gateway.crn
 }
+
+##############################################################################
+# Security Group Details
+##############################################################################
+
+output "security_group_details" {
+  description = "Details of security group."
+  value       = module.vpc.security_group_details
+}

@@ -193,7 +193,8 @@ module "vpc" {
   default_security_group_name            = var.default_security_group_name
   default_routing_table_name             = var.default_routing_table_name
   network_acls                           = var.network_acls
-  clean_default_sg_acl                   = var.clean_default_sg_acl
+  security_group_rules                   = var.security_group_rules
+  clean_default_sg_acl                   = var.clean_default_security_group_acl
   use_public_gateways                    = local.public_gateway_object
   address_prefixes                       = var.address_prefixes
   routes                                 = var.routes

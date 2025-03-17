@@ -211,9 +211,18 @@ output "vpn_gateways_name" {
 }
 
 output "vpn_gateways_data" {
-  description = "Details of VPN gateways data"
+  description = "Details of VPN gateways data."
   value = [
     for gateway in ibm_is_vpn_gateway.vpn_gateway :
     gateway
   ]
+}
+
+##############################################################################
+# Security Group Details
+##############################################################################
+
+output "security_group_details" {
+  description = "Details of security group."
+  value       = ibm_is_security_group_rule.default_vpc_rule
 }
