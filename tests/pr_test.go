@@ -194,11 +194,10 @@ func TestRunVpcWithDnsExample(t *testing.T) {
 		ResourceGroup: resourceGroup,
 		Region:        "us-south",
 	})
-	options.TerraformVars = map[string]interface{}{
-		"dns_records":   dnsRecordsMap,
-		"name":          "test-dns",
-		"dns_zone_name": "slz.com",
-	}
+
+	options.TerraformVars["dns_records"] = dnsRecordsMap
+	options.TerraformVars["name"] = "test-dns"
+	options.TerraformVars["dns_zone_name"] = "slz.com"
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
