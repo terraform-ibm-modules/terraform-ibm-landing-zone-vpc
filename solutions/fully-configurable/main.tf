@@ -46,10 +46,22 @@ locals {
     resource_instance_id          = var.existing_cos_instance_crn
     region_location               = var.region
     force_delete                  = var.force_delete
-    archive_days                  = null
-    expire_days                   = null
-    retention_enabled             = false
-    object_versioning_enabled     = true
+    archive_rule                  = var.flow_logs_cos_bucket_archive_days != null ? {
+      enable = true
+      days   = var.flow_logs_cos_bucket_archive_days
+      type   = var.flow_logs_cos_bucket_archive_type
+    } : null
+    expire_rule                   = var.flow_logs_cos_bucket_expire_days != null ? {
+      enable = true
+      days   = var.flow_logs_cos_bucket_expire_days
+    } : null
+    retention_rule                = var.flow_logs_cos_bucket_enable_retention ? {
+      default   = var.flow_logs_cos_bucket_default_retention_days
+      maximum   = var.flow_logs_cos_bucket_maximum_retention_days
+      minimum   = var.flow_logs_cos_bucket_minimum_retention_days
+      permanent = var.flow_logs_cos_bucket_enable_permanent_retention
+    } : null
+    object_versioning_enabled     = var.flow_logs_cos_bucket_enable_object_versioning
   }]
 }
 

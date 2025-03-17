@@ -433,6 +433,65 @@ variable "add_bucket_name_suffix" {
   default     = true
 }
 
+variable "flow_logs_cos_bucket_archive_days" {
+  description = "The number of days before the `archive_type` rule action takes effect for the flow logs cloud object storage bucket."
+  type        = number
+  default     = null
+}
+
+variable "flow_logs_cos_bucket_archive_type" {
+  description = "The storage class or archive type you want the object to transition to in the flow logs cloud object storage bucket."
+  type        = string
+  default     = "Glacier"
+}
+
+variable "flow_logs_cos_bucket_expire_days" {
+  description = "The number of days before the expire rule action takes effect for the flow logs cloud object storage bucket."
+  type        = number
+  default     = null
+}
+
+variable "flow_logs_cos_bucket_enable_object_versioning" {
+  description = "Set it to true if object versioning is enabled so that multiple versions of an object are retained in the flow logs cloud object storage bucket. Cannot be used if `flow_logs_cos_bucket_enable_retention` is true."
+  type        = bool
+  default     = false
+
+  validation {
+    condition     = var.flow_logs_cos_bucket_enable_object_versioning ? (var.flow_logs_cos_bucket_enable_retention ? false : true) : true
+    error_message = "`flow_logs_cos_bucket_enable_object_versioning` cannot set true if `flow_logs_cos_bucket_enable_retention` is true."
+  }
+}
+
+variable "flow_logs_cos_bucket_enable_retention" {
+  description = "Set to true to enable retention for the flow logs cloud object storage bucket."
+  type        = bool
+  default     = false
+}
+
+variable "flow_logs_cos_bucket_default_retention_days" {
+  description = "The number of days that an object can remain unmodified in the flow logs cloud object storage bucket."
+  type        = number
+  default     = 90
+}
+
+variable "flow_logs_cos_bucket_maximum_retention_days" {
+  description = "The maximum number of days that an object can be kept unmodified in the flow logs cloud object storage."
+  type        = number
+  default     = 350
+}
+
+variable "flow_logs_cos_bucket_minimum_retention_days" {
+  description = "The minimum number of days that an object must be kept unmodified in the flow logs cloud object storage."
+  type        = number
+  default     = 90
+}
+
+variable "flow_logs_cos_bucket_enable_permanent_retention" {
+  description = "Whether permanent retention status is enabled for the flow logs cloud object storage bucket. [Learn more](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-immutable)."
+  type        = bool
+  default     = false
+}
+
 ###############################################################################################################
 # KMS
 ###############################################################################################################
