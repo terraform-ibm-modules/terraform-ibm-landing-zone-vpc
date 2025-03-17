@@ -12,8 +12,13 @@
         "support_ibm",
         "solution"
       ],
-      "keywords": ["vpc", "terraform"],
-
+      "keywords": [
+        "vpc",
+        "terraform",
+        "IaC",
+        "infrastructure as code",
+        "solution"
+       ],
       "short_description": "Provisions a VPC network on IBM Cloud",
       "long_description": "The VPC landing zone deployable architecture deploys a simple Virtual Private Cloud (VPC) infrastructure without any compute resources, such as Virtual Server Instances (VSI) or Red Hat OpenShift clusters.",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/README.md",
@@ -27,7 +32,7 @@
       ],
       "flavors": [
         {
-          "label": "fully-configurable",
+          "label": "Fully configurable",
           "name": "fully-configurable",
           "install_type": "fullstack",
           "working_directory": "solutions/fully-configurable",
