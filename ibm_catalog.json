@@ -22,7 +22,7 @@
       "short_description": "Provisions a VPC network on IBM Cloud",
       "long_description": "The VPC landing zone deployable architecture deploys a simple Virtual Private Cloud (VPC) infrastructure without any compute resources, such as Virtual Server Instances (VSI) or Red Hat OpenShift clusters.",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/README.md",
-      "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/ibm_catalog/images/vpc_icon.svg",
+      "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/images/vpc_icon.svg",
       "provider_name": "IBM",
       "features": [
         {
@@ -48,7 +48,7 @@
               {
                 "diagram": {
                   "caption": "VPC for IBM Cloud.",
-                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/ibm_catalog/reference-architecture/deployable-architecture-vpc.svg",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/reference-architecture/deployable-architecture-vpc.svg",
                   "type": "image/svg+xml"
                 },
                 "description": "This architecture creates a VPC."
@@ -106,7 +106,7 @@
               "key": "network_acls"
             },
             {
-              "key": "clean_default_sg_acl",
+              "key": "clean_default_security_group_acl",
               "options": [
                 {
                   "displayname": "True",
@@ -126,6 +126,9 @@
             },
             {
               "key": "default_network_acl_name"
+            },
+            {
+              "key": "security_group_rules"
             },
             {
               "key": "default_security_group_name"
