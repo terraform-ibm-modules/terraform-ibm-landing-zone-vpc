@@ -18,11 +18,11 @@
         "IaC",
         "infrastructure as code",
         "solution"
-       ],
+      ],
       "short_description": "Provisions a VPC network on IBM Cloud",
       "long_description": "The VPC landing zone deployable architecture deploys a simple Virtual Private Cloud (VPC) infrastructure without any compute resources, such as Virtual Server Instances (VSI) or Red Hat OpenShift clusters.",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/README.md",
-      "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/documentation/refs/heads/main/icons/CloudVPC.svg",
+      "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/ibm_catalog/images/vpc_icon.svg",
       "provider_name": "IBM",
       "features": [
         {
@@ -48,7 +48,7 @@
               {
                 "diagram": {
                   "caption": "VPC for IBM Cloud.",
-                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/ibm_catalog/reference-architecture/vpc.svg",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/ibm_catalog/reference-architecture/deployable-architecture-vpc.svg",
                   "type": "image/svg+xml"
                 },
                 "description": "This architecture creates a VPC."
@@ -58,6 +58,26 @@
           "configuration": [
             {
               "key": "ibmcloud_api_key"
+            },
+            {
+              "key": "prefix",
+              "required": true,
+              "description": "The prefix to add to all resources that this solution creates. To not use any prefix value, you can enter the string `__NULL__`."
+            },
+            {
+              "key": "region"
+            },
+            {
+              "key": "existing_resource_group_name",
+              "required": true,
+              "custom_config": {
+                "type": "resource_group",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "identifier": "rg_name"
+                }
+              }
             },
             {
               "key": "provider_visibility",
@@ -77,28 +97,7 @@
               ]
             },
             {
-              "key": "existing_resource_group_name",
-              "required": true
-            },
-            {
-              "key": "vpn_gateways"
-            },
-            {
-              "key": "prefix",
-              "required": true,
-              "description": "The prefix to add to all resources that this solution creates. To not use any prefix value, you can enter the string `__NULL__`."
-            },
-            {
               "key": "vpc_name"
-            },
-            {
-              "key": "region"
-            },
-            {
-              "key": "resource_tags"
-            },
-            {
-              "key": "access_tags"
             },
             {
               "key": "subnets"
@@ -107,34 +106,23 @@
               "key": "network_acls"
             },
             {
-              "key": "clean_default_sg_acl"
+              "key": "clean_default_sg_acl",
+              "options": [
+                {
+                  "displayname": "True",
+                  "value": "true"
+                },
+                {
+                  "displayname": "False",
+                  "value": "false"
+                }
+              ]
             },
             {
               "key": "address_prefixes"
             },
             {
               "key": "routes"
-            },
-            {
-              "key": "enable_vpc_flow_logs"
-            },
-            {
-              "key": "existing_cos_instance_crn"
-            },
-            {
-              "key": "kms_encryption_enabled_bucket"
-            },
-            {
-              "key": "management_endpoint_type_for_bucket"
-            },
-            {
-              "key": "cos_bucket_class"
-            },
-            {
-              "key": "existing_kms_instance_crn"
-            },
-            {
-              "key": "kms_endpoint_type"
             },
             {
               "key": "default_network_acl_name"
@@ -146,28 +134,259 @@
               "key": "default_routing_table_name"
             },
             {
-              "key": "add_bucket_name_suffix"
+              "key": "security_group_ids"
             },
             {
-              "key": "existing_flow_logs_bucket_kms_key_crn"
+              "key": "vpe_service_endpoints",
+              "options": [
+                {
+                  "displayname": "Public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "Private",
+                  "value": "private"
+                }
+              ]
+            },
+            {
+              "key": "vpn_gateways"
+            },
+            {
+              "key": "resource_tags",
+              "custom_config": {
+                "type": "array",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "key": "access_tags",
+              "custom_config": {
+                "type": "array",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "key": "enable_vpc_flow_logs",
+              "options": [
+                {
+                  "displayname": "True",
+                  "value": "true"
+                },
+                {
+                  "displayname": "False",
+                  "value": "false"
+                }
+              ]
+            },
+            {
+              "key": "skip_vpc_cos_iam_auth_policy",
+              "options": [
+                {
+                  "displayname": "True",
+                  "value": "true"
+                },
+                {
+                  "displayname": "False",
+                  "value": "false"
+                }
+              ]
+            },
+            {
+              "key": "existing_cos_instance_crn"
             },
             {
               "key": "flow_logs_cos_bucket_name"
             },
             {
-              "key": "flow_logs_cos_key_name"
+              "key": "kms_encryption_enabled_bucket",
+              "options": [
+                {
+                  "displayname": "True",
+                  "value": "true"
+                },
+                {
+                  "displayname": "False",
+                  "value": "false"
+                }
+              ]
             },
             {
-              "key": "flow_logs_cos_key_ring_name"
+              "key": "skip_cos_kms_iam_auth_policy",
+              "options": [
+                {
+                  "displayname": "True",
+                  "value": "true"
+                },
+                {
+                  "displayname": "False",
+                  "value": "false"
+                }
+              ]
             },
             {
-              "key": "force_delete"
+              "key": "management_endpoint_type_for_bucket",
+              "options": [
+                {
+                  "displayname": "Public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "Private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "Direct",
+                  "value": "direct"
+                }
+              ]
             },
             {
-              "key": "skip_cos_kms_iam_auth_policy"
+              "key": "cos_bucket_class",
+              "options": [
+                {
+                  "displayname": "Standard",
+                  "value": "standard"
+                },
+                {
+                  "displayname": "Vault",
+                  "value": "vault"
+                },
+                {
+                  "displayname": "Cold",
+                  "value": "cold"
+                },
+                {
+                  "displayname": "Smart",
+                  "value": "smart"
+                },
+                {
+                  "displayname": "OneRate Active",
+                  "value": "onerate_active"
+                }
+              ]
             },
             {
-              "key": "skip_vpc_cos_iam_auth_policy"
+              "key": "force_delete",
+              "options": [
+                {
+                  "displayname": "True",
+                  "value": "true"
+                },
+                {
+                  "displayname": "False",
+                  "value": "false"
+                }
+              ]
+            },
+            {
+              "key": "add_bucket_name_suffix",
+              "options": [
+                {
+                  "displayname": "True",
+                  "value": "true"
+                },
+                {
+                  "displayname": "False",
+                  "value": "false"
+                }
+              ]
+            },
+            {
+              "key": "flow_logs_cos_bucket_archive_days"
+            },
+            {
+              "key": "flow_logs_cos_bucket_archive_type"
+            },
+            {
+              "key": "flow_logs_cos_bucket_expire_days"
+            },
+            {
+              "key": "flow_logs_cos_bucket_enable_object_versioning",
+              "options": [
+                {
+                  "displayname": "True",
+                  "value": "true"
+                },
+                {
+                  "displayname": "False",
+                  "value": "false"
+                }
+              ]
+            },
+            {
+              "key": "flow_logs_cos_bucket_enable_retention",
+              "options": [
+                {
+                  "displayname": "True",
+                  "value": "true"
+                },
+                {
+                  "displayname": "False",
+                  "value": "false"
+                }
+              ]
+            },
+            {
+              "key": "flow_logs_cos_bucket_default_retention_days"
+            },
+            {
+              "key": "flow_logs_cos_bucket_maximum_retention_days"
+            },
+            {
+              "key": "flow_logs_cos_bucket_minimum_retention_days"
+            },
+            {
+              "key": "flow_logs_cos_bucket_enable_permanent_retention",
+              "options": [
+                {
+                  "displayname": "True",
+                  "value": "true"
+                },
+                {
+                  "displayname": "False",
+                  "value": "false"
+                }
+              ]
+            },
+            {
+              "key": "existing_flow_logs_bucket_kms_key_crn"
+            },
+            {
+              "key": "existing_kms_instance_crn"
+            },
+            {
+              "key": "kms_endpoint_type",
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                }
+              ]
+            },
+            {
+              "key": "kms_key_ring_name"
+            },
+            {
+              "key": "kms_key_name"
+            },
+            {
+              "key": "cloud_services"
+            },
+            {
+              "key": "cloud_service_by_crn"
             }
           ],
           "dependencies": [
