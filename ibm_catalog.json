@@ -22,7 +22,7 @@
       "short_description": "Provisions a VPC network on IBM Cloud",
       "long_description": "The VPC landing zone deployable architecture deploys a simple Virtual Private Cloud (VPC) infrastructure without any compute resources, such as Virtual Server Instances (VSI) or Red Hat OpenShift clusters.",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/README.md",
-      "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/images/vpc_icon.svg",
+      "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/vpc-da-12217/images/vpc_icon.svg",
       "provider_name": "IBM",
       "features": [
         {
@@ -48,13 +48,41 @@
               {
                 "diagram": {
                   "caption": "VPC for IBM Cloud.",
-                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/reference-architecture/deployable-architecture-vpc.svg",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/vpc-da-12217/reference-architecture/deployable-architecture-vpc.svg",
                   "type": "image/svg+xml"
                 },
                 "description": "This architecture creates a VPC."
               }
             ]
           },
+          "iam_permissions": [
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator"
+              ],
+              "service_name": "iam-identity"
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator"
+              ],
+              "service_name": "is.vpc"
+            },
+            {
+              "service_name": "cloud-object-storage",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ]
+            },
+            {
+              "service_name": "kms",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ]
+            }
+          ],
           "configuration": [
             {
               "key": "ibmcloud_api_key"
@@ -447,6 +475,10 @@
                   "dependency_input": "use_existing_resource_group",
                   "value": true,
                   "reference_version": true
+                },
+                {
+                  "version_input":"kms_encryption_enabled_bucket",
+                  "value":true
                 }
               ]
             },
@@ -478,6 +510,10 @@
                   "dependency_input": "use_existing_resource_group",
                   "value": true,
                   "reference_version": true
+                },
+                {
+                  "version_input":"enable_vpc_flow_logs",
+                  "value":true
                 }
               ]
             }
