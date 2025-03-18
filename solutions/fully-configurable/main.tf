@@ -1,5 +1,5 @@
 locals {
-  prefix = (var.prefix != null && trimspace(var.prefix) != "" ? var.prefix : "")
+  prefix = var.prefix != null ? trimspace(var.prefix) != "" ? var.prefix : "" : ""
 }
 
 ##############################################################################
