@@ -20,14 +20,46 @@
         "solution"
       ],
       "short_description": "Provisions a VPC network on IBM Cloud",
-      "long_description": "The VPC landing zone deployable architecture deploys a simple Virtual Private Cloud (VPC) infrastructure without any compute resources, such as Virtual Server Instances (VSI) or Red Hat OpenShift clusters.",
+      "long_description": "The VPC deployable architecture deploys a Virtual Private Cloud (VPC) infrastructure without any compute resources, such as Virtual Server Instances (VSI) or Red Hat OpenShift clusters.",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/vpc-da-12217/images/vpc_icon.svg",
       "provider_name": "IBM",
       "features": [
         {
-          "title": "Create a VPC on IBM Cloud",
+          "title": "VPC on IBM Cloud",
           "description": "Create a VPC on IBM Cloud."
+        },
+        {
+          "title": "Public gateways",
+          "description": "Create and configure public gateways."
+        },
+        {
+          "title": "Subnets",
+          "description": "Creates subnets for VPC."
+        },
+        {
+          "title": "Network ACLs",
+          "description": "Create network ACLs."
+        },
+        {
+          "title": "VPN gateways",
+          "description": "Create and configure VPN gateways."
+        },
+        {
+          "title": "VPE gateways",
+          "description": "Create and configure VPE gateways."
+        },
+        {
+          "title": "Security groups",
+          "description": "Create and configure security group rules."
+        },
+        {
+          "title": "VPC flow logs",
+          "description": "VPC flow logs can be enabled."
+        },
+        {
+          "title": "Address Prefixes",
+          "description": "Creates address prefixes."
         }
       ],
       "flavors": [
@@ -40,8 +72,40 @@
             "descriptions": "This architecture creates a VPC.",
             "features": [
               {
-                "title": "Creates a VPC",
-                "description": "Creates a VPC"
+                "title": "VPC on IBM Cloud",
+                "description": "Create a VPC on IBM Cloud."
+              },
+              {
+                "title": "Public gateways",
+                "description": "Create and configure public gateways."
+              },
+              {
+                "title": "Subnets",
+                "description": "Creates subnets for VPC."
+              },
+              {
+                "title": "Network ACLs",
+                "description": "Create network ACLs."
+              },
+              {
+                "title": "VPN gateways",
+                "description": "Create and configure VPN gateways."
+              },
+              {
+                "title": "VPE gateways",
+                "description": "Create and configure VPE gateways."
+              },
+              {
+                "title": "Security groups",
+                "description": "Create and configure security group rules."
+              },
+              {
+                "title": "VPC flow logs",
+                "description": "VPC flow logs can be enabled."
+              },
+              {
+                "title": "Address Prefixes",
+                "description": "Creates address prefixes."
               }
             ],
             "diagrams": [
