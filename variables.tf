@@ -319,6 +319,7 @@ variable "subnets" {
       public_gateway = optional(bool)
       acl_name       = string
       no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true
+      subnet_tags    = optional(list(string), [])
     }))
     zone-2 = optional(list(object({
       name           = string
@@ -326,6 +327,7 @@ variable "subnets" {
       public_gateway = optional(bool)
       acl_name       = string
       no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true
+      subnet_tags    = optional(list(string), [])
     })))
     zone-3 = optional(list(object({
       name           = string
@@ -333,6 +335,7 @@ variable "subnets" {
       public_gateway = optional(bool)
       acl_name       = string
       no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true
+      subnet_tags    = optional(list(string), [])
     })))
   })
 

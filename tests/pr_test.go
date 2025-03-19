@@ -16,6 +16,7 @@ import (
 	"github.com/stretchr/testify/assert"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
 )
 
 const basicExampleTerraformDir = "examples/basic"
@@ -216,31 +217,77 @@ func TestFullyConfigurable(t *testing.T) {
 	// Programmatically determine region to use based on availability
 	region, _ := testhelper.GetBestVpcRegion(val, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
 
-	options := testhelper.TestOptionsDefault(&testhelper.TestOptions{
-		Testing:      t,
-		TerraformDir: fullyConfigFlavorDir,
+	prefix := "vpc-da"
+
+	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
+		Testing: t,
+		Region:  region,
+		Prefix:  prefix,
+		TarIncludePatterns: []string{
+			"*.tf",
+			"dynamic_values/*.tf",
+			"dynamic_values/config_modules/*/*.tf",
+			fullyConfigFlavorDir + "/*.tf",
+		},
+		TemplateFolder:         fullyConfigFlavorDir,
+		Tags:                   []string{"vpc-da-test"},
+		DeleteWorkspaceOnFail:  false,
+		WaitJobCompleteMinutes: 60,
 	})
 
-	options.TerraformVars = map[string]interface{}{
-		"provider_visibility":          "public",
-		"existing_resource_group_name": resourceGroup,
-		"prefix":                       "fully-config",
-		"region":                       region,
+	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
+		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
+		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
+		{Name: "region", Value: options.Region, DataType: "string"},
+		{Name: "resource_tags", Value: options.Tags, DataType: "list(string)"},
+		{Name: "access_tags", Value: permanentResources["accessTags"], DataType: "list(string)"},
+		{Name: "prefix", Value: options.Prefix, DataType: "string"},
 	}
-	output, err := options.RunTestConsistency()
+
+	err := options.RunSchematicTest()
 	assert.Nil(t, err, "This should not have errored")
-	assert.NotNil(t, output, "Expected some output")
 }
 
 // Test the upgrade of fully-configurable DA with defaults
 func TestRunUpgradeFullyConfigurable(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "fully-config-upg", fullyConfigFlavorDir)
+	// Verify ibmcloud_api_key variable is set
+	checkVariable := "TF_VAR_ibmcloud_api_key"
+	val, present := os.LookupEnv(checkVariable)
+	require.True(t, present, checkVariable+" environment variable not set")
+	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
 
-	output, err := options.RunTestUpgrade()
+	// Programmatically determine region to use based on availability
+	region, _ := testhelper.GetBestVpcRegion(val, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
+
+	prefix := "vpc-da"
+
+	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
+		Testing: t,
+		Region:  region,
+		Prefix:  prefix,
+		TarIncludePatterns: []string{
+			"*.tf",
+			fullyConfigFlavorDir + "/*.tf",
+		},
+		TemplateFolder:         fullyConfigFlavorDir,
+		Tags:                   []string{"vpc-da-test"},
+		DeleteWorkspaceOnFail:  false,
+		WaitJobCompleteMinutes: 60,
+	})
+
+	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
+		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
+		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
+		{Name: "region", Value: options.Region, DataType: "string"},
+		{Name: "resource_tags", Value: options.Tags, DataType: "list(string)"},
+		{Name: "access_tags", Value: permanentResources["accessTags"], DataType: "list(string)"},
+		{Name: "prefix", Value: options.Prefix, DataType: "string"},
+	}
+
+	err := options.RunSchematicUpgradeTest()
 	if !options.UpgradeTestSkipped {
 		assert.Nil(t, err, "This should not have errored")
-		assert.NotNil(t, output, "Expected some output")
 	}
 }
