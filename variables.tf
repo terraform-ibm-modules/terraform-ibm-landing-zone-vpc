@@ -726,14 +726,9 @@ variable "dns_records" {
 # VPN Gateways
 ##############################################################################
 
-variable "enable_vpn_gateways" {
-  type        = bool
-  description = "Set to true to add VPN gateways. If true, VPN gateways will be created using the variable 'vpn_gateways'."
-  default     = false
-}
-
 variable "vpn_gateways" {
   description = "List of VPN gateways to create."
+  nullable    = false
   type = list(
     object({
       name           = string

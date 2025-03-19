@@ -202,7 +202,6 @@ module "vpc" {
   create_authorization_policy_vpc_to_cos = !var.skip_vpc_cos_iam_auth_policy
   existing_cos_instance_guid             = var.enable_vpc_flow_logs ? local.cos_instance_guid : null
   existing_storage_bucket_name           = var.enable_vpc_flow_logs ? module.cos_buckets[0].buckets[local.bucket_name].bucket_name : null
-  enable_vpn_gateways                    = true
   vpn_gateways                           = var.vpn_gateways
 }
 

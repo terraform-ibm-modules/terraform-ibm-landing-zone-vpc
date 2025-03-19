@@ -414,7 +414,7 @@ locals {
 
 locals {
   # Convert the vpn_gateway input from list to a map
-  vpn_gateway_map = !var.enable_vpn_gateways ? {} : { for gateway in var.vpn_gateways : gateway.name => gateway }
+  vpn_gateway_map = { for gateway in var.vpn_gateways : gateway.name => gateway }
 }
 
 resource "ibm_is_vpn_gateway" "vpn_gateway" {
