@@ -1,5 +1,5 @@
 locals {
-  prefix = var.prefix != null ? trimspace(var.prefix) != "" ? var.prefix : "" : ""
+  prefix = var.prefix != null ? (trimspace(var.prefix) != "" ? "${var.prefix}-" : "") : ""
 }
 
 ##############################################################################
@@ -45,7 +45,7 @@ locals {
     storage_class                 = var.cos_bucket_class
     resource_instance_id          = var.existing_cos_instance_crn
     region_location               = var.region
-    force_delete                  = var.force_delete
+    force_delete                  = true
     archive_rule = var.flow_logs_cos_bucket_archive_days != null ? {
       enable = true
       days   = var.flow_logs_cos_bucket_archive_days
@@ -185,7 +185,7 @@ module "vpc" {
   region                                 = var.region
   create_vpc                             = true
   name                                   = var.vpc_name
-  prefix                                 = local.prefix
+  prefix                                 = local.prefix != "" ? trimspace(var.prefix) : null
   tags                                   = var.resource_tags
   access_tags                            = var.access_tags
   subnets                                = var.subnets
@@ -220,7 +220,7 @@ module "vpe_gateway" {
   vpc_name             = module.vpc.vpc_name
   vpc_id               = module.vpc.vpc_id
   subnet_zone_list     = module.vpc.subnet_zone_list
-  cloud_services       = var.cloud_services
-  cloud_service_by_crn = var.cloud_service_by_crn
-  service_endpoints    = var.vpe_service_endpoints
+  cloud_services       = var.vpe_gateway_cloud_services
+  cloud_service_by_crn = var.vpe_gateway_cloud_service_by_crn
+  service_endpoints    = var.vpe_gateway_service_endpoints
 }

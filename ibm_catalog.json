@@ -232,7 +232,7 @@
               "key": "security_group_ids"
             },
             {
-              "key": "vpe_service_endpoints",
+              "key": "vpe_gateway_service_endpoints",
               "options": [
                 {
                   "displayname": "Public",
@@ -243,6 +243,12 @@
                   "value": "private"
                 }
               ]
+            },
+            {
+              "key": "vpe_gateway_cloud_services"
+            },
+            {
+              "key": "vpe_gateway_cloud_service_by_crn"
             },
             {
               "key": "vpn_gateways"
@@ -370,19 +376,6 @@
               ]
             },
             {
-              "key": "force_delete",
-              "options": [
-                {
-                  "displayname": "True",
-                  "value": "true"
-                },
-                {
-                  "displayname": "False",
-                  "value": "false"
-                }
-              ]
-            },
-            {
               "key": "add_bucket_name_suffix",
               "options": [
                 {
@@ -476,12 +469,6 @@
             },
             {
               "key": "kms_key_name"
-            },
-            {
-              "key": "cloud_services"
-            },
-            {
-              "key": "cloud_service_by_crn"
             }
           ],
           "dependencies": [

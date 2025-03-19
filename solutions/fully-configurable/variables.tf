@@ -483,12 +483,6 @@ variable "cos_bucket_class" {
   }
 }
 
-variable "force_delete" {
-  type        = bool
-  description = "Whether to delete all the objects in the flow logs Cloud Object Storage bucket before the bucket is deleted."
-  default     = true
-}
-
 variable "add_bucket_name_suffix" {
   type        = bool
   description = "Add a randomly generated suffix that is 4 characters in length, to the name of the newly provisioned Cloud Object Storage bucket. Do not use this suffix if you are passing the existing Cloud Object Storage bucket. To manage the name of the Cloud Object Storage bucket manually, use the `flow_logs_cos_bucket_name` variables."
@@ -638,7 +632,7 @@ variable "vpn_gateways" {
 # VPE Gateways
 ##############################################################################
 
-variable "cloud_services" {
+variable "vpe_gateway_cloud_services" {
   description = "The list of cloud services used to create endpoint gateways. If `vpe_name` is not specified in the list, VPE names are created in the format `<prefix>-<vpc_name>-<service_name>`."
   type = set(object({
     service_name                 = string
@@ -648,7 +642,7 @@ variable "cloud_services" {
   default = []
 }
 
-variable "cloud_service_by_crn" {
+variable "vpe_gateway_cloud_service_by_crn" {
   description = "The list of cloud service CRNs used to create endpoint gateways. Use this list to identify services that are not supported by service name in the `cloud_services` variable. For a list of supported services, see [VPE-enabled services](https://cloud.ibm.com/docs/vpc?topic=vpc-vpe-supported-services). If `service_name` is not specified, the CRN is used to find the name. If `vpe_name` is not specified in the list, VPE names are created in the format `<prefix>-<vpc_name>-<service_name>`."
   type = set(
     object({
@@ -661,14 +655,14 @@ variable "cloud_service_by_crn" {
   default = []
 }
 
-variable "vpe_service_endpoints" {
+variable "vpe_gateway_service_endpoints" {
   description = "Service endpoints to use to create endpoint gateways. Can be `public`, or `private`."
   type        = string
   default     = "private"
 
   validation {
     error_message = "Service endpoints can only be `public` or `private`."
-    condition     = contains(["public", "private"], var.vpe_service_endpoints)
+    condition     = contains(["public", "private"], var.vpe_gateway_service_endpoints)
   }
 }
 
