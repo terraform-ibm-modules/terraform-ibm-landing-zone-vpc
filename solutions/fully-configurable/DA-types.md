@@ -1,4 +1,4 @@
-# Configuring complex inputs for VPC 
+# Configuring complex inputs for VPC
 
 Several input variables in the **Cloud automation of VPC** [deployable architecture](https://cloud.ibm.com/catalog#deployable_architecture) use complex object types. You can specify these inputs when you configure your deployable architecture.
 
@@ -25,9 +25,9 @@ For each zone, you can define the follwoing:
 
   - `name` (required): The name of subnet
   - `cidr` (required): The cidr to define for the subnet
-  - `public_gateway` (optional): (bool) Set to true if need to create public gateway for the zone 
+  - `public_gateway` (optional): (bool) Set to true if need to create public gateway for the zone
   - `acl_name` (required): The name of ACL created
-  - `no_addr_prefix` (optional): (bool) Default is `false`, it does not add address prefix for subnet 
+  - `no_addr_prefix` (optional): (bool) Default is `false`, it does not add address prefix for subnet
   - `subnet_tags` (optional): (list) To specify tags for subnet specifically
 
 ### Example
@@ -75,18 +75,18 @@ This variable configuration allows you to specify the list of ACLs to create. Ea
     - `direction`: Allowed values are `inbound` or `outbound`.
     - `destination`: Destination address.
     - `source`: Source address.
-    - `tcp` (optional): 
-      - `port_min`        
-      - `port_max`        
-      - `source_port_min` 
-      - `source_port_max` 
-    - `udp` (optional): 
-      - `port_min`        
-      - `port_max`        
-      - `source_port_min` 
-      - `source_port_max` 
-    - `icmp` (optional): 
-      - `type`        
+    - `tcp` (optional):
+      - `port_min`
+      - `port_max`
+      - `source_port_min`
+      - `source_port_max`
+    - `udp` (optional):
+      - `port_min`
+      - `port_max`
+      - `source_port_min`
+      - `source_port_max`
+    - `icmp` (optional):
+      - `type`
       - `code`
 
 ### Example
@@ -130,14 +130,14 @@ This variable configuration allows you to specify the list of security group rul
 - `name` (required): The name of the security group rule.
 - `direction` (required): The direction of the traffic. Allowed values are `inbound` or `outbound`.
 - `remote` (optional): Security group ID or an IP address or a CIDR block.
-- `tcp` (optional): 
-    - `port_min`        
-    - `port_max`        
-- `udp` (optional): 
-    - `port_min`        
-    - `port_max`        
-- `icmp` (optional): 
-    - `type`        
+- `tcp` (optional):
+    - `port_min`
+    - `port_max`
+- `udp` (optional):
+    - `port_min`
+    - `port_max`
+- `icmp` (optional):
+    - `type`
     - `code`
 
 
@@ -193,7 +193,7 @@ This variable allows you to add the custom routing tables and then add routes.
 
 - `name` (required): The name of the route.
 - `route_direct_link_ingress` (optional): (bool) Required if the routing table will be used to route traffic that originates from Direct Link to the VPC.
-- `route_transit_gateway_ingress` (optional): (bool) Required if the routing table will be used to route traffic that originates from the internet. 
+- `route_transit_gateway_ingress` (optional): (bool) Required if the routing table will be used to route traffic that originates from the internet.
 - `route_vpc_zone_ingress` (optional): (bool) Required if the routing table will be used to route traffic that originates from Transit Gateway to the VPC.
 - `routes` (optional): (list)
   - `action`: The action to perform with a packet. Allowed values are `delegate`, `delegate_vpc`, `deliver`, `drop`.
@@ -237,13 +237,13 @@ This variable allows you to specify the list of VPN Gateways to create.
 - `resource_group` (optional): The resource group where the VPN gateway to be created.
 - `access_tags` (optional): (list) A list of tags to add to your VPN gateway.
 
-### Example 
+### Example
 
 ```hcl
 vpn_gateways = {
   name = "vpn-gateway-1"
   subnet_name = "subnet-a"
-  mode = "route"  
+  mode = "route"
 }
 ```
 
