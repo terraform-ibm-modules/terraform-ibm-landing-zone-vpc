@@ -69,7 +69,7 @@ resource "time_sleep" "wait_for_vpc_creation_data" {
 
 resource "ibm_is_vpc" "vpc" {
   count          = var.create_vpc == true ? 1 : 0
-  name           = var.prefix != null ? "${var.prefix}-${var.name}-vpc" : var.name
+  name           = var.prefix != null ? "${var.prefix}-${var.name}" : var.name
   resource_group = var.resource_group_id
   # address prefix is set to auto only if no address prefixes NOR any subnet is passed as input
   address_prefix_management   = (length([for prefix in values(coalesce(var.address_prefixes, {})) : prefix if prefix != null]) != 0) || (length([for subnet in values(coalesce(var.subnets, {})) : subnet if subnet != null]) != 0) ? "manual" : null
@@ -419,8 +419,8 @@ locals {
 
 resource "ibm_is_vpn_gateway" "vpn_gateway" {
   for_each       = local.vpn_gateway_map
-  name           = "${var.prefix}-${each.key}"
-  subnet         = each.value.subnet_name
+  name           = var.prefix != null ? "${var.prefix}-${each.key}" : each.key
+  subnet         = local.subnets["${local.vpc_name}-${each.value.subnet_name}"].id
   mode           = each.value.mode
   resource_group = each.value.resource_group == null ? var.resource_group_id : each.value.resource_group
   tags           = var.tags

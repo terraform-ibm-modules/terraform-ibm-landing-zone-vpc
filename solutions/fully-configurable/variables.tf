@@ -22,6 +22,7 @@ variable "provider_visibility" {
 variable "existing_resource_group_name" {
   type        = string
   description = "The name of an existing resource group to provision the resources."
+  default     = "Default"
 }
 
 variable "prefix" {
@@ -76,7 +77,7 @@ variable "access_tags" {
 ##############################################################################
 
 variable "subnets" {
-  description = "List of subnets for the vpc. For each item in each array, a subnet will be created. Items can be either CIDR blocks or total ipv4 addressess. Public gateways will be enabled only in zones where a gateway has been created"
+  description = "List of subnets for the vpc. For each item in each array, a subnet will be created. Items can be either CIDR blocks or total ipv4 addressess. Public gateways will be enabled only in zones where a gateway has been created. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#subnets-)."
   type = object({
     zone-1 = list(object({
       name           = string
@@ -127,7 +128,7 @@ variable "subnets" {
 ##############################################################################
 
 variable "network_acls" {
-  description = "The list of ACLs to create. Provide at least one rule for each ACL."
+  description = "The list of ACLs to create. Provide at least one rule for each ACL. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#network-acls-)."
   type = list(
     object({
       name                         = string
@@ -300,13 +301,13 @@ variable "network_acls" {
 ##############################################################################
 
 variable "security_group_rules" {
-  description = "A list of security group rules to be added to the default vpc security group (default empty)"
+  description = "A list of security group rules to be added to the default vpc security group (default empty). [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#security-group-rules-)."
   default     = []
   type = list(
     object({
       name      = string
       direction = string
-      remote    = string
+      remote    = optional(string)
       tcp = optional(
         object({
           port_max = optional(number)
@@ -364,7 +365,7 @@ variable "clean_default_security_group_acl" {
 ##############################################################################
 
 variable "address_prefixes" {
-  description = "The IP range that will be defined for the VPC for a certain location. Use only with manual address prefixes"
+  description = "The IP range that will be defined for the VPC for a certain location. Use only with manual address prefixes. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#address-prefixes-)."
   type = object({
     zone-1 = optional(list(string))
     zone-2 = optional(list(string))
@@ -390,7 +391,7 @@ variable "address_prefixes" {
 ##############################################################################
 
 variable "routes" {
-  description = "Allows you to specify the next hop for packets based on their destination address"
+  description = "Allows you to specify the next hop for packets based on their destination address. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#routes-)."
   type = list(
     object({
       name                          = string
@@ -558,13 +559,13 @@ variable "flow_logs_cos_bucket_enable_permanent_retention" {
 variable "existing_flow_logs_bucket_kms_key_crn" {
   type        = string
   default     = null
-  description = "The CRN of the existing root key of key management service (KMS) that is used to encrypt the flow logs Cloud Object Storage bucket."
+  description = "The CRN of the existing root key of key management service (KMS) that is used to encrypt the flow logs Cloud Object Storage bucket. If no value is set for this variable, specify a value for the `existing_kms_instance_crn` variable to create a key ring and key."
 }
 
 variable "existing_kms_instance_crn" {
   type        = string
   default     = null
-  description = "The CRN of the existing key management service (KMS) that is used to create keys for encrypting the flow logs Cloud Object Storage bucket."
+  description = "The CRN of the existing key management service (KMS) that is used to create keys for encrypting the flow logs Cloud Object Storage bucket. Used to create a new KMS key unless an existing key is passed using the `existing_flow_logs_bucket_kms_key_crn` input."
 }
 
 variable "kms_endpoint_type" {
@@ -616,11 +617,11 @@ variable "default_routing_table_name" {
 ##############################################################################
 
 variable "vpn_gateways" {
-  description = "List of VPN Gateways to create."
+  description = "List of VPN Gateways to create. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#vpn-gateways-)."
+  nullable    = false
   type = list(
     object({
       name           = string
-      vpc_name       = string
       subnet_name    = string # Do not include prefix, use same name as in `var.subnets`
       mode           = optional(string)
       resource_group = optional(string)
@@ -636,7 +637,7 @@ variable "vpn_gateways" {
 ##############################################################################
 
 variable "vpe_gateway_cloud_services" {
-  description = "The list of cloud services used to create endpoint gateways. If `vpe_name` is not specified in the list, VPE names are created in the format `<prefix>-<vpc_name>-<service_name>`."
+  description = "The list of cloud services used to create endpoint gateways. If `vpe_name` is not specified in the list, VPE names are created in the format `<prefix>-<vpc_name>-<service_name>`. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#vpe-gateway-cloud-services-)."
   type = set(object({
     service_name                 = string
     vpe_name                     = optional(string), # Full control on the VPE name. If not specified, the VPE name will be computed based on prefix, vpc name and service name.
@@ -646,7 +647,7 @@ variable "vpe_gateway_cloud_services" {
 }
 
 variable "vpe_gateway_cloud_service_by_crn" {
-  description = "The list of cloud service CRNs used to create endpoint gateways. Use this list to identify services that are not supported by service name in the `cloud_services` variable. For a list of supported services, see [VPE-enabled services](https://cloud.ibm.com/docs/vpc?topic=vpc-vpe-supported-services). If `service_name` is not specified, the CRN is used to find the name. If `vpe_name` is not specified in the list, VPE names are created in the format `<prefix>-<vpc_name>-<service_name>`."
+  description = "The list of cloud service CRNs used to create endpoint gateways. Use this list to identify services that are not supported by service name in the `cloud_services` variable. For a list of supported services, see [VPE-enabled services](https://cloud.ibm.com/docs/vpc?topic=vpc-vpe-supported-services). If `service_name` is not specified, the CRN is used to find the name. If `vpe_name` is not specified in the list, VPE names are created in the format `<prefix>-<vpc_name>-<service_name>`. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#vpe-gateway-cloud-service-by-crn-)."
   type = set(
     object({
       crn                          = string
@@ -669,8 +670,16 @@ variable "vpe_gateway_service_endpoints" {
   }
 }
 
-variable "security_group_ids" {
+variable "vpe_gateway_security_group_ids" {
   description = "List of security group ids to attach to each endpoint gateway."
   type        = list(string)
-  default     = null
+  default     = null # Let this default value be null instead of []. Known issue - https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4546
+}
+
+variable "vpe_gateway_reserved_ips" {
+  description = "Map of existing reserved IP names and values. Leave this value as default if you want to create new reserved ips, this value is used when a user passes their existing reserved ips created here and not attempt to recreate those."
+  type = object({
+    name = optional(string) # reserved ip name
+  })
+  default = {}
 }

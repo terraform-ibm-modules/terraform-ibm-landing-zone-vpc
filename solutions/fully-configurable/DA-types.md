@@ -10,6 +10,7 @@ Several input variables in the **Cloud automation of VPC** [deployable architect
 - [VPN Gateways](#vpn-gateways) (`vpn_gateways`)
 - [VPE Gateways Cloud Services](#cloud-services) (`vpe_gateway_cloud_services`)
 - [VPE Gateways Cloud Service by CRN](#cloud-service-by-crn) (`vpe_gateway_cloud_service_by_crn`)
+- [VPE Gateways Reserved IPs](#reserved-ips) (`vpe_gateway_reserved_ips`)
 
 ## Subnets <a name="subnets"></a>
 
@@ -33,7 +34,7 @@ For each zone, you can define the follwoing:
 ### Example
 
 ```hcl
- subnets = {
+ {
     zone-1 = [
       {
         name           = "subnet-a"
@@ -92,7 +93,7 @@ This variable configuration allows you to specify the list of ACLs to create. Ea
 ### Example
 
 ```hcl
- network_acls = [
+ [
     {
       name                         = "vpc-acl"
       add_ibm_cloud_internal_rules = true
@@ -144,7 +145,7 @@ This variable configuration allows you to specify the list of security group rul
 ### Example
 
 ```hcl
- security_group_rules = [
+ [
     {
       name      = "security-group-rule-1"
       direction = "inbound"
@@ -174,11 +175,11 @@ This variable allows you to specify the IP range for the VPC for a certain locat
 ### Example
 
 ```hcl
-address_prefixes = {
+ {
     zone-1 = ["10.10.10.0/18"]
     zone-2 = null
     zone-3 = null
-}
+ }
 ```
 
 ## Routes <a name="routes"></a>
@@ -204,7 +205,7 @@ This variable allows you to add the custom routing tables and then add routes.
 ### Example
 
 ```hcl
- routes = {
+ {
   name = "route-1"
   route_direct_link_ingress = false
   route_transit_gateway_ingress = false
@@ -231,7 +232,6 @@ This variable allows you to specify the list of VPN Gateways to create.
 ### Options for VPN Gateways
 
 - `name` (required): Name of the VPN gateway.
-- `vpc_name` (required): Name of the VPC.
 - `subnet_name` (required): Name of the subnet to attach a VPN gateway.
 - `mode` (optional): Mode in VPN gateway. Allowed values are `route` and `policy`.
 - `resource_group` (optional): The resource group where the VPN gateway to be created.
@@ -240,10 +240,10 @@ This variable allows you to specify the list of VPN Gateways to create.
 ### Example
 
 ```hcl
-vpn_gateways = {
+ {
   name = "vpn-gateway-1"
   subnet_name = "subnet-a"
-  mode = "route"
+  mode = "route"  
 }
 ```
 
@@ -264,7 +264,7 @@ This variable configuration allows you to specify the list of cloud services use
 ### Example
 
 ```hcl
- vpe_gateway_cloud_services = {
+ {
   service_name = "cloud-object-storage"
   vpe_name = "vpe1"
  }
@@ -288,7 +288,7 @@ This variable defines cloud service CRNs required to create endpoint gateways. T
 ### Example
 
 ```hcl
- cloud_service_by_crn = {
+ {
   crn = "crn:v1:bluemix:public:cloud-object-storage:global:::endpoint:s3.direct.mil01.cloud-object-storage.appdomain.cloud"
   vpe_name = "vpe2"
  }

@@ -229,7 +229,7 @@
               "key": "default_routing_table_name"
             },
             {
-              "key": "security_group_ids"
+              "key": "vpe_gateway_security_group_ids"
             },
             {
               "key": "vpe_gateway_service_endpoints",
@@ -249,6 +249,9 @@
             },
             {
               "key": "vpe_gateway_cloud_service_by_crn"
+            },
+            {
+              "key": "vpe_gateway_reserved_ips"
             },
             {
               "key": "vpn_gateways"

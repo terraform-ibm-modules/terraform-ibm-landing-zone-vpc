@@ -215,11 +215,12 @@ module "vpe_gateway" {
   resource_group_id    = module.resource_group.resource_group_id
   region               = var.region
   prefix               = local.prefix
-  security_group_ids   = var.security_group_ids
+  security_group_ids   = var.vpe_gateway_security_group_ids
   vpc_name             = module.vpc.vpc_name
   vpc_id               = module.vpc.vpc_id
   subnet_zone_list     = module.vpc.subnet_zone_list
   cloud_services       = var.vpe_gateway_cloud_services
   cloud_service_by_crn = var.vpe_gateway_cloud_service_by_crn
   service_endpoints    = var.vpe_gateway_service_endpoints
+  reserved_ips         = var.vpe_gateway_reserved_ips
 }

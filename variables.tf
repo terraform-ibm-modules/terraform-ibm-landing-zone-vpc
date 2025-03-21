@@ -409,7 +409,7 @@ variable "security_group_rules" {
     object({
       name      = string
       direction = string
-      remote    = string
+      remote    = optional(string)
       tcp = optional(
         object({
           port_max = optional(number)
@@ -732,7 +732,6 @@ variable "vpn_gateways" {
   type = list(
     object({
       name           = string
-      vpc_name       = string
       subnet_name    = string # Do not include prefix, use same name as in `var.subnets`
       mode           = optional(string)
       resource_group = optional(string)
