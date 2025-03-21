@@ -33,6 +33,7 @@ locals {
   cos_kms_key_crn                = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? var.existing_flow_logs_bucket_kms_key_crn : module.kms[0].keys[format("%s.%s", local.kms_key_ring_name, local.kms_key_name)].crn) : null
   create_cos_kms_iam_auth_policy = var.enable_vpc_flow_logs && var.kms_encryption_enabled_bucket && !var.skip_cos_kms_iam_auth_policy
 
+  # configuration for the flow logs bucket
   bucket_config = [{
     access_tags                   = var.access_tags
     bucket_name                   = local.bucket_name
@@ -65,6 +66,7 @@ locals {
   }]
 }
 
+# Create COS bucket using the defined bucket configuration
 module "cos_buckets" {
   count          = var.enable_vpc_flow_logs ? 1 : 0
   source         = "terraform-ibm-modules/cos/ibm//modules/buckets"
@@ -179,6 +181,7 @@ locals {
   }
 }
 
+# Create VPC
 module "vpc" {
   source                                 = "../../"
   resource_group_id                      = module.resource_group.resource_group_id

@@ -673,11 +673,11 @@ variable "vpe_gateway_service_endpoints" {
 variable "vpe_gateway_security_group_ids" {
   description = "List of security group ids to attach to each endpoint gateway."
   type        = list(string)
-  default     = null # Let this default value be null instead of []. Known issue - https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4546
+  default     = null # Let this default value be null instead of []. Provider issue - https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4546
 }
 
 variable "vpe_gateway_reserved_ips" {
-  description = "Map of existing reserved IP names and values. Leave this value as default if you want to create new reserved ips, this value is used when a user passes their existing reserved ips created here and not attempt to recreate those."
+  description = "Map of existing reserved IP names and values. Leave this value as default if you want to create new reserved ips, this value is used when a user passes their existing reserved ips created here and not attempt to recreate those. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#reserved-ips-)."
   type = object({
     name = optional(string) # reserved ip name
   })

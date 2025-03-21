@@ -2,6 +2,10 @@
   "ibmcloud_api_key": $VALIDATION_APIKEY,
   "region": "us-south",
   "resource_tags": $TAGS,
-  "existing_resource_group_name": $PREFIX,
-  "prefix": $PREFIX
+  "existing_resource_group_name": "geretain-test-resources",
+  "prefix": $PREFIX,
+  "enable_vpc_flow_logs": true,
+  "kms_encryption_enabled_bucket": true,
+  "existing_kms_instance_crn": $HPCS_US_SOUTH_CRN,
+  "existing_cos_instance_crn": $COS_INSTANCE_CRN
 }

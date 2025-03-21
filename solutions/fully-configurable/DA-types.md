@@ -243,7 +243,7 @@ This variable allows you to specify the list of VPN Gateways to create.
  {
   name = "vpn-gateway-1"
   subnet_name = "subnet-a"
-  mode = "route"  
+  mode = "route"
 }
 ```
 
@@ -291,5 +291,25 @@ This variable defines cloud service CRNs required to create endpoint gateways. T
  {
   crn = "crn:v1:bluemix:public:cloud-object-storage:global:::endpoint:s3.direct.mil01.cloud-object-storage.appdomain.cloud"
   vpe_name = "vpe2"
+ }
+```
+
+## VPE Gateways Reserved IPs <a name="reserved-ips"></a>
+
+This variable defines a map of existing reserved IP names and values to attach with the endpoint gateways. This value is used when a user uses the existing reserved ips instead of creating new."
+
+- Variable name: `vpe_gateway_reserved_ips`.
+- Type: A object.
+- Default value: An empty object `{}`.
+
+### Options for VPE Gateway Cloud Services by CRN
+
+- `name` (optional): The name of the reserved IP with its value.
+
+### Example
+
+```hcl
+ {
+  name = "10.10.10.4"
  }
 ```

@@ -261,7 +261,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 	// Programmatically determine region to use based on availability
 	region, _ := testhelper.GetBestVpcRegion(val, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
 
-	prefix := "vpc-da"
+	prefix := "vpc-upg"
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
@@ -269,6 +269,8 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 		Prefix:  prefix,
 		TarIncludePatterns: []string{
 			"*.tf",
+			"dynamic_values/*.tf",
+			"dynamic_values/config_modules/*/*.tf",
 			fullyConfigFlavorDir + "/*.tf",
 		},
 		TemplateFolder:         fullyConfigFlavorDir,
