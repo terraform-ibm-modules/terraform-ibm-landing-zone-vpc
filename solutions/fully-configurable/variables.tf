@@ -502,7 +502,7 @@ variable "add_bucket_name_suffix" {
 variable "flow_logs_cos_bucket_archive_days" {
   description = "The number of days before the `archive_type` rule action takes effect for the flow logs cloud object storage bucket."
   type        = number
-  default     = 20
+  default     = 90
 }
 
 variable "flow_logs_cos_bucket_archive_type" {
@@ -514,7 +514,7 @@ variable "flow_logs_cos_bucket_archive_type" {
 variable "flow_logs_cos_bucket_expire_days" {
   description = "The number of days before the expire rule action takes effect for the flow logs cloud object storage bucket."
   type        = number
-  default     = 365
+  default     = 366
 }
 
 variable "flow_logs_cos_bucket_enable_object_versioning" {
