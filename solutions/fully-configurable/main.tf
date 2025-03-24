@@ -35,7 +35,7 @@ locals {
 
   # configuration for the flow logs bucket
   bucket_config = [{
-    access_tags                   = var.access_tags
+    access_tags                   = var.vpc_instance_access_tags
     bucket_name                   = local.bucket_name
     add_bucket_name_suffix        = var.add_bucket_name_suffix
     kms_encryption_enabled        = var.kms_encryption_enabled_bucket
@@ -188,8 +188,8 @@ module "vpc" {
   create_vpc                             = true
   name                                   = var.vpc_name
   prefix                                 = local.prefix != "" ? trimspace(var.prefix) : null
-  tags                                   = var.resource_tags
-  access_tags                            = var.access_tags
+  tags                                   = var.vpc_instance_resource_tags
+  access_tags                            = var.vpc_instance_access_tags
   subnets                                = var.subnets
   default_network_acl_name               = var.default_network_acl_name
   default_security_group_name            = var.default_security_group_name

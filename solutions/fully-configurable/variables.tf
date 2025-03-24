@@ -53,23 +53,16 @@ variable "region" {
   type        = string
 }
 
-variable "resource_tags" {
-  description = "List of tags for the resources created by this solution."
+variable "vpc_instance_resource_tags" {
   type        = list(string)
+  description = "The list of tags to add to the VPC instance."
   default     = []
 }
 
-variable "access_tags" {
+variable "vpc_instance_access_tags" {
   type        = list(string)
-  description = "A list of access tags to apply to the VPC resources created by this solution. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial."
+  description = "The list of access tags to add to the VPC instance."
   default     = []
-
-  validation {
-    condition = alltrue([
-      for tag in var.access_tags : can(regex("[\\w\\-_\\.]+:[\\w\\-_\\.]+", tag)) && length(tag) <= 128
-    ])
-    error_message = "Tags must match the regular expression \"[\\w\\-_\\.]+:[\\w\\-_\\.]+\". For more information, see https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#limits."
-  }
 }
 
 ##############################################################################
