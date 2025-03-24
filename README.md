@@ -12,7 +12,7 @@ This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) net
 - Public gateways: Optionally create public gateways in the VPC in each of the three zones of the VPC's region.
 - Subnets: Create one to three zones in the [subnet.tf](subnet.tf) file.
 - Network ACLs: Create network ACLs with multiple rules. By default, VPC network ACLs can have no more than 25 rules.
-- Hub and spoke DNS-sharing model: Optionally create a hub or spoke VPC, with associated custom resolver and DNS resolution binding, as well as a service-to-service authorization policy which supports the hub and spoke VPCs to be in separate accounts. See [About DNS sharing for VPE gateways](https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model) in the IBM Cloud docs for details.
+- Hub and spoke DNS-sharing model: Optionally create a hub or spoke VPC, with associated custom resolver and DNS resolution binding, as well as a service-to-service authorization policy which supports the hub and spoke VPCs to be in separate accounts. See [About DNS sharing for VPE gateways](https://cloud.ibm.com/docs/vpc?topic=vpc-vpe-dns-sharing) and [hub and spoke communication](https://cloud.ibm.com/docs/solution-tutorials?topic=solution-tutorials-vpc-transit1) in the IBM Cloud docs for details.
 
 ![vpc-module](https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/.docs/vpc-module.png)
 
