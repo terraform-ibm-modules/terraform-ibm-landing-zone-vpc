@@ -2,9 +2,9 @@
 
 ### Prerequisites
 
-- An existing resource group
-- An existing COS istance if VPC flow logs is enabled
-- An existing KMS instance (or key) if encryption of the COS bucket is required
+- An existing resource group.
+- An existing COS istance if VPC flow logs is enabled.
+- An existing KMS instance (or key) if encryption of the flow logs COS bucket is required.
 
 ### Configuration
 

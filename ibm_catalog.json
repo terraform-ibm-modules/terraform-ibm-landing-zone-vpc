@@ -21,17 +21,13 @@
       ],
       "short_description": "Provisions a VPC network on IBM Cloud",
       "long_description": "The VPC deployable architecture deploys a Virtual Private Cloud (VPC) infrastructure without any compute resources, such as Virtual Server Instances (VSI) or Red Hat OpenShift clusters.",
-      "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/README.md",
-      "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/vpc-da-12217/images/vpc_icon.svg",
+      "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/README.md",
+      "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/images/vpc_icon.svg",
       "provider_name": "IBM",
       "features": [
         {
           "title": "VPC on IBM Cloud",
-          "description": "Create a VPC on IBM Cloud."
-        },
-        {
-          "title": "Public gateways",
-          "description": "Create and configure public gateways."
+          "description": "Create a VPC network on IBM Cloud."
         },
         {
           "title": "Subnets",
@@ -40,6 +36,10 @@
         {
           "title": "Network ACLs",
           "description": "Create network ACLs."
+        },
+        {
+          "title": "Public gateways",
+          "description": "Create and configure public gateways."
         },
         {
           "title": "VPN gateways",
@@ -60,6 +60,10 @@
         {
           "title": "Address Prefixes",
           "description": "Creates address prefixes."
+        },
+        {
+          "title": "Routing Table and routes",
+          "description": "Creates routing table and customized routes."
         }
       ],
       "flavors": [
@@ -72,47 +76,71 @@
             "descriptions": "This architecture creates a VPC.",
             "features": [
               {
-                "title": "VPC on IBM Cloud",
-                "description": "Create a VPC on IBM Cloud."
+                "title": "Create VPC",
+                "description": "Yes"
               },
               {
-                "title": "Public gateways",
-                "description": "Create and configure public gateways."
+                "title": "Use existing VPC instance",
+                "description": "No"
               },
               {
-                "title": "Subnets",
-                "description": "Creates subnets for VPC."
+                "title": "New resource group creation",
+                "description": "No"
               },
               {
-                "title": "Network ACLs",
-                "description": "Create network ACLs."
+                "title": "Create public gateways",
+                "description": "Yes"
               },
               {
-                "title": "VPN gateways",
-                "description": "Create and configure VPN gateways."
+                "title": "Create subnets",
+                "description": "Yes"
               },
               {
-                "title": "VPE gateways",
-                "description": "Create and configure VPE gateways."
+                "title": "Create network ACLs",
+                "description": "Yes"
               },
               {
-                "title": "Security groups",
-                "description": "Create and configure security group rules."
+                "title": "Create VPN gateways",
+                "description": "Yes"
               },
               {
-                "title": "VPC flow logs",
-                "description": "VPC flow logs can be enabled."
+                "title": "Create VPE gateways",
+                "description": "Yes"
               },
               {
-                "title": "Address Prefixes",
-                "description": "Creates address prefixes."
+                "title": "Create security groups rules",
+                "description": "Yes"
+              },
+              {
+                "title": "Configure VPC flow logs",
+                "description": "Yes"
+              },
+              {
+                "title": "Create COS instance",
+                "description": "No"
+              },
+              {
+                "title": "Enforced KMS encryption",
+                "description": "No"
+              },
+              {
+                "title": "Use existing KMS key",
+                "description": "Yes"
+              },
+              {
+                "title": "KMS key ring and key creation",
+                "description": "Yes"
+              },
+              {
+                "title": "Create custom routes",
+                "description": "Yes"
               }
             ],
             "diagrams": [
               {
                 "diagram": {
                   "caption": "VPC for IBM Cloud.",
-                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/vpc-da-12217/reference-architecture/deployable-architecture-vpc.svg",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/reference-architecture/deployable-architecture-vpc.svg",
                   "type": "image/svg+xml"
                 },
                 "description": "This architecture creates a VPC."
@@ -189,13 +217,23 @@
               ]
             },
             {
-              "key": "vpc_name"
+              "key": "vpc_name",
+              "required": true
             },
             {
               "key": "subnets"
             },
             {
               "key": "network_acls"
+            },
+            {
+              "key": "address_prefixes"
+            },
+            {
+              "key": "routes"
+            },
+            {
+              "key": "security_group_rules"
             },
             {
               "key": "clean_default_security_group_acl",
@@ -209,24 +247,6 @@
                   "value": "false"
                 }
               ]
-            },
-            {
-              "key": "address_prefixes"
-            },
-            {
-              "key": "routes"
-            },
-            {
-              "key": "default_network_acl_name"
-            },
-            {
-              "key": "security_group_rules"
-            },
-            {
-              "key": "default_security_group_name"
-            },
-            {
-              "key": "default_routing_table_name"
             },
             {
               "key": "vpe_gateway_security_group_ids"
@@ -255,6 +275,15 @@
             },
             {
               "key": "vpn_gateways"
+            },
+            {
+              "key": "default_network_acl_name"
+            },
+            {
+              "key": "default_security_group_name"
+            },
+            {
+              "key": "default_routing_table_name"
             },
             {
               "key": "resource_tags",
