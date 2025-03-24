@@ -262,6 +262,15 @@
               ]
             },
             {
+              "key": "vpn_gateways"
+            },
+            {
+              "key": "vpe_gateway_cloud_services"
+            },
+            {
+              "key": "vpe_gateway_cloud_service_by_crn"
+            },
+            {
               "key": "vpe_gateway_security_group_ids"
             },
             {
@@ -278,16 +287,7 @@
               ]
             },
             {
-              "key": "vpe_gateway_cloud_services"
-            },
-            {
-              "key": "vpe_gateway_cloud_service_by_crn"
-            },
-            {
               "key": "vpe_gateway_reserved_ips"
-            },
-            {
-              "key": "vpn_gateways"
             },
             {
               "key": "default_network_acl_name"
@@ -334,6 +334,9 @@
               ]
             },
             {
+              "key": "existing_cos_instance_crn"
+            },
+            {
               "key": "skip_vpc_cos_iam_auth_policy",
               "options": [
                 {
@@ -345,9 +348,6 @@
                   "value": "false"
                 }
               ]
-            },
-            {
-              "key": "existing_cos_instance_crn"
             },
             {
               "key": "flow_logs_cos_bucket_name"
@@ -366,6 +366,12 @@
               ]
             },
             {
+              "key": "existing_flow_logs_bucket_kms_key_crn"
+            },
+            {
+              "key": "existing_kms_instance_crn"
+            },
+            {
               "key": "skip_cos_kms_iam_auth_policy",
               "options": [
                 {
@@ -377,6 +383,25 @@
                   "value": "false"
                 }
               ]
+            },
+            {
+              "key": "kms_endpoint_type",
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                }
+              ]
+            },
+            {
+              "key": "kms_key_ring_name"
+            },
+            {
+              "key": "kms_key_name"
             },
             {
               "key": "management_endpoint_type_for_bucket",
@@ -489,31 +514,6 @@
                   "value": "false"
                 }
               ]
-            },
-            {
-              "key": "existing_flow_logs_bucket_kms_key_crn"
-            },
-            {
-              "key": "existing_kms_instance_crn"
-            },
-            {
-              "key": "kms_endpoint_type",
-              "options": [
-                {
-                  "displayname": "private",
-                  "value": "private"
-                },
-                {
-                  "displayname": "public",
-                  "value": "public"
-                }
-              ]
-            },
-            {
-              "key": "kms_key_ring_name"
-            },
-            {
-              "key": "kms_key_name"
             }
           ],
           "dependencies": [
