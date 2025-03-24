@@ -249,17 +249,7 @@
               "key": "security_group_rules"
             },
             {
-              "key": "clean_default_security_group_acl",
-              "options": [
-                {
-                  "displayname": "True",
-                  "value": "true"
-                },
-                {
-                  "displayname": "False",
-                  "value": "false"
-                }
-              ]
+              "key": "clean_default_security_group_acl"
             },
             {
               "key": "vpn_gateways"
@@ -319,49 +309,19 @@
               }
             },
             {
-              "key": "enable_vpc_flow_logs",
-              "options": [
-                {
-                  "displayname": "True",
-                  "value": "true"
-                },
-                {
-                  "displayname": "False",
-                  "value": "false"
-                }
-              ]
+              "key": "enable_vpc_flow_logs"
             },
             {
               "key": "existing_cos_instance_crn"
             },
             {
-              "key": "skip_vpc_cos_iam_auth_policy",
-              "options": [
-                {
-                  "displayname": "True",
-                  "value": "true"
-                },
-                {
-                  "displayname": "False",
-                  "value": "false"
-                }
-              ]
+              "key": "skip_vpc_cos_iam_auth_policy"
             },
             {
               "key": "flow_logs_cos_bucket_name"
             },
             {
-              "key": "kms_encryption_enabled_bucket",
-              "options": [
-                {
-                  "displayname": "True",
-                  "value": "true"
-                },
-                {
-                  "displayname": "False",
-                  "value": "false"
-                }
-              ]
+              "key": "kms_encryption_enabled_bucket"
             },
             {
               "key": "existing_flow_logs_bucket_kms_key_crn"
@@ -370,17 +330,7 @@
               "key": "existing_kms_instance_crn"
             },
             {
-              "key": "skip_cos_kms_iam_auth_policy",
-              "options": [
-                {
-                  "displayname": "True",
-                  "value": "true"
-                },
-                {
-                  "displayname": "False",
-                  "value": "false"
-                }
-              ]
+              "key": "skip_cos_kms_iam_auth_policy"
             },
             {
               "key": "kms_endpoint_type",
@@ -444,17 +394,7 @@
               ]
             },
             {
-              "key": "add_bucket_name_suffix",
-              "options": [
-                {
-                  "displayname": "True",
-                  "value": "true"
-                },
-                {
-                  "displayname": "False",
-                  "value": "false"
-                }
-              ]
+              "key": "add_bucket_name_suffix"
             },
             {
               "key": "flow_logs_cos_bucket_archive_days"
@@ -466,30 +406,10 @@
               "key": "flow_logs_cos_bucket_expire_days"
             },
             {
-              "key": "flow_logs_cos_bucket_enable_object_versioning",
-              "options": [
-                {
-                  "displayname": "True",
-                  "value": "true"
-                },
-                {
-                  "displayname": "False",
-                  "value": "false"
-                }
-              ]
+              "key": "flow_logs_cos_bucket_enable_object_versioning"
             },
             {
-              "key": "flow_logs_cos_bucket_enable_retention",
-              "options": [
-                {
-                  "displayname": "True",
-                  "value": "true"
-                },
-                {
-                  "displayname": "False",
-                  "value": "false"
-                }
-              ]
+              "key": "flow_logs_cos_bucket_enable_retention"
             },
             {
               "key": "flow_logs_cos_bucket_default_retention_days"
@@ -501,17 +421,7 @@
               "key": "flow_logs_cos_bucket_minimum_retention_days"
             },
             {
-              "key": "flow_logs_cos_bucket_enable_permanent_retention",
-              "options": [
-                {
-                  "displayname": "True",
-                  "value": "true"
-                },
-                {
-                  "displayname": "False",
-                  "value": "false"
-                }
-              ]
+              "key": "flow_logs_cos_bucket_enable_permanent_retention"
             }
           ],
           "dependencies": [
