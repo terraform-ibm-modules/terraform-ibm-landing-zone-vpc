@@ -154,9 +154,8 @@ module "kms" {
   key_endpoint_type           = var.kms_endpoint_type
   keys = [
     {
-      key_ring_name         = local.kms_key_ring_name
-      existing_key_ring     = false
-      force_delete_key_ring = true
+      key_ring_name     = local.kms_key_ring_name
+      existing_key_ring = false
       keys = [
         {
           key_name                 = local.kms_key_name

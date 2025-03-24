@@ -357,6 +357,7 @@ variable "security_group_rules" {
 variable "clean_default_security_group_acl" {
   description = "Remove all rules from the default VPC security group and VPC ACL (less permissive)"
   type        = bool
+  nullable    = false
   default     = true
 }
 
@@ -419,12 +420,14 @@ variable "routes" {
 variable "enable_vpc_flow_logs" {
   description = "To enable VPC Flow logs, set this to true."
   type        = bool
+  nullable    = false
   default     = false
 }
 
 variable "skip_vpc_cos_iam_auth_policy" {
   description = "To skip creating an IAM authorization policy that allows the VPC to access the Cloud Object Storage, set this variable to `true`. Required only if `enable_vpc_flow_logs` is set to true."
   type        = bool
+  nullable    = false
   default     = false
 }
 
@@ -448,6 +451,7 @@ variable "flow_logs_cos_bucket_name" {
 variable "kms_encryption_enabled_bucket" {
   description = "Set to true to encrypt the Cloud Object Storage Flow Logs bucket with a KMS key. If set to true, a value must be passed for existing_flow_logs_bucket_kms_key_crn (to use that key) or existing_kms_instance_crn (to create a new key). Value cannot be set to true if enable_vpc_flow_logs is set to false."
   type        = bool
+  nullable    = false
   default     = false
 
   validation {
@@ -463,6 +467,7 @@ variable "kms_encryption_enabled_bucket" {
 
 variable "skip_cos_kms_iam_auth_policy" {
   type        = bool
+  nullable    = false
   description = "To skip creating an IAM authorization policy that allows Cloud Object Storage(COS) to access KMS key."
   default     = false
 }
@@ -489,6 +494,7 @@ variable "cos_bucket_class" {
 
 variable "add_bucket_name_suffix" {
   type        = bool
+  nullable    = false
   description = "Add a randomly generated suffix that is 4 characters in length, to the name of the newly provisioned Cloud Object Storage bucket. Do not use this suffix if you are passing the existing Cloud Object Storage bucket. To manage the name of the Cloud Object Storage bucket manually, use the `flow_logs_cos_bucket_name` variables."
   default     = true
 }
@@ -514,6 +520,7 @@ variable "flow_logs_cos_bucket_expire_days" {
 variable "flow_logs_cos_bucket_enable_object_versioning" {
   description = "Set it to true if object versioning is enabled so that multiple versions of an object are retained in the flow logs cloud object storage bucket. Cannot be used if `flow_logs_cos_bucket_enable_retention` is true."
   type        = bool
+  nullable    = false
   default     = false
 
   validation {
@@ -525,6 +532,7 @@ variable "flow_logs_cos_bucket_enable_object_versioning" {
 variable "flow_logs_cos_bucket_enable_retention" {
   description = "Set to true to enable retention for the flow logs cloud object storage bucket."
   type        = bool
+  nullable    = false
   default     = false
 }
 
@@ -549,6 +557,7 @@ variable "flow_logs_cos_bucket_minimum_retention_days" {
 variable "flow_logs_cos_bucket_enable_permanent_retention" {
   description = "Whether permanent retention status is enabled for the flow logs cloud object storage bucket. [Learn more](https://cloud.ibm.com/docs/cloud-object-storage?topic=cloud-object-storage-immutable)."
   type        = bool
+  nullable    = false
   default     = false
 }
 
