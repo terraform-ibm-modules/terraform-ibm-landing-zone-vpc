@@ -27,15 +27,15 @@
       "features": [
         {
           "title": "VPC on IBM Cloud",
-          "description": "Create a VPC network on IBM Cloud."
+          "description": "Creates and configures a VPC network on IBM Cloud."
         },
         {
           "title": "Subnets",
-          "description": "Creates subnets for VPC."
+          "description": "Creates and configures subnets for VPC."
         },
         {
           "title": "Network ACLs",
-          "description": "Create network ACLs."
+          "description": "Creates and configures network ACLs."
         },
         {
           "title": "Public gateways",
@@ -59,11 +59,19 @@
         },
         {
           "title": "Address Prefixes",
-          "description": "Creates address prefixes."
+          "description": "Creates and configures address prefixes."
         },
         {
           "title": "Routing Table and routes",
-          "description": "Creates routing table and customized routes."
+          "description": "Creates and configures routing table and customized routes."
+        },
+        {
+          "title": "Object Storage bucket for VPC flow logs",
+          "description": "Creates and configures an Object Storage bucket required for VPC flow logs."
+        },
+        {
+          "title": "KMS encryption",
+          "description": "Supports creating a new key, or using an existing one to encrypt the COS flow log bucket."
         }
       ],
       "flavors": [
@@ -149,15 +157,11 @@
           },
           "iam_permissions": [
             {
-              "role_crns": [
-                "crn:v1:bluemix:public:iam::::role:Administrator"
-              ],
+              "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
               "service_name": "iam-identity"
             },
             {
-              "role_crns": [
-                "crn:v1:bluemix:public:iam::::role:Administrator"
-              ],
+              "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
               "service_name": "is.vpc"
             },
             {
@@ -185,7 +189,16 @@
               "description": "The prefix to add to all resources that this solution creates. To not use any prefix value, you can enter the string `__NULL__`."
             },
             {
-              "key": "region"
+              "key": "region",
+              "required": true,
+              "custom_config": {
+                "config_constraints": {
+                  "generationType": "2"
+                },
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "type": "vpc_region"
+              }
             },
             {
               "key": "existing_resource_group_name",
@@ -560,8 +573,8 @@
                   "reference_version": true
                 },
                 {
-                  "version_input":"kms_encryption_enabled_bucket",
-                  "value":true
+                  "version_input": "kms_encryption_enabled_bucket",
+                  "value": true
                 }
               ]
             },
@@ -595,8 +608,8 @@
                   "reference_version": true
                 },
                 {
-                  "version_input":"enable_vpc_flow_logs",
-                  "value":true
+                  "version_input": "enable_vpc_flow_logs",
+                  "value": true
                 }
               ]
             }
