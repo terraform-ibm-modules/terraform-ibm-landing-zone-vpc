@@ -53,13 +53,13 @@ variable "region" {
   type        = string
 }
 
-variable "vpc_instance_resource_tags" {
+variable "resource_tags" {
   type        = list(string)
   description = "The list of tags to add to the VPC instance."
   default     = []
 }
 
-variable "vpc_instance_access_tags" {
+variable "access_tags" {
   type        = list(string)
   description = "The list of access tags to add to the VPC instance."
   default     = []

@@ -239,8 +239,8 @@ func TestFullyConfigurable(t *testing.T) {
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
 		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
 		{Name: "region", Value: options.Region, DataType: "string"},
-		{Name: "vpc_instance_resource_tags", Value: options.Tags, DataType: "list(string)"},
-		{Name: "vpc_instance_access_tags", Value: permanentResources["accessTags"], DataType: "list(string)"},
+		{Name: "resource_tags", Value: options.Tags, DataType: "list(string)"},
+		{Name: "access_tags", Value: permanentResources["accessTags"], DataType: "list(string)"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
 	}
 
@@ -283,8 +283,8 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
 		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
 		{Name: "region", Value: options.Region, DataType: "string"},
-		{Name: "vpc_instance_resource_tags", Value: options.Tags, DataType: "list(string)"},
-		{Name: "vpc_instance_access_tags", Value: permanentResources["accessTags"], DataType: "list(string)"},
+		{Name: "resource_tags", Value: options.Tags, DataType: "list(string)"},
+		{Name: "access_tags", Value: permanentResources["accessTags"], DataType: "list(string)"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
 	}
 

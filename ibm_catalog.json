@@ -289,7 +289,7 @@
               "key": "default_routing_table_name"
             },
             {
-              "key": "vpc_instance_resource_tags",
+              "key": "resource_tags",
               "custom_config": {
                 "grouping": "deployment",
                 "original_grouping": "deployment",
@@ -299,7 +299,7 @@
               }
             },
             {
-              "key": "vpc_instance_access_tags",
+              "key": "access_tags",
               "custom_config": {
                 "grouping": "deployment",
                 "original_grouping": "deployment",
