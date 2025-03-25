@@ -20,7 +20,7 @@
         "solution"
       ],
       "short_description": "Automates VPC deployment on IBM Cloud, offering full configurability and flexibility for diverse workloads.",
-      "long_description": "The VPC deployable architecture deploys a Virtual Private Cloud (VPC) infrastructure without any compute resources, such as Virtual Server Instances (VSI) or Red Hat OpenShift clusters.This is an experimental tile and not suitable for production workloads. Stay here if you want to try an experimental version with the Optional and swappable components capability.",
+      "long_description": "The VPC deployable architecture deploys a Virtual Private Cloud (VPC) infrastructure without any compute resources, such as Virtual Server Instances (VSI) or Red Hat OpenShift clusters. This is an experimental tile and not suitable for production workloads. Stay here if you want to try an experimental version with the [Optional and swappable components](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-choose-plan-process#optional-swappable) capability.",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/images/vpc_icon.svg",
       "provider_name": "IBM",
