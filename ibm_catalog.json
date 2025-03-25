@@ -403,7 +403,17 @@
               "key": "flow_logs_cos_bucket_archive_days"
             },
             {
-              "key": "flow_logs_cos_bucket_archive_type"
+              "key": "flow_logs_cos_bucket_archive_type",
+              "options": [
+                {
+                  "displayname": "Glacier",
+                  "value": "Glacier"
+                },
+                {
+                  "displayname": "Accelerated",
+                  "value": "Accelerated"
+                }
+              ]
             },
             {
               "key": "flow_logs_cos_bucket_expire_days"

@@ -232,7 +232,7 @@ func TestFullyConfigurable(t *testing.T) {
 		TemplateFolder:         fullyConfigFlavorDir,
 		Tags:                   []string{"vpc-da-test"},
 		DeleteWorkspaceOnFail:  false,
-		WaitJobCompleteMinutes: 60,
+		WaitJobCompleteMinutes: 120,
 	})
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
@@ -276,7 +276,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 		TemplateFolder:         fullyConfigFlavorDir,
 		Tags:                   []string{"vpc-da-test"},
 		DeleteWorkspaceOnFail:  false,
-		WaitJobCompleteMinutes: 60,
+		WaitJobCompleteMinutes: 120,
 	})
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{

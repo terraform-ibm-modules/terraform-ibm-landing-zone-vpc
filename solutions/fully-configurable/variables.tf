@@ -502,6 +502,10 @@ variable "flow_logs_cos_bucket_archive_type" {
   description = "The storage class or archive type you want the object to transition to in the flow logs cloud object storage bucket."
   type        = string
   default     = "Glacier"
+  validation {
+    condition     = contains(["Glacier", "Accelerated"], var.flow_logs_cos_bucket_archive_type)
+    error_message = "The specified flow_logs_cos_bucket_archive_type is not a valid selection!"
+  }
 }
 
 variable "flow_logs_cos_bucket_expire_days" {
