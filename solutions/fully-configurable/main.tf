@@ -25,13 +25,15 @@ module "existing_cos_crn_parser" {
 }
 
 locals {
-  cos_instance_guid              = var.existing_cos_instance_crn != null ? module.existing_cos_crn_parser[0].service_instance : null
-  bucket_name                    = "${local.prefix}${var.flow_logs_cos_bucket_name}"
-  kms_guid                       = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? module.existing_kms_key_crn_parser[0].service_instance : module.existing_kms_instance_crn_parser[0].service_instance) : null
-  kms_account_id                 = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? module.existing_kms_key_crn_parser[0].account_id : module.existing_kms_instance_crn_parser[0].account_id) : null
-  kms_service                    = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? module.existing_kms_key_crn_parser[0].service_name : module.existing_kms_instance_crn_parser[0].service_name) : null
-  cos_kms_key_crn                = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? var.existing_flow_logs_bucket_kms_key_crn : module.kms[0].keys[format("%s.%s", local.kms_key_ring_name, local.kms_key_name)].crn) : null
-  create_cos_kms_iam_auth_policy = var.enable_vpc_flow_logs && var.kms_encryption_enabled_bucket && !var.skip_cos_kms_iam_auth_policy
+  cos_instance_guid                        = var.existing_cos_instance_crn != null ? module.existing_cos_crn_parser[0].service_instance : null
+  cos_account_id                           = var.existing_cos_instance_crn != null ? module.existing_cos_crn_parser[0].account_id : null
+  bucket_name                              = "${local.prefix}${var.flow_logs_cos_bucket_name}"
+  kms_guid                                 = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? module.existing_kms_key_crn_parser[0].service_instance : module.existing_kms_instance_crn_parser[0].service_instance) : null
+  kms_account_id                           = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? module.existing_kms_key_crn_parser[0].account_id : module.existing_kms_instance_crn_parser[0].account_id) : null
+  kms_service_name                         = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? module.existing_kms_key_crn_parser[0].service_name : module.existing_kms_instance_crn_parser[0].service_name) : null
+  cos_kms_key_crn                          = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? var.existing_flow_logs_bucket_kms_key_crn : module.kms[0].keys[format("%s.%s", local.kms_key_ring_name, local.kms_key_name)].crn) : null
+  create_cos_kms_iam_auth_policy           = var.enable_vpc_flow_logs && var.kms_encryption_enabled_bucket && !var.skip_cos_kms_iam_auth_policy
+  create_cross_account_cos_kms_auth_policy = (local.create_cos_kms_iam_auth_policy && var.ibmcloud_kms_api_key == null) ? false : (local.cos_account_id != local.kms_account_id)
 
   # configuration for the flow logs bucket
   bucket_config = [{
@@ -41,7 +43,7 @@ locals {
     kms_encryption_enabled        = var.kms_encryption_enabled_bucket
     kms_guid                      = local.kms_guid
     kms_key_crn                   = local.cos_kms_key_crn
-    skip_iam_authorization_policy = var.skip_cos_kms_iam_auth_policy
+    skip_iam_authorization_policy = local.create_cross_account_cos_kms_auth_policy || var.skip_cos_kms_iam_auth_policy
     management_endpoint_type      = var.management_endpoint_type_for_bucket
     storage_class                 = var.cos_bucket_class
     resource_instance_id          = var.existing_cos_instance_crn
@@ -69,22 +71,25 @@ locals {
 # Create COS bucket using the defined bucket configuration
 module "cos_buckets" {
   count          = var.enable_vpc_flow_logs ? 1 : 0
+  depends_on     = [time_sleep.wait_for_cross_account_authorization_policy[0]]
   source         = "terraform-ibm-modules/cos/ibm//modules/buckets"
   version        = "8.19.2"
   bucket_configs = local.bucket_config
 }
 
-# Create IAM Authorization Policy to allow COS to access KMS for the encryption key
-resource "ibm_iam_authorization_policy" "cos_kms_iam_auth_policy" {
-  count                       = local.create_cos_kms_iam_auth_policy ? 1 : 0
+# Create IAM Authorization Policy to allow COS to access KMS for the encryption key, if cross account KMS is passed in
+resource "ibm_iam_authorization_policy" "cos_kms_policy" {
+  count                       = local.create_cross_account_cos_kms_auth_policy ? 1 : 0
+  provider                    = ibm.kms
+  source_service_account      = local.cos_account_id
   source_service_name         = "cloud-object-storage"
   source_resource_instance_id = local.cos_instance_guid
   roles                       = ["Reader"]
-  description                 = "Allow the COS instance ${local.cos_instance_guid} to read the ${local.kms_service} key ${local.cos_kms_key_crn} from the instance ${local.kms_guid}"
+  description                 = "Allow the COS instance ${local.cos_instance_guid} to read the ${local.kms_service_name} key ${local.cos_kms_key_crn} from the instance ${local.kms_guid}"
   resource_attributes {
     name     = "serviceName"
     operator = "stringEquals"
-    value    = local.kms_service
+    value    = local.kms_service_name
   }
   resource_attributes {
     name     = "accountId"
@@ -111,6 +116,14 @@ resource "ibm_iam_authorization_policy" "cos_kms_iam_auth_policy" {
   lifecycle {
     create_before_destroy = true
   }
+}
+
+# workaround for https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4478
+resource "time_sleep" "wait_for_cross_account_authorization_policy" {
+  depends_on = [ibm_iam_authorization_policy.cos_kms_policy]
+  count      = local.create_cross_account_cos_kms_auth_policy ? 1 : 0
+
+  create_duration = "30s"
 }
 
 #######################################################################################################################
@@ -143,7 +156,11 @@ locals {
   create_kms_key = (var.enable_vpc_flow_logs && var.kms_encryption_enabled_bucket) ? (var.existing_flow_logs_bucket_kms_key_crn == null ? (var.existing_kms_instance_crn != null ? true : false) : false) : false
 }
 
+# KMS root key for flow logs COS bucket
 module "kms" {
+  providers = {
+    ibm = ibm.kms
+  }
   count                       = local.create_kms_key ? 1 : 0 # no need to create any KMS resources if not passing an existing KMS CRN or existing KMS key CRN is provided
   source                      = "terraform-ibm-modules/kms-all-inclusive/ibm"
   version                     = "4.19.5"

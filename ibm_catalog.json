@@ -352,6 +352,9 @@
               "key": "kms_key_name"
             },
             {
+              "key": "ibmcloud_kms_api_key"
+            },
+            {
               "key": "management_endpoint_type_for_bucket",
               "options": [
                 {

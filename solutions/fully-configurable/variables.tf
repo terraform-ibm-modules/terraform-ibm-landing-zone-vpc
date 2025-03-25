@@ -592,6 +592,13 @@ variable "kms_key_name" {
   description = "The name of the key to encrypt the flow logs Cloud Object Storage bucket. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key is prefixed to the value in the `<prefix>-value` format."
 }
 
+variable "ibmcloud_kms_api_key" {
+  type        = string
+  description = "The IBM Cloud API key that can create a root key and key ring in the key management service (KMS) instance. If not specified, the 'ibmcloud_api_key' variable is used. Specify this key if the instance in `existing_kms_instance_crn` is in an account that's different from the Cloud Object Storage instance. Leave this input empty if the same account owns both instances."
+  sensitive   = true
+  default     = null
+}
+
 ##############################################################################
 # Optional VPC Variables
 ##############################################################################

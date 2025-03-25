@@ -37,6 +37,7 @@ This solution supports provisioning and configuring the following infrastructure
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
 | <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | 1.76.1 |
+| <a name="requirement_time"></a> [time](#requirement\_time) | 0.13.0 |
 
 ### Modules
 
@@ -55,7 +56,8 @@ This solution supports provisioning and configuring the following infrastructure
 
 | Name | Type |
 |------|------|
-| [ibm_iam_authorization_policy.cos_kms_iam_auth_policy](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.76.1/docs/resources/iam_authorization_policy) | resource |
+| [ibm_iam_authorization_policy.cos_kms_policy](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.76.1/docs/resources/iam_authorization_policy) | resource |
+| [time_sleep.wait_for_cross_account_authorization_policy](https://registry.terraform.io/providers/hashicorp/time/0.13.0/docs/resources/sleep) | resource |
 
 ### Inputs
 
@@ -84,6 +86,7 @@ This solution supports provisioning and configuring the following infrastructure
 | <a name="input_flow_logs_cos_bucket_minimum_retention_days"></a> [flow\_logs\_cos\_bucket\_minimum\_retention\_days](#input\_flow\_logs\_cos\_bucket\_minimum\_retention\_days) | The minimum number of days that an object must be kept unmodified in the flow logs cloud object storage. | `number` | `90` | no |
 | <a name="input_flow_logs_cos_bucket_name"></a> [flow\_logs\_cos\_bucket\_name](#input\_flow\_logs\_cos\_bucket\_name) | Name of the Cloud Object Storage bucket to be created to collect VPC flow logs. | `string` | `"flow-logs-bucket"` | no |
 | <a name="input_ibmcloud_api_key"></a> [ibmcloud\_api\_key](#input\_ibmcloud\_api\_key) | The IBM Cloud API key to deploy resources. | `string` | n/a | yes |
+| <a name="input_ibmcloud_kms_api_key"></a> [ibmcloud\_kms\_api\_key](#input\_ibmcloud\_kms\_api\_key) | The IBM Cloud API key that can create a root key and key ring in the key management service (KMS) instance. If not specified, the 'ibmcloud\_api\_key' variable is used. Specify this key if the instance in `existing_kms_instance_crn` is in an account that's different from the Cloud Object Storage instance. Leave this input empty if the same account owns both instances. | `string` | `null` | no |
 | <a name="input_kms_encryption_enabled_bucket"></a> [kms\_encryption\_enabled\_bucket](#input\_kms\_encryption\_enabled\_bucket) | Set to true to encrypt the Cloud Object Storage Flow Logs bucket with a KMS key. If set to true, a value must be passed for existing\_flow\_logs\_bucket\_kms\_key\_crn (to use that key) or existing\_kms\_instance\_crn (to create a new key). Value cannot be set to true if enable\_vpc\_flow\_logs is set to false. | `bool` | `false` | no |
 | <a name="input_kms_endpoint_type"></a> [kms\_endpoint\_type](#input\_kms\_endpoint\_type) | The type of endpoint to use for communicating with the KMS. Possible values: `public`, `private`. Applies only if `existing_flow_logs_bucket_kms_key_crn` is not specified. | `string` | `"private"` | no |
 | <a name="input_kms_key_name"></a> [kms\_key\_name](#input\_kms\_key\_name) | The name of the key to encrypt the flow logs Cloud Object Storage bucket. If an existing key is used, this variable is not required. If the prefix input variable is passed, the name of the key is prefixed to the value in the `<prefix>-value` format. | `string` | `"flow-logs-cos-key"` | no |

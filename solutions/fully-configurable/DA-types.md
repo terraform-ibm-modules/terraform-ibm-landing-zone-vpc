@@ -310,6 +310,6 @@ This variable defines a map of existing reserved IP names and values to attach w
 
 ```hcl
  {
-  name = "10.10.10.4"
+  name = "vpe-reserved-ip"
  }
 ```
