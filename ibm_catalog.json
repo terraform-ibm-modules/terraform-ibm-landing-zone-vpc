@@ -1,0 +1,544 @@
+{
+  "products": [
+    {
+      "name": "deploy-arch-ibm-vpc",
+      "label": "[Add-ons Beta] Cloud automation for VPC",
+      "product_kind": "solution",
+      "tags": [
+        "network",
+        "network_vpc",
+        "ibm_created",
+        "target_terraform",
+        "terraform",
+        "solution",
+        "ibm_beta"
+      ],
+      "keywords": [
+        "vpc",
+        "terraform",
+        "IaC",
+        "infrastructure as code",
+        "solution"
+      ],
+      "short_description": "Automates VPC deployment on IBM Cloud, offering full configurability and flexibility for diverse workloads.",
+      "long_description": "The VPC deployable architecture deploys a Virtual Private Cloud (VPC) infrastructure without any compute resources, such as Virtual Server Instances (VSI) or Red Hat OpenShift clusters. This is an experimental tile and not suitable for production workloads. Stay here if you want to try an experimental version with the [Optional and swappable components](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-choose-plan-process#optional-swappable) capability.",
+      "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/README.md",
+      "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/images/vpc_icon.svg",
+      "provider_name": "IBM",
+      "features": [
+        {
+          "title": "VPC on IBM Cloud",
+          "description": "Creates and configures a VPC network on IBM Cloud."
+        },
+        {
+          "title": "Subnets",
+          "description": "Creates and configures subnets for VPC."
+        },
+        {
+          "title": "Network ACLs",
+          "description": "Creates and configures network ACLs."
+        },
+        {
+          "title": "Public gateways",
+          "description": "Create and configure public gateways."
+        },
+        {
+          "title": "VPN gateways",
+          "description": "Create and configure VPN gateways."
+        },
+        {
+          "title": "VPE gateways",
+          "description": "Create and configure VPE gateways."
+        },
+        {
+          "title": "Security groups",
+          "description": "Create and configure security group rules."
+        },
+        {
+          "title": "VPC flow logs",
+          "description": "VPC flow logs can be enabled."
+        },
+        {
+          "title": "Address Prefixes",
+          "description": "Creates and configures address prefixes."
+        },
+        {
+          "title": "Routing Table and routes",
+          "description": "Creates and configures routing table and customized routes."
+        },
+        {
+          "title": "Object Storage bucket for VPC flow logs",
+          "description": "Creates and configures an Object Storage bucket required for VPC flow logs."
+        },
+        {
+          "title": "KMS encryption",
+          "description": "Supports creating a new key, or using an existing one to encrypt the COS flow log bucket."
+        }
+      ],
+      "flavors": [
+        {
+          "label": "Fully configurable",
+          "name": "fully-configurable",
+          "install_type": "fullstack",
+          "working_directory": "solutions/fully-configurable",
+          "architecture": {
+            "descriptions": "This architecture supports provisioning and configuring fully configurable Virtual Private Cloud.",
+            "features": [
+              {
+                "title": "Create VPC",
+                "description": "Yes"
+              },
+              {
+                "title": "Use existing VPC instance",
+                "description": "No"
+              },
+              {
+                "title": "New resource group creation",
+                "description": "No"
+              },
+              {
+                "title": "Create public gateways",
+                "description": "Yes"
+              },
+              {
+                "title": "Create subnets",
+                "description": "Yes"
+              },
+              {
+                "title": "Create network ACLs",
+                "description": "Yes"
+              },
+              {
+                "title": "Create VPN gateways",
+                "description": "Yes"
+              },
+              {
+                "title": "Create VPE gateways",
+                "description": "Yes"
+              },
+              {
+                "title": "Create security groups rules",
+                "description": "Yes"
+              },
+              {
+                "title": "Configure VPC flow logs",
+                "description": "Yes"
+              },
+              {
+                "title": "Create COS instance",
+                "description": "No"
+              },
+              {
+                "title": "Enforced KMS encryption",
+                "description": "No"
+              },
+              {
+                "title": "Use existing KMS key",
+                "description": "Yes"
+              },
+              {
+                "title": "KMS key ring and key creation",
+                "description": "Yes"
+              },
+              {
+                "title": "Create custom routes",
+                "description": "Yes"
+              }
+            ],
+            "diagrams": [
+              {
+                "diagram": {
+                  "caption": "Architecture for provisioning and configuring fully configurable Virtual Private Cloud..",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/reference-architecture/deployable-architecture-vpc.svg",
+                  "type": "image/svg+xml"
+                },
+                "description": "This architecture supports provisioning and configuring fully configurable Virtual Private Cloud."
+              }
+            ]
+          },
+          "iam_permissions": [
+            {
+              "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
+              "service_name": "iam-identity"
+            },
+            {
+              "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
+              "service_name": "is.vpc"
+            },
+            {
+              "service_name": "cloud-object-storage",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ]
+            },
+            {
+              "service_name": "kms",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ]
+            }
+          ],
+          "configuration": [
+            {
+              "key": "ibmcloud_api_key"
+            },
+            {
+              "key": "prefix",
+              "required": true,
+              "description": "The prefix to add to all resources that this solution creates. To not use any prefix value, you can enter the string `__NULL__`."
+            },
+            {
+              "key": "region",
+              "required": true,
+              "custom_config": {
+                "config_constraints": {
+                  "generationType": "2"
+                },
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "type": "vpc_region"
+              }
+            },
+            {
+              "key": "existing_resource_group_name",
+              "required": true,
+              "custom_config": {
+                "type": "resource_group",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "identifier": "rg_name"
+                }
+              }
+            },
+            {
+              "key": "provider_visibility",
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "public-and-private",
+                  "value": "public-and-private"
+                }
+              ]
+            },
+            {
+              "key": "vpc_name",
+              "required": true
+            },
+            {
+              "key": "subnets"
+            },
+            {
+              "key": "network_acls"
+            },
+            {
+              "key": "address_prefixes"
+            },
+            {
+              "key": "routes"
+            },
+            {
+              "key": "security_group_rules"
+            },
+            {
+              "key": "clean_default_security_group_acl"
+            },
+            {
+              "key": "vpn_gateways"
+            },
+            {
+              "key": "vpe_gateway_cloud_services"
+            },
+            {
+              "key": "vpe_gateway_cloud_service_by_crn"
+            },
+            {
+              "key": "vpe_gateway_security_group_ids"
+            },
+            {
+              "key": "vpe_gateway_service_endpoints",
+              "options": [
+                {
+                  "displayname": "Public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "Private",
+                  "value": "private"
+                }
+              ]
+            },
+            {
+              "key": "vpe_gateway_reserved_ips"
+            },
+            {
+              "key": "default_network_acl_name"
+            },
+            {
+              "key": "default_security_group_name"
+            },
+            {
+              "key": "default_routing_table_name"
+            },
+            {
+              "key": "resource_tags",
+              "custom_config": {
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "key": "access_tags",
+              "custom_config": {
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "key": "enable_vpc_flow_logs"
+            },
+            {
+              "key": "existing_cos_instance_crn"
+            },
+            {
+              "key": "skip_vpc_cos_iam_auth_policy"
+            },
+            {
+              "key": "flow_logs_cos_bucket_name"
+            },
+            {
+              "key": "kms_encryption_enabled_bucket"
+            },
+            {
+              "key": "existing_flow_logs_bucket_kms_key_crn"
+            },
+            {
+              "key": "existing_kms_instance_crn"
+            },
+            {
+              "key": "skip_cos_kms_iam_auth_policy"
+            },
+            {
+              "key": "kms_endpoint_type",
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                }
+              ]
+            },
+            {
+              "key": "kms_key_ring_name"
+            },
+            {
+              "key": "kms_key_name"
+            },
+            {
+              "key": "ibmcloud_kms_api_key"
+            },
+            {
+              "key": "management_endpoint_type_for_bucket",
+              "options": [
+                {
+                  "displayname": "Public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "Private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "Direct",
+                  "value": "direct"
+                }
+              ]
+            },
+            {
+              "key": "cos_bucket_class",
+              "options": [
+                {
+                  "displayname": "Standard",
+                  "value": "standard"
+                },
+                {
+                  "displayname": "Vault",
+                  "value": "vault"
+                },
+                {
+                  "displayname": "Cold",
+                  "value": "cold"
+                },
+                {
+                  "displayname": "Smart",
+                  "value": "smart"
+                },
+                {
+                  "displayname": "OneRate Active",
+                  "value": "onerate_active"
+                }
+              ]
+            },
+            {
+              "key": "add_bucket_name_suffix"
+            },
+            {
+              "key": "flow_logs_cos_bucket_archive_days"
+            },
+            {
+              "key": "flow_logs_cos_bucket_archive_type",
+              "options": [
+                {
+                  "displayname": "Glacier",
+                  "value": "Glacier"
+                },
+                {
+                  "displayname": "Accelerated",
+                  "value": "Accelerated"
+                }
+              ]
+            },
+            {
+              "key": "flow_logs_cos_bucket_expire_days"
+            },
+            {
+              "key": "flow_logs_cos_bucket_enable_object_versioning"
+            },
+            {
+              "key": "flow_logs_cos_bucket_enable_retention"
+            },
+            {
+              "key": "flow_logs_cos_bucket_default_retention_days"
+            },
+            {
+              "key": "flow_logs_cos_bucket_maximum_retention_days"
+            },
+            {
+              "key": "flow_logs_cos_bucket_minimum_retention_days"
+            },
+            {
+              "key": "flow_logs_cos_bucket_enable_permanent_retention"
+            }
+          ],
+          "dependencies": [
+            {
+              "name": "deploy-arch-ibm-account-infra-base",
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "flavors": ["standard"],
+              "id": "63641cec-6093-4b4f-b7b0-98d2f4185cd6-global",
+              "ignore_auto_referencing": ["*"],
+              "input_mapping": [
+                {
+                  "dependency_output": "workload_resource_group_name",
+                  "version_input": "existing_resource_group_name"
+                },
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                }
+              ],
+              "optional": true,
+              "on_by_default": true,
+              "version": "^v1.18.0"
+            },
+            {
+              "name": "testing-deploy-arch-ibm-kms",
+              "id": "85fdbd7a-8c77-4abd-b716-653a31f3aba9-global",
+              "version": "^v1.2.1",
+              "flavors": ["standard"],
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "optional": true,
+              "on_by_default": true,
+              "ignore_auto_referencing": ["*"],
+              "input_mapping": [
+                {
+                  "dependency_output": "kms_instance_crn",
+                  "version_input": "existing_kms_instance_crn"
+                },
+                {
+                  "dependency_input": "resource_group_name",
+                  "version_input": "existing_resource_group_name",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "region",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "use_existing_resource_group",
+                  "value": true,
+                  "reference_version": true
+                },
+                {
+                  "version_input": "kms_encryption_enabled_bucket",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "name": "deploy-arch-ibm-cos",
+              "id": "68921490-2778-4930-ac6d-bae7be6cd958-global",
+              "version": "^v8.20.1",
+              "flavors": ["instance"],
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "optional": true,
+              "on_by_default": true,
+              "ignore_auto_referencing": ["*"],
+              "input_mapping": [
+                {
+                  "dependency_output": "cos_instance_id",
+                  "version_input": "existing_cos_instance_crn"
+                },
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "resource_group_name",
+                  "version_input": "existing_resource_group_name",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "use_existing_resource_group",
+                  "value": true,
+                  "reference_version": true
+                },
+                {
+                  "version_input": "enable_vpc_flow_logs",
+                  "value": true
+                }
+              ]
+            }
+          ],
+          "dependency_version_2": true
+        }
+      ]
+    }
+  ]
+}

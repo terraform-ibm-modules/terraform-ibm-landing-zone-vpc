@@ -319,6 +319,7 @@ variable "subnets" {
       public_gateway = optional(bool)
       acl_name       = string
       no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true
+      subnet_tags    = optional(list(string), [])
     }))
     zone-2 = optional(list(object({
       name           = string
@@ -326,6 +327,7 @@ variable "subnets" {
       public_gateway = optional(bool)
       acl_name       = string
       no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true
+      subnet_tags    = optional(list(string), [])
     })))
     zone-3 = optional(list(object({
       name           = string
@@ -333,6 +335,7 @@ variable "subnets" {
       public_gateway = optional(bool)
       acl_name       = string
       no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true
+      subnet_tags    = optional(list(string), [])
     })))
   })
 
@@ -406,7 +409,7 @@ variable "security_group_rules" {
     object({
       name      = string
       direction = string
-      remote    = string
+      remote    = optional(string)
       tcp = optional(
         object({
           port_max = optional(number)
@@ -717,4 +720,23 @@ variable "dns_records" {
     ])
     error_message = "Invalid MX record configuration. For 'MX' records, value for 'preference' must be provided."
   }
+}
+
+##############################################################################
+# VPN Gateways
+##############################################################################
+
+variable "vpn_gateways" {
+  description = "List of VPN gateways to create."
+  nullable    = false
+  type = list(
+    object({
+      name           = string
+      subnet_name    = string # Do not include prefix, use same name as in `var.subnets`
+      mode           = optional(string)
+      resource_group = optional(string)
+      access_tags    = optional(list(string), [])
+    })
+  )
+  default = []
 }
