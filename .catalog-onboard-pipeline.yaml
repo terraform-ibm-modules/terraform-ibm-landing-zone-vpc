@@ -13,3 +13,4 @@ offerings:
         scc:
           instance_id: 1c7d5f78-9262-44c3-b779-b28fe4d88c37
           region: us-south
+          scope_resource_group_var_name: existing_resource_group_name
