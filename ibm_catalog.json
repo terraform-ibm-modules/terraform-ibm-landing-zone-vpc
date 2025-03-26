@@ -5,12 +5,13 @@
       "label": "[Add-ons Beta] Cloud automation for VPC",
       "product_kind": "solution",
       "tags": [
+        "network",
         "network_vpc",
         "ibm_created",
         "target_terraform",
         "terraform",
-        "support_ibm",
-        "solution"
+        "solution",
+        "ibm_beta"
       ],
       "keywords": [
         "vpc",
