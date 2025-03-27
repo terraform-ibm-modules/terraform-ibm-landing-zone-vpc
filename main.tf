@@ -330,9 +330,10 @@ resource "ibm_is_public_gateway" "gateway" {
 resource "ibm_iam_authorization_policy" "policy" {
   count = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? 1 : 0) : 0
 
-  source_service_name  = "is"
-  source_resource_type = "flow-log-collector"
-  roles                = ["Writer"]
+  source_service_name         = "is"
+  source_resource_type        = "flow-log-collector"
+  source_resource_instance_id = ibm_is_flow_log.flow_logs[0].id
+  roles                       = ["Writer"]
 
   resource_attributes {
     name     = "accountId"
