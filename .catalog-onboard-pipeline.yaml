@@ -5,7 +5,6 @@ offerings:
     kind: solution
     catalog_id: f64499c8-eb50-4985-bf91-29f9e605a433
     offering_id: 2af61763-f8ef-4527-a815-b92166f29bc8
-    include_git_submodules: true
     variations:
       - name: fully-configurable
         mark_ready: true
