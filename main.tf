@@ -326,15 +326,47 @@ resource "ibm_is_public_gateway" "gateway" {
 # Add VPC to Flow Logs
 ##############################################################################
 
-# Create authorization policy to allow VPC to access COS instance
+# Create authorization policy to allow VPC to access COS Bucket
 resource "ibm_iam_authorization_policy" "policy" {
   count = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? 1 : 0) : 0
 
-  source_service_name         = "is"
-  source_resource_type        = "flow-log-collector"
-  target_service_name         = "cloud-object-storage"
-  target_resource_instance_id = var.existing_cos_instance_guid
-  roles                       = ["Writer"]
+  source_service_name  = "is"
+  source_resource_type = "flow-log-collector"
+  roles                = ["Writer"]
+
+  resource_attributes {
+    name     = "accountId"
+    operator = "stringEquals"
+    value    = data.ibm_iam_account_settings.iam_account_settings.account_id
+  }
+
+  resource_attributes {
+    name     = "serviceName"
+    operator = "stringEquals"
+    value    = "cloud-object-storage"
+  }
+
+  resource_attributes {
+    name     = "serviceInstance"
+    operator = "stringEquals"
+    value    = var.existing_cos_instance_guid
+  }
+
+  resource_attributes {
+    name     = "resourceType"
+    operator = "stringEquals"
+    value    = "bucket"
+  }
+
+  resource_attributes {
+    name     = "resource"
+    operator = "stringEquals"
+    value    = var.existing_storage_bucket_name
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }
 
 # Create VPC flow logs collector

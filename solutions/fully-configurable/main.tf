@@ -33,7 +33,7 @@ locals {
   kms_service_name                         = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? module.existing_kms_key_crn_parser[0].service_name : module.existing_kms_instance_crn_parser[0].service_name) : null
   cos_kms_key_crn                          = var.kms_encryption_enabled_bucket ? (length(module.existing_kms_key_crn_parser) > 0 ? var.existing_flow_logs_bucket_kms_key_crn : module.kms[0].keys[format("%s.%s", local.kms_key_ring_name, local.kms_key_name)].crn) : null
   create_cos_kms_iam_auth_policy           = var.enable_vpc_flow_logs && var.kms_encryption_enabled_bucket && !var.skip_cos_kms_iam_auth_policy
-  create_cross_account_cos_kms_auth_policy = (local.create_cos_kms_iam_auth_policy && var.ibmcloud_kms_api_key == null) ? false : (local.cos_account_id != local.kms_account_id)
+  create_cross_account_cos_kms_auth_policy = (local.create_cos_kms_iam_auth_policy && var.ibmcloud_kms_api_key == null) ? false : (local.kms_account_id != null ? (local.cos_account_id != local.kms_account_id) : false)
 
   # configuration for the flow logs bucket
   bucket_config = [{
@@ -43,7 +43,7 @@ locals {
     kms_encryption_enabled        = var.kms_encryption_enabled_bucket
     kms_guid                      = local.kms_guid
     kms_key_crn                   = local.cos_kms_key_crn
-    skip_iam_authorization_policy = local.create_cross_account_cos_kms_auth_policy || var.skip_cos_kms_iam_auth_policy
+    skip_iam_authorization_policy = local.create_cross_account_cos_kms_auth_policy || !local.create_cos_kms_iam_auth_policy
     management_endpoint_type      = var.management_endpoint_type_for_bucket
     storage_class                 = var.cos_bucket_class
     resource_instance_id          = var.existing_cos_instance_crn
