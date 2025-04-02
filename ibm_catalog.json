@@ -75,6 +75,7 @@
           "description": "Supports creating a new key, or using an existing one to encrypt the COS flow log bucket."
         }
       ],
+      "support_details": "This product is in the community registry, as such support is handled through the originated repo. If you experience issues please open an issue in that repository [https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issues](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issues). Please note this product is not supported via the IBM Cloud Support Center.",
       "flavors": [
         {
           "label": "Fully configurable",
