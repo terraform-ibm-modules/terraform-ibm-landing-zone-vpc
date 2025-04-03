@@ -187,8 +187,7 @@
             },
             {
               "key": "prefix",
-              "required": true,
-              "description": "The prefix to add to all resources that this solution creates. To not use any prefix value, you can enter the string `__NULL__`."
+              "required": true
             },
             {
               "key": "region",
