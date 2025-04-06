@@ -163,7 +163,7 @@ module "kms" {
   }
   count                       = local.create_kms_key ? 1 : 0 # no need to create any KMS resources if not passing an existing KMS CRN or existing KMS key CRN is provided
   source                      = "terraform-ibm-modules/kms-all-inclusive/ibm"
-  version                     = "4.21.5"
+  version                     = "4.21.6"
   create_key_protect_instance = false
   region                      = local.kms_region
   existing_kms_instance_crn   = var.existing_kms_instance_crn
