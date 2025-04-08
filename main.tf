@@ -1,46 +1,6 @@
 ##############################################################################
 # terraform-ibm-landing-zone-vpc
-##############################################################################
-locals {
-  # input variable validation
-  # tflint-ignore: terraform_unused_declarations
-  validate_default_secgroup_rules = var.clean_default_sg_acl && (var.security_group_rules != null && length(var.security_group_rules) > 0) ? tobool("var.clean_default_sg_acl is true and var.security_group_rules are not empty, which are in direct conflict of each other. If you would like the default VPC Security Group to be empty, you must remove default rules from var.security_group_rules.") : true
 
-  # tflint-ignore: terraform_unused_declarations
-  validate_existing_vpc_id = !var.create_vpc && var.existing_vpc_id == null ? tobool("If var.create_vpc is false, then provide a value for var.existing_vpc_id to create vpc.") : true
-
-  # tflint-ignore: terraform_unused_declarations
-  validate_existing_subnet_id = !var.create_subnets && length(var.existing_subnets) == 0 ? tobool("If var.create_subnet is false, then provide a value for var.existing_subnets to create subnets.") : true
-  # tflint-ignore: terraform_unused_declarations
-  validate_existing_vpc_and_subnet = var.create_vpc == true && var.create_subnets == false ? tobool("If user is not providing a vpc then they should also not be providing a subnet") : true
-
-  # tflint-ignore: terraform_unused_declarations
-  validate_hub_vpc_input = (var.hub_vpc_id != null && var.hub_vpc_crn != null) ? tobool("var.hub_vpc_id and var.hub_vpc_crn are mutually exclusive. Hence cannot have values at the same time.") : true
-
-  # tflint-ignore: terraform_unused_declarations
-  validate_hub_vpc_id_input = (var.enable_hub_vpc_id && var.hub_vpc_id == null) ? tobool("var.hub_vpc_id must be passed when var.enable_hub_vpc_id is True.") : true
-
-  # tflint-ignore: terraform_unused_declarations
-  validate_enable_hub_vpc_id_input = (!var.enable_hub_vpc_id && var.hub_vpc_id != null) ? tobool("var.enable_hub_vpc_id must be true when var.hub_vpc_id is not null.") : true
-
-  # tflint-ignore: terraform_unused_declarations
-  validate_hub_vpc_crn_input = (var.enable_hub_vpc_crn && var.hub_vpc_crn == null) ? tobool("var.hub_vpc_crn must be passed when var.enable_hub_vpc_crn is True.") : true
-
-  # tflint-ignore: terraform_unused_declarations
-  validate_enable_hub_vpc_crn_input = (!var.enable_hub_vpc_crn && var.hub_vpc_crn != null) ? tobool("var.enable_hub_vpc_crn must be true when var.hub_vpc_crn is not null.") : true
-
-  # tflint-ignore: terraform_unused_declarations
-  validate_manual_servers_input = (var.resolver_type == "manual" && length(var.manual_servers) == 0) ? tobool("var.manual_servers must be set when var.resolver_type is manual") : true
-
-  # tflint-ignore: terraform_unused_declarations
-  validate_resolver_type_input = (var.resolver_type != null && var.update_delegated_resolver == true) ? tobool("var.resolver_type cannot be set if var.update_delegated_resolver is set to true. Only one type of resolver can be created by VPC.") : true
-
-  # tflint-ignore: terraform_unused_declarations
-  validate_vpc_flow_logs_inputs = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? ((var.existing_cos_instance_guid != null && var.existing_storage_bucket_name != null) ? true : tobool("Please provide COS instance & bucket name to create flow logs collector.")) : ((var.existing_storage_bucket_name != null) ? true : tobool("Please provide COS bucket name to create flow logs collector"))) : false
-
-  # tflint-ignore: terraform_unused_declarations
-  validate_skip_spoke_auth_policy_input = (var.hub_account_id == null && !var.skip_spoke_auth_policy && !var.enable_hub && (var.enable_hub_vpc_id || var.enable_hub_vpc_crn)) ? tobool("var.hub_account_id must be set when var.skip_spoke_auth_policy is False and either var.enable_hub_vpc_id or var.enable_hub_vpc_crn is true.") : true
-}
 
 ##############################################################################
 # Check if existing vpc id is passed
