@@ -6,6 +6,16 @@ variable "create_vpc" {
   description = "Indicates whether user wants to use an existing vpc or create a new one. Set it to true to create a new vpc"
   type        = bool
   default     = true
+
+  validation {
+    condition     = var.create_vpc || var.existing_vpc_id != null
+    error_message = "If 'create_vpc' is false, then you must provide a value for 'existing_vpc_id'."
+  }
+
+  validation {
+    condition     = !(var.create_vpc == false && var.create_subnets == true)
+    error_message = "If 'create_vpc' is false, then 'create_subnets' must also be false. You cannot create subnets without providing a VPC."
+  }
 }
 
 variable "existing_vpc_id" {
@@ -383,6 +393,11 @@ variable "create_subnets" {
   description = "Indicates whether user wants to use existing subnets or create new. Set it to true to create new subnets."
   type        = bool
   default     = true
+
+  validation {
+    condition     = var.create_subnets || length(var.existing_subnets) > 0
+    error_message = "If 'create_subnets' is false, then you must provide a non-empty list for 'existing_subnets'."
+  }
 }
 
 variable "existing_subnets" {
@@ -454,6 +469,11 @@ variable "security_group_rules" {
       ])
     )) == 0
   }
+
+  validation {
+    error_message = "var.clean_default_sg_acl is true and var.security_group_rules are not empty, which are in direct conflict. If you want to clean the default SG, you must not pass security_group_rules."
+    condition     = !(var.clean_default_sg_acl && length(var.security_group_rules) > 0)
+  }
 }
 
 variable "clean_default_sg_acl" {
@@ -501,6 +521,18 @@ variable "enable_vpc_flow_logs" {
   description = "Flag to enable vpc flow logs. If true, flow log collector will be created"
   type        = bool
   default     = false
+
+  validation {
+    condition = (
+      !var.enable_vpc_flow_logs ||
+      (
+        var.create_authorization_policy_vpc_to_cos
+        ? (var.existing_cos_instance_guid != null && var.existing_storage_bucket_name != null)
+        : (var.existing_storage_bucket_name != null)
+      )
+    )
+    error_message = "To enable VPC flow logs, provide COS bucket name. If authorization policy creation is enabled, also provide COS instance GUID."
+  }
 }
 
 variable "create_authorization_policy_vpc_to_cos" {
@@ -543,6 +575,16 @@ variable "skip_spoke_auth_policy" {
   description = "Set to true to skip the creation of an authorization policy between the DNS resolution spoke and hub, only enable this if a policy already exists between these two VPCs. See https://cloud.ibm.com/docs/vpc?topic=vpc-vpe-dns-sharing-s2s-auth&interface=ui for more details."
   type        = bool
   default     = false
+
+  validation {
+    condition = (
+      var.hub_account_id != null ||
+      var.skip_spoke_auth_policy ||
+      var.enable_hub ||
+      !(var.enable_hub_vpc_id || var.enable_hub_vpc_crn)
+    )
+    error_message = "var.hub_account_id must be set when var.skip_spoke_auth_policy is false and either var.enable_hub_vpc_id or var.enable_hub_vpc_crn is true and enable_hub is false."
+  }
 }
 
 variable "hub_account_id" {
@@ -561,6 +603,16 @@ variable "hub_vpc_id" {
   description = "Indicates the id of the hub VPC for DNS resolution. See https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model. Mutually exclusive with hub_vpc_crn."
   type        = string
   default     = null
+
+  validation {
+    condition     = !(var.hub_vpc_id != null && var.hub_vpc_crn != null)
+    error_message = "The inputs 'hub_vpc_id' and 'hub_vpc_crn' are mutually exclusive. Only one of them can be set at a time."
+  }
+
+  validation {
+    condition     = !(var.enable_hub_vpc_id && var.hub_vpc_id == null)
+    error_message = "The input 'hub_vpc_id' must be provided when 'enable_hub_vpc_id' is set to true."
+  }
 }
 
 variable "enable_hub_vpc_crn" {
@@ -573,12 +625,22 @@ variable "hub_vpc_crn" {
   description = "Indicates the crn of the hub VPC for DNS resolution. See https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model. Mutually exclusive with hub_vpc_id."
   type        = string
   default     = null
+
+  validation {
+    condition     = !(var.enable_hub_vpc_crn && var.hub_vpc_crn == null)
+    error_message = "The input 'hub_vpc_crn' must be provided when 'enable_hub_vpc_crn' is set to true."
+  }
 }
 
 variable "update_delegated_resolver" {
   description = "If set to true, and if the vpc is configured to be a spoke for DNS resolution (enable_hub_vpc_crn or enable_hub_vpc_id set), then the spoke VPC resolver will be updated to a delegated resolver."
   type        = bool
   default     = false
+
+  validation {
+    condition     = !(var.update_delegated_resolver == true && var.resolver_type != null)
+    error_message = "var.resolver_type cannot be set if var.update_delegated_resolver is true. Only one type of resolver can be created by VPC."
+  }
 }
 
 variable "skip_custom_resolver_hub_creation" {
@@ -620,6 +682,11 @@ variable "manual_servers" {
     zone_affinity = optional(string)
   }))
   default = []
+
+  validation {
+    condition     = !(var.resolver_type == "manual" && length(var.manual_servers) == 0)
+    error_message = "The input 'manual_servers' must be set when 'resolver_type' is 'manual'."
+  }
 }
 
 variable "dns_location" {
