@@ -8,13 +8,13 @@ variable "create_vpc" {
   default     = true
 
   validation {
-    condition     = var.create_vpc || var.existing_vpc_id != null
-    error_message = "If 'create_vpc' is false, then you must provide a value for 'existing_vpc_id'."
+    condition     = !(var.create_vpc == false && var.existing_vpc_id == null)
+    error_message = "You must either enable 'create_vpc' or provide 'existing_vpc_id', but not both or neither."
   }
 
   validation {
     condition     = !(var.create_vpc == false && var.create_subnets == true)
-    error_message = "If 'create_vpc' is false, then 'create_subnets' must also be false. You cannot create subnets without providing a VPC."
+    error_message = "If create_vpc is false, then create_subnets must also be false. You cannot create subnets without first creating a VPC."
   }
 }
 
@@ -393,11 +393,6 @@ variable "create_subnets" {
   description = "Indicates whether user wants to use existing subnets or create new. Set it to true to create new subnets."
   type        = bool
   default     = true
-
-  validation {
-    condition     = var.create_subnets || length(var.existing_subnets) > 0
-    error_message = "If 'create_subnets' is false, then you must provide a non-empty list for 'existing_subnets'."
-  }
 }
 
 variable "existing_subnets" {
@@ -408,6 +403,14 @@ variable "existing_subnets" {
   }))
   default  = []
   nullable = false
+
+  validation {
+    condition = (
+      (var.create_subnets && length(var.existing_subnets) == 0) ||
+      (!var.create_subnets && length(var.existing_subnets) > 0)
+    )
+    error_message = "You must either set 'create_subnets' to true and not provide 'existing_subnets', or set it to false and provide a non-empty list of 'existing_subnets'."
+  }
 }
 
 ##############################################################################
@@ -471,8 +474,8 @@ variable "security_group_rules" {
   }
 
   validation {
-    error_message = "var.clean_default_sg_acl is true and var.security_group_rules are not empty, which are in direct conflict. If you want to clean the default SG, you must not pass security_group_rules."
-    condition     = !(var.clean_default_sg_acl && length(var.security_group_rules) > 0)
+    condition     = !(var.clean_default_sg_acl && var.security_group_rules != null && length(var.security_group_rules) > 0)
+    error_message = "var.clean_default_sg_acl is true and var.security_group_rules are not empty, which are in direct conflict. If you want to clean the default VPC Security Group, you must not pass security_group_rules."
   }
 }
 
@@ -531,7 +534,7 @@ variable "enable_vpc_flow_logs" {
         : (var.existing_storage_bucket_name != null)
       )
     )
-    error_message = "To enable VPC flow logs, provide COS bucket name. If authorization policy creation is enabled, also provide COS instance GUID."
+    error_message = "To enable VPC Flow Logs, provide COS Bucket name. If you're creating an authorization policy then also provide COS instance GUID."
   }
 }
 
