@@ -212,8 +212,17 @@ resource "ibm_resource_instance" "dns_instance_hub" {
   plan              = var.dns_plan
 }
 
+data "ibm_dns_custom_resolvers" "existing_custom_resolver_hub" {
+  count       = var.existing_dns_custom_resolver_name != null ? 1 : 0
+  instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
+}
+
+locals {
+  existing_custom_resolver = var.existing_dns_custom_resolver_name != null ? [for resolver in data.ibm_dns_custom_resolvers.existing_custom_resolver_hub[0].custom_resolvers : resolver if resolver.name == var.existing_dns_custom_resolver_name][0] : null
+}
+
 resource "ibm_dns_custom_resolver" "custom_resolver_hub" {
-  count = var.enable_hub && !var.skip_custom_resolver_hub_creation ? 1 : 0
+  count = var.enable_hub && !var.skip_custom_resolver_hub_creation && var.existing_dns_custom_resolver_name == null ? 1 : 0
 
   # Use var.dns_custom_resolver_name if not null, otherwise, use var.prefix and var.name combination.
   name = coalesce(
