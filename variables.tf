@@ -14,7 +14,7 @@ variable "create_vpc" {
 
   validation {
     condition     = !(var.create_vpc == false && var.create_subnets == true)
-    error_message = "If create_vpc is false, then create_subnets must also be false. You cannot create subnets without first creating a VPC."
+    error_message = "You cannot create subnets without creating a VPC. Hence if 'create_vpc' is false, then 'create_subnets' can not be true."
   }
 }
 
@@ -409,7 +409,7 @@ variable "existing_subnets" {
       (var.create_subnets && length(var.existing_subnets) == 0) ||
       (!var.create_subnets && length(var.existing_subnets) > 0)
     )
-    error_message = "You must either set 'create_subnets' to true and not provide 'existing_subnets', or set it to false and provide a non-empty list of 'existing_subnets'."
+    error_message = "You must either set 'create_subnets' to true and leave 'existing_subnets' empty, or set 'create_subnets' to false and provide a non-empty list for 'existing_subnets'."
   }
 }
 
