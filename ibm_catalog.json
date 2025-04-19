@@ -21,50 +21,50 @@
         "solution"
       ],
       "short_description": "Automates VPC deployment on IBM Cloud, offering full configurability and flexibility for diverse workloads.",
-      "long_description": "The VPC deployable architecture deploys a Virtual Private Cloud (VPC) infrastructure without any compute resources, such as Virtual Server Instances (VSI) or Red Hat OpenShift clusters. This is an experimental tile and not suitable for production workloads. Stay here if you want to try an experimental version with the [Optional and swappable components](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-choose-plan-process#optional-swappable) capability.",
+      "long_description": "The VPC deployable architecture deploys a Virtual Private Cloud (VPC) infrastructure without any compute resources, such as Virtual Server Instances (VSI) or Red Hat OpenShift clusters. This is an experimental tile and not suitable for production workloads. Stay here if you want to try an experimental version with the [Optional and swappable components](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-choose-plan-process#optional-swappable) capability. This can also be used as a base for other Deployable Architectures (such as the OpenShift DA).",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/images/vpc_icon.svg",
       "provider_name": "IBM",
       "features": [
         {
-          "title": "VPC on IBM Cloud",
-          "description": "Creates and configures a VPC network on IBM Cloud."
+          "title": "VPC",
+          "description": "Creates and configures a Virtual Private Cloud (VPC) network on IBM Cloud, providing an isolated and secure environment for your cloud resources. For more [information](https://cloud.ibm.com/docs/vpc?topic=vpc-getting-started&interface=terraform)"
         },
         {
           "title": "Subnets",
-          "description": "Creates and configures subnets for VPC."
+          "description": "Creates and configures subnets for the VPC, enabling resource segmentation across availability zones. For more [information](https://cloud.ibm.com/docs/vpc?topic=vpc-about-subnets-vpc)."
         },
         {
           "title": "Network ACLs",
-          "description": "Creates and configures network ACLs."
+          "description": "Creates and configures network ACLs to control inbound and outbound traffic at the subnet level. For more [information](https://cloud.ibm.com/docs/vpc?topic=vpc-using-acls)."
         },
         {
           "title": "Public gateways",
-          "description": "Create and configure public gateways."
+          "description": "Creates and configures public gateways to enable internet access for resources within the VPC. For more [information](https://cloud.ibm.com/docs/vpc?topic=vpc-about-public-gateways)."
         },
         {
           "title": "VPN gateways",
-          "description": "Create and configure VPN gateways."
+          "description": "Creates and configures VPN gateways to securely connect your on-premises network to IBM Cloud. For more [information](https://cloud.ibm.com/docs/vpc?topic=vpc-vpn-overview)."
         },
         {
           "title": "VPE gateways",
-          "description": "Create and configure VPE gateways."
+          "description": "Creates and configures VPE (Virtual Private Endpoint) gateways for secure, private access to IBM Cloud services. For more [information](https://cloud.ibm.com/docs/vpc?topic=vpc-about-vpe)"
         },
         {
           "title": "Security groups",
-          "description": "Create and configure security group rules."
+          "description": "Creates and configures security group rules to control traffic at the instance level within the VPC. For more [information](https://cloud.ibm.com/docs/vpc?topic=vpc-using-security-groups)"
         },
         {
           "title": "VPC flow logs",
-          "description": "VPC flow logs can be enabled."
+          "description": "Enables VPC flow logs to capture and monitor network traffic for analysis and auditing purposes. For more [information](https://cloud.ibm.com/docs/vpc?topic=vpc-flow-logs)"
         },
         {
           "title": "Address Prefixes",
-          "description": "Creates and configures address prefixes."
+          "description": "Creates and configures address prefixes to define IP address ranges for subnets within the VPC."
         },
         {
           "title": "Routing Table and routes",
-          "description": "Creates and configures routing table and customized routes."
+          "description": "Creates and configures routing tables and custom routes to control how network traffic is forwarded within the Virtual Private Cloud (VPC). For more [information](https://cloud.ibm.com/docs/vpc?topic=vpc-create-vpc-routing-table&interface=ui)"
         },
         {
           "title": "Object Storage bucket for VPC flow logs",
@@ -158,11 +158,11 @@
             "diagrams": [
               {
                 "diagram": {
-                  "caption": "Architecture for provisioning and configuring fully configurable Virtual Private Cloud..",
+                  "caption": "Architecture for provisioning and configuring fully configurable Virtual Private Cloud topology",
                   "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/reference-architecture/deployable-architecture-vpc.svg",
                   "type": "image/svg+xml"
                 },
-                "description": "This architecture supports provisioning and configuring fully configurable Virtual Private Cloud."
+                "description": "This architecture supports provisioning and configuring a fully customizable Virtual Private Cloud (VPC) environment. It includes the creation of a VPC along with foundational infrastructure such as a Cloud Object Storage (COS) bucket to store flow logs, and a Key Management Services (KMS) key ring and key when an existing key is not provided. The architecture configures key network components for the VPC including subnets, network ACLs, security group rules, address prefixes, routing tables and routes, public gateway, VPN gateway, and Virtual Private Endpoints (VPEs). Flow logs are also enabled for monitoring network traffic. While the diagram illustrates a three-zone deployment, the VPC can also be provisioned in a single-zone or two-zone configuration, depending on your availability requirements. This modular design provides flexibility and can serve as a secure baseline for deploying compute workloads."
               }
             ]
           },
@@ -221,23 +221,6 @@
                   "identifier": "rg_name"
                 }
               }
-            },
-            {
-              "key": "provider_visibility",
-              "options": [
-                {
-                  "displayname": "private",
-                  "value": "private"
-                },
-                {
-                  "displayname": "public",
-                  "value": "public"
-                },
-                {
-                  "displayname": "public-and-private",
-                  "value": "public-and-private"
-                }
-              ]
             },
             {
               "key": "vpc_name",
@@ -445,6 +428,23 @@
             },
             {
               "key": "flow_logs_cos_bucket_enable_permanent_retention"
+            },
+            {
+              "key": "provider_visibility",
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "public-and-private",
+                  "value": "public-and-private"
+                }
+              ]
             }
           ],
           "dependencies": [
