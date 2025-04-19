@@ -173,6 +173,7 @@ To attach access management tags to resources in this module, you need the follo
 | [ibm_resource_instance.dns_instance_hub](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/resource_instance) | resource |
 | [time_sleep.wait_for_authorization_policy](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
 | [time_sleep.wait_for_vpc_creation_data](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
+| [ibm_dns_custom_resolvers.existing_custom_resolver_hub](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/dns_custom_resolvers) | data source |
 | [ibm_iam_account_settings.iam_account_settings](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/iam_account_settings) | data source |
 | [ibm_is_subnet.subnet](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_subnet) | data source |
 | [ibm_is_vpc.vpc](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_vpc) | data source |
@@ -205,6 +206,7 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_enable_hub_vpc_id"></a> [enable\_hub\_vpc\_id](#input\_enable\_hub\_vpc\_id) | Indicates whether Hub VPC ID is passed. | `bool` | `false` | no |
 | <a name="input_enable_vpc_flow_logs"></a> [enable\_vpc\_flow\_logs](#input\_enable\_vpc\_flow\_logs) | Flag to enable vpc flow logs. If true, flow log collector will be created | `bool` | `false` | no |
 | <a name="input_existing_cos_instance_guid"></a> [existing\_cos\_instance\_guid](#input\_existing\_cos\_instance\_guid) | GUID of the COS instance to create Flow log collector | `string` | `null` | no |
+| <a name="input_existing_dns_custom_resolver_name"></a> [existing\_dns\_custom\_resolver\_name](#input\_existing\_dns\_custom\_resolver\_name) | The name of the existing DNS custom resolver instance. | `string` | `null` | no |
 | <a name="input_existing_dns_instance_id"></a> [existing\_dns\_instance\_id](#input\_existing\_dns\_instance\_id) | Id of an existing dns instance in which the custom resolver is created. Only relevant if enable\_hub is set to true. | `string` | `null` | no |
 | <a name="input_existing_storage_bucket_name"></a> [existing\_storage\_bucket\_name](#input\_existing\_storage\_bucket\_name) | Name of the COS bucket to collect VPC flow logs | `string` | `null` | no |
 | <a name="input_existing_subnets"></a> [existing\_subnets](#input\_existing\_subnets) | The detail of the existing subnets and required mappings to other resources. Required if 'create\_subnets' is false. | <pre>list(object({<br/>    id             = string<br/>    public_gateway = optional(bool, false)<br/>  }))</pre> | `[]` | no |
@@ -240,7 +242,7 @@ To attach access management tags to resources in this module, you need the follo
 | Name | Description |
 |------|-------------|
 | <a name="output_cidr_blocks"></a> [cidr\_blocks](#output\_cidr\_blocks) | List of CIDR blocks present in VPC stack |
-| <a name="output_custom_resolver_hub"></a> [custom\_resolver\_hub](#output\_custom\_resolver\_hub) | The custom resolver created for the hub vpc. Only set if enable\_hub is set and skip\_custom\_resolver\_hub\_creation is false. |
+| <a name="output_custom_resolver_hub"></a> [custom\_resolver\_hub](#output\_custom\_resolver\_hub) | The custom resolver for the hub vpc. Only set if enable\_hub is set and skip\_custom\_resolver\_hub\_creation is false. |
 | <a name="output_dns_custom_resolver_id"></a> [dns\_custom\_resolver\_id](#output\_dns\_custom\_resolver\_id) | The ID of the DNS Custom Resolver. |
 | <a name="output_dns_endpoint_gateways_by_crn"></a> [dns\_endpoint\_gateways\_by\_crn](#output\_dns\_endpoint\_gateways\_by\_crn) | The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable\_hub is false and enable\_hub\_vpc\_id are true. |
 | <a name="output_dns_endpoint_gateways_by_id"></a> [dns\_endpoint\_gateways\_by\_id](#output\_dns\_endpoint\_gateways\_by\_id) | The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable\_hub is false and enable\_hub\_vpc\_id are true. |

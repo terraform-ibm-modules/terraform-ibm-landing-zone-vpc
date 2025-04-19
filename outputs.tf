@@ -153,8 +153,8 @@ output "vpc_data" {
 ##############################################################################
 
 output "custom_resolver_hub" {
-  description = "The custom resolver created for the hub vpc. Only set if enable_hub is set and skip_custom_resolver_hub_creation is false."
-  value       = length(ibm_dns_custom_resolver.custom_resolver_hub) == 1 ? ibm_dns_custom_resolver.custom_resolver_hub[0] : null
+  description = "The custom resolver for the hub vpc. Only set if enable_hub is set and skip_custom_resolver_hub_creation is false."
+  value       = var.existing_dns_custom_resolver_name != null ? local.existing_custom_resolver : length(ibm_dns_custom_resolver.custom_resolver_hub) == 1 ? ibm_dns_custom_resolver.custom_resolver_hub[0] : null
 }
 
 output "dns_endpoint_gateways_by_id" {
