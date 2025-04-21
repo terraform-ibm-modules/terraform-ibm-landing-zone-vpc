@@ -212,17 +212,17 @@ resource "ibm_resource_instance" "dns_instance_hub" {
   plan              = var.dns_plan
 }
 
-data "ibm_dns_custom_resolvers" "existing_custom_resolver_hub" {
-  count       = var.existing_dns_custom_resolver_name != null ? 1 : 0
+data "ibm_dns_custom_resolvers" "custom_resolvers" {
+  count       = length(var.existing_dns_custom_resolver_ids) > 0 ? 1 : 0
   instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
 }
 
 locals {
-  existing_custom_resolver = var.existing_dns_custom_resolver_name != null ? [for resolver in data.ibm_dns_custom_resolvers.existing_custom_resolver_hub[0].custom_resolvers : resolver if resolver.name == var.existing_dns_custom_resolver_name][0] : null
+  existing_custom_resolvers = length(var.existing_dns_custom_resolver_ids) > 0 ? [for resolver in data.ibm_dns_custom_resolvers.custom_resolvers[0].custom_resolvers : resolver if contains(var.existing_dns_custom_resolver_ids, resolver.id)] : []
 }
 
 resource "ibm_dns_custom_resolver" "custom_resolver_hub" {
-  count = var.enable_hub && !var.skip_custom_resolver_hub_creation && var.existing_dns_custom_resolver_name == null ? 1 : 0
+  count = var.enable_hub && !var.skip_custom_resolver_hub_creation && length(var.existing_dns_custom_resolver_ids) == 0 ? 1 : 0
 
   # Use var.dns_custom_resolver_name if not null, otherwise, use var.prefix and var.name combination.
   name = coalesce(

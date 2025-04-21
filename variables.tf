@@ -76,10 +76,10 @@ variable "dns_custom_resolver_name" {
   default     = null
 }
 
-variable "existing_dns_custom_resolver_name" {
-  description = "The name of the existing DNS custom resolver instance."
-  type        = string
-  default     = null
+variable "existing_dns_custom_resolver_ids" {
+  description = "List of existing custom DNS resolver IDs to use. If provided, no custom resolver will be created."
+  type        = list(string)
+  default     = []
 }
 
 
