@@ -242,7 +242,7 @@ To attach access management tags to resources in this module, you need the follo
 | Name | Description |
 |------|-------------|
 | <a name="output_cidr_blocks"></a> [cidr\_blocks](#output\_cidr\_blocks) | List of CIDR blocks present in VPC stack |
-| <a name="output_custom_resolver_hub"></a> [custom\_resolver\_hub](#output\_custom\_resolver\_hub) | The custom resolver for the hub vpc. Only applicable if enable\_hub is set and skip\_custom\_resolver\_hub\_creation is false. |
+| <a name="output_custom_resolver_hub"></a> [custom\_resolver\_hub](#output\_custom\_resolver\_hub) | The custom resolvers used for the hub VPC, either newly created or existing. Applicable for newly created only if enable\_hub is set and skip\_custom\_resolver\_hub\_creation is false. |
 | <a name="output_dns_custom_resolver_ids"></a> [dns\_custom\_resolver\_ids](#output\_dns\_custom\_resolver\_ids) | The list of DNS Custom Resolver IDs used — either existing or newly created. |
 | <a name="output_dns_endpoint_gateways_by_crn"></a> [dns\_endpoint\_gateways\_by\_crn](#output\_dns\_endpoint\_gateways\_by\_crn) | The list of VPEs that are made available for DNS resolution in the created VPC. Only applicable if enable\_hub is false and enable\_hub\_vpc\_id are true. |
 | <a name="output_dns_endpoint_gateways_by_id"></a> [dns\_endpoint\_gateways\_by\_id](#output\_dns\_endpoint\_gateways\_by\_id) | The list of VPEs that are made available for DNS resolution in the created VPC. Only applicable if enable\_hub is false and enable\_hub\_vpc\_id are true. |
