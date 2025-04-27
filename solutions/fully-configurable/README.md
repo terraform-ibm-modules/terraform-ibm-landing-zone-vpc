@@ -43,7 +43,7 @@ This solution supports provisioning and configuring the following infrastructure
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_cos_buckets"></a> [cos\_buckets](#module\_cos\_buckets) | terraform-ibm-modules/cos/ibm//modules/buckets | 8.21.16 |
+| <a name="module_cos_buckets"></a> [cos\_buckets](#module\_cos\_buckets) | terraform-ibm-modules/cos/ibm//modules/buckets | 8.21.17 |
 | <a name="module_existing_cos_crn_parser"></a> [existing\_cos\_crn\_parser](#module\_existing\_cos\_crn\_parser) | terraform-ibm-modules/common-utilities/ibm//modules/crn-parser | 1.1.0 |
 | <a name="module_existing_kms_instance_crn_parser"></a> [existing\_kms\_instance\_crn\_parser](#module\_existing\_kms\_instance\_crn\_parser) | terraform-ibm-modules/common-utilities/ibm//modules/crn-parser | 1.1.0 |
 | <a name="module_existing_kms_key_crn_parser"></a> [existing\_kms\_key\_crn\_parser](#module\_existing\_kms\_key\_crn\_parser) | terraform-ibm-modules/common-utilities/ibm//modules/crn-parser | 1.1.0 |
