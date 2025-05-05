@@ -159,7 +159,7 @@
               {
                 "diagram": {
                   "caption": "Architecture for provisioning and configuring fully configurable Virtual Private Cloud..",
-                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/reference-architecture/deployable-architecture-vpc.svg",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/fix_ref_arch/reference-architecture/deployable-architecture-vpc.svg",
                   "type": "image/svg+xml"
                 },
                 "description": "This architecture supports provisioning and configuring fully configurable Virtual Private Cloud."
