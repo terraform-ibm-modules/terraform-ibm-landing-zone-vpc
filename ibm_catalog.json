@@ -169,14 +169,17 @@
           "iam_permissions": [
             {
               "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
+              "notes": "Required for managing IAM identities, Service IDs, and API keys",
               "service_name": "iam-identity"
             },
             {
               "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
+              "notes": "This role is required if we are creating VPC",
               "service_name": "is.vpc"
             },
             {
               "service_name": "cloud-object-storage",
+              "notes": "This role is only required if we are creating COS flow logs bucket",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
@@ -184,12 +187,14 @@
             },
             {
               "service_name": "kms",
+              "notes": "This role is only required if you are using Key Protect for encryption",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ]
             }
           ],
+
           "configuration": [
             {
               "key": "ibmcloud_api_key"
@@ -221,23 +226,6 @@
                   "identifier": "rg_name"
                 }
               }
-            },
-            {
-              "key": "provider_visibility",
-              "options": [
-                {
-                  "displayname": "private",
-                  "value": "private"
-                },
-                {
-                  "displayname": "public",
-                  "value": "public"
-                },
-                {
-                  "displayname": "public-and-private",
-                  "value": "public-and-private"
-                }
-              ]
             },
             {
               "key": "vpc_name",
@@ -344,6 +332,7 @@
             },
             {
               "key": "kms_endpoint_type",
+              "hidden": true,
               "options": [
                 {
                   "displayname": "private",
@@ -445,6 +434,24 @@
             },
             {
               "key": "flow_logs_cos_bucket_enable_permanent_retention"
+            },
+            {
+              "key": "provider_visibility",
+              "hidden": true,
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "public-and-private",
+                  "value": "public-and-private"
+                }
+              ]
             }
           ],
           "dependencies": [
