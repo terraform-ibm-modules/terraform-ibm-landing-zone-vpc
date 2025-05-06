@@ -95,7 +95,8 @@
                 "description": "Default configuration includes:✅<br> - creates subnets in three zones<br> - configures ACLs in such a way that traffic is allowed through port 443, 80 and 22<br>- "
               },
               {
-                "description": "VPC Flow logs is not enabled by default.",
+                "title": "Optional config",
+                "description": "VPC Flow logs is not enabled by default."
               }
             ],
             "diagrams": [
