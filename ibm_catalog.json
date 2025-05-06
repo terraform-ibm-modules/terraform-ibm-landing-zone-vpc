@@ -169,17 +169,15 @@
           "iam_permissions": [
             {
               "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
-              "notes": "Required for managing IAM identities, Service IDs, and API keys",
               "service_name": "iam-identity"
             },
             {
               "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
-              "notes": "This role is required if we are creating VPC",
               "service_name": "is.vpc"
             },
             {
               "service_name": "cloud-object-storage",
-              "notes": "This role is only required if we are creating COS flow logs bucket",
+              "notes": "[Optional] Required if you are enabling VPC flow logs",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
@@ -187,7 +185,7 @@
             },
             {
               "service_name": "kms",
-              "notes": "This role is only required if you are using Key Protect for encryption",
+              "notes": "[Optional] Required if you are enabling KMS for encrypting COS bucket",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
