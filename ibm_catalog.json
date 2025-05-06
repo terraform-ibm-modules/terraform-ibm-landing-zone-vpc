@@ -21,57 +21,57 @@
         "solution"
       ],
       "short_description": "Automates VPC deployment on IBM Cloud, offering full configurability and flexibility for diverse workloads.",
-      "long_description": "The VPC deployable architecture sets up a foundational IBM Cloud® [Virtual Private Cloud (VPC)](https://www.ibm.com/cloud/vpc) environment without including any compute resources such as Virtual Server Instances (VSI) or Red Hat OpenShift clusters. IBM Cloud VPC provides a high-performance, secure, and scalable Infrastructure-as-a-Service (IaaS) platform that can be managed via UI, CLI, or API. While this tile does not provision compute services by default, it lays the groundwork for adding Virtual Servers for VPC and other advanced resources later.",
+      "long_description": "The Cloud automation for VPC sets up a foundational IBM Cloud® [Virtual Private Cloud (VPC)](https://www.ibm.com/cloud/vpc) environment. It lays the groundwork for adding Virtual Servers Instances (VSI) or Red Hat OpenShift clusters and other advanced resources. This can be used as a base deployable architecture for many others deployable architectures like [Cloud automation for Red Hat OpenShift Container Platform on VPC](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-ocp-vpc-1728a4fd-f561-4cf9-82ef-2b1eeb5da1a8-global), [Cloud automation for Red Hat OpenShift AI](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-ocp-ai-ba708aed-bb8a-4ac0-83a7-53a066701db5-global), [Cloud automation for Virtual Servers for Virtual Private Cloud](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-vsi-vpc-28e2b12c-858f-4ae8-8717-60db8cec2e6e-global].",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/images/vpc_icon.svg",
       "provider_name": "IBM",
       "features": [
         {
           "title": "Subnets",
-          "description": "[Subnets](https://cloud.ibm.com/docs/vpc?topic=vpc-about-subnets-vpc) divide your VPC into smaller, isolated networks across different availability zones. This helps you organize resources, improve availability, and control internal communication."
+          "description": "Create [subnets](https://cloud.ibm.com/docs/vpc?topic=vpc-about-subnets-vpc) in three zones that divides your VPC into smaller, isolated networks across different availability zones. This helps you organize resources, improve availability, and control internal communication."
         },
         {
           "title": "Network ACLs",
-          "description": "[Network Access Control Lists (ACLs)](https://cloud.ibm.com/docs/vpc?topic=vpc-using-acls) define rules to allow or deny traffic to and from your subnets, providing an extra layer of network security."
+          "description": "Define rules for [Network Access Control Lists (ACLs)](https://cloud.ibm.com/docs/vpc?topic=vpc-using-acls) to allow or deny traffic to and from your subnets, providing an extra layer of network security."
         },
         {
           "title": "Public gateways",
-          "description": "[Public gateways](https://cloud.ibm.com/docs/vpc?topic=vpc-about-public-gateways) provide internet access to your VPC resources, acting as a bridge between private network components and the public internet."
+          "description": "Configures [public gateways](https://cloud.ibm.com/docs/vpc?topic=vpc-about-public-gateways) to provide internet access to your VPC resources, acting as a bridge between private network components and the public internet."
         },
         {
           "title": "VPN gateways",
-          "description": "[VPN gateways](https://cloud.ibm.com/docs/vpc?topic=vpc-vpn-overview) enable secure, encrypted connections between your on-premises environment and IBM Cloud, ideal for hybrid cloud setups."
+          "description": "Create and configures [VPN gateways](https://cloud.ibm.com/docs/vpc?topic=vpc-vpn-overview) to enable secure, encrypted connections between your on-premises environment and IBM Cloud, ideal for hybrid cloud setups."
         },
         {
           "title": "VPE gateways",
-          "description": "Virtual Private Endpoints (VPEs) allow private access to IBM Cloud services from within your VPC, avoiding public internet traffic. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-about-vpe)."
+          "description": "Creates Virtual Private Endpoints (VPEs) gateways to allow private access to IBM Cloud services from within your VPC, avoiding public internet traffic. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-about-vpe)."
         },
         {
           "title": "Security groups",
-          "description": "Security groups function like virtual firewalls for your instances, defining rules that control allowed inbound and outbound traffic. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-using-security-groups)."
-        },
-        {
-          "title": "VPC flow logs",
-          "description": "VPC flow logs capture data about traffic moving through your network, helping with monitoring, auditing, and troubleshooting. Refer [this](https://cloud.ibm.com/docs/vpc?topic=vpc-flow-logs) to get more information."
+          "description": "Has the ability to configure security groups that works like virtual firewalls for your instances, defining rules that control allowed inbound and outbound traffic. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-using-security-groups)."
         },
         {
           "title": "Address Prefixes",
-          "description": "Address prefixes define the IP address ranges used by your subnets, helping with IP management and planning in your VPC."
+          "description": "Attaches address prefixes to define the IP address ranges used by your subnets, helping with IP management and planning in your VPC."
         },
         {
           "title": "Routing Table and routes",
-          "description": "Routing tables and custom routes determine how traffic is directed within your VPC and to external networks. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-create-vpc-routing-table&interface=ui)."
+          "description": "Creates routing tables and custom routes to determine how traffic is directed within your VPC and to external networks. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-create-vpc-routing-table&interface=ui)."
+        },
+        {
+          "title": "VPC flow logs",
+          "description": "Creates and configures [VPC flow logs]((https://cloud.ibm.com/docs/vpc?topic=vpc-flow-logs)) capture data about traffic moving through your network, helping with monitoring, auditing, and troubleshooting."
         },
         {
           "title": "Object Storage bucket for flow logs",
-          "description": "Stores the network traffic data captured by VPC flow logs, enabling analysis and long-term storage."
+          "description": "Creates and configures the Object storage bucket to store the network traffic data captured by VPC flow logs, enabling analysis and long-term storage."
         },
         {
           "title": "KMS encryption",
-          "description": "Uses a Key Management Service (KMS) key—either new or existing—to encrypt the Object Storage bucket where flow logs are stored, enhancing data security."
+          "description": "Supports Key Management Service (KMS) encryption for the Object Storage bucket where flow logs are stored, enhancing data security."
         }
       ],
-      "support_details": "This product is in the community registry, as such support is handled through the originated repo. If you experience issues please open an issue in that repository [https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issues](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issues). Please note this product is not supported via the IBM Cloud Support Center.",
+      "support_details": "This product is in the community registry, as such support is handled through the originated repository. If you experience issues, kindly open an issue [here](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issues). Please note that this product is not currently supported through the IBM Cloud Support Center.",
       "flavors": [
         {
           "label": "Fully configurable",
