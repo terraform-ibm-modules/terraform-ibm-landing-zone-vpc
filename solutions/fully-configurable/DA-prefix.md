@@ -1,19 +1,38 @@
-## Prefix in Deployable Architecture
+# Prefix in Deployable Architecture
 
-The deployable architecture includes a `prefix` input variable, which is used to prepend a specified string to all resources created by the solution. This helps distinguish and easily locate the resources. If you prefer not to use a prefix, you can set the value to `null` or an empty string.
+The **`prefix`** input variable allows you to prepend a custom string to the names of all resources created by this automation. This is especially useful for:
 
-- Rules: 
-  - must begin with a lowercase letter
-  - may contain only lowercase letters, digits, and hyphens '-'
-  - must not end with a hyphen('-')
-  - can not contain consecutive hyphens ('--')
-  - maximum length allowed is of 16 characters
+- **Avoiding naming collisions** when deploying the same solution multiple times within the same account.
+- **Creating identical infrastructure** across multiple regions or environments.
+- **Improving resource traceability** by embedding environment or region identifiers into resource names.
 
-### Example
+If you do not wish to use a prefix, you may set the value to `null` or an empty string (`""`).
 
-- Prefix can be something like `dev`, `test`, `prod` to help identify the resources across different environments.
+**Important**: The automation automatically inserts a hyphen between the prefix and the resource name. Therefore, you do not need to include a hyphen in the prefix yourself.
 
-- It can include the region name to help identify resources based on their region. Examples are `dev-eu-gb`, `dev-us-south`.
+### Examples
 
+Here are some common patterns for using the prefix:
 
+- **Environment-based**:
+  - `dev`, `test`, `prod`
+- **Environment + Region**:
+  - `dev-eu-gb`, `prod-us-south`, `test-jp-tok`
+- **Project-specific**:
+  - `webapp-dev`, `ml-prod`, `iot-test`
+- **Team or department identifiers**:
+  - `fin-dev`, `hr-prod`, `eng-test`
+- **Date or version-based** (for temporary or experimental deployments):
+  - `exp-202505`, `v2-dev`
 
+These conventions help ensure that resources are clearly grouped and easily identifiable, especially in shared or multi-tenant accounts.
+
+### Naming Rules
+
+To ensure compatibility and consistency, the prefix must follow these rules:
+
+- Must begin with a **lowercase letter**
+- May contain only **lowercase letters**, **digits**, and **hyphens (`-`)**
+- Must **not end** with a hyphen (`-`)
+- Must **not contain consecutive hyphens** (`--`)
+- Maximum length: **16 characters**
