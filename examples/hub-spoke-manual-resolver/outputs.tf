@@ -57,7 +57,7 @@ output "dns_instance_id" {
   value       = module.hub_vpc.dns_instance_id
 }
 
-output "dns_custom_resolver_id" {
-  description = "The ID of the DNS Custom Resolver."
-  value       = module.hub_vpc.dns_custom_resolver_id
+output "dns_custom_resolver_ids" {
+  description = "The list of DNS Custom Resolver IDs used"
+  value       = module.hub_vpc.dns_custom_resolver_ids
 }
