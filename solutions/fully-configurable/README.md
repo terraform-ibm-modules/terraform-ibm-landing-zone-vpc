@@ -36,7 +36,7 @@ This solution supports provisioning and configuring the following infrastructure
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | 1.78.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | 1.78.1 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | 0.13.1 |
 
 ### Modules
@@ -56,7 +56,7 @@ This solution supports provisioning and configuring the following infrastructure
 
 | Name | Type |
 |------|------|
-| [ibm_iam_authorization_policy.cos_kms_policy](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.78.0/docs/resources/iam_authorization_policy) | resource |
+| [ibm_iam_authorization_policy.cos_kms_policy](https://registry.terraform.io/providers/IBM-Cloud/ibm/1.78.1/docs/resources/iam_authorization_policy) | resource |
 | [time_sleep.wait_for_cross_account_authorization_policy](https://registry.terraform.io/providers/hashicorp/time/0.13.1/docs/resources/sleep) | resource |
 
 ### Inputs
