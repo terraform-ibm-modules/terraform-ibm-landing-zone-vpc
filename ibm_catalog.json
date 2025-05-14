@@ -88,7 +88,6 @@
             ]
           },
           "architecture": {
-            "descriptions": "This architecture supports provisioning and configuring fully configurable Virtual Private Cloud.",
             "features": [
               {
                 "title": "Default configuration",
@@ -108,11 +107,15 @@
           },
           "iam_permissions": [
             {
-              "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator"
+              ],
               "service_name": "iam-identity"
             },
             {
-              "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator"
+              ],
               "service_name": "is.vpc"
             },
             {
@@ -391,9 +394,13 @@
             {
               "name": "deploy-arch-ibm-account-infra-base",
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
-              "flavors": ["standard"],
+              "flavors": [
+                "standard"
+              ],
               "id": "63641cec-6093-4b4f-b7b0-98d2f4185cd6-global",
-              "ignore_auto_referencing": ["*"],
+              "ignore_auto_referencing": [
+                "*"
+              ],
               "input_mapping": [
                 {
                   "dependency_output": "workload_resource_group_name",
@@ -413,11 +420,15 @@
               "name": "testing-deploy-arch-ibm-kms",
               "id": "85fdbd7a-8c77-4abd-b716-653a31f3aba9-global",
               "version": "^v1.2.1",
-              "flavors": ["standard"],
+              "flavors": [
+                "standard"
+              ],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
               "on_by_default": true,
-              "ignore_auto_referencing": ["*"],
+              "ignore_auto_referencing": [
+                "*"
+              ],
               "input_mapping": [
                 {
                   "dependency_output": "kms_instance_crn",
@@ -453,11 +464,15 @@
               "name": "deploy-arch-ibm-cos",
               "id": "68921490-2778-4930-ac6d-bae7be6cd958-global",
               "version": "^v8.20.1",
-              "flavors": ["instance"],
+              "flavors": [
+                "instance"
+              ],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
               "on_by_default": true,
-              "ignore_auto_referencing": ["*"],
+              "ignore_auto_referencing": [
+                "*"
+              ],
               "input_mapping": [
                 {
                   "dependency_output": "cos_instance_id",
