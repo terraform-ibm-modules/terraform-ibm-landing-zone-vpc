@@ -92,11 +92,7 @@
             "features": [
               {
                 "title": "Default configuration",
-                "description": "Default configuration includes:✅<br> - creates subnets in three zones<br> - configures ACLs in such a way that traffic is allowed through port 443, 80 and 22<br>- "
-              },
-              {
-                "title": "Optional config",
-                "description": "VPC Flow logs is not enabled by default."
+                "description": "Creates subnets in three zones and configures ACLs in such a way that traffic is allowed through port 443, 80 and 22."
               }
             ],
             "diagrams": [
@@ -106,7 +102,7 @@
                   "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issue_13328/reference-architecture/deployable-architecture-vpc.svg",
                   "type": "image/svg+xml"
                 },
-                "description": "This architecture supports provisioning and configuring a fully configurable Virtual Private Cloud (VPC) environment. While the diagram illustrates a three-zone deployment, the VPC can also be provisioned in a single-zone or two-zone configuration, depending on your availability requirements. Flow logs can also be enabled for monitoring network traffic. <br>It supports the creation of:<br>- a Cloud Object Storage (COS) bucket to store flow logs<br>- a Key Management Services (KMS) key rings and keys when an existing key is provided. <br><br>This modular design provides flexibility and can serve as a secure baseline for deploying compute workloads."
+                "description": "This architecture supports provisioning and configuring a Virtual Private Cloud(VPC) environment. While the diagram illustrates a three-zone deployment, the VPC can also be provisioned in a single-zone or two-zone configuration, depending on your availability requirements. The default configuration deploys VPC with three zones subnets and the pre-defined ACLs. The additional features can be enabled on providing the appropriate input values.<br><br>The VPC Flow Logs can be enabled to monitor the traffic and analyse. If you enable Flow Logs then this solution creates:<br>- a Cloud Object Storage(COS) instance using the optional Cloud Object Storage deployable architecture, if any existing instance is not provided.<br>- the required COS buckets.<br>- the KMS keys if KMS encryption enabled bucket is required. It can use the existing KMS instance or can create new using the optional KMS deployable architecture.<br><br>This modular design provides flexibility and can serve as a secure baseline for deploying compute workloads."
               }
             ]
           },
