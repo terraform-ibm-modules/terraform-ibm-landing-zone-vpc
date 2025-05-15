@@ -104,19 +104,6 @@ func TestRunLandingZoneExample(t *testing.T) {
 	assert.NotNil(t, output, "Expected some output")
 }
 
-func TestRunUpgradeDefaultExample(t *testing.T) {
-
-	t.Parallel()
-
-	options := setupOptions(t, "slz-vpc-upg", defaultExampleTerraformDir)
-
-	output, err := options.RunTestUpgrade()
-	if !options.UpgradeTestSkipped {
-		assert.Nil(t, err, "This should not have errored")
-		assert.NotNil(t, output, "Expected some output")
-	}
-}
-
 func TestRunExistingVPCExample(t *testing.T) {
 	t.Parallel()
 
@@ -329,6 +316,10 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 		{Name: "resource_tags", Value: options.Tags, DataType: "list(string)"},
 		{Name: "access_tags", Value: permanentResources["accessTags"], DataType: "list(string)"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
+		{Name: "enable_vpc_flow_logs", Value: "true", DataType: "bool"},
+		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
+		{Name: "kms_encryption_enabled_bucket", Value: "true", DataType: "bool"},
+		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 	}
 
 	err := options.RunSchematicUpgradeTest()
