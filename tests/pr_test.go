@@ -248,6 +248,49 @@ func TestFullyConfigurable(t *testing.T) {
 	assert.Nil(t, err, "This should not have errored")
 }
 
+func TestFullyConfigurableWithFlowLogs(t *testing.T) {
+	t.Parallel()
+
+	// Verify ibmcloud_api_key variable is set
+	checkVariable := "TF_VAR_ibmcloud_api_key"
+	val, present := os.LookupEnv(checkVariable)
+	require.True(t, present, checkVariable+" environment variable not set")
+	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
+
+	prefix := "vpc-da-fl"
+
+	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
+		Testing: t,
+		Prefix:  prefix,
+		TarIncludePatterns: []string{
+			"*.tf",
+			"dynamic_values/*.tf",
+			"dynamic_values/config_modules/*/*.tf",
+			fullyConfigFlavorDir + "/*.tf",
+		},
+		TemplateFolder:         fullyConfigFlavorDir,
+		Tags:                   []string{"vpc-da-test"},
+		DeleteWorkspaceOnFail:  false,
+		WaitJobCompleteMinutes: 120,
+	})
+
+	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
+		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
+		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
+		{Name: "region", Value: options.Region, DataType: "string"},
+		{Name: "resource_tags", Value: options.Tags, DataType: "list(string)"},
+		{Name: "access_tags", Value: permanentResources["accessTags"], DataType: "list(string)"},
+		{Name: "prefix", Value: options.Prefix, DataType: "string"},
+		{Name: "enable_vpc_flow_logs", Value: "true", DataType: "bool"},
+		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
+		{Name: "kms_encryption_enabled_bucket", Value: "true", DataType: "bool"},
+		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
+	}
+
+	err := options.RunSchematicTest()
+	assert.Nil(t, err, "This should not have errored")
+}
+
 // Test the upgrade of fully-configurable DA with defaults
 func TestRunUpgradeFullyConfigurable(t *testing.T) {
 	t.Parallel()
