@@ -13,8 +13,8 @@ variable "create_vpc" {
   }
 
   validation {
-    condition     = !(var.create_vpc == false && var.create_subnets == true)
-    error_message = "You cannot create subnets without creating a VPC. Hence if 'create_vpc' is false, then 'create_subnets' can not be true."
+    condition     = !(var.create_vpc == true && var.create_subnets == false)
+    error_message = "You must create subnets while creating a VPC. Hence if 'create_vpc' is true, then 'create_subnets' should be true."
   }
 }
 
