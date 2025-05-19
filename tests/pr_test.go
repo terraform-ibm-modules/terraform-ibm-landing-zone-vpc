@@ -245,6 +245,7 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
+		Region:  "eu-de", // Hardcoding region to avoid jp-osa, as jp-osa does not support COS association with HPCS.
 		Prefix:  prefix,
 		TarIncludePatterns: []string{
 			"*.tf",
@@ -261,7 +262,7 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
 		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
-		{Name: "region", Value: "eu-de", DataType: "string"},
+		{Name: "region", Value: options.Region, DataType: "string"},
 		{Name: "resource_tags", Value: options.Tags, DataType: "list(string)"},
 		{Name: "access_tags", Value: permanentResources["accessTags"], DataType: "list(string)"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
@@ -289,7 +290,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
-		Region:  "eu-de",
+		Region:  "eu-de", // Hardcoding region to avoid jp-osa, as jp-osa does not support COS association with HPCS.
 		Prefix:  prefix,
 		TarIncludePatterns: []string{
 			"*.tf",
