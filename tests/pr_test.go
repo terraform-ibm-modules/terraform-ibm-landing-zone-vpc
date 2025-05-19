@@ -201,14 +201,11 @@ func TestFullyConfigurable(t *testing.T) {
 	require.True(t, present, checkVariable+" environment variable not set")
 	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
 
-	// Programmatically determine region to use based on availability
-	region, _ := testhelper.GetBestVpcRegion(val, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
-
 	prefix := "vpc-da"
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
-		Region:  region,
+		Region:  "eu-de",
 		Prefix:  prefix,
 		TarIncludePatterns: []string{
 			"*.tf",
@@ -264,7 +261,7 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
 		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
 		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
-		{Name: "region", Value: options.Region, DataType: "string"},
+		{Name: "region", Value: "eu-de", DataType: "string"},
 		{Name: "resource_tags", Value: options.Tags, DataType: "list(string)"},
 		{Name: "access_tags", Value: permanentResources["accessTags"], DataType: "list(string)"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
@@ -288,14 +285,11 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 	require.True(t, present, checkVariable+" environment variable not set")
 	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
 
-	// Programmatically determine region to use based on availability
-	region, _ := testhelper.GetBestVpcRegion(val, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
-
 	prefix := "vpc-upg"
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
-		Region:  region,
+		Region:  "eu-de",
 		Prefix:  prefix,
 		TarIncludePatterns: []string{
 			"*.tf",
