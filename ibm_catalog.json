@@ -2,7 +2,7 @@
   "products": [
     {
       "name": "deploy-arch-ibm-vpc",
-      "label": "[Add-ons Beta] Cloud automation for VPC",
+      "label": "Cloud automation for VPC",
       "product_kind": "solution",
       "tags": [
         "network",
@@ -167,19 +167,16 @@
           },
           "iam_permissions": [
             {
-              "role_crns": [
-                "crn:v1:bluemix:public:iam::::role:Administrator"
-              ],
+              "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
               "service_name": "iam-identity"
             },
             {
-              "role_crns": [
-                "crn:v1:bluemix:public:iam::::role:Administrator"
-              ],
+              "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
               "service_name": "is.vpc"
             },
             {
               "service_name": "cloud-object-storage",
+              "notes": "[Optional] Required if you are enabling VPC flow logs",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
@@ -187,6 +184,7 @@
             },
             {
               "service_name": "kms",
+              "notes": "[Optional] Required if you are enabling KMS for encrypting COS bucket",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
@@ -215,7 +213,7 @@
             },
             {
               "key": "existing_resource_group_name",
-              "required": true,
+              "display_name": "resource_group",
               "custom_config": {
                 "type": "resource_group",
                 "grouping": "deployment",
@@ -224,23 +222,6 @@
                   "identifier": "rg_name"
                 }
               }
-            },
-            {
-              "key": "provider_visibility",
-              "options": [
-                {
-                  "displayname": "private",
-                  "value": "private"
-                },
-                {
-                  "displayname": "public",
-                  "value": "public"
-                },
-                {
-                  "displayname": "public-and-private",
-                  "value": "public-and-private"
-                }
-              ]
             },
             {
               "key": "vpc_name",
@@ -347,6 +328,7 @@
             },
             {
               "key": "kms_endpoint_type",
+              "hidden": true,
               "options": [
                 {
                   "displayname": "private",
@@ -448,19 +430,37 @@
             },
             {
               "key": "flow_logs_cos_bucket_enable_permanent_retention"
+            },
+            {
+              "key": "provider_visibility",
+              "hidden": true,
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "public-and-private",
+                  "value": "public-and-private"
+                }
+              ]
             }
           ],
           "dependencies": [
             {
               "name": "deploy-arch-ibm-account-infra-base",
+              "description": "Cloud automation for Account Configuration organizes your IBM Cloud account with a ready-made set of resource groups by default—and, when you enable the \"with Account Settings\" option, it also applies baseline security and governance settings.",
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "flavors": [
-                "standard"
+                "resource-group-only",
+                "resource-groups-with-account-settings"
               ],
+              "default_flavor": "resource-group-only",
               "id": "63641cec-6093-4b4f-b7b0-98d2f4185cd6-global",
-              "ignore_auto_referencing": [
-                "*"
-              ],
               "input_mapping": [
                 {
                   "dependency_output": "workload_resource_group_name",
@@ -470,18 +470,24 @@
                   "dependency_input": "prefix",
                   "version_input": "prefix",
                   "reference_version": true
+                },
+                {
+                  "dependency_input": "provider_visibility",
+                  "version_input": "provider_visibility",
+                  "reference_version": true
                 }
               ],
               "optional": true,
-              "on_by_default": true,
-              "version": "^v1.18.0"
+              "on_by_default": false,
+              "version": "v3.0.7"
             },
             {
-              "name": "testing-deploy-arch-ibm-kms",
-              "id": "85fdbd7a-8c77-4abd-b716-653a31f3aba9-global",
-              "version": "^v1.2.1",
+              "name": "deploy-arch-ibm-kms",
+              "description": "Enable Cloud Automation for Key Protect when you want services to use your own managed encryption keys. If disabled, it will fall back on IBM Cloud's default service-managed encryption.",
+              "id": "2cad4789-fa90-4886-9c9e-857081c273ee-global",
+              "version": "v5.1.4",
               "flavors": [
-                "standard"
+                "fully-configurable"
               ],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
@@ -495,11 +501,6 @@
                   "version_input": "existing_kms_instance_crn"
                 },
                 {
-                  "dependency_input": "resource_group_name",
-                  "version_input": "existing_resource_group_name",
-                  "reference_version": true
-                },
-                {
                   "dependency_input": "prefix",
                   "version_input": "prefix",
                   "reference_version": true
@@ -507,11 +508,6 @@
                 {
                   "dependency_input": "region",
                   "version_input": "region",
-                  "reference_version": true
-                },
-                {
-                  "dependency_input": "use_existing_resource_group",
-                  "value": true,
                   "reference_version": true
                 },
                 {
@@ -523,7 +519,7 @@
             {
               "name": "deploy-arch-ibm-cos",
               "id": "68921490-2778-4930-ac6d-bae7be6cd958-global",
-              "version": "^v8.20.1",
+              "version": "v8.21.25",
               "flavors": [
                 "instance"
               ],
@@ -560,7 +556,8 @@
               ]
             }
           ],
-          "dependency_version_2": true
+          "dependency_version_2": true,
+          "terraform_version": "1.10.5"
         }
       ]
     }
