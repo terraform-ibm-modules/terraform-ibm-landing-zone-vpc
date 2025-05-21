@@ -433,7 +433,6 @@
             },
             {
               "key": "provider_visibility",
-              "hidden": true,
               "options": [
                 {
                   "displayname": "private",
@@ -486,15 +485,11 @@
               "description": "Enable Cloud Automation for Key Protect when you want services to use your own managed encryption keys. If disabled, it will fall back on IBM Cloud's default service-managed encryption.",
               "id": "2cad4789-fa90-4886-9c9e-857081c273ee-global",
               "version": "v5.1.4",
-              "flavors": [
-                "fully-configurable"
-              ],
+              "flavors": ["fully-configurable"],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
               "on_by_default": true,
-              "ignore_auto_referencing": [
-                "*"
-              ],
+              "ignore_auto_referencing": ["*"],
               "input_mapping": [
                 {
                   "dependency_output": "kms_instance_crn",
@@ -520,15 +515,11 @@
               "name": "deploy-arch-ibm-cos",
               "id": "68921490-2778-4930-ac6d-bae7be6cd958-global",
               "version": "v8.21.25",
-              "flavors": [
-                "instance"
-              ],
+              "flavors": ["instance"],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
               "on_by_default": true,
-              "ignore_auto_referencing": [
-                "*"
-              ],
+              "ignore_auto_referencing": ["*"],
               "input_mapping": [
                 {
                   "dependency_output": "cos_instance_id",
