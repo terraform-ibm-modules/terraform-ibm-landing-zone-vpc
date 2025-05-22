@@ -158,7 +158,7 @@
               {
                 "diagram": {
                   "caption": "Architecture for provisioning and configuring fully configurable Virtual Private Cloud..",
-                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/reference-architecture/deployable-architecture-vpc.svg",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issue_13500/reference-architecture/deployable-architecture-vpc.svg",
                   "type": "image/svg+xml"
                 },
                 "description": "This architecture supports provisioning and configuring fully configurable Virtual Private Cloud."
@@ -520,7 +520,7 @@
               "name": "deploy-arch-ibm-cos",
               "description": "Enable Cloud automation for COS instance if you want Object Storage bucket for VPC flow logs",
               "id": "68921490-2778-4930-ac6d-bae7be6cd958-global",
-              "version": "v8.21.25",
+              "version": "v9.0.0",
               "flavors": ["instance"],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
