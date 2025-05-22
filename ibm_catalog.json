@@ -496,6 +496,11 @@
                   "version_input": "existing_kms_instance_crn"
                 },
                 {
+                  "dependency_input": "existing_resource_group_name",
+                  "version_input": "existing_resource_group_name",
+                  "reference_version": true
+                },
+                {
                   "dependency_input": "prefix",
                   "version_input": "prefix",
                   "reference_version": true
@@ -513,8 +518,9 @@
             },
             {
               "name": "deploy-arch-ibm-cos",
+              "description": "Enable Cloud automation for COS instance if you want Object Storage bucket for VPC flow logs",
               "id": "68921490-2778-4930-ac6d-bae7be6cd958-global",
-              "version": "v8.21.25",
+              "version": "v9.0.0",
               "flavors": ["instance"],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
@@ -531,13 +537,8 @@
                   "reference_version": true
                 },
                 {
-                  "dependency_input": "resource_group_name",
+                  "dependency_input": "existing_resource_group_name",
                   "version_input": "existing_resource_group_name",
-                  "reference_version": true
-                },
-                {
-                  "dependency_input": "use_existing_resource_group",
-                  "value": true,
                   "reference_version": true
                 },
                 {
