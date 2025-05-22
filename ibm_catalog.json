@@ -158,7 +158,7 @@
               {
                 "diagram": {
                   "caption": "Architecture for provisioning and configuring fully configurable Virtual Private Cloud..",
-                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issue_13500/reference-architecture/deployable-architecture-vpc.svg",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/reference-architecture/deployable-architecture-vpc.svg",
                   "type": "image/svg+xml"
                 },
                 "description": "This architecture supports provisioning and configuring fully configurable Virtual Private Cloud."
@@ -494,11 +494,6 @@
                 {
                   "dependency_output": "kms_instance_crn",
                   "version_input": "existing_kms_instance_crn"
-                },
-                {
-                  "dependency_input": "existing_resource_group_name",
-                  "version_input": "existing_resource_group_name",
-                  "reference_version": true
                 },
                 {
                   "dependency_input": "prefix",
