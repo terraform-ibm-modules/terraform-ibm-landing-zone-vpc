@@ -180,6 +180,7 @@
             },
             {
               "service_name": "cloud-object-storage",
+              "notes": "[Optional] Required if you are enabling VPC flow logs",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
@@ -187,12 +188,14 @@
             },
             {
               "service_name": "kms",
+              "notes": "[Optional] Required if you are enabling KMS for encrypting COS bucket",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ]
             }
           ],
+
           "configuration": [
             {
               "key": "ibmcloud_api_key"
@@ -224,23 +227,6 @@
                   "identifier": "rg_name"
                 }
               }
-            },
-            {
-              "key": "provider_visibility",
-              "options": [
-                {
-                  "displayname": "private",
-                  "value": "private"
-                },
-                {
-                  "displayname": "public",
-                  "value": "public"
-                },
-                {
-                  "displayname": "public-and-private",
-                  "value": "public-and-private"
-                }
-              ]
             },
             {
               "key": "vpc_name",
@@ -347,6 +333,7 @@
             },
             {
               "key": "kms_endpoint_type",
+              "hidden": true,
               "options": [
                 {
                   "displayname": "private",
@@ -448,6 +435,24 @@
             },
             {
               "key": "flow_logs_cos_bucket_enable_permanent_retention"
+            },
+            {
+              "key": "provider_visibility",
+              "hidden": true,
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "public-and-private",
+                  "value": "public-and-private"
+                }
+              ]
             }
           ],
           "dependencies": [
