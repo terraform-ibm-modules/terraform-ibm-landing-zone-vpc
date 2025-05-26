@@ -10,8 +10,7 @@
         "ibm_created",
         "target_terraform",
         "terraform",
-        "solution",
-        "ibm_beta"
+        "solution"
       ],
       "keywords": [
         "vpc",
@@ -184,7 +183,7 @@
             },
             {
               "service_name": "kms",
-              "notes": "[Optional] Required if you are enabling KMS for encrypting COS bucket",
+              "notes": "Optional] Required if you are enabling KMS for encrypting the COS bucket used for storing flow logs",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
@@ -433,26 +432,13 @@
             },
             {
               "key": "provider_visibility",
-              "options": [
-                {
-                  "displayname": "private",
-                  "value": "private"
-                },
-                {
-                  "displayname": "public",
-                  "value": "public"
-                },
-                {
-                  "displayname": "public-and-private",
-                  "value": "public-and-private"
-                }
-              ]
+              "hidden":true
             }
           ],
           "dependencies": [
             {
               "name": "deploy-arch-ibm-account-infra-base",
-              "description": "Cloud automation for Account Configuration organizes your IBM Cloud account with a ready-made set of resource groups by default—and, when you enable the \"with Account Settings\" option, it also applies baseline security and governance settings.",
+              "description": "Cloud automation for Account Configuration organizes your IBM Cloud account with a ready-made set of resource groups by default and when you enable the \"with Account Settings\" option, it also applies baseline security and governance settings.",
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "flavors": [
                 "resource-group-only",
@@ -469,11 +455,6 @@
                   "dependency_input": "prefix",
                   "version_input": "prefix",
                   "reference_version": true
-                },
-                {
-                  "dependency_input": "provider_visibility",
-                  "version_input": "provider_visibility",
-                  "reference_version": true
                 }
               ],
               "optional": true,
@@ -482,14 +463,13 @@
             },
             {
               "name": "deploy-arch-ibm-kms",
-              "description": "Enable Cloud Automation for Key Protect when you want services to use your own managed encryption keys. If disabled, it will fall back on IBM Cloud's default service-managed encryption.",
+              "description": "Enable Cloud Automation for Key Protect to use customer-managed encryption keys (CMKs) for encrypting the COS bucket used to store VPC Flow Logs. When enabled, the Key Protect DA will create a Key Protect instance, and the VPC DA will create a root key if Flow Logs are enabled. If disabled, IBM Cloud's default service-managed encryption will be used instead.",
               "id": "2cad4789-fa90-4886-9c9e-857081c273ee-global",
               "version": "v5.1.4",
               "flavors": ["fully-configurable"],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
               "on_by_default": true,
-              "ignore_auto_referencing": ["*"],
               "input_mapping": [
                 {
                   "dependency_output": "kms_instance_crn",
@@ -501,8 +481,8 @@
                   "reference_version": true
                 },
                 {
-                  "dependency_input": "region",
-                  "version_input": "region",
+                  "dependency_input": "kms_endpoint_type",
+                  "version_input": "kms_endpoint_type",
                   "reference_version": true
                 },
                 {
@@ -515,12 +495,11 @@
               "name": "deploy-arch-ibm-cos",
               "description": "Enable Cloud automation for COS instance if you want Object Storage bucket for VPC flow logs",
               "id": "68921490-2778-4930-ac6d-bae7be6cd958-global",
-              "version": "v9.0.0",
+              "version": "v9.0.2",
               "flavors": ["instance"],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
               "on_by_default": true,
-              "ignore_auto_referencing": ["*"],
               "input_mapping": [
                 {
                   "dependency_output": "cos_instance_id",
@@ -529,11 +508,6 @@
                 {
                   "dependency_input": "prefix",
                   "version_input": "prefix",
-                  "reference_version": true
-                },
-                {
-                  "dependency_input": "existing_resource_group_name",
-                  "version_input": "existing_resource_group_name",
                   "reference_version": true
                 },
                 {
