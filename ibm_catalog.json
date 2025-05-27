@@ -488,6 +488,10 @@
                 {
                   "version_input": "kms_encryption_enabled_bucket",
                   "value": true
+                },
+                {
+                  "version_input": "enable_vpc_flow_logs",
+                  "value": true
                 }
               ]
             },
