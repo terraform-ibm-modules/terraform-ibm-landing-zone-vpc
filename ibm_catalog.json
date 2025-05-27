@@ -432,7 +432,7 @@
             },
             {
               "key": "provider_visibility",
-              "hidden":true
+              "hidden": true
             }
           ],
           "dependencies": [
@@ -463,7 +463,7 @@
             },
             {
               "name": "deploy-arch-ibm-kms",
-              "description": "Enable Cloud Automation for Key Protect to use customer-managed encryption keys (CMKs) for encrypting the COS bucket used to store VPC Flow Logs. When enabled, the Key Protect DA will create a Key Protect instance, and the VPC DA will create a root key if Flow Logs are enabled. If disabled, IBM Cloud's default service-managed encryption will be used instead.",
+              "description": "Enable Cloud Automation for Key Protect to use customer-managed encryption keys (CMKs) for encrypting the COS bucket used to store VPC Flow Logs. This should only be enabled if a COS bucket is provisioned. When enabled, the Key Protect DA will create a Key Protect instance, and the VPC DA will create a root key if Flow Logs are enabled. If disabled, IBM Cloud's default service-managed encryption will be used instead.",
               "id": "2cad4789-fa90-4886-9c9e-857081c273ee-global",
               "version": "v5.1.4",
               "flavors": ["fully-configurable"],
