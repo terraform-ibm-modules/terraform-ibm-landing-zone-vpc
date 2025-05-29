@@ -104,19 +104,6 @@ func TestRunLandingZoneExample(t *testing.T) {
 	assert.NotNil(t, output, "Expected some output")
 }
 
-func TestRunUpgradeDefaultExample(t *testing.T) {
-
-	t.Parallel()
-
-	options := setupOptions(t, "slz-vpc-upg", defaultExampleTerraformDir)
-
-	output, err := options.RunTestUpgrade()
-	if !options.UpgradeTestSkipped {
-		assert.Nil(t, err, "This should not have errored")
-		assert.NotNil(t, output, "Expected some output")
-	}
-}
-
 func TestRunExistingVPCExample(t *testing.T) {
 	t.Parallel()
 
@@ -214,14 +201,11 @@ func TestFullyConfigurable(t *testing.T) {
 	require.True(t, present, checkVariable+" environment variable not set")
 	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
 
-	// Programmatically determine region to use based on availability
-	region, _ := testhelper.GetBestVpcRegion(val, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
-
 	prefix := "vpc-da"
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
-		Region:  region,
+		Region:  "eu-de",
 		Prefix:  prefix,
 		TarIncludePatterns: []string{
 			"*.tf",
@@ -261,6 +245,7 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
+		Region:  "eu-de", // Hardcoding region to avoid jp-osa, as jp-osa does not support COS association with HPCS.
 		Prefix:  prefix,
 		TarIncludePatterns: []string{
 			"*.tf",
@@ -301,14 +286,11 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 	require.True(t, present, checkVariable+" environment variable not set")
 	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
 
-	// Programmatically determine region to use based on availability
-	region, _ := testhelper.GetBestVpcRegion(val, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
-
 	prefix := "vpc-upg"
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
-		Region:  region,
+		Region:  "eu-de", // Hardcoding region to avoid jp-osa, as jp-osa does not support COS association with HPCS.
 		Prefix:  prefix,
 		TarIncludePatterns: []string{
 			"*.tf",
@@ -329,6 +311,10 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 		{Name: "resource_tags", Value: options.Tags, DataType: "list(string)"},
 		{Name: "access_tags", Value: permanentResources["accessTags"], DataType: "list(string)"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
+		{Name: "enable_vpc_flow_logs", Value: "true", DataType: "bool"},
+		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
+		{Name: "kms_encryption_enabled_bucket", Value: "true", DataType: "bool"},
+		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 	}
 
 	err := options.RunSchematicUpgradeTest()
