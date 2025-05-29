@@ -167,7 +167,8 @@
           "iam_permissions": [
             {
               "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
-              "service_name": "iam-identity"
+              "service_name": "iam-identity",
+              "notes": "[Optional] Required if Cloud automation for account configuration is enabled."
             },
             {
               "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
@@ -175,19 +176,19 @@
             },
             {
               "service_name": "cloud-object-storage",
-              "notes": "[Optional] Required if you are enabling VPC flow logs",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
-              ]
+              ],
+              "notes": "[Optional] Required if you are enabling VPC flow logs."
             },
             {
               "service_name": "kms",
-              "notes": "Optional] Required if you are enabling KMS for encrypting the COS bucket used for storing flow logs",
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
-              ]
+              ],
+              "notes": "Optional] Required if you are enabling KMS for encrypting the COS bucket used for storing flow logs."
             }
           ],
           "configuration": [
@@ -444,16 +445,21 @@
                 "resource-group-only",
                 "resource-groups-with-account-settings"
               ],
-              "default_flavor": "resource-group-only",
+              "default_flavour": "resource-group-only",
               "id": "63641cec-6093-4b4f-b7b0-98d2f4185cd6-global",
               "input_mapping": [
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
                 {
                   "dependency_output": "workload_resource_group_name",
                   "version_input": "existing_resource_group_name"
                 },
                 {
-                  "dependency_input": "prefix",
-                  "version_input": "prefix",
+                  "dependency_input": "provider_visibility",
+                  "version_input": "provider_visibility",
                   "reference_version": true
                 }
               ],
@@ -463,13 +469,12 @@
             },
             {
               "name": "deploy-arch-ibm-kms",
-              "description": "Enable Cloud Automation for Key Protect to use customer-managed encryption keys (CMKs) for encrypting the COS bucket used to store VPC Flow Logs. This should only be enabled if a COS bucket is provisioned. When enabled, the Key Protect DA will create a Key Protect instance, and the VPC DA will create a root key if Flow Logs are enabled. If disabled, IBM Cloud's default service-managed encryption will be used instead.",
               "id": "2cad4789-fa90-4886-9c9e-857081c273ee-global",
-              "version": "v5.1.4",
-              "flavors": ["fully-configurable"],
+              "description": "Enable Cloud Automation for Key Protect to use customer-managed encryption keys (CMKs) for encrypting the COS bucket used to store VPC Flow Logs. This should only be enabled if a COS bucket is provisioned. When enabled, the Key Protect DA will create a Key Protect instance, and the VPC DA will create a root key if Flow Logs are enabled. If disabled, IBM Cloud's default service-managed encryption will be used instead.",
+              "flavors": [
+                "fully-configurable"
+              ],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
-              "optional": true,
-              "on_by_default": true,
               "input_mapping": [
                 {
                   "dependency_output": "kms_instance_crn",
@@ -478,6 +483,11 @@
                 {
                   "dependency_input": "prefix",
                   "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "region",
                   "reference_version": true
                 },
                 {
@@ -493,18 +503,25 @@
                   "version_input": "enable_vpc_flow_logs",
                   "value": true
                 }
-              ]
+              ],
+              "optional": true,
+              "on_by_default": true,
+              "version": "v5.1.4"
             },
             {
               "name": "deploy-arch-ibm-cos",
-              "description": "Enable Cloud automation for COS instance if you want Object Storage bucket for VPC flow logs",
               "id": "68921490-2778-4930-ac6d-bae7be6cd958-global",
-              "version": "v9.0.2",
-              "flavors": ["instance"],
+              "description": "Enable to create an IBM Cloud Object Storage(COS) instance to store VPC flow logs",
+              "flavors": [
+                "instance"
+              ],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
-              "optional": true,
-              "on_by_default": true,
               "input_mapping": [
+                {
+                  "dependency_input": "resource_group_name",
+                  "version_input": "existing_resource_group_name",
+                  "reference_version": true
+                },
                 {
                   "dependency_output": "cos_instance_id",
                   "version_input": "existing_cos_instance_crn"
@@ -518,7 +535,10 @@
                   "version_input": "enable_vpc_flow_logs",
                   "value": true
                 }
-              ]
+              ],
+              "optional": true,
+              "on_by_default": true,
+              "version": "v9.0.2"
             }
           ],
           "dependency_version_2": true,
