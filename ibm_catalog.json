@@ -91,7 +91,7 @@
             "features": [
               {
                 "title": "Default configuration",
-                "description": "Creates subnets in three zones and configures ACLs in such a way that traffic is allowed through port 443, 80 and 22."
+                "description": "Creates VPC with subnets in three zones and configures ACLs. The pre-defined ACLs allows traffic through 443, 80 and 22 ports. A public gateway is attached with one of the subnet."
               }
             ],
             "diagrams": [
@@ -101,7 +101,7 @@
                   "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issue_13328/reference-architecture/deployable-architecture-vpc.svg",
                   "type": "image/svg+xml"
                 },
-                "description": "This architecture supports provisioning and configuring a Virtual Private Cloud(VPC) environment. While the diagram illustrates a three-zone deployment, the VPC can also be provisioned in a single-zone or two-zone configuration, depending on your availability requirements. The default configuration deploys VPC with three zones subnets and the pre-defined ACLs. The additional features can be enabled on providing the appropriate input values.<br><br>The VPC Flow Logs can be enabled to monitor the traffic and analyse. If you enable Flow Logs then this solution creates:<br>- a Cloud Object Storage(COS) instance using the optional Cloud Object Storage deployable architecture, if any existing instance is not provided.<br>- the required COS buckets.<br>- the KMS keys if KMS encryption enabled bucket is required. It can use the existing KMS instance or can create new using the optional KMS deployable architecture.<br><br>This modular design provides flexibility and can serve as a secure baseline for deploying compute workloads."
+                "description": "This architecture supports provisioning and configuring a Virtual Private Cloud(VPC) environment. While the diagram illustrates a three-zone deployment, the VPC can also be provisioned in a single-zone or two-zone configuration, depending on your availability requirements.<br>The default configuration deploys VPC with three zones subnets, configures the pre-defined ACLs and attaches a public gateway. The additional functionalities like VPN gateway, VPE gateway, Flow logs, security groups etc. can be configured on providing the appropriate input values.<br><br>The VPC Flow Logs is used to monitor the traffic and analyse. To enable the VPC Flow Logs, this solution manages the following tasks automatically:<br>- provisions a Cloud Object Storage(COS) instance using the Cloud Object Storage deployable architecture. Alternatively, you can provide an existing COS instance details if any.<br>- creates a COS bucket to store flow logs in the provisioned COS instance or in the existing instance.<br>- supports creation of keys for a Key Management Service(KMS) if KMS encryption enabled bucket is enabled for more security instead of default encryption. You can use the existing KMS instance or can create a new Key Protect instance using the KMS deployable architecture. <br><br>This modular design provides flexibility and can serve as a secure baseline for deploying compute workloads."
               }
             ]
           },
