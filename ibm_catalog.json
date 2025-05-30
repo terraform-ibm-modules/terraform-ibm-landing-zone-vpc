@@ -2,7 +2,7 @@
   "products": [
     {
       "name": "deploy-arch-ibm-vpc",
-      "label": "Cloud automation for VPC",
+      "label": "[Add-ons Beta] Cloud automation for VPC",
       "product_kind": "solution",
       "tags": [
         "network",
@@ -10,7 +10,8 @@
         "ibm_created",
         "target_terraform",
         "terraform",
-        "solution"
+        "solution",
+        "ibm_beta"
       ],
       "keywords": [
         "vpc",
@@ -20,61 +21,57 @@
         "solution"
       ],
       "short_description": "Automates VPC deployment on IBM Cloud, offering full configurability and flexibility for diverse workloads.",
-      "long_description": "The VPC deployable architecture deploys a Virtual Private Cloud (VPC) infrastructure without any compute resources, such as Virtual Server Instances (VSI) or Red Hat OpenShift clusters. This is an experimental tile and not suitable for production workloads. Stay here if you want to try an experimental version with the [Optional and swappable components](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-choose-plan-process#optional-swappable) capability.",
+      "long_description": "The Cloud automation for VPC sets up a foundational IBM Cloud® [Virtual Private Cloud (VPC)](https://www.ibm.com/cloud/vpc) environment. It lays the groundwork for adding Virtual Servers Instances (VSI) or Red Hat OpenShift clusters and other advanced resources. This can be used as a base deployable architecture for many others deployable architectures like [Cloud automation for Red Hat OpenShift Container Platform on VPC](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-ocp-vpc-1728a4fd-f561-4cf9-82ef-2b1eeb5da1a8-global), [Cloud automation for Red Hat OpenShift AI](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-ocp-ai-ba708aed-bb8a-4ac0-83a7-53a066701db5-global), [Cloud automation for Virtual Servers for Virtual Private Cloud](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-vsi-vpc-28e2b12c-858f-4ae8-8717-60db8cec2e6e-global).<br>",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/images/vpc_icon.svg",
       "provider_name": "IBM",
       "features": [
         {
-          "title": "VPC on IBM Cloud",
-          "description": "Creates and configures a VPC network on IBM Cloud."
-        },
-        {
           "title": "Subnets",
-          "description": "Creates and configures subnets for VPC."
+          "description": "Create [subnets](https://cloud.ibm.com/docs/vpc?topic=vpc-about-subnets-vpc) in three zones that divides your VPC into smaller, isolated networks across different availability zones. This helps you organize resources, improve availability, and control internal communication."
         },
         {
           "title": "Network ACLs",
-          "description": "Creates and configures network ACLs."
+          "description": "Define rules for [Network Access Control Lists (ACLs)](https://cloud.ibm.com/docs/vpc?topic=vpc-using-acls) to allow or deny traffic to and from your subnets, providing an extra layer of network security."
         },
         {
           "title": "Public gateways",
-          "description": "Create and configure public gateways."
+          "description": "Configures [public gateways](https://cloud.ibm.com/docs/vpc?topic=vpc-about-public-gateways) to provide internet access to your VPC resources, acting as a bridge between private network components and the public internet."
         },
         {
           "title": "VPN gateways",
-          "description": "Create and configure VPN gateways."
+          "description": "Create and configures [VPN gateways](https://cloud.ibm.com/docs/vpc?topic=vpc-vpn-overview) to enable secure, encrypted connections between your on-premises environment and IBM Cloud, ideal for hybrid cloud setups."
         },
         {
           "title": "VPE gateways",
-          "description": "Create and configure VPE gateways."
+          "description": "Creates Virtual Private Endpoints (VPEs) gateways to allow private access to IBM Cloud services from within your VPC, avoiding public internet traffic. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-about-vpe)."
         },
         {
           "title": "Security groups",
-          "description": "Create and configure security group rules."
-        },
-        {
-          "title": "VPC flow logs",
-          "description": "VPC flow logs can be enabled."
+          "description": "Has the ability to configure security groups that works like virtual firewalls for your instances, defining rules that control allowed inbound and outbound traffic. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-using-security-groups)."
         },
         {
           "title": "Address Prefixes",
-          "description": "Creates and configures address prefixes."
+          "description": "Attaches address prefixes to define the IP address ranges used by your subnets, helping with IP management and planning in your VPC."
         },
         {
           "title": "Routing Table and routes",
-          "description": "Creates and configures routing table and customized routes."
+          "description": "Creates routing tables and custom routes to determine how traffic is directed within your VPC and to external networks. [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-create-vpc-routing-table&interface=ui)."
         },
         {
-          "title": "Object Storage bucket for VPC flow logs",
-          "description": "Creates and configures an Object Storage bucket required for VPC flow logs."
+          "title": "VPC flow logs",
+          "description": "Creates and configures [VPC flow logs]((https://cloud.ibm.com/docs/vpc?topic=vpc-flow-logs)) capture data about traffic moving through your network, helping with monitoring, auditing, and troubleshooting."
+        },
+        {
+          "title": "Object Storage bucket for flow logs",
+          "description": "Creates and configures the Object storage bucket to store the network traffic data captured by VPC flow logs, enabling analysis and long-term storage."
         },
         {
           "title": "KMS encryption",
-          "description": "Supports creating a new key, or using an existing one to encrypt the COS flow log bucket."
+          "description": "Supports Key Management Service (KMS) encryption for the Object Storage bucket where flow logs are stored, enhancing data security."
         }
       ],
-      "support_details": "This product is in the community registry, as such support is handled through the originated repo. If you experience issues please open an issue in that repository [https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issues](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issues). Please note this product is not supported via the IBM Cloud Support Center.",
+      "support_details": "This product is in the community registry, as such support is handled through the originated repository. If you experience issues, kindly open an issue [here](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issues). Please note that this product is not currently supported through the IBM Cloud Support Center.",
       "flavors": [
         {
           "label": "Fully configurable",
@@ -93,74 +90,18 @@
           "architecture": {
             "features": [
               {
-                "title": "Create VPC",
-                "description": "Yes"
-              },
-              {
-                "title": "Use existing VPC instance",
-                "description": "No"
-              },
-              {
-                "title": "New resource group creation",
-                "description": "No"
-              },
-              {
-                "title": "Create public gateways",
-                "description": "Yes"
-              },
-              {
-                "title": "Create subnets",
-                "description": "Yes"
-              },
-              {
-                "title": "Create network ACLs",
-                "description": "Yes"
-              },
-              {
-                "title": "Create VPN gateways",
-                "description": "Yes"
-              },
-              {
-                "title": "Create VPE gateways",
-                "description": "Yes"
-              },
-              {
-                "title": "Create security groups rules",
-                "description": "Yes"
-              },
-              {
-                "title": "Configure VPC flow logs",
-                "description": "Yes"
-              },
-              {
-                "title": "Create COS instance",
-                "description": "No"
-              },
-              {
-                "title": "Enforced KMS encryption",
-                "description": "No"
-              },
-              {
-                "title": "Use existing KMS key",
-                "description": "Yes"
-              },
-              {
-                "title": "KMS key ring and key creation",
-                "description": "Yes"
-              },
-              {
-                "title": "Create custom routes",
-                "description": "Yes"
+                "title": "Default configuration",
+                "description": "Creates VPC with subnets in three zones and configures ACLs. The pre-defined ACLs allows traffic through 443, 80 and 22 ports. A public gateway is attached with one of the subnet."
               }
             ],
             "diagrams": [
               {
                 "diagram": {
-                  "caption": "Architecture for provisioning and configuring fully configurable Virtual Private Cloud..",
-                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/reference-architecture/deployable-architecture-vpc.svg",
+                  "caption": "Virtual Private Cloud topology",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issue_13328/reference-architecture/deployable-architecture-vpc.svg",
                   "type": "image/svg+xml"
                 },
-                "description": "This architecture supports provisioning and configuring fully configurable Virtual Private Cloud."
+                "description": "This architecture supports provisioning and configuring a Virtual Private Cloud(VPC) environment. While the diagram illustrates a three-zone deployment, the VPC can also be provisioned in a single-zone or two-zone configuration, depending on your availability requirements.<br>The default configuration deploys VPC with three zones subnets, configures the pre-defined ACLs and attaches a public gateway. The additional functionalities like VPN gateway, VPE gateway, Flow logs, security groups etc. can be configured on providing the appropriate input values.<br><br>The VPC Flow Logs is used to monitor the traffic and analyse. To enable the VPC Flow Logs, this solution manages the following tasks automatically:<br>- provisions a Cloud Object Storage(COS) instance using the Cloud Object Storage deployable architecture. Alternatively, you can provide an existing COS instance details if any.<br>- creates a COS bucket to store flow logs in the provisioned COS instance or in the existing instance.<br>- supports creation of keys for a Key Management Service(KMS) if KMS encryption enabled bucket is enabled for more security instead of default encryption. You can use the existing KMS instance or can create a new Key Protect instance using the KMS deployable architecture. <br><br>This modular design provides flexibility and can serve as a secure baseline for deploying compute workloads."
               }
             ]
           },
@@ -471,9 +412,7 @@
               "name": "deploy-arch-ibm-kms",
               "id": "2cad4789-fa90-4886-9c9e-857081c273ee-global",
               "description": "Enable Cloud Automation for Key Protect to use customer-managed encryption keys (CMKs) for encrypting the COS bucket used to store VPC Flow Logs. This should only be enabled if a COS bucket is provisioned. When enabled, the Key Protect DA will create a Key Protect instance, and the VPC DA will create a root key if Flow Logs are enabled. If disabled, IBM Cloud's default service-managed encryption will be used instead.",
-              "flavors": [
-                "fully-configurable"
-              ],
+              "flavors": ["fully-configurable"],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "input_mapping": [
                 {
@@ -512,9 +451,7 @@
               "name": "deploy-arch-ibm-cos",
               "id": "68921490-2778-4930-ac6d-bae7be6cd958-global",
               "description": "Enable to create an IBM Cloud Object Storage(COS) instance to store VPC flow logs",
-              "flavors": [
-                "instance"
-              ],
+              "flavors": ["instance"],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "input_mapping": [
                 {
