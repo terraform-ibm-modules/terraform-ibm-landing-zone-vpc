@@ -450,7 +450,7 @@
             {
               "name": "deploy-arch-ibm-cos",
               "id": "68921490-2778-4930-ac6d-bae7be6cd958-global",
-              "description": "Enable creation of an IBM Cloud Object Storage (COS) instance, in which the DA will create a bucket to store VPC flow logs",
+              "description": "Enable creation of an IBM Cloud Object Storage (COS) instance, in which the DA will create a bucket to store VPC flow logs.",
               "flavors": ["instance"],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "input_mapping": [
