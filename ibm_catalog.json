@@ -128,7 +128,7 @@
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
-              "notes": "Optional] Required if you are enabling KMS for encrypting the COS bucket used for storing flow logs."
+              "notes": "[Optional] Required if you are enabling KMS for encrypting the COS bucket used for storing flow logs."
             }
           ],
           "configuration": [
