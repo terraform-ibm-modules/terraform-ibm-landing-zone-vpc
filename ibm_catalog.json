@@ -2,7 +2,7 @@
   "products": [
     {
       "name": "deploy-arch-ibm-vpc",
-      "label": "[Add-ons Beta] Cloud automation for VPC",
+      "label": "Cloud automation for VPC",
       "product_kind": "solution",
       "tags": [
         "network",
@@ -10,8 +10,7 @@
         "ibm_created",
         "target_terraform",
         "terraform",
-        "solution",
-        "ibm_beta"
+        "solution"
       ],
       "keywords": [
         "vpc",
