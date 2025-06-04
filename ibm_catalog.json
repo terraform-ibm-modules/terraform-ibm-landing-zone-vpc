@@ -68,6 +68,10 @@
         {
           "title": "KMS encryption",
           "description": "Supports Key Management Service (KMS) encryption for the Object Storage bucket where flow logs are stored, enhancing data security."
+        },
+        {
+          "title": "Optional Integrations",
+          "description": "This solution can be integrated with [Cloud automation for Observability](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global) that supports configuring resources for logging, monitoring and activity tracker event routing."
         }
       ],
       "support_details": "This product is in the community registry, as such support is handled through the originated repository. If you experience issues, kindly open an issue [here](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issues). Please note that this product is not currently supported through the IBM Cloud Support Center.",
@@ -100,7 +104,7 @@
                   "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/reference-architecture/deployable-architecture-vpc.svg",
                   "type": "image/svg+xml"
                 },
-                "description": "This architecture supports provisioning and configuring a Virtual Private Cloud(VPC) environment. While the diagram illustrates a three-zone deployment, the VPC can also be provisioned in a single-zone or two-zone configuration, depending on your availability requirements.<br>The default configuration deploys VPC with three zones subnets, configures the pre-defined ACLs and attaches a public gateway. The additional functionalities like VPN gateway, VPE gateway, Flow logs, security groups etc. can be configured on providing the appropriate input values.<br><br>The VPC Flow Logs is used to monitor the traffic and analyse. To enable the VPC Flow Logs, this solution manages the following tasks automatically:<br>- provisions a Cloud Object Storage(COS) instance using the Cloud Object Storage deployable architecture. Alternatively, you can provide an existing COS instance details if any.<br>- creates a COS bucket to store flow logs in the provisioned COS instance or in the existing instance.<br>- supports creation of keys for a Key Management Service(KMS) if KMS encryption enabled bucket is enabled for more security instead of default encryption. You can use the existing KMS instance or can create a new Key Protect instance using the KMS deployable architecture. <br><br>This modular design provides flexibility and can serve as a secure baseline for deploying compute workloads."
+                "description": "This architecture supports provisioning and configuring a Virtual Private Cloud (VPC) environment. While the diagram illustrates a three-zone deployment, the VPC can also be provisioned in a single-zone or two-zone configuration, depending on your availability requirements.<br><br>The default configuration deploys a VPC with three zone subnets, configures the pre-defined ACLs, and attaches a public gateway. Additional functionalities such as VPN gateway, VPE gateway, Flow Logs, security groups, etc., can be configured by providing the appropriate input values.<br><br>VPC Flow Logs are used to monitor and analyze traffic. To enable VPC Flow Logs, this solution automatically manages the following tasks:<br>- Provisions a Cloud Object Storage (COS) instance using the COS deployable architecture. Alternatively, you can provide an existing COS instance if available.<br>- Creates a COS bucket to store flow logs in the provisioned or existing COS instance.<br>- Supports creation of keys for a Key Management Service (KMS) if a KMS-encrypted bucket is enabled for enhanced security. You can use an existing KMS instance or create a new Key Protect instance using the KMS deployable architecture.<br><br>This modular design provides flexibility and serves as a secure baseline for deploying compute workloads.<br><br>In addition, you have an option to integrate with <b>Observability services</b>. Cloud automation for Observability provides robust monitoring and logging capabilities to deliver deep operational insights into your VPC deployment. You can use <b>IBM Cloud Activity Tracker Event Routing</b> to monitor how users and applications interact with the VPC, supporting compliance and auditability. <b>Cloud Logs</b> can be enabled to collect, view, and analyze platform logs related to key VPC components such as the metastore and query engine, and to gain visibility into usage patterns through active tasks and queries. Furthermore, <b>IBM Cloud Monitoring</b> captures essential metrics such as CPU and memory utilization, helping you proactively monitor system performance and resource consumption."
               }
             ]
           },
@@ -112,7 +116,8 @@
             },
             {
               "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
-              "service_name": "is.vpc"
+              "service_name": "is.vpc",
+               "notes": "Required for creating Virtual Private Cloud."
             },
             {
               "service_name": "cloud-object-storage",
@@ -396,11 +401,6 @@
                 {
                   "dependency_output": "workload_resource_group_name",
                   "version_input": "existing_resource_group_name"
-                },
-                {
-                  "dependency_input": "provider_visibility",
-                  "version_input": "provider_visibility",
-                  "reference_version": true
                 }
               ],
               "optional": true,
@@ -410,7 +410,7 @@
             {
               "name": "deploy-arch-ibm-kms",
               "id": "2cad4789-fa90-4886-9c9e-857081c273ee-global",
-              "description": "Enable Cloud Automation for Key Protect to use customer-managed encryption keys (CMKs) for encrypting the Cloud Object Storage bucket used to store VPC Flow Logs.  If disabled, IBM Cloud's default service-managed encryption will be used instead. Applicable only when VPC Flow logs are enabled.",
+              "description": "Enable Cloud Automation for Key Protect to use customer-managed encryption keys (CMKs) for encrypting the Cloud Object Storage bucket used to store VPC Flow Logs. If disabled, IBM Cloud's default service-managed encryption will be used instead. Applicable only when VPC Flow logs are enabled.",
               "flavors": ["fully-configurable"],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "input_mapping": [
@@ -475,6 +475,30 @@
               "optional": true,
               "on_by_default": true,
               "version": "v9.0.2"
+            },
+            {
+              "name": "deploy-arch-ibm-observability",
+              "description": "Configure IBM Cloud Logs, Cloud Monitoring and Activity Tracker event routing for analysing logs and metrics generated by the VPC instance.",
+              "id": "a3137d28-79e0-479d-8a24-758ebd5a0eab-global",
+              "version": "v3.0.3",
+              "flavors": [
+                "instances"
+              ],
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "optional": true,
+              "on_by_default": true,
+              "input_mapping": [
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "region",
+                  "reference_version": true
+                }
+              ]
             }
           ],
           "dependency_version_2": true,
