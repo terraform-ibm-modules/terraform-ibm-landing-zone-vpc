@@ -104,7 +104,7 @@
                   "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/reference-architecture/deployable-architecture-vpc.svg",
                   "type": "image/svg+xml"
                 },
-                "description": "This architecture supports provisioning and configuring a Virtual Private Cloud (VPC) environment. While the diagram illustrates a three-zone deployment, the VPC can also be provisioned in a single-zone or two-zone configuration, depending on your availability requirements.<br><br>The default configuration deploys a VPC with three zone subnets, configures the pre-defined ACLs, and attaches a public gateway. Additional functionalities such as VPN gateway, VPE gateway, Flow Logs, security groups, etc., can be configured by providing the appropriate input values.<br><br>VPC Flow Logs are used to monitor and analyze traffic. To enable VPC Flow Logs, this solution automatically manages the following tasks:<br>- Provisions a Cloud Object Storage (COS) instance using the COS deployable architecture. Alternatively, you can provide an existing COS instance if available.<br>- Creates a COS bucket to store flow logs in the provisioned or existing COS instance.<br>- Supports creation of keys for a Key Management Service (KMS) if a KMS-encrypted bucket is enabled for enhanced security. You can use an existing KMS instance or create a new Key Protect instance using the KMS deployable architecture.<br><br>This modular design provides flexibility and serves as a secure baseline for deploying compute workloads.<br><br>In addition, you have an option to integrate with <b>Observability services</b>. Cloud automation for Observability provides robust monitoring and logging capabilities to deliver deep operational insights into your VPC deployment. You can use <b>IBM Cloud Activity Tracker Event Routing</b> to monitor how users and applications interact with the VPC, supporting compliance and auditability. <b>Cloud Logs</b> can be enabled to collect, view, and analyze platform logs related to key VPC components such as the metastore and query engine, and to gain visibility into usage patterns through active tasks and queries. Furthermore, <b>IBM Cloud Monitoring</b> captures essential metrics such as CPU and memory utilization, helping you proactively monitor system performance and resource consumption."
+                "description": "This architecture supports provisioning and configuring a <b>Virtual Private Cloud (VPC)</b> environment. While the diagram illustrates a three-zone deployment, the VPC can also be provisioned in a single-zone or two-zone configuration, depending on your availability requirements.<br><br>The default configuration deploys a VPC with three zone subnets, configures the pre-defined ACLs, and attaches a public gateway with one of the subnet. Additional functionalities such as VPN gateway, VPE gateway, Flow Logs, security groups, etc., can be configured by providing the appropriate input values.<br><br>VPC Flow Logs are used to monitor and analyze traffic. To enable VPC Flow Logs, this solution automatically manages the following tasks:<br>- Provisions a Cloud Object Storage (COS) instance using the COS deployable architecture. Alternatively, you can provide an existing COS instance if available.<br>- Creates an object storage bucket to store flow logs in the provisioned or existing COS instance.<br>- Supports creation of keys for a Key Management Service (KMS) if a KMS-encrypted bucket is enabled for enhanced security. You can use an existing KMS instance or create a new Key Protect instance using the KMS deployable architecture.<br><br>In addition, you have an option to integrate with <b>Observability services</b>. [Cloud automation for Observability](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global) provides robust monitoring and logging capabilities to deliver deep operational insights into your VPC deployment. You can use <b>IBM Cloud Activity Tracker Event Routing</b> to monitor how users and applications interact with the VPC, supporting compliance and auditability. <b>Cloud Logs</b> can be enabled to collect, view, and analyze platform logs related to the VPC components. Furthermore, <b>IBM Cloud Monitoring</b> captures essential metrics such as CPU and memory utilization, helping you proactively monitor system performance and resource consumption.<br><br>This modular design provides flexibility and serves as a secure baseline for deploying compute workloads."
               }
             ]
           },
@@ -117,7 +117,7 @@
             {
               "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
               "service_name": "is.vpc",
-               "notes": "Required for creating Virtual Private Cloud."
+               "notes": "Required for creating Virtual Private Cloud(VPC)."
             },
             {
               "service_name": "cloud-object-storage",
@@ -133,7 +133,7 @@
                 "crn:v1:bluemix:public:iam::::serviceRole:Manager",
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
-              "notes": "[Optional] Required if you are enabling KMS for encrypting the COS bucket used for storing flow logs."
+              "notes": "[Optional] Required if KMS encryption is enabled to encrypt the Object Storage bucket used for storing flow logs."
             },
             {
               "role_crns": [
@@ -141,7 +141,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "sysdig-monitor",
-              "notes": "[Optional] Required if you are consuming Observability DA which sets up Cloud monitoring."
+              "notes": "[Optional] Required if you are consuming Observability deployable architecture which sets up Cloud monitoring."
             },
             {
               "role_crns": [
@@ -149,7 +149,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "logs",
-              "notes": "[Optional] Required if you are consuming Observability DA which sets up Cloud logs."
+              "notes": "[Optional] Required if you are consuming Observability deployable architecture which sets up Cloud logs."
             }
           ],
           "configuration": [
