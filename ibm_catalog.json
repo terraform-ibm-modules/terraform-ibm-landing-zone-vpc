@@ -134,6 +134,22 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "notes": "[Optional] Required if you are enabling KMS for encrypting the COS bucket used for storing flow logs."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "sysdig-monitor",
+              "notes": "[Optional] Required if you are consuming Observability DA which sets up Cloud monitoring."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "service_name": "logs",
+              "notes": "[Optional] Required if you are consuming Observability DA which sets up Cloud logs."
             }
           ],
           "configuration": [
