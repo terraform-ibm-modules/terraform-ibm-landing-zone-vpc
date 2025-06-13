@@ -86,6 +86,13 @@ variable "dns_custom_resolver_name" {
   default     = null
 }
 
+variable "existing_dns_custom_resolver_ids" {
+  description = "List of existing custom DNS resolver IDs to use. If provided, no custom resolver will be created."
+  type        = list(string)
+  default     = []
+}
+
+
 variable "routing_table_name" {
   description = "The name to give the provisioned routing tables. If not set, the module generates a name based on the `prefix` and `name` variables."
   type        = string
