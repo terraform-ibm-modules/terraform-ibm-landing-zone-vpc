@@ -29,5 +29,5 @@ variable "resource_tags" {
 variable "update_delegated_resolver" {
   description = "If set to true, and if the vpc is configured to be a spoke for DNS resolution (enable_hub_vpc_crn or enable_hub_vpc_id set), then the spoke VPC resolver will be updated to a delegated resolver."
   type        = bool
-  default     = false
+  default     = true
 }
