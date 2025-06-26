@@ -20,7 +20,7 @@
         "solution"
       ],
       "short_description": "Automates VPC deployment on IBM Cloud, offering full configurability and flexibility for diverse workloads.",
-      "long_description": "The Cloud automation for VPC sets up a foundational IBM Cloud [Virtual Private Cloud (VPC)](https://www.ibm.com/cloud/vpc) environment. It lays the groundwork for adding Virtual Servers Instances (VSI) or Red Hat OpenShift clusters and other advanced resources. This can be used as a base deployable architecture for many others deployable architectures like [Cloud automation for Red Hat OpenShift Container Platform on VPC](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-ocp-vpc-1728a4fd-f561-4cf9-82ef-2b1eeb5da1a8-global), [Cloud automation for Red Hat OpenShift AI](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-ocp-ai-ba708aed-bb8a-4ac0-83a7-53a066701db5-global), [Cloud automation for Virtual Servers for Virtual Private Cloud](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-vsi-vpc-28e2b12c-858f-4ae8-8717-60db8cec2e6e-global).<br>",
+      "long_description": "The Cloud automation for VPC sets up a foundational IBM Cloud [Virtual Private Cloud (VPC)](https://www.ibm.com/cloud/vpc) environment. It lays the groundwork for adding Virtual Servers Instances (VSI) or Red Hat OpenShift clusters and other advanced resources. This can be used as a base deployable architecture for many others deployable architectures like [Cloud automation for Red Hat OpenShift Container Platform on VPC](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-ocp-vpc-1728a4fd-f561-4cf9-82ef-2b1eeb5da1a8-global), [Cloud automation for Red Hat OpenShift AI](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-ocp-ai-ba708aed-bb8a-4ac0-83a7-53a066701db5-global), [Cloud automation for Virtual Servers for Virtual Private Cloud](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-vsi-vpc-28e2b12c-858f-4ae8-8717-60db8cec2e6e-global).\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/images/vpc_icon.svg",
       "provider_name": "IBM",
@@ -93,12 +93,8 @@
           "architecture": {
             "features": [
               {
-                "title": "VPC instance",
-                "description": "Sets up nd configures a VPC with subnets across three zones and implements ACLs. The predefined ACLs allows traffic on ports 443, 80 and 22."
-              },
-              {
-                "title": "Public Gateway",
-                "description": "Configures a public gateway with one of the subnets."
+                "title": " ",
+                "description": "Configured to use IBM secure by default standards, but can be edited to fit your use case."
               }
             ],
             "diagrams": [
@@ -119,9 +115,19 @@
               "notes": "[Optional] Required if Cloud automation for account configuration is enabled."
             },
             {
+              "role_crns": ["crn:v1:bluemix:public:iam::::role:Viewer"],
+              "service_name": "Resource group only",
+              "notes": "Viewer access is required in the resource group you want to provision in."
+            },
+            {
+              "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
+              "service_name": "iam-identity",
+              "notes": "[Optional] Required if Cloud automation for account configuration is enabled."
+            },
+            {
               "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
               "service_name": "is.vpc",
-               "notes": "Required for creating Virtual Private Cloud(VPC)."
+              "notes": "Required for creating Virtual Private Cloud(VPC)."
             },
             {
               "service_name": "cloud-object-storage",
@@ -226,25 +232,55 @@
               }
             },
             {
-              "key": "subnets"
+              "key": "subnets",
+              "type": "array",
+              "custom_config": {
+                "type": "textarea",
+                "grouping": "deployment",
+                "original_grouping": "deployment"
+              }
             },
             {
-              "key": "network_acls"
+              "key": "network_acls",
+              "type": "array",
+              "custom_config": {
+                "type": "textarea",
+                "grouping": "deployment",
+                "original_grouping": "deployment"
+              }
             },
             {
               "key": "address_prefixes"
             },
             {
-              "key": "security_group_rules"
+              "key": "security_group_rules",
+              "type": "array",
+              "custom_config": {
+                "type": "textarea",
+                "grouping": "deployment",
+                "original_grouping": "deployment"
+              }
             },
             {
               "key": "clean_default_security_group_acl"
             },
             {
-              "key": "vpn_gateways"
+              "key": "vpn_gateways",
+              "type": "array",
+              "custom_config": {
+                "type": "textarea",
+                "grouping": "deployment",
+                "original_grouping": "deployment"
+              }
             },
             {
-              "key": "routes"
+              "key": "routes",
+              "type": "array",
+              "custom_config": {
+                "type": "textarea",
+                "grouping": "deployment",
+                "original_grouping": "deployment"
+              }
             },
             {
               "key": "vpe_gateway_cloud_services"
@@ -253,7 +289,14 @@
               "key": "vpe_gateway_cloud_service_by_crn"
             },
             {
-              "key": "vpe_gateway_security_group_ids"
+              "key": "vpe_gateway_security_group_ids",
+              "custom_config": {
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
             },
             {
               "key": "vpe_gateway_service_endpoints",
@@ -548,9 +591,7 @@
               "description": "Configure IBM Cloud Logs, Cloud Monitoring and Activity Tracker event routing for analysing logs and metrics generated by the VPC instance.",
               "id": "a3137d28-79e0-479d-8a24-758ebd5a0eab-global",
               "version": "v3.0.3",
-              "flavors": [
-                "instances"
-              ],
+              "flavors": ["instances"],
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "optional": true,
               "on_by_default": true,
