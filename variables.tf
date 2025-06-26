@@ -68,11 +68,11 @@ variable "name" {
   type        = string
 }
 
-variable "dns_binding_name" {
-  description = "The name to give the provisioned VPC DNS resolution binding. If not set, the module generates a name based on the `prefix` and `name` variables."
-  type        = string
-  default     = null
-}
+#variable "dns_binding_name" {
+#  description = "The name to give the provisioned VPC DNS resolution binding. If not set, the module generates a name based on the `prefix` and `name` variables."
+#  type        = string
+#  default     = null
+#}
 
 variable "dns_instance_name" {
   description = "The name to give the provisioned DNS instance. If not set, the module generates a name based on the `prefix` and `name` variables."
