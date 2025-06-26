@@ -74,7 +74,7 @@
           "description": "This solution can be integrated with [Cloud automation for Observability](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global) that supports configuring resources for logging, monitoring and activity tracker event routing."
         }
       ],
-      "support_details": "This product is in the community registry, as such support is handled through the originated repository. If you experience issues, kindly open an issue [here](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issues). Please note that this product is not currently supported through the IBM Cloud Support Center.",
+      "support_details": "This product is in the community registry. As such support is handled through the originated repo. If you experience issues, please open an issue in the repository [here](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issues). Please note this product is not supported via the IBM Cloud Support Center.",
       "flavors": [
         {
           "label": "Fully configurable",
