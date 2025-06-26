@@ -377,7 +377,7 @@ variable "security_group_rules" {
 }
 
 variable "clean_default_security_group_acl" {
-  description = "Remove all rules from the default VPC security group and VPC ACL (less permissive)"
+  description = "Remove all rules from the default VPC security group and VPC ACL (less permissive)."
   type        = bool
   nullable    = false
   default     = true

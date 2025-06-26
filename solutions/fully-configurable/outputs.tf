@@ -3,17 +3,17 @@
 ##############################################################################
 
 output "vpc_name" {
-  description = "Name of VPC created"
+  description = "Name of VPC created."
   value       = module.vpc.vpc_name
 }
 
 output "vpc_id" {
-  description = "ID of VPC created"
+  description = "ID of VPC created."
   value       = module.vpc.vpc_id
 }
 
 output "vpc_crn" {
-  description = "CRN of VPC created"
+  description = "CRN of VPC created."
   value       = module.vpc.vpc_crn
 }
 
@@ -22,7 +22,7 @@ output "vpc_crn" {
 ##############################################################################
 
 output "public_gateways" {
-  description = "Map of public gateways by zone"
+  description = "Map of public gateways by zone."
   value       = module.vpc.public_gateways
 }
 
@@ -31,7 +31,7 @@ output "public_gateways" {
 ##############################################################################
 
 output "vpc_flow_logs" {
-  description = "Details of VPC flow logs collector"
+  description = "Details of VPC flow logs collector."
   value       = module.vpc.vpc_flow_logs
 }
 
@@ -40,7 +40,7 @@ output "vpc_flow_logs" {
 ##############################################################################
 
 output "network_acls" {
-  description = "List of shortnames and IDs of network ACLs"
+  description = "List of shortnames and IDs of network ACLs."
   value       = module.vpc.network_acls
 }
 
@@ -49,12 +49,12 @@ output "network_acls" {
 ##############################################################################
 
 output "subnet_ids" {
-  description = "The IDs of the subnets"
+  description = "The IDs of the subnets."
   value       = module.vpc.subnet_ids
 }
 
 output "private_path_subnet_id" {
-  description = "The IDs of the subnets"
+  description = "The IDs of the subnets."
   value       = length(module.vpc.subnet_ids) > 0 ? module.vpc.subnet_ids[0] : null
 }
 
@@ -64,12 +64,12 @@ output "subnet_detail_list" {
 }
 
 output "subnet_zone_list" {
-  description = "A list containing subnet IDs and subnet zones"
+  description = "A list containing subnet IDs and subnet zones."
   value       = module.vpc.subnet_zone_list
 }
 
 output "subnet_detail_map" {
-  description = "A map of subnets containing IDs, CIDR blocks, and zones"
+  description = "A map of subnets containing IDs, CIDR blocks, and zones."
   value       = module.vpc.subnet_detail_map
 }
 
@@ -83,7 +83,7 @@ output "vpn_gateways_name" {
 }
 
 output "vpn_gateways_data" {
-  description = "Details of VPN gateways data"
+  description = "Details of VPN gateways data."
   value       = module.vpc.vpn_gateways_data
 }
 
@@ -97,7 +97,7 @@ output "vpe_ips" {
 }
 
 output "vpe_crn" {
-  description = "The CRN of the endpoint gateway"
+  description = "The CRN of the endpoint gateway."
   value       = module.vpe_gateway.crn
 }
 
