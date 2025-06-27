@@ -228,13 +228,7 @@
               }
             },
             {
-              "key": "subnets",
-              "type": "array",
-              "custom_config": {
-                "type": "textarea",
-                "grouping": "deployment",
-                "original_grouping": "deployment"
-              }
+              "key": "subnets"
             },
             {
               "key": "network_acls",
