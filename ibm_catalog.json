@@ -229,7 +229,6 @@
             },
             {
               "key": "subnets"
-              }
             },
             {
               "key": "network_acls",
