@@ -19,7 +19,7 @@
         "infrastructure as code",
         "solution"
       ],
-      "short_description": "Automates VPC deployment on IBM Cloud, offering full configurability and flexibility for diverse workloads.",
+      "short_description": "Deploy a Virtual Private Cloud (VPC) on IBM Cloud, offering full configurability and flexibility for diverse workloads.",
       "long_description": "The Cloud automation for VPC sets up a foundational IBM Cloud [Virtual Private Cloud (VPC)](https://www.ibm.com/cloud/vpc) environment. It lays the groundwork for adding Virtual Servers Instances (VSI) or Red Hat OpenShift clusters and other advanced resources. This can be used as a base deployable architecture for many others deployable architectures like [Cloud automation for Red Hat OpenShift Container Platform on VPC](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-ocp-vpc-1728a4fd-f561-4cf9-82ef-2b1eeb5da1a8-global), [Cloud automation for Red Hat OpenShift AI](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-ocp-ai-ba708aed-bb8a-4ac0-83a7-53a066701db5-global), [Cloud automation for Virtual Servers for Virtual Private Cloud](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-vsi-vpc-28e2b12c-858f-4ae8-8717-60db8cec2e6e-global).\n\nℹ️ This Terraform-based automation is part of a broader suite of IBM-maintained Infrastructure as Code (IaC) assets, each following the naming pattern \"Cloud automation for *servicename*\" and focusing on single IBM Cloud service. These single-service deployable architectures can be used on their own to streamline and automate service deployments through an [IaC approach](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-understanding-projects), or assembled together into a broader [automated IaC stack](https://cloud.ibm.com/docs/secure-enterprise?topic=secure-enterprise-config-stack) to automate the deployment of an end-to-end solution architecture.",
       "offering_docs_url": "https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/README.md",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/images/vpc_icon.svg",
@@ -74,11 +74,12 @@
           "description": "This solution can be integrated with [Cloud automation for Observability](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-observability-a3137d28-79e0-479d-8a24-758ebd5a0eab-global) that supports configuring resources for logging, monitoring and activity tracker event routing."
         }
       ],
-      "support_details": "This product is in the community registry. As such support is handled through the originated repo. If you experience issues, please open an issue in the repository [here](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issues). Please note this product is not supported via the IBM Cloud Support Center.",
+      "support_details": "This product is in the community registry, support is handled through the [original repo](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc). If you experience issues, please open an issue in the repository [here](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issues). Please note this product is not supported via the IBM Cloud Support Center.",
       "flavors": [
         {
           "label": "Fully configurable",
           "name": "fully-configurable",
+          "index": 1,
           "install_type": "fullstack",
           "working_directory": "solutions/fully-configurable",
           "compliance": {
@@ -109,11 +110,6 @@
             ]
           },
           "iam_permissions": [
-            {
-              "role_crns": ["crn:v1:bluemix:public:iam::::role:Administrator"],
-              "service_name": "iam-identity",
-              "notes": "[Optional] Required if Cloud automation for account configuration is enabled."
-            },
             {
               "role_crns": ["crn:v1:bluemix:public:iam::::role:Viewer"],
               "service_name": "Resource group only",
@@ -151,7 +147,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "sysdig-monitor",
-              "notes": "[Optional] Required if you are consuming Observability deployable architecture which sets up Cloud monitoring."
+              "notes": "[Optional] Required for consuming Observability deployable architecture which sets up Cloud monitoring."
             },
             {
               "role_crns": [
@@ -159,7 +155,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "logs",
-              "notes": "[Optional] Required if you are consuming Observability deployable architecture which sets up Cloud logs."
+              "notes": "[Optional] Required for consuming Observability deployable architecture which sets up Cloud logs."
             }
           ],
           "configuration": [
@@ -283,10 +279,12 @@
               }
             },
             {
-              "key": "vpe_gateway_cloud_services"
+              "key": "vpe_gateway_cloud_services",
+              "type": "array"
             },
             {
-              "key": "vpe_gateway_cloud_service_by_crn"
+              "key": "vpe_gateway_cloud_service_by_crn",
+              "type": "array"
             },
             {
               "key": "vpe_gateway_security_group_ids",
@@ -326,6 +324,7 @@
             {
               "key": "resource_tags",
               "custom_config": {
+                "type": "array",
                 "grouping": "deployment",
                 "original_grouping": "deployment",
                 "config_constraints": {
@@ -335,7 +334,8 @@
             },
             {
               "key": "access_tags",
-              "custom_config": {
+               "custom_config": {
+                "type": "array",
                 "grouping": "deployment",
                 "original_grouping": "deployment",
                 "config_constraints": {

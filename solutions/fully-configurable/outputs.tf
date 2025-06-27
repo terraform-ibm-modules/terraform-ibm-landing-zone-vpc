@@ -3,17 +3,17 @@
 ##############################################################################
 
 output "vpc_name" {
-  description = "Name of VPC created."
+  description = "Name of the VPC created."
   value       = module.vpc.vpc_name
 }
 
 output "vpc_id" {
-  description = "ID of VPC created."
+  description = "ID of the VPC created."
   value       = module.vpc.vpc_id
 }
 
 output "vpc_crn" {
-  description = "CRN of VPC created."
+  description = "CRN of the VPC created."
   value       = module.vpc.vpc_crn
 }
 
@@ -22,7 +22,7 @@ output "vpc_crn" {
 ##############################################################################
 
 output "public_gateways" {
-  description = "Map of public gateways by zone."
+  description = "Map of the public gateways by zone."
   value       = module.vpc.public_gateways
 }
 
@@ -31,7 +31,7 @@ output "public_gateways" {
 ##############################################################################
 
 output "vpc_flow_logs" {
-  description = "Details of VPC flow logs collector."
+  description = "Details of the VPC flow logs collector."
   value       = module.vpc.vpc_flow_logs
 }
 
@@ -64,7 +64,7 @@ output "subnet_detail_list" {
 }
 
 output "subnet_zone_list" {
-  description = "A list containing subnet IDs and subnet zones."
+  description = "A list of subnet IDs and subnet zones."
   value       = module.vpc.subnet_zone_list
 }
 
