@@ -165,8 +165,6 @@ To attach access management tags to resources in this module, you need the follo
 | [ibm_is_vpc.vpc](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc) | resource |
 | [ibm_is_vpc_address_prefix.address_prefixes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_address_prefix) | resource |
 | [ibm_is_vpc_address_prefix.subnet_prefix](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_address_prefix) | resource |
-| [ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_dns_resolution_binding) | resource |
-| [ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_id](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_dns_resolution_binding) | resource |
 | [ibm_is_vpc_routing_table.route_table](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_routing_table) | resource |
 | [ibm_is_vpc_routing_table_route.routing_table_routes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_routing_table_route) | resource |
 | [ibm_is_vpn_gateway.vpn_gateway](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpn_gateway) | resource |
@@ -191,7 +189,6 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_default_network_acl_name"></a> [default\_network\_acl\_name](#input\_default\_network\_acl\_name) | OPTIONAL - Name of the Default ACL. If null, a name will be automatically generated | `string` | `null` | no |
 | <a name="input_default_routing_table_name"></a> [default\_routing\_table\_name](#input\_default\_routing\_table\_name) | OPTIONAL - Name of the Default Routing Table. If null, a name will be automatically generated | `string` | `null` | no |
 | <a name="input_default_security_group_name"></a> [default\_security\_group\_name](#input\_default\_security\_group\_name) | OPTIONAL - Name of the Default Security Group. If null, a name will be automatically generated | `string` | `null` | no |
-| <a name="input_dns_binding_name"></a> [dns\_binding\_name](#input\_dns\_binding\_name) | The name to give the provisioned VPC DNS resolution binding. If not set, the module generates a name based on the `prefix` and `name` variables. | `string` | `null` | no |
 | <a name="input_dns_custom_resolver_name"></a> [dns\_custom\_resolver\_name](#input\_dns\_custom\_resolver\_name) | The name to give the provisioned DNS custom resolver instance. If not set, the module generates a name based on the `prefix` and `name` variables. | `string` | `null` | no |
 | <a name="input_dns_instance_name"></a> [dns\_instance\_name](#input\_dns\_instance\_name) | The name to give the provisioned DNS instance. If not set, the module generates a name based on the `prefix` and `name` variables. | `string` | `null` | no |
 | <a name="input_dns_location"></a> [dns\_location](#input\_dns\_location) | The target location or environment for the DNS instance created to host the custom resolver in a hub-spoke DNS resolution topology. Only used if enable\_hub is true and skip\_custom\_resolver\_hub\_creation is false (defaults). | `string` | `"global"` | no |
@@ -242,8 +239,6 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="output_cidr_blocks"></a> [cidr\_blocks](#output\_cidr\_blocks) | List of CIDR blocks present in VPC stack |
 | <a name="output_custom_resolver_hub"></a> [custom\_resolver\_hub](#output\_custom\_resolver\_hub) | The custom resolver created for the hub vpc. Only set if enable\_hub is set and skip\_custom\_resolver\_hub\_creation is false. |
 | <a name="output_dns_custom_resolver_id"></a> [dns\_custom\_resolver\_id](#output\_dns\_custom\_resolver\_id) | The ID of the DNS Custom Resolver. |
-| <a name="output_dns_endpoint_gateways_by_crn"></a> [dns\_endpoint\_gateways\_by\_crn](#output\_dns\_endpoint\_gateways\_by\_crn) | The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable\_hub is false and enable\_hub\_vpc\_id are true. |
-| <a name="output_dns_endpoint_gateways_by_id"></a> [dns\_endpoint\_gateways\_by\_id](#output\_dns\_endpoint\_gateways\_by\_id) | The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable\_hub is false and enable\_hub\_vpc\_id are true. |
 | <a name="output_dns_instance_id"></a> [dns\_instance\_id](#output\_dns\_instance\_id) | The ID of the DNS instance. |
 | <a name="output_dns_record_ids"></a> [dns\_record\_ids](#output\_dns\_record\_ids) | List of all the domain resource records. |
 | <a name="output_dns_zone"></a> [dns\_zone](#output\_dns\_zone) | A map representing DNS zone information. |
