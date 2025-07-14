@@ -50,6 +50,10 @@ resource "ibm_is_vpc" "vpc" {
         type    = "delegated"
         vpc_id  = var.hub_vpc_id != null ? var.hub_vpc_id : null
         vpc_crn = var.hub_vpc_crn != null ? var.hub_vpc_crn : null
+        dns_binding_name = coalesce(
+          var.dns_binding_name,
+          "${var.prefix != null ? "${var.prefix}-${var.name}" : var.name}-dns-binding"
+        )
       }
     }
 
