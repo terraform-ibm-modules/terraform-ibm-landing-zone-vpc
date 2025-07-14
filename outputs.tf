@@ -164,7 +164,7 @@ output "dns_instance_id" {
 
 output "dns_custom_resolver_id" {
   description = "The ID of the DNS Custom Resolver."
-  value       = (var.enable_hub && !var.skip_custom_resolver_hub_creation) ? one(ibm_dns_custom_resolver.custom_resolver_hub[*].instance_id) : null
+  value       = (var.enable_hub && !var.skip_custom_resolver_hub_creation) ? one(ibm_dns_custom_resolver.custom_resolver_hub[*].custom_resolver_id) : null
 }
 
 ## DNS Zone and Records
