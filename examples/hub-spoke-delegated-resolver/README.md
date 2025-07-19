@@ -12,6 +12,4 @@ This example demonstrates how to deploy hub and spoke VPCs, inclusive of enablin
 1. The first terraform apply lay down all of the topology, but does not configure the DNS resolver to delegated in the spoke
 2. The second terraform apply should have the update_delegated_resolver variable to true to configure the DNS resolver to be delegated ```terraform apply -var=update_delegated_resolver=true```
 
-In order to perform a successful destroy, please set to the resolver to "system" in the spoke VPC through the UI before issuing the terraform destroy - see https://cloud.ibm.com/docs/solution-tutorials?topic=solution-tutorials-vpc-transit2
-
 You may also be interested in the [Hub and Spoke VPC with manual DNS resolver Example](../hub-spoke-manual-resolver/) which does not exhibit those issues.
