@@ -157,6 +157,16 @@ output "custom_resolver_hub" {
   value       = length(ibm_dns_custom_resolver.custom_resolver_hub) == 1 ? ibm_dns_custom_resolver.custom_resolver_hub[0] : null
 }
 
+output "dns_endpoint_gateways_by_id" {
+  description = "The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable_hub is false and enable_hub_vpc_id are true."
+  value       = length(data.ibm_is_vpc_dns_resolution_bindings.dns_bindings) == 1 ? data.ibm_is_vpc_dns_resolution_bindings.dns_bindings[0].dns_resolution_bindings : null
+}
+
+output "dns_endpoint_gateways_by_crn" {
+  description = "The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable_hub is false and enable_hub_vpc_id are true."
+  value       = length(data.ibm_is_vpc_dns_resolution_bindings.dns_bindings) == 1 ? data.ibm_is_vpc_dns_resolution_bindings.dns_bindings[0].dns_resolution_bindings : null
+}
+
 output "dns_instance_id" {
   description = "The ID of the DNS instance."
   value       = (var.enable_hub && !var.skip_custom_resolver_hub_creation) ? (var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid) : null
