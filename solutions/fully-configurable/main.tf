@@ -6,19 +6,10 @@ locals {
 # Resource Group
 ##############################################################################
 
-locals {
-  existing_resource_group_name = var.existing_resource_group_name == null ? data.ibm_resource_group.default[0].name : var.existing_resource_group_name
-}
-
-data "ibm_resource_group" "default" {
-  count      = var.existing_resource_group_name == null ? 1 : 0
-  is_default = "true"
-}
-
 module "resource_group" {
   source                       = "terraform-ibm-modules/resource-group/ibm"
   version                      = "1.2.1"
-  existing_resource_group_name = local.existing_resource_group_name
+  existing_resource_group_name = var.existing_resource_group_name
 }
 
 #############################################################################
