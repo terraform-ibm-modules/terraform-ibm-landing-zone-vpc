@@ -82,7 +82,6 @@ resource "ibm_is_vpc" "vpc" {
   }
 }
 
-
 data "ibm_is_vpc_dns_resolution_bindings" "dns_bindings" {
   count  = (!var.enable_hub && (var.enable_hub_vpc_id || var.enable_hub_vpc_crn)) ? 1 : 0
   vpc_id = local.vpc_id

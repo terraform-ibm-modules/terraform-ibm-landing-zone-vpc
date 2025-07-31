@@ -159,12 +159,14 @@ output "custom_resolver_hub" {
 
 output "dns_endpoint_gateways_by_id" {
   description = "The list of VPEs that are made available for DNS resolution in the created Spoke VPC. Only set if enable_hub is false and enable_hub_vpc_id OR enable_hub_vpc_crn are true."
-  value       = length(data.ibm_is_vpc_dns_resolution_bindings.dns_bindings) == 1 ? data.ibm_is_vpc_dns_resolution_bindings.dns_bindings[0].dns_resolution_bindings[0].vpc[0].id : null
+  #  value       = length(data.ibm_is_vpc_dns_resolution_bindings.dns_bindings) == 1 ? data.ibm_is_vpc_dns_resolution_bindings.dns_bindings[0].dns_resolution_bindings[0].vpc[0].id : null
+  value = data.ibm_is_vpc_dns_resolution_bindings.dns_bindings[0] != null ? data.ibm_is_vpc_dns_resolution_bindings.dns_bindings[0].dns_resolution_bindings[0].vpc[0].id : null
 }
 
 output "dns_endpoint_gateways_by_crn" {
   description = "The list of VPEs that are made available for DNS resolution in the created Spoke VPC. Only set if enable_hub is false and enable_hub_vpc_id OR enable_hub_vpc_crn are true."
-  value       = length(data.ibm_is_vpc_dns_resolution_bindings.dns_bindings) == 1 ? data.ibm_is_vpc_dns_resolution_bindings.dns_bindings[0].dns_resolution_bindings[0].vpc[0].crn : null
+  #  value       = length(data.ibm_is_vpc_dns_resolution_bindings.dns_bindings) == 1 ? data.ibm_is_vpc_dns_resolution_bindings.dns_bindings[0].dns_resolution_bindings[0].vpc[0].crn : null
+  value = data.ibm_is_vpc_dns_resolution_bindings.dns_bindings[0] != null ? data.ibm_is_vpc_dns_resolution_bindings.dns_bindings[0].dns_resolution_bindings[0].vpc[0].crn : null
 }
 
 output "dns_instance_id" {
