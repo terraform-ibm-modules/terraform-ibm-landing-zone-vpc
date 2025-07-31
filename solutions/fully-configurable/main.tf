@@ -6,16 +6,12 @@ locals {
 # Resource Group
 ##############################################################################
 
-# Use a local variable to determine if the default resource group should be used
 locals {
-  # Name of default resource group change circa 2019 from default to Default so attempt to return the actual default resource group in this scenario
-  use_default_resource_group = var.existing_resource_group_name == null ? true : lower(var.existing_resource_group_name) == "default"
-
-  # Use the local variable to decide which resource group name to use
-  existing_resource_group_name = local.use_default_resource_group ? data.ibm_resource_group.default.name : var.existing_resource_group_name
+  existing_resource_group_name = var.existing_resource_group_name == null ? data.ibm_resource_group.default[0].name : var.existing_resource_group_name
 }
 
 data "ibm_resource_group" "default" {
+  count      = var.existing_resource_group_name == null ? 1 : 0
   is_default = "true"
 }
 
