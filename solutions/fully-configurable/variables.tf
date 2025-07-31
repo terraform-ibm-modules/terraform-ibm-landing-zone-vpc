@@ -716,8 +716,7 @@ variable "vpe_gateway_security_group_ids" {
 
   # Currently unused — the DA doesn't create any custom security groups.
   # The default security group (automatically created with the VPC) is attached to the VPE gateway since no other security groups are present.
-  # May be useful in the future when DA supports using an existing VPC with custom security groups.
-
+  # May be useful in the future when DA supports using an existing VPC with custom security groups or if DA supports creating additional security groups.
 
   description = "List of security group ids to attach to each endpoint gateway."
   type        = list(string)
