@@ -2,6 +2,7 @@
 package test
 
 import (
+	"github.com/gruntwork-io/terratest/modules/terraform"
 	"testing"
 
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
@@ -33,8 +34,13 @@ func TestRunHubAndSpokeDelegatedExample(t *testing.T) {
 		Prefix:        "has-slz",
 		ResourceGroup: resourceGroup,
 		Region:        "us-south",
+		PostApplyHook: func(options *testhelper.TestOptions) error {
+			terraformOptions := options.TerraformOptions
+			terraformOptions.Vars["update_delegated_resolver"] = true
+			_, err := terraform.ApplyE(options.Testing, terraformOptions)
+			return err
+		},
 	})
-
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")

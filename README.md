@@ -18,6 +18,15 @@ This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) net
 
 ![vpc-module](https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/.docs/vpc-module.png)
 
+:exclamation: **[Major Version Upgrade to v8.0.0]**:
+
+This major version upgrade affects the Hub and Spoke VPC topology. The `ibm_is_vpc_dns_resolution_binding` resources are no longer created explicitly. Instead, DNS resolution bindings for Spoke VPCs are now handled within the `ibm_is_vpc` resource when the DNS resolver type is set to `delegated`.
+
+To upgrade your resources, follow this two-step process:
+1. Run `terraform apply`: This will remove the existing `ibm_is_vpc_dns_resolution_binding` resources.
+2. Run `terraform apply -var=update_delegated_resolver=true`: This will create the DNS resolution bindings and set the DNS resolver type to `delegated` for the Spoke VPCs.
+
+
 <!-- Below content is automatically populated via pre-commit hook -->
 <!-- BEGIN OVERVIEW HOOK -->
 ## Overview
@@ -165,8 +174,6 @@ To attach access management tags to resources in this module, you need the follo
 | [ibm_is_vpc.vpc](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc) | resource |
 | [ibm_is_vpc_address_prefix.address_prefixes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_address_prefix) | resource |
 | [ibm_is_vpc_address_prefix.subnet_prefix](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_address_prefix) | resource |
-| [ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_dns_resolution_binding) | resource |
-| [ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_id](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_dns_resolution_binding) | resource |
 | [ibm_is_vpc_routing_table.route_table](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_routing_table) | resource |
 | [ibm_is_vpc_routing_table_route.routing_table_routes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_routing_table_route) | resource |
 | [ibm_is_vpn_gateway.vpn_gateway](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpn_gateway) | resource |
@@ -177,6 +184,7 @@ To attach access management tags to resources in this module, you need the follo
 | [ibm_is_subnet.subnet](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_subnet) | data source |
 | [ibm_is_vpc.vpc](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_vpc) | data source |
 | [ibm_is_vpc_address_prefixes.get_address_prefixes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_vpc_address_prefixes) | data source |
+| [ibm_is_vpc_dns_resolution_bindings.dns_bindings](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_vpc_dns_resolution_bindings) | data source |
 
 ### Inputs
 
@@ -242,8 +250,8 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="output_cidr_blocks"></a> [cidr\_blocks](#output\_cidr\_blocks) | List of CIDR blocks present in VPC stack |
 | <a name="output_custom_resolver_hub"></a> [custom\_resolver\_hub](#output\_custom\_resolver\_hub) | The custom resolver created for the hub vpc. Only set if enable\_hub is set and skip\_custom\_resolver\_hub\_creation is false. |
 | <a name="output_dns_custom_resolver_id"></a> [dns\_custom\_resolver\_id](#output\_dns\_custom\_resolver\_id) | The ID of the DNS Custom Resolver. |
-| <a name="output_dns_endpoint_gateways_by_crn"></a> [dns\_endpoint\_gateways\_by\_crn](#output\_dns\_endpoint\_gateways\_by\_crn) | The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable\_hub is false and enable\_hub\_vpc\_id are true. |
-| <a name="output_dns_endpoint_gateways_by_id"></a> [dns\_endpoint\_gateways\_by\_id](#output\_dns\_endpoint\_gateways\_by\_id) | The list of VPEs that are made available for DNS resolution in the created VPC. Only set if enable\_hub is false and enable\_hub\_vpc\_id are true. |
+| <a name="output_dns_endpoint_gateways_by_crn"></a> [dns\_endpoint\_gateways\_by\_crn](#output\_dns\_endpoint\_gateways\_by\_crn) | The list of VPEs that are made available for DNS resolution in the created Spoke VPC. Only set if enable\_hub is false and enable\_hub\_vpc\_id OR enable\_hub\_vpc\_crn are true. |
+| <a name="output_dns_endpoint_gateways_by_id"></a> [dns\_endpoint\_gateways\_by\_id](#output\_dns\_endpoint\_gateways\_by\_id) | The list of VPEs that are made available for DNS resolution in the created Spoke VPC. Only set if enable\_hub is false and enable\_hub\_vpc\_id OR enable\_hub\_vpc\_crn are true. |
 | <a name="output_dns_instance_id"></a> [dns\_instance\_id](#output\_dns\_instance\_id) | The ID of the DNS instance. |
 | <a name="output_dns_record_ids"></a> [dns\_record\_ids](#output\_dns\_record\_ids) | List of all the domain resource records. |
 | <a name="output_dns_zone"></a> [dns\_zone](#output\_dns\_zone) | A map representing DNS zone information. |
