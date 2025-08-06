@@ -21,8 +21,8 @@ variable "provider_visibility" {
 
 variable "existing_resource_group_name" {
   type        = string
-  description = "The name of an existing resource group to provision the resources."
-  default     = "Default"
+  description = "The name of an existing resource group to provision the resources. If not provided the default resource group will be used."
+  default     = null
 }
 
 variable "prefix" {
@@ -713,6 +713,11 @@ variable "vpe_gateway_service_endpoints" {
 }
 
 variable "vpe_gateway_security_group_ids" {
+
+  # Currently unused — the DA doesn't create any custom security groups.
+  # The default security group (automatically created with the VPC) is attached to the VPE gateway since no other security groups are present.
+  # May be useful in the future when DA supports using an existing VPC with custom security groups or if DA supports creating additional security groups we can take `vpe_gateway_security_group_names` as input.
+
   description = "List of security group ids to attach to each endpoint gateway."
   type        = list(string)
   default     = null # Let this default value be null instead of []. Provider issue - https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4546
