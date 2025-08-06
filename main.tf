@@ -45,7 +45,7 @@ resource "ibm_is_vpc" "vpc" {
 
     # Delegated resolver
     dynamic "resolver" {
-      for_each = (var.enable_hub_vpc_id || var.enable_hub_vpc_crn) && var.update_delegated_resolver ? [1] : []
+      for_each = (var.enable_hub_vpc_id || var.enable_hub_vpc_crn) && var.update_delegated_resolver && var.resolver_type == "delegated" ? [1] : []
       content {
         type    = "delegated"
         vpc_id  = var.hub_vpc_id != null ? var.hub_vpc_id : null
@@ -130,6 +130,40 @@ resource "ibm_iam_authorization_policy" "vpc_dns_resolution_auth_policy" {
   resource_attributes {
     name  = "vpcId"
     value = var.enable_hub_vpc_id ? var.hub_vpc_id : split(":", var.hub_vpc_crn)[9]
+  }
+}
+
+# Set up separate DNS resolution binding in case the resolver type is NOT delegated.
+resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
+  count = (var.enable_hub == false && var.enable_hub_vpc_id) && var.resolver_type != "delegated" ? 1 : 0
+  # Depends on required as the authorization policy cannot be directly referenced
+  depends_on = [ibm_iam_authorization_policy.vpc_dns_resolution_auth_policy]
+
+  # Use var.dns_binding_name if not null, otherwise, use var.prefix and var.name combination.
+  name = coalesce(
+    var.dns_binding_name,
+    "${var.prefix != null ? "${var.prefix}-${var.name}" : var.name}-dns-binding"
+  )
+  vpc_id = local.vpc_id # Source VPC
+  vpc {
+    id = var.hub_vpc_id # Target VPC ID
+  }
+}
+
+# Set up separate DNS resolution binding in case the resolver type is NOT delegated.
+resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
+  count = (var.enable_hub == false && var.enable_hub_vpc_crn) && var.resolver_type != "delegated" ? 1 : 0
+  # Depends on required as the authorization policy cannot be directly referenced
+  depends_on = [ibm_iam_authorization_policy.vpc_dns_resolution_auth_policy]
+
+  # Use var.dns_binding_name if not null, otherwise, use var.prefix and var.name combination.
+  name = coalesce(
+    var.dns_binding_name,
+    "${var.prefix != null ? "${var.prefix}-${var.name}" : var.name}-dns-binding"
+  )
+  vpc_id = local.vpc_id # Source VPC
+  vpc {
+    crn = var.hub_vpc_crn # Target VPC CRN
   }
 }
 
