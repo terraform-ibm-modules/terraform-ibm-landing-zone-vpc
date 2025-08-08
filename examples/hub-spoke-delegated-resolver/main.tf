@@ -79,6 +79,7 @@ module "spoke_vpc" {
   hub_account_id            = data.ibm_iam_account_settings.iam_account_settings.account_id
   hub_vpc_crn               = module.hub_vpc.vpc_crn
   enable_hub_vpc_crn        = true
+  resolver_type             = "delegated"
   update_delegated_resolver = var.update_delegated_resolver
   subnets = {
     zone-1 = [

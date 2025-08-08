@@ -45,11 +45,15 @@ resource "ibm_is_vpc" "vpc" {
 
     # Delegated resolver
     dynamic "resolver" {
-      for_each = (var.enable_hub_vpc_id || var.enable_hub_vpc_crn) && var.update_delegated_resolver ? [1] : []
+      for_each = (var.enable_hub_vpc_id || var.enable_hub_vpc_crn) && var.update_delegated_resolver && var.resolver_type == "delegated" ? [1] : []
       content {
         type    = "delegated"
         vpc_id  = var.hub_vpc_id != null ? var.hub_vpc_id : null
         vpc_crn = var.hub_vpc_crn != null ? var.hub_vpc_crn : null
+        dns_binding_name = coalesce(
+          var.dns_binding_name,
+          "${var.prefix != null ? "${var.prefix}-${var.name}" : var.name}-dns-binding"
+        )
       }
     }
 
@@ -76,6 +80,11 @@ resource "ibm_is_vpc" "vpc" {
       }
     }
   }
+}
+
+data "ibm_is_vpc_dns_resolution_bindings" "dns_bindings" {
+  count  = (!var.enable_hub && (var.enable_hub_vpc_id || var.enable_hub_vpc_crn)) ? 1 : 0
+  vpc_id = local.vpc_id
 }
 
 ###############################################################################
@@ -124,9 +133,9 @@ resource "ibm_iam_authorization_policy" "vpc_dns_resolution_auth_policy" {
   }
 }
 
-# Enable Hub to dns resolve in spoke VPC
+# Set up separate DNS resolution binding in case the resolver type is NOT delegated.
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
-  count = (var.enable_hub == false && var.enable_hub_vpc_id) ? 1 : 0
+  count = (var.enable_hub == false && var.enable_hub_vpc_id) && var.resolver_type != "delegated" ? 1 : 0
   # Depends on required as the authorization policy cannot be directly referenced
   depends_on = [ibm_iam_authorization_policy.vpc_dns_resolution_auth_policy]
 
@@ -141,8 +150,9 @@ resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_id" {
   }
 }
 
+# Set up separate DNS resolution binding in case the resolver type is NOT delegated.
 resource "ibm_is_vpc_dns_resolution_binding" "vpc_dns_resolution_binding_crn" {
-  count = (var.enable_hub == false && var.enable_hub_vpc_crn) ? 1 : 0
+  count = (var.enable_hub == false && var.enable_hub_vpc_crn) && var.resolver_type != "delegated" ? 1 : 0
   # Depends on required as the authorization policy cannot be directly referenced
   depends_on = [ibm_iam_authorization_policy.vpc_dns_resolution_auth_policy]
 
