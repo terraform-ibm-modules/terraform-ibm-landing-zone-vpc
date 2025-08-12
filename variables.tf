@@ -641,8 +641,8 @@ variable "update_delegated_resolver" {
   default     = false
 
   validation {
-    condition     = !(var.update_delegated_resolver == true && var.resolver_type != null)
-    error_message = "var.resolver_type cannot be set if var.update_delegated_resolver is true. Only one type of resolver can be created by VPC."
+    condition     = !(var.update_delegated_resolver == true && var.resolver_type != "delegated")
+    error_message = "If var.update_delegated_resolver is true then var.resolver_type must be set to 'delegated'."
   }
 }
 
@@ -665,7 +665,7 @@ variable "use_existing_dns_instance" {
 }
 
 variable "resolver_type" {
-  description = "Resolver type. Can be system or manual. For delegated resolver type, see the update_delegated_resolver variable instead. "
+  description = "Resolver type. Can be system or manual or delegated."
   type        = string
   default     = null
   validation {
@@ -673,8 +673,9 @@ variable "resolver_type" {
       var.resolver_type == null,
       var.resolver_type == "system",
       var.resolver_type == "manual",
+      var.resolver_type == "delegated"
     ])
-    error_message = "`resolver_type` can either be null, or set to the string 'system' or 'manual'."
+    error_message = "`resolver_type` can either be null, or set to the string 'system', 'delegated' or 'manual'."
   }
 }
 
