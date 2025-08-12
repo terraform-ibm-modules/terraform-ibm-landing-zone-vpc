@@ -22,7 +22,7 @@ This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) net
 
 ### Upgrade notice for Hub-and-Spoke topology users (version 8.0.0 and above)
 
-> **Note:** This upgrade notice applies **only** to users of the advanced Hub-and-Spoke VPC topology who are upgrading from a previous version of this module to v8.0.0 or later. If you are using to standard topology, or a new user starting with v8.0.0 or above, you can safely ignore this section.
+> **Note:** This upgrade notice applies **only** to users of the advanced Hub-and-Spoke VPC topology who are upgrading from a previous version of this module to v8.0.0 or later. If you are using the standard topology, or a new user starting with v8.0.0 or above, you can safely ignore this section.
 
 If you are upgrading, note that the `ibm_is_vpc_dns_resolution_binding` resources are no longer used for DNS resolution binding with the `Delegated` resolver type.
 
