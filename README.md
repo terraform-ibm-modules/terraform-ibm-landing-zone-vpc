@@ -27,7 +27,13 @@ This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) net
 If you are upgrading, note that the `ibm_is_vpc_dns_resolution_binding` resources are no longer used for DNS resolution binding with the `Delegated` resolver type.
 
 - Upgrade to the latest module (>= `v8.0.0`).
-- Run `terraform apply -var=update_delegated_resolver=true` to re-create the DNS resolution binding. Expected downtime is typically around 20 seconds.
+- Set `update_delegated_resolver = true` in your Terraform configuration (along with any other input parameters you previously used) and run `terraform apply` to re-create the DNS resolution binding with the `Delegated` resolver type. For example:
+
+```bash
+terraform apply -var="update_delegated_resolver=true"
+```
+
+Expected network connectivity downtime of typically around 20 seconds.
 
 <!-- Below content is automatically populated via pre-commit hook -->
 <!-- BEGIN OVERVIEW HOOK -->
