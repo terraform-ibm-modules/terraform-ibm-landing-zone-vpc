@@ -18,6 +18,13 @@ This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) net
 
 ![vpc-module](https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/.docs/vpc-module.png)
 
+:exclamation: **[Major Version Upgrade to v8.0.0]**:
+
+This major version upgrade affects the Hub and Spoke VPC topology. The `ibm_is_vpc_dns_resolution_binding` resources are no longer used for creating DNS resolution binding for `Delegated` resolver type.
+
+- Upgrade to the latest module (>= `v8.0.0`).
+- Run `terraform apply -var=update_delegated_resolver=true` to re-create the DNS resolution binding. The downtime is typically 20 seconds.
+
 <!-- Below content is automatically populated via pre-commit hook -->
 <!-- BEGIN OVERVIEW HOOK -->
 ## Overview
