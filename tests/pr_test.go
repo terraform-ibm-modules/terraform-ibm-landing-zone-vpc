@@ -15,7 +15,9 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/cloudinfo"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testaddons"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
 )
@@ -44,6 +46,21 @@ var dnsRecordsMap = []map[string]interface{}{
 	{"name": "testTXT", "type": "TXT", "rdata": "textinformation", "ttl": 900},
 	{"name": "testMX", "type": "MX", "rdata": "mailserver.test.com", "preference": 10},
 	{"name": "testSRV", "type": "SRV", "rdata": "tester.com", "priority": 100, "weight": 100, "port": 8000, "service": "_sip", "protocol": "udp"},
+}
+
+var validRegions = []string{
+	"au-syd",
+	"jp-osa",
+	"jp-tok",
+	"eu-de",
+	"eu-gb",
+	"eu-es",
+	"us-east",
+	"us-south",
+	"ca-tor",
+	"br-sao",
+	"eu-fr2",
+	"ca-mon",
 }
 
 func TestMain(m *testing.M) {

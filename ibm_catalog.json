@@ -558,7 +558,7 @@
               ],
               "optional": true,
               "on_by_default": true,
-              "version": "v5.1.4"
+              "version": "v5.1.19"
             },
             {
               "name": "deploy-arch-ibm-cos",
@@ -590,7 +590,7 @@
               ],
               "optional": true,
               "on_by_default": true,
-              "version": "v9.0.2"
+              "version": "v10.2.1"
             },
             {
               "name": "deploy-arch-ibm-cloud-logs",
