@@ -3,6 +3,7 @@ package test
 import (
 	"fmt"
 	"log"
+	"math/rand"
 	"os"
 	"strings"
 	"testing"
@@ -14,7 +15,9 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/cloudinfo"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testaddons"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
 )
@@ -43,6 +46,21 @@ var dnsRecordsMap = []map[string]interface{}{
 	{"name": "testTXT", "type": "TXT", "rdata": "textinformation", "ttl": 900},
 	{"name": "testMX", "type": "MX", "rdata": "mailserver.test.com", "preference": 10},
 	{"name": "testSRV", "type": "SRV", "rdata": "tester.com", "priority": 100, "weight": 100, "port": 8000, "service": "_sip", "protocol": "udp"},
+}
+
+var validRegions = []string{
+	"au-syd",
+	"jp-osa",
+	"jp-tok",
+	"eu-de",
+	"eu-gb",
+	"eu-es",
+	"us-east",
+	"us-south",
+	"ca-tor",
+	"br-sao",
+	"eu-fr2",
+	"ca-mon",
 }
 
 func TestMain(m *testing.M) {
@@ -343,4 +361,47 @@ func TestRunHubAndSpokeDelegatedExample(t *testing.T) {
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
+}
+
+func TestVpcAddonDefaultConfiguration(t *testing.T) {
+	t.Parallel()
+
+	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
+		Testing:       t,
+		Prefix:        "vpc-def",
+		ResourceGroup: resourceGroup,
+		QuietMode:     false, // Suppress logs except on failure
+	})
+
+	options.AddonConfig = cloudinfo.NewAddonConfigTerraform(
+		options.Prefix,
+		"deploy-arch-ibm-vpc",
+		"fully-configurable",
+		map[string]interface{}{
+			"prefix": options.Prefix,
+			"region": validRegions[rand.Intn(len(validRegions))],
+		},
+	)
+
+	err := options.RunAddonTest()
+	require.NoError(t, err)
+}
+
+// TestDependencyPermutations runs dependency permutations for landing zone vpc and all its dependencies
+func TestVpcDependencyPermutations(t *testing.T) {
+	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
+		Testing: t,
+		Prefix:  "vpc-per",
+		AddonConfig: cloudinfo.AddonConfig{
+			OfferingName:   "deploy-arch-ibm-vpc",
+			OfferingFlavor: "fully-configurable",
+			Inputs: map[string]interface{}{
+				"prefix": "vpc-per",
+				"region": validRegions[rand.Intn(len(validRegions))],
+			},
+		},
+	})
+
+	err := options.RunAddonPermutationTest()
+	assert.NoError(t, err, "Dependency permutation test should not fail")
 }
