@@ -130,7 +130,41 @@ module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-b"
 module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-c"]
 ```
 
+## ​ Upgrade Guide: Migrating VPN from Landing Zone VPC Module to Standalone Site-to-Site VPN Module
+
+### Overview
+
+The `terraform-ibm-landing-zone-vpc` module previously included built-in VPN provisioning via the `vpn_gateways` variable. That functionality has now been extracted into a dedicated `terraform-ibm-site-to-site-vpn` module for better modularity, flexibility, and maintainability.
+
+> **Note:** The legacy VPN logic within the Landing Zone VPC module is still available *for now*, but it is officially **deprecated** and will be removed in an upcoming major release.
+
+## Migration Steps
+
+### 1. Retain Legacy Behavior (Deprecated)
+
+If you're still using `vpn_gateways` within the Landing Zone VPC module, it will continue to work—for now. However, you should see a deprecation warning:
+
+```hcl
+module "landing_zone_vpc" {
+  source  = "terraform-ibm-modules/landing-zone-vpc/ibm"
+  version = "X.Y.Z"
+
+  # Legacy VPN provisioning logic (Deprecated)
+  vpn_gateways =   ["vpn-gateway1", "vpn-gateway2"]
+
+  # ​​ Deprecated: VPN provisioning in this module ⚠️
+  #
+  # Note: This functionality will be removed in the upcoming release.
+  # Please migrate to the standalone [terraform-ibm-site-to-site-vpn](https://github.com/terraform-ibm-modules/terraform-ibm-site-to-site-vpn/blob/main) module.
+}
+```
+
+### 2. Add the New Site-to-Site VPN Module
+
+Refer [usage](https://github.com/terraform-ibm-modules/terraform-ibm-site-to-site-vpn/blob/main/README.md#usage) section as mentioned in the [terraform-ibm-site-to-site-vpn](https://github.com/terraform-ibm-modules/terraform-ibm-site-to-site-vpn/blob/main) module.
+
 ### Required IAM access policies
+
 You need the following permissions to run this module.
 
 - IAM services
