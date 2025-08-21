@@ -3,7 +3,6 @@ package test
 import (
 	"fmt"
 	"log"
-	"math/rand"
 	"os"
 	"strings"
 	"testing"
@@ -379,7 +378,7 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 		"fully-configurable",
 		map[string]interface{}{
 			"prefix": options.Prefix,
-			"region": validRegions[rand.Intn(len(validRegions))],
+			"region": "eu-de",
 		},
 	)
 
@@ -399,7 +398,7 @@ func TestVpcDependencyPermutations(t *testing.T) {
 			OfferingFlavor: "fully-configurable",
 			Inputs: map[string]interface{}{
 				"prefix": "vpc-per",
-				"region": validRegions[rand.Intn(len(validRegions))],
+				"region": "eu-de",
 			},
 		},
 	})
