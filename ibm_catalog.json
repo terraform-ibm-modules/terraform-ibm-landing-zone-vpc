@@ -610,11 +610,6 @@
                   "reference_version": true
                 },
                 {
-                  "dependency_input": "existing_resource_group_name",
-                  "version_input": "existing_resource_group_name",
-                  "reference_version": true
-                },
-                {
                   "dependency_input": "existing_cos_instance_crn",
                   "version_input": "existing_cos_instance_crn",
                   "reference_version": true
@@ -671,11 +666,6 @@
                 {
                   "dependency_input": "existing_kms_instance_crn",
                   "version_input": "existing_kms_instance_crn",
-                  "reference_version": true
-                },
-                {
-                  "dependency_input": "existing_resource_group_name",
-                  "version_input": "existing_resource_group_name",
                   "reference_version": true
                 }
               ]
