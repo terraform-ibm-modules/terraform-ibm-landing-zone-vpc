@@ -570,7 +570,7 @@
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "input_mapping": [
                 {
-                  "dependency_input": "resource_group_name",
+                  "dependency_input": "existing_resource_group_name",
                   "version_input": "existing_resource_group_name",
                   "reference_version": true
                 },

@@ -397,8 +397,9 @@ func TestVpcDependencyPermutations(t *testing.T) {
 			OfferingName:   "deploy-arch-ibm-vpc",
 			OfferingFlavor: "fully-configurable",
 			Inputs: map[string]interface{}{
-				"prefix": "vpc-per",
-				"region": validRegions[rand.IntN(len(validRegions))],
+				"prefix":                    "vpc-per",
+				"region":                    validRegions[rand.IntN(len(validRegions))],
+				"existing_cos_instance_crn": permanentResources["general_test_storage_cos_instance_crn"],
 			},
 		},
 	})
