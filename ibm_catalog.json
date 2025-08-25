@@ -617,7 +617,7 @@
               "id": "63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global",
               "version": "v1.6.11",
               "optional": true,
-              "on_by_default": false,
+              "on_by_default": true,
               "input_mapping": [
                 {
                   "dependency_input": "prefix",
