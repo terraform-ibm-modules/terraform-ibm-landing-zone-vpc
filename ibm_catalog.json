@@ -739,7 +739,7 @@
               "name": "deploy-arch-ibm-scc-workload-protection",
               "description": "Configure IBM Cloud SCC Workload Protection to collect security and compliance metrics.",
               "id": "4322cf44-2289-49aa-a719-dd79e39b14dc-global",
-              "version": "v1.11.0",
+              "version": "v1.11.1",
               "flavors": [
                 "fully-configurable"
               ],
