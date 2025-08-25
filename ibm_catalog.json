@@ -178,6 +178,22 @@
               ],
               "service_name": "atracker",
               "notes": "[Optional] Required to set up activity tracker event routing of auditing events."
+            },
+            {
+              "service_name": "sysdig-secure",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "notes":"[Optional] Required for creating and managing SCC Workload Protection instance."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator",
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager"
+              ],
+              "service_name": "apprapp",
+              "notes": "[Optional] Required for provisioning the App Configuration instance."
             }
           ],
           "configuration": [
@@ -715,6 +731,30 @@
                 {
                   "dependency_input": "existing_kms_instance_crn",
                   "version_input": "existing_kms_instance_crn",
+                  "reference_version": true
+                }
+              ]
+            },
+            {
+              "name": "deploy-arch-ibm-scc-workload-protection",
+              "description": "Configure IBM Cloud SCC Workload Protection to collect security and compliance metrics.",
+              "id": "4322cf44-2289-49aa-a719-dd79e39b14dc-global",
+              "version": "v1.11.0",
+              "flavors": [
+                "fully-configurable"
+              ],
+              "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
+              "optional": true,
+              "on_by_default": true,
+              "input_mapping": [
+                {
+                  "dependency_input": "prefix",
+                  "version_input": "prefix",
+                  "reference_version": true
+                },
+                {
+                  "dependency_input": "region",
+                  "version_input": "region",
                   "reference_version": true
                 }
               ]
