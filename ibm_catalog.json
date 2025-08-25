@@ -123,14 +123,14 @@
                 "crn:v1:bluemix:public:iam::::role:Administrator"
               ],
               "service_name": "All Account Management services",
-              "notes": "Administrator access is required to create and delete resource groups."
+              "notes": "[Optional] Required to create new resource groups when enabling the Account Configuration integration."
             },
             {
               "role_crns": [
                 "crn:v1:bluemix:public:iam::::role:Administrator"
               ],
               "service_name": "All Identity and Access enabled services",
-              "notes": "[Optional] Required if context-based restrictions are created during account configuration."
+              "notes": "[Optional] Required to create new resource groups with account settings when enabling the Account Configuration integration."
             },
             {
               "role_crns": [
