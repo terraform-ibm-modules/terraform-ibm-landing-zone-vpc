@@ -355,7 +355,7 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 		Testing:       t,
 		Prefix:        "vpc-def",
 		ResourceGroup: resourceGroup,
-		QuietMode: false, // Suppress logs except on failure
+		QuietMode:     false, // Suppress logs except on failure
 	})
 
 	options.AddonConfig = cloudinfo.NewAddonConfigTerraform(
@@ -368,6 +368,18 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 		},
 	)
 
+	projectRetry := common.ProjectOperationRetryConfig()
+	projectRetry.InitialDelay = 10 * time.Second
+	options.ProjectRetryConfig = &projectRetry
+
+	catalogRetry := common.CatalogOperationRetryConfig()
+	catalogRetry.InitialDelay = 10 * time.Second
+	catalogRetry.Strategy = common.ExponentialBackoff
+	options.CatalogRetryConfig = &catalogRetry
+
+	deployRetry := common.DefaultRetryConfig()
+	deployRetry.InitialDelay = 10 * time.Second
+	options.DeployRetryConfig = &deployRetry
 	err := options.RunAddonTest()
 	require.NoError(t, err)
 }
