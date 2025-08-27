@@ -355,15 +355,6 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 		Testing:       t,
 		Prefix:        "vpc-def",
 		ResourceGroup: resourceGroup,
-		CatalogRetryConfig: &common.RetryConfig{
-			InitialDelay: 10 * time.Second,
-		},
-		ProjectRetryConfig: &common.RetryConfig{
-			InitialDelay: 10 * time.Second,
-		},
-		DeployRetryConfig: &common.RetryConfig{
-			InitialDelay: 10 * time.Second,
-		},
 		QuietMode: false, // Suppress logs except on failure
 	})
 
