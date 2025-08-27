@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/gruntwork-io/terratest/modules/files"
 	"github.com/gruntwork-io/terratest/modules/logger"
@@ -375,8 +376,11 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 func TestVpcDependencyPermutations(t *testing.T) {
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
-		Testing: t,
-		Prefix:  "vpc-per",
+		Testing:          t,
+		Prefix:           "vpc-per",
+		StaggerDelay:     testaddons.StaggerDelay(15 * time.Second),
+		StaggerBatchSize: testaddons.StaggerBatchSize(8),
+		WithinBatchDelay: testaddons.WithinBatchDelay(5 * time.Second),
 		AddonConfig: cloudinfo.AddonConfig{
 			OfferingName:   "deploy-arch-ibm-vpc",
 			OfferingFlavor: "fully-configurable",
