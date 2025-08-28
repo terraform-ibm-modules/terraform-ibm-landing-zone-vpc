@@ -380,6 +380,8 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 	deployRetry := common.DefaultRetryConfig()
 	deployRetry.InitialDelay = 10 * time.Second
 	options.DeployRetryConfig = &deployRetry
+
+	common.UniqueId(3)
 	err := options.RunAddonTest()
 	require.NoError(t, err)
 }
@@ -391,8 +393,8 @@ func TestVpcDependencyPermutations(t *testing.T) {
 		Testing:          t,
 		Prefix:           "vpc-per",
 		StaggerDelay:     testaddons.StaggerDelay(15 * time.Second),
-		StaggerBatchSize: testaddons.StaggerBatchSize(8),
-		WithinBatchDelay: testaddons.WithinBatchDelay(5 * time.Second),
+		StaggerBatchSize: testaddons.StaggerBatchSize(6),
+		WithinBatchDelay: testaddons.WithinBatchDelay(6 * time.Second),
 		AddonConfig: cloudinfo.AddonConfig{
 			OfferingName:   "deploy-arch-ibm-vpc",
 			OfferingFlavor: "fully-configurable",
