@@ -68,11 +68,11 @@
             "features": [
               {
                 "title": " ",
-                "description": "Ideal for users who need a secure and reliable starting point, with multi-zone subnets, ACLs, and optional gateways to support common networking requirements."
+                "description": "Ideal for users who want flexibility with a reliable starting point."
               },
               {
                 "title": " ",
-                "description": "Designed for users who want deeper insights and stronger protection, with flow logs stored in Object Storage, optional KMS encryption, and integrations with Cloud Logs and Cloud Monitoring."
+                "description": "Offers full control over architecture parameters, with well-chosen defaults that enable a functional Virtual Private Cloud (VPC) environment and integrated IBM Cloud services without requiring manual adjustments."
               }
             ],
             "diagrams": [
