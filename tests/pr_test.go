@@ -364,7 +364,7 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 		"fully-configurable",
 		map[string]interface{}{
 			"prefix": options.Prefix,
-			"region": "us-south",
+			"region": "jp-tok",
 		},
 	)
 
@@ -399,7 +399,7 @@ func TestVpcDependencyPermutations(t *testing.T) {
 			OfferingFlavor: "fully-configurable",
 			Inputs: map[string]interface{}{
 				"prefix":                    "vpc-per",
-				"region":                    "us-south",
+				"region":                    "jp-tok",
 				"existing_cos_instance_crn": permanentResources["general_test_storage_cos_instance_crn"],
 			},
 		},
