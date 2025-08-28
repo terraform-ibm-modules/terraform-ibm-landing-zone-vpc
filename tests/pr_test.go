@@ -380,8 +380,7 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 	deployRetry := common.DefaultRetryConfig()
 	deployRetry.InitialDelay = 10 * time.Second
 	options.DeployRetryConfig = &deployRetry
-
-	common.UniqueId(3)
+	
 	err := options.RunAddonTest()
 	require.NoError(t, err)
 }
