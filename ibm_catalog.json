@@ -68,7 +68,11 @@
             "features": [
               {
                 "title": " ",
-                "description": "Configured to use IBM secure by default standards, but can be edited to fit your use case."
+                "description": "Ideal for users who need a secure and reliable starting point, with multi-zone subnets, ACLs, and optional gateways to support common networking requirements."
+              },
+              {
+                "title": " ",
+                "description": "Designed for users who want deeper insights and stronger protection, with flow logs stored in Object Storage, optional KMS encryption, and integrations with Cloud Logs and Cloud Monitoring."
               }
             ],
             "diagrams": [
