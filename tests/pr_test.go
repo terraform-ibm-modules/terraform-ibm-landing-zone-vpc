@@ -368,17 +368,15 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 		},
 	)
 
-	projectRetry := common.ProjectOperationRetryConfig()
-	projectRetry.InitialDelay = 10 * time.Second
-	options.ProjectRetryConfig = &projectRetry
-
-	catalogRetry := common.CatalogOperationRetryConfig()
-	catalogRetry.InitialDelay = 10 * time.Second
-	catalogRetry.Strategy = common.ExponentialBackoff
+	// Configure catalog operation retries (offering fetches, catalog operations)
+	catalogRetry := common.CatalogOperationRetryConfig() // Get default config
+	catalogRetry.InitialDelay = 10 * time.Second         // Longer initial delay
+	catalogRetry.Strategy = common.ExponentialBackoff    // Use exponential delay instead of linear
 	options.CatalogRetryConfig = &catalogRetry
 
-	deployRetry := common.DefaultRetryConfig()
-	deployRetry.InitialDelay = 10 * time.Second
+	// Configure deployment operation retries
+	deployRetry := common.DefaultRetryConfig()  // Get default config
+	deployRetry.InitialDelay = 10 * time.Second // Longer initial delay
 	options.DeployRetryConfig = &deployRetry
 
 	err := options.RunAddonTest()
@@ -388,12 +386,13 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 // TestDependencyPermutations runs dependency permutations for landing zone vpc and all its dependencies
 func TestVpcDependencyPermutations(t *testing.T) {
 
+	t.Parallel()
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing:          t,
 		Prefix:           "vpc-per",
-		StaggerDelay:     testaddons.StaggerDelay(20 * time.Second),
-		StaggerBatchSize: testaddons.StaggerBatchSize(4),
-		WithinBatchDelay: testaddons.WithinBatchDelay(8 * time.Second),
+		StaggerDelay:     testaddons.StaggerDelay(20 * time.Second),    // 20s delay between batches
+		StaggerBatchSize: testaddons.StaggerBatchSize(4),               // 4 tests per batch
+		WithinBatchDelay: testaddons.WithinBatchDelay(8 * time.Second), // 8s delay within batch
 		AddonConfig: cloudinfo.AddonConfig{
 			OfferingName:   "deploy-arch-ibm-vpc",
 			OfferingFlavor: "fully-configurable",
