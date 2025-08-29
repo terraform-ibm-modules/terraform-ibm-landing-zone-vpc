@@ -1,13 +1,13 @@
 ---
 apiVersion: v1
 offerings:
-  - name: deploy-arch-ibm-vpc
+  - name: deploy-arch-ibm-slz-vpc
     kind: solution
-    catalog_id: f64499c8-eb50-4985-bf91-29f9e605a433
-    offering_id: 2af61763-f8ef-4527-a815-b92166f29bc8
+    catalog_id: 7df1e4ca-d54c-4fd0-82ce-3d13247308cd
+    offering_id: 9fc0fa64-27af-4fed-9dce-47b3640ba739
     variations:
       - name: fully-configurable
-        mark_ready: true
+        mark_ready: false
         install_type: fullstack
         scc:
           instance_id: 1c7d5f78-9262-44c3-b779-b28fe4d88c37
