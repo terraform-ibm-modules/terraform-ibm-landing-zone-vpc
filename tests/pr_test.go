@@ -390,9 +390,9 @@ func TestVpcDependencyPermutations(t *testing.T) {
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing:          t,
 		Prefix:           "vpc-per",
-		StaggerDelay:     testaddons.StaggerDelay(20 * time.Second),    // 20s delay between batches
-		StaggerBatchSize: testaddons.StaggerBatchSize(4),               // 4 tests per batch
-		WithinBatchDelay: testaddons.WithinBatchDelay(8 * time.Second), // 8s delay within batch
+		StaggerDelay:     testaddons.StaggerDelay(10 * time.Second),    // 20s delay between batches
+		StaggerBatchSize: testaddons.StaggerBatchSize(8),               // 4 tests per batch
+		WithinBatchDelay: testaddons.WithinBatchDelay(4 * time.Second), // 8s delay within batch
 		AddonConfig: cloudinfo.AddonConfig{
 			OfferingName:   "deploy-arch-ibm-vpc",
 			OfferingFlavor: "fully-configurable",
