@@ -376,6 +376,7 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 
 	// Configure deployment operation retries
 	deployRetry := common.DefaultRetryConfig()  // Get default config
+	deployRetry.MaxRetries = 5                  // Set Max retries to 5
 	deployRetry.InitialDelay = 10 * time.Second // Longer initial delay
 	options.DeployRetryConfig = &deployRetry
 
@@ -390,9 +391,9 @@ func TestVpcDependencyPermutations(t *testing.T) {
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing:          t,
 		Prefix:           "vpc-per",
-		StaggerDelay:     testaddons.StaggerDelay(10 * time.Second),    // 20s delay between batches
+		StaggerDelay:     testaddons.StaggerDelay(15 * time.Second),    // 20s delay between batches
 		StaggerBatchSize: testaddons.StaggerBatchSize(8),               // 4 tests per batch
-		WithinBatchDelay: testaddons.WithinBatchDelay(4 * time.Second), // 8s delay within batch
+		WithinBatchDelay: testaddons.WithinBatchDelay(3 * time.Second), // 8s delay within batch
 		AddonConfig: cloudinfo.AddonConfig{
 			OfferingName:   "deploy-arch-ibm-vpc",
 			OfferingFlavor: "fully-configurable",
