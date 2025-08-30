@@ -22,7 +22,7 @@ This variable configuration allows you to specify the subnets for the VPC. For e
 
 ### Options for subnets
 
-For each zone, you can define the follwoing:
+For each zone, you can define the following:
 
   - `name` (required): The name of subnet
   - `cidr` (required): The cidr to define for the subnet

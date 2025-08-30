@@ -6,6 +6,7 @@ import (
 	"os"
 	"strings"
 	"testing"
+	"time"
 
 	"github.com/gruntwork-io/terratest/modules/files"
 	"github.com/gruntwork-io/terratest/modules/logger"
@@ -14,7 +15,9 @@ import (
 	"github.com/stretchr/testify/require"
 
 	"github.com/stretchr/testify/assert"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/cloudinfo"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/common"
+	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testaddons"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testhelper"
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
 )
@@ -343,4 +346,65 @@ func TestRunHubAndSpokeDelegatedExample(t *testing.T) {
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
 	assert.NotNil(t, output, "Expected some output")
+}
+
+func TestVpcAddonDefaultConfiguration(t *testing.T) {
+	t.Parallel()
+
+	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
+		Testing:       t,
+		Prefix:        "vpc-def",
+		ResourceGroup: resourceGroup,
+		QuietMode:     false, // Suppress logs except on failure
+	})
+
+	options.AddonConfig = cloudinfo.NewAddonConfigTerraform(
+		options.Prefix,
+		"deploy-arch-ibm-vpc",
+		"fully-configurable",
+		map[string]interface{}{
+			"prefix": options.Prefix,
+			"region": "jp-tok",
+		},
+	)
+
+	// Configure catalog operation retries (offering fetches, catalog operations)
+	catalogRetry := common.CatalogOperationRetryConfig() // Get default config
+	catalogRetry.InitialDelay = 10 * time.Second         // Longer initial delay
+	catalogRetry.Strategy = common.ExponentialBackoff    // Use exponential backoff instead of linear
+	options.CatalogRetryConfig = &catalogRetry
+
+	// Configure deployment operation retries
+	deployRetry := common.DefaultRetryConfig()  // Get default config
+	deployRetry.MaxRetries = 5                  // Set Max retries to 5
+	deployRetry.InitialDelay = 10 * time.Second // Longer initial delay
+	options.DeployRetryConfig = &deployRetry
+
+	err := options.RunAddonTest()
+	require.NoError(t, err)
+}
+
+// TestDependencyPermutations runs dependency permutations for landing zone vpc and all its dependencies
+func TestVpcDependencyPermutations(t *testing.T) {
+
+	t.Parallel()
+	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
+		Testing:          t,
+		Prefix:           "vpc-per",
+		StaggerDelay:     testaddons.StaggerDelay(15 * time.Second),    // 20s delay between batches
+		StaggerBatchSize: testaddons.StaggerBatchSize(8),               // 4 tests per batch
+		WithinBatchDelay: testaddons.WithinBatchDelay(3 * time.Second), // 8s delay within batch
+		AddonConfig: cloudinfo.AddonConfig{
+			OfferingName:   "deploy-arch-ibm-vpc",
+			OfferingFlavor: "fully-configurable",
+			Inputs: map[string]interface{}{
+				"prefix":                    "vpc-per",
+				"region":                    "jp-tok",
+				"existing_cos_instance_crn": permanentResources["general_test_storage_cos_instance_crn"],
+			},
+		},
+	})
+
+	err := options.RunAddonPermutationTest()
+	assert.NoError(t, err, "Dependency permutation test should not fail")
 }

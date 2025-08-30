@@ -8,7 +8,7 @@ locals {
     network_acl.name => {
       rules = flatten([
         [
-          # These rules cannot be added in a conditional operator due to inconsistant typing
+          # These rules cannot be added in a conditional operator due to inconsistent typing
           # This will add all cluster_rules if the acl object contains prepend_ibm_rules as true
           for rule in local.rules :
           rule if network_acl.prepend_ibm_rules == true
