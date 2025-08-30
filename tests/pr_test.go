@@ -371,7 +371,7 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 	// Configure catalog operation retries (offering fetches, catalog operations)
 	catalogRetry := common.CatalogOperationRetryConfig() // Get default config
 	catalogRetry.InitialDelay = 10 * time.Second         // Longer initial delay
-	catalogRetry.Strategy = common.ExponentialBackoff    // Use exponential delay instead of linear
+	catalogRetry.Strategy = common.ExponentialBackoff    // Use exponential backoff instead of linear
 	options.CatalogRetryConfig = &catalogRetry
 
 	// Configure deployment operation retries
