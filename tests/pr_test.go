@@ -6,7 +6,6 @@ import (
 	"os"
 	"strings"
 	"testing"
-	"time"
 
 	"github.com/gruntwork-io/terratest/modules/files"
 	"github.com/gruntwork-io/terratest/modules/logger"
@@ -368,18 +367,6 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 		},
 	)
 
-	// Configure catalog operation retries (offering fetches, catalog operations)
-	catalogRetry := common.CatalogOperationRetryConfig() // Get default config
-	catalogRetry.InitialDelay = 10 * time.Second         // Longer initial delay
-	catalogRetry.Strategy = common.ExponentialBackoff    // Use exponential backoff instead of linear
-	options.CatalogRetryConfig = &catalogRetry
-
-	// Configure deployment operation retries
-	deployRetry := common.DefaultRetryConfig()  // Get default config
-	deployRetry.MaxRetries = 5                  // Set Max retries to 5
-	deployRetry.InitialDelay = 10 * time.Second // Longer initial delay
-	options.DeployRetryConfig = &deployRetry
-
 	err := options.RunAddonTest()
 	require.NoError(t, err)
 }
@@ -389,11 +376,8 @@ func TestVpcDependencyPermutations(t *testing.T) {
 
 	t.Parallel()
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
-		Testing:          t,
-		Prefix:           "vpc-per",
-		StaggerDelay:     testaddons.StaggerDelay(20 * time.Second),    // 20s delay between batches
-		StaggerBatchSize: testaddons.StaggerBatchSize(4),               // 4 tests per batch
-		WithinBatchDelay: testaddons.WithinBatchDelay(3 * time.Second), // 3s delay within batch
+		Testing: t,
+		Prefix:  "vpc-per",
 		AddonConfig: cloudinfo.AddonConfig{
 			OfferingName:   "deploy-arch-ibm-vpc",
 			OfferingFlavor: "fully-configurable",
