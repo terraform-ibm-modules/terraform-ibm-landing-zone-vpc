@@ -21,8 +21,8 @@
         "infrastructure as code",
         "solution"
       ],
-      "short_description": "Deploy Virtual Private Clouds (VPCs) on IBM Cloud with full flexibility and customisation to support different workloads",
-      "long_description":"This deployable architecture provides a foundational IBM Cloud [Virtual Private Cloud (VPC)](https://www.ibm.com/cloud/vpc) environment that serves as the base for deploying compute and advanced resources. It establishes the core networking and security framework without including Virtual Server Instances (VSI) or Red Hat OpenShift clusters by default. This architecture can be extended to support a variety of deployable architectures, such as [Cloud automation for Virtual Servers for Virtual Private Cloud](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-vsi-vpc-28e2b12c-858f-4ae8-8717-60db8cec2e6e-global), [Cloud automation for Red Hat OpenShift Container Platform on VPC](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-ocp-vpc-1728a4fd-f561-4cf9-82ef-2b1eeb5da1a8-global), [Cloud automation for Red Hat OpenShift AI](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-ocp-ai-ba708aed-bb8a-4ac0-83a7-53a066701db5-global), and other cloud automation architectures. By setting up this foundational layer, it enables consistent, scalable, and secure deployments across multiple IBM Cloud workloads.",
+      "short_description": "Automates the deployment of Virtual Private Cloud (VPC) on IBM Cloud, offering full configurability and flexibility for diverse workloads.",
+      "long_description":"The VPC landing zone deployable architecture provides a foundational IBM Cloud [Virtual Private Cloud (VPC)](https://www.ibm.com/cloud/vpc) environment that serves as the base for deploying compute and advanced resources. It establishes the core networking and security framework without including Virtual Server Instances (VSI) or Red Hat OpenShift clusters by default. This architecture can be extended to support a variety of deployable architectures, such as [Landing zone for applications with virtual servers](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-vsi-vpc-28e2b12c-858f-4ae8-8717-60db8cec2e6e-global), [Landing zone for containerized applications with Red Hat Openshift](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-ocp-vpc-1728a4fd-f561-4cf9-82ef-2b1eeb5da1a8-global), [Cloud automation for Red Hat OpenShift AI](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-ocp-ai-ba708aed-bb8a-4ac0-83a7-53a066701db5-global), and other cloud automation architectures. By setting up this foundational layer, it enables consistent, scalable, and secure deployments across multiple IBM Cloud workloads.",
       "offering_docs_url": "https://cloud.ibm.com/docs/secure-infrastructure-vpc?topic=secure-infrastructure-vpc-overview#overview-vpc",
       "offering_icon_url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/images/vpc_icon.svg",
       "provider_name": "IBM",
@@ -45,7 +45,7 @@
         },
         {
           "title": "Observability Integration",
-          "description": "Can be integrated with observability services to configure logging, monitoring, and activity tracker event routing, providing deeper visibility into network and workload operations."
+          "description": "Can be integrated with IBM Cloud Observability services to configure logging, monitoring, and activity tracker event routing, providing deeper visibility into network and workload operations."
         },
         {
           "title": "Traffic Management",
@@ -54,7 +54,7 @@
       ],
       "flavors": [
         {
-          "label": "Fully configurable",
+          "label": "Standard - Integrated setup with configurable services",
           "name": "fully-configurable",
           "index": 1,
           "install_type": "fullstack",
@@ -82,7 +82,7 @@
             "diagrams": [
               {
                 "diagram": {
-                  "caption": "Virtual Private Cloud topology",
+                  "caption": "Virtual Private Cloud topology - Standard (Integrated setup with configurable services)",
                   "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/reference-architecture/deployable-architecture-vpc.svg",
                   "type": "image/svg+xml"
                 },
@@ -476,7 +476,7 @@
           "dependencies": [
             {
               "name": "deploy-arch-ibm-account-infra-base",
-              "description": "Cloud automation for Account Configuration organizes your IBM Cloud account with a ready-made set of resource groups by default and when you enable the \"with Account Settings\" option, it also applies baseline security and governance settings. ",
+              "description": "Organize your IBM Cloud account with preconfigured resource groups. If not selected, the default resource group is used. Optionally, expand to apply recommended security controls via \"with Account Settings\" variation.",
               "catalog_id": "7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3",
               "flavors": [
                 "resource-group-only",
