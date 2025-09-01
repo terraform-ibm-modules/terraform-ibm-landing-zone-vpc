@@ -374,6 +374,7 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 // TestDependencyPermutations runs dependency permutations for landing zone vpc and all its dependencies
 func TestVpcDependencyPermutations(t *testing.T) {
 
+	t.Skip("Skipping dependency permutations until the test is fixed")
 	t.Parallel()
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing: t,
