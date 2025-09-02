@@ -672,7 +672,7 @@
             },
             {
               "name": "deploy-arch-ibm-cloud-monitoring",
-              "description": "Configure an IBM Cloud Monitoring instance to collect the platform metrics.",
+              "description": "Sets up a Cloud Monitoring instance to collect the platform metrics.",
               "id": "73debdbf-894f-4c14-81c7-5ece3a70b67d-global",
               "version": "v1.6.4",
               "flavors": [
