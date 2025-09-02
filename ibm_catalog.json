@@ -185,7 +185,7 @@
                 "crn:v1:bluemix:public:iam::::role:Editor"
               ],
               "service_name": "atracker",
-              "notes": "[Optional] Required to set up activity tracker event routing of auditing events."
+              "notes": "[Optional] Required to set up Activity Tracker Event Routing of auditing events."
             },
             {
               "service_name": "sysdig-secure",
