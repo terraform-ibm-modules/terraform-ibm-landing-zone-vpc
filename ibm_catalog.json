@@ -80,7 +80,7 @@
         },
         {
           "title": "Sets up activity tracking for the VPC instance",
-          "description": "Optionally, you can deploy Cloud automation for Activity Tracker Event Routing to route and securely store auditing events that are related to your VPC instance [Learn more](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-activity-tracker-918453c3-4f97-4583-8c4a-83ef12fc7916-global)."
+          "description": "Optionally, you can deploy [Cloud automation for Activity Tracker Event Routing](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-activity-tracker-918453c3-4f97-4583-8c4a-83ef12fc7916-global) to route and securely store auditing events that are related to your VPC instance."
         }
       ],
       "support_details": "This product is in the community registry, support is handled through the [original repo](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc). If you experience issues, please open an issue in the repository [here](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/issues). Please note this product is not supported via the IBM Cloud Support Center.",
