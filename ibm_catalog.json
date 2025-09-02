@@ -76,7 +76,7 @@
         },
         {
           "title": "Sets up monitoring operational metrics for the VPC instance",
-          "description": "Optionally, you can deploy Cloud automation for Cloud Monitoring to measure how users and applications interact with your VPC instance [Learn more](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cloud-monitoring-73debdbf-894f-4c14-81c7-5ece3a70b67d-global)."
+          "description": "Optionally, you can deploy [Cloud automation for Cloud Monitoring](https://cloud.ibm.com/catalog/7a4d68b4-cf8b-40cd-a3d1-f49aff526eb3/architecture/deploy-arch-ibm-cloud-monitoring-73debdbf-894f-4c14-81c7-5ece3a70b67d-global) to measure how users and applications interact with your VPC instance."
         },
         {
           "title": "Sets up activity tracking for the VPC instance",
