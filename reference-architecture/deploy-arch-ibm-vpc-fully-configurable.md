@@ -59,12 +59,12 @@ This architecture lays the groundwork for adding Virtual Server Instances (VSI),
 ## Architecture diagram
 {: #ra-vpc-fully-configurable-architecture-diagram}
 
-![Architecture diagram for the Standard - Integrated setup with configurable services variation of Cloud foundation for VPC](deployable-architecture-vpc.svg "Architecture diagram of VPC deployable architecture"){: caption="Figure 1. Standard variation of Cloud foundation for VPC" caption-side="bottom"}{: external download="deployable-architecture-vpc.svg"}
+![Architecture diagram for the Standard - Integrated setup with configurable services variation of Cloud foundation for VPC](deployable-architecture-vpc.svg "Architecture diagram of VPC deployable architecture"){: caption="Standard variation of Cloud foundation for VPC" caption-side="bottom"}{: external download="deployable-architecture-vpc.svg"}
 
 ## Design requirements
 {: #ra-vpc-qs-design-requirements}
 
-![Design requirements for Cloud foundation for VPC](heat-map-deploy-arch-slz-vpc-fully-configurable.svg "Design requirements"){: caption="Figure 2. Scope of the design requirements" caption-side="bottom"}
+![Design requirements for Cloud foundation for VPC](heat-map-deploy-arch-slz-vpc-fully-configurable.svg "Design requirements"){: caption="Scope of the design requirements" caption-side="bottom"}
 
 ## Components
 {: #ra-vpc-fully-configurable-components}
