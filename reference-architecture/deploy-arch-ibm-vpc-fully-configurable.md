@@ -64,7 +64,7 @@ This architecture lays the groundwork for adding Virtual Server Instances (VSI),
 ## Design requirements
 {: #ra-vpc-qs-design-requirements}
 
-![Design requirements for Cloud foundation for VPC](https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone/main/reference-architectures/heat-map-deploy-arch-slz-vpc-standard.svg "Design requirements"){: caption="Figure 2. Scope of the design requirements" caption-side="bottom"}
+![Design requirements for Cloud foundation for VPC](heat-map-deploy-arch-slz-vpc-fully-configurable.svg "Design requirements"){: caption="Figure 2. Scope of the design requirements" caption-side="bottom"}
 
 ## Components
 {: #ra-vpc-fully-configurable-components}
