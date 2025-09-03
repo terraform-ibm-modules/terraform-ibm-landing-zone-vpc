@@ -132,7 +132,7 @@ locals {
       rules = flatten([
         # Prepend ibm rules
         [
-          # These rules cannot be added in a conditional operator due to inconsistant typing
+          # These rules cannot be added in a conditional operator due to inconsistent typing
           # This will add all internal rules if the acl object contains add_ibm_cloud_internal_rules rules
           for rule in local.ibm_cloud_internal_rules :
           rule if network_acl.add_ibm_cloud_internal_rules == true && network_acl.prepend_ibm_rules == true
@@ -190,7 +190,7 @@ resource "ibm_is_network_acl" "network_acl" {
           # equal to null and only include rules where one of the values is not null
           # this allows for patterns to include `tcp` blocks for conversion to list
           # while still not creating a rule. default behavior would force the rule to
-          # be included if all indiviual values are set to null
+          # be included if all individual values are set to null
           : length([
             for value in ["port_min", "port_max", "source_port_min", "source_port_min"] :
             true if lookup(rules.value["tcp"], value, null) == null
@@ -216,7 +216,7 @@ resource "ibm_is_network_acl" "network_acl" {
           # equal to null and only include rules where one of the values is not null
           # this allows for patterns to include `udp` blocks for conversion to list
           # while still not creating a rule. default behavior would force the rule to
-          # be included if all indiviual values are set to null
+          # be included if all individual values are set to null
           : length([
             for value in ["port_min", "port_max", "source_port_min", "source_port_min"] :
             true if lookup(rules.value["udp"], value, null) == null
@@ -242,7 +242,7 @@ resource "ibm_is_network_acl" "network_acl" {
           # equal to null and only include rules where one of the values is not null
           # this allows for patterns to include `udp` blocks for conversion to list
           # while still not creating a rule. default behavior would force the rule to
-          # be included if all indiviual values are set to null
+          # be included if all individual values are set to null
           : length([
             for value in ["code", "type"] :
             true if lookup(rules.value["icmp"], value, null) == null
