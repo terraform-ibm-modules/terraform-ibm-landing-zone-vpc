@@ -136,13 +136,13 @@ module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-c"
 
 The `terraform-ibm-landing-zone-vpc` module previously included built-in VPN provisioning via the `vpn_gateways` variable. That functionality has now been extracted into a dedicated `terraform-ibm-site-to-site-vpn` module for better modularity, flexibility, and maintainability.
 
-> **Note:** The legacy VPN logic within the Landing Zone VPC module is still available *for now*, but it is officially **deprecated** and will be removed in an upcoming major release.
+> **Note:** The legacy VPN logic within the IBM Cloud Landing Zone VPC module is **deprecated** and will be removed in an upcoming major release.
 
 ## Migration Steps
 
 ### 1. Retain Legacy Behavior (Deprecated)
 
-If you're still using `vpn_gateways` within the Landing Zone VPC module, it will continue to work—for now. However, you should see a deprecation warning:
+If you are still using `vpn_gateways` within the IBM Cloud Landing Zone VPC module, it will continue to work for now. However, you should see a deprecation warning:
 
 ```hcl
 module "landing_zone_vpc" {
