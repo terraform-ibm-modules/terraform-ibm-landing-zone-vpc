@@ -29,8 +29,8 @@ docs: https://cloud.ibm.com/docs/secure-infrastructure-vpc
 image_source: https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/reference-architectures/deployable-architecture-vpc.svg
 
 related_links:
-  - title: "Cloud foundation for VPC"
-    url: "https://cloud.ibm.com/docs/deployable-reference-architectures?topic=deployable-reference-architectures-vpc-ra"
+  - title: "Cloud foundation for VPC (Standard - Integrated setup with configurable services)"
+    url: "https://cloud.ibm.com/docs/deployable-reference-architectures?topic=secure-infrastructure-vpc-vpc-fully-configurable"
     description: "A deployable architecture that deploys a simple Virtual Private Cloud (VPC) infrastructure without any compute resources."
 
 use-case: Cybersecurity
