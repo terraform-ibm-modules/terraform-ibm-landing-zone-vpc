@@ -26,7 +26,7 @@ deployment-url: https://cloud.ibm.com/catalog/architecture/deploy-arch-ibm-slz-v
 
 docs: https://cloud.ibm.com/docs/secure-infrastructure-vpc
 
-image_source: https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/reference-architecture/deployable-architecture-vpc.svg
+image_source: https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/reference-architectures/deployable-architecture-vpc.svg
 
 related_links:
   - title: "Cloud foundation for VPC"
