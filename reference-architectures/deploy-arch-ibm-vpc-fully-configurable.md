@@ -26,12 +26,15 @@ deployment-url: https://cloud.ibm.com/catalog/architecture/deploy-arch-ibm-slz-v
 
 docs: https://cloud.ibm.com/docs/secure-infrastructure-vpc
 
-image_source: https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/reference-architecture/deployable-architecture-vpc.svg
+image_source: https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/reference-architectures/deployable-architecture-vpc.svg
 
 related_links:
-  - title: "Cloud foundation for VPC"
+  - title: "Cloud foundation for VPC (Standard - Integrated setup with configurable services)"
+    url: "https://cloud.ibm.com/docs/deployable-reference-architectures?topic=deployable-reference-architectures-vpc-fully-configurable"
+    description: "A deployable architecture that deploys a simple Virtual Private Cloud (VPC) infrastructure without any compute resources."
+  - title: "Cloud foundation for VPC (Standard - Financial Services edition)"
     url: "https://cloud.ibm.com/docs/deployable-reference-architectures?topic=deployable-reference-architectures-vpc-ra"
-    description: "A deployable architecture that is based on the IBM Cloud for Financial Services reference and that provides virtual servers in a secure VPC for your workloads."
+    description: "A deployable architecture that deploys a Virtual Private Cloud (VPC) infrastructure without any compute resources and is based on the IBM Cloud for Financial Services reference."
 
 use-case: Cybersecurity
 industry: Banking,FinancialSector
@@ -43,13 +46,13 @@ content-type: reference-architecture
 
 {{site.data.keyword.attribute-definition-list}}
 
-# Cloud foundation for VPC - Standard - Integrated setup with configurable services
+# Cloud foundation for VPC - Standard (Integrated setup with configurable services) variation
 {: #vpc-fully-configurable}
 {: toc-content-type="reference-architecture"}
 {: toc-industry="Banking,FinancialSector"}
 {: toc-use-case="Cybersecurity"}
 {: toc-compliance="FedRAMP"}
-{: toc-version="1.0.0"}
+{: toc-version="8.2.0"}
 
 The Cloud foundation for VPC deployable architecture sets up a foundational IBM Cloud Virtual Private Cloud (VPC) environment with full configurability and flexibility. This deployable architecture provides complete control over VPC configuration, including subnets, network ACLs, security groups, public gateways, VPN gateways, and VPE gateways. Unlike pre-configured variations, this solution allows you to customize every aspect of your VPC infrastructure to meet specific requirements.
 
