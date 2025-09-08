@@ -131,6 +131,8 @@ This variable configuration allows you to specify the list of security group rul
 - `name` (required): The name of the security group rule.
 - `direction` (required): The direction of the traffic. Allowed values are `inbound` or `outbound`.
 - `remote` (optional): Security group ID or an IP address or a CIDR block.
+- `local` (optional): The local IP address or range of local IP addresses to which this rule will allow inbound traffic (or from which, for outbound traffic).
+- `ip_version` (optional): The IP version to enforce.
 - `tcp` (optional):
     - `port_min`
     - `port_max`
