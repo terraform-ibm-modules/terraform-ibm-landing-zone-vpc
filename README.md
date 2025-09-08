@@ -8,7 +8,7 @@
 
 This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) network components:
 
-- VPC: Creates a VPC in a resource group and supports classic access. The VPC and components are specified in the [main.tf](main.tf) file.
+- VPC: Creates a VPC in a resource group. The VPC and components are specified in the [main.tf](main.tf) file.
 - Public gateways: Optionally create public gateways in the VPC in each of the three zones of the VPC's region.
 - Subnets: Create one to three zones in the [subnet.tf](subnet.tf) file.
 - Network ACLs: Create network ACLs with multiple rules. By default, VPC network ACLs can have no more than 25 rules.
@@ -72,7 +72,6 @@ module vpc {
   prefix              = "my-test"
   tags                = ["tag1", "tag2"]
   vpc_name            = "my-vpc"
-  classic_access      = true
   network_acls = [
     {
       name                         = "acl1"

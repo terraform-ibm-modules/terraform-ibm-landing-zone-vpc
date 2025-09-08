@@ -608,7 +608,7 @@ variable "kms_endpoint_type" {
   description = "The type of endpoint to use for communicating with the KMS. Possible values: `public`, `private`. Applies only if `existing_flow_logs_bucket_kms_key_crn` is not specified."
   default     = "private"
   validation {
-    condition     = can(regex("public|private", var.kms_endpoint_type))
+    condition     = can(regex("^(public|private)$", var.kms_endpoint_type))
     error_message = "Valid values for the `kms_endpoint_type_value` are `public` or `private`."
   }
 }
