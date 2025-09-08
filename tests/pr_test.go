@@ -22,6 +22,7 @@ import (
 )
 
 const basicExampleTerraformDir = "examples/basic"
+const customSecurityGroupExampleTerraformDir = "examples/custom_security_group"
 const defaultExampleTerraformDir = "examples/default"
 const landingZoneExampleTerraformDir = "examples/landing_zone"
 const hubAndSpokeDelegatedExampleTerraformDir = "examples/hub-spoke-delegated-resolver"

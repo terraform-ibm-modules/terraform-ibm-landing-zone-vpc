@@ -44,6 +44,7 @@ Expected network connectivity downtime of typically around 20 seconds.
     * [workload-vpc](./modules/workload-vpc)
 * [Examples](./examples)
     * [Basic Example](./examples/basic)
+    * [Custom Security Group Example](./examples/custom_security_group)
     * [Default Example](./examples/default)
     * [Existing VPC and subnets Example](./examples/existing_vpc)
     * [Hub and Spoke VPC Example](./examples/hub-spoke-delegated-resolver)
