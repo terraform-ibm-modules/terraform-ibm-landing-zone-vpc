@@ -46,7 +46,7 @@ content-type: reference-architecture
 
 {{site.data.keyword.attribute-definition-list}}
 
-# Cloud foundation for VPC - Standard (Integrated setup with configurable services) variation
+# Cloud foundation for VPC - Standard (Integrated setup with configurable services)
 {: #vpc-fully-configurable}
 {: toc-content-type="reference-architecture"}
 {: toc-industry="Banking,FinancialSector"}
