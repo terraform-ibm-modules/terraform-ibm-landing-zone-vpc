@@ -235,8 +235,55 @@ func TestFullyConfigurable(t *testing.T) {
 	assert.Nil(t, err, "This should not have errored")
 }
 
+func validateEnvVariable(t *testing.T, varName string) string {
+	val, present := os.LookupEnv(varName)
+	require.True(t, present, "%s environment variable not set", varName)
+	require.NotEqual(t, "", val, "%s environment variable is empty", varName)
+	return val
+}
+
+func setupTerraform(t *testing.T, prefix, realTerraformDir string) *terraform.Options {
+	tempTerraformDir, err := files.CopyTerraformFolderToTemp(realTerraformDir, prefix)
+	require.NoError(t, err, "Failed to create temporary Terraform folder")
+	apiKey := validateEnvVariable(t, "TF_VAR_ibmcloud_api_key") // pragma: allowlist secret
+	region, err := testhelper.GetBestVpcRegion(apiKey, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
+	require.NoError(t, err, "Failed to get best VPC region")
+
+	existingTerraformOptions := terraform.WithDefaultRetryableErrors(t, &terraform.Options{
+		TerraformDir: tempTerraformDir,
+		Vars: map[string]interface{}{
+			"prefix":     prefix,
+			"region":     region,
+			"create_vpc": false,
+			"create_db":  true,
+		},
+		// Set Upgrade to true to ensure latest version of providers and modules are used by terratest.
+		// This is the same as setting the -upgrade=true flag with terraform.
+		Upgrade: true,
+	})
+
+	terraform.WorkspaceSelectOrNew(t, existingTerraformOptions, prefix)
+	_, err = terraform.InitAndApplyE(t, existingTerraformOptions)
+	require.NoError(t, err, "Init and Apply of temp existing resource failed")
+
+	return existingTerraformOptions
+}
+
+func cleanupTerraform(t *testing.T, options *terraform.Options, prefix string) {
+	if t.Failed() && strings.ToLower(os.Getenv("DO_NOT_DESTROY_ON_FAILURE")) == "true" {
+		fmt.Println("Terratest failed. Debug the test and delete resources manually.")
+		return
+	}
+	logger.Log(t, "START: Destroy (existing resources)")
+	terraform.Destroy(t, options)
+	terraform.WorkspaceDelete(t, options, prefix)
+	logger.Log(t, "END: Destroy (existing resources)")
+}
+
 func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 	t.Parallel()
+
+	// Provision resources first
 
 	// Verify ibmcloud_api_key variable is set
 	checkVariable := "TF_VAR_ibmcloud_api_key"
@@ -245,6 +292,7 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
 
 	prefix := "vpc-da-fl"
+	existingTerraformOptions := setupTerraform(t, prefix, "./existing-resources")
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
@@ -273,10 +321,12 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
 		{Name: "kms_encryption_enabled_bucket", Value: "true", DataType: "bool"},
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
+		{Name: "vpe_gateway_cloud_services", Value: []map[string]string{{"service_name": "kms"}, {"service_name": "cloud-object-storage"}}, DataType: "list(object{})"},
+		{Name: "vpe_gateway_cloud_service_by_crn", Value: []map[string]string{{"crn": terraform.Output(t, existingTerraformOptions, "postgresql_db_crn")}}, DataType: "list(object{})"},
 	}
 
-	err := options.RunSchematicTest()
-	assert.Nil(t, err, "This should not have errored")
+	require.NoError(t, options.RunSchematicTest(), "This should not have errored")
+	cleanupTerraform(t, existingTerraformOptions, prefix)
 }
 
 // Test the upgrade of fully-configurable DA with defaults
@@ -290,6 +340,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
 
 	prefix := "vpc-upg"
+	existingTerraformOptions := setupTerraform(t, prefix, "./existing-resources")
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
@@ -318,12 +369,15 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
 		{Name: "kms_encryption_enabled_bucket", Value: "true", DataType: "bool"},
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
+		{Name: "vpe_gateway_cloud_services", Value: []map[string]string{{"service_name": "kms"}, {"service_name": "cloud-object-storage"}}, DataType: "list(object{})"},
+		{Name: "vpe_gateway_cloud_service_by_crn", Value: []map[string]string{{"crn": terraform.Output(t, existingTerraformOptions, "postgresql_db_crn")}}, DataType: "list(object{})"},
 	}
 
 	err := options.RunSchematicUpgradeTest()
 	if !options.UpgradeTestSkipped {
 		assert.Nil(t, err, "This should not have errored")
 	}
+	cleanupTerraform(t, existingTerraformOptions, prefix)
 }
 
 func TestRunHubAndSpokeDelegatedExample(t *testing.T) {

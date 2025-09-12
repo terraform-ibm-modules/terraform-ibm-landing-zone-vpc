@@ -10,6 +10,12 @@ variable "region" {
   default     = "us-south"
 }
 
+variable "create_vpc" {
+  description = "Indicates whether to create VPC."
+  type        = bool
+  default     = true
+}
+
 variable "prefix" {
   description = "The prefix that you would like to append to your resources"
   type        = string
@@ -26,4 +32,10 @@ variable "resource_tags" {
   description = "List of Tags for the resource created"
   type        = list(string)
   default     = null
+}
+
+variable "create_db" {
+  description = "Indicates whether to create DB."
+  type        = bool
+  default     = false
 }
