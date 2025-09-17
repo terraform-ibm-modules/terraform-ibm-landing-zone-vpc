@@ -44,6 +44,7 @@ module "postgresql_db" {
 # 1. Give some extra time after postgresql db creation, and before creating the VPE targeting it. This works around the error "Service does not support VPE extensions."
 # 2. Give time on deletion between the VPE destruction and the destruction of the SG that is attached to the VPE. This works around the error "Target not found"
 resource "time_sleep" "sleep_time" {
+  count            = var.create_db ? 1 : 0
   depends_on       = [module.postgresql_db]
   create_duration  = "180s"
   destroy_duration = "120s"
