@@ -21,6 +21,9 @@ import (
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
 )
 
+/*
+Global variables
+*/
 const basicExampleTerraformDir = "examples/basic"
 const customSecurityGroupExampleTerraformDir = "examples/custom_security_group"
 const defaultExampleTerraformDir = "examples/default"
@@ -32,9 +35,8 @@ const noprefixExampleTerraformDir = "examples/no-prefix"
 const vpcWithDnsExampleTerraformDir = "examples/vpc-with-dns"
 const fullyConfigFlavorDir = "solutions/fully-configurable"
 const resourceGroup = "geretain-test-resources"
-
-// Define a struct with fields that match the structure of the YAML data
 const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
+const terraformVersion = "terraform_v1.10" // This should match the version in the ibm_catalog.json
 
 var permanentResources map[string]interface{}
 
@@ -220,6 +222,7 @@ func TestFullyConfigurable(t *testing.T) {
 		Tags:                   []string{"vpc-da-test"},
 		DeleteWorkspaceOnFail:  false,
 		WaitJobCompleteMinutes: 120,
+		TerraformVersion:       terraformVersion,
 	})
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
@@ -308,6 +311,7 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 		Tags:                   []string{"vpc-da-test"},
 		DeleteWorkspaceOnFail:  false,
 		WaitJobCompleteMinutes: 120,
+		TerraformVersion:       terraformVersion,
 	})
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
@@ -353,10 +357,12 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 			"dynamic_values/config_modules/*/*.tf",
 			fullyConfigFlavorDir + "/*.tf",
 		},
-		TemplateFolder:         fullyConfigFlavorDir,
-		Tags:                   []string{"vpc-da-test"},
-		DeleteWorkspaceOnFail:  false,
-		WaitJobCompleteMinutes: 120,
+		TemplateFolder:             fullyConfigFlavorDir,
+		Tags:                       []string{"vpc-da-test"},
+		DeleteWorkspaceOnFail:      false,
+		WaitJobCompleteMinutes:     120,
+		CheckApplyResultForUpgrade: true,
+		TerraformVersion:           terraformVersion,
 	})
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
@@ -426,27 +432,4 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 
 	err := options.RunAddonTest()
 	require.NoError(t, err)
-}
-
-// TestDependencyPermutations runs dependency permutations for landing zone vpc and all its dependencies
-func TestVpcDependencyPermutations(t *testing.T) {
-
-	t.Skip("Skipping dependency permutations until the test is fixed")
-	t.Parallel()
-	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
-		Testing: t,
-		Prefix:  "vpc-per",
-		AddonConfig: cloudinfo.AddonConfig{
-			OfferingName:   "deploy-arch-ibm-slz-vpc",
-			OfferingFlavor: "fully-configurable",
-			Inputs: map[string]interface{}{
-				"prefix":                    "vpc-per",
-				"region":                    "us-south",
-				"existing_cos_instance_crn": permanentResources["general_test_storage_cos_instance_crn"],
-			},
-		},
-	})
-
-	err := options.RunAddonPermutationTest()
-	assert.NoError(t, err, "Dependency permutation test should not fail")
 }
