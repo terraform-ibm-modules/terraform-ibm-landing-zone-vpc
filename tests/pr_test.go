@@ -201,18 +201,10 @@ func TestRunVpcWithDnsExample(t *testing.T) {
 func TestFullyConfigurable(t *testing.T) {
 	t.Parallel()
 
-	// Verify ibmcloud_api_key variable is set
-	checkVariable := "TF_VAR_ibmcloud_api_key"
-	val, present := os.LookupEnv(checkVariable)
-	require.True(t, present, checkVariable+" environment variable not set")
-	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
-
-	prefix := "vpc-da"
-
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
 		Region:  "eu-de",
-		Prefix:  prefix,
+		Prefix:  "vpc-da",
 		TarIncludePatterns: []string{
 			"*.tf",
 			"dynamic_values/*.tf",
@@ -295,7 +287,7 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 	require.True(t, present, checkVariable+" environment variable not set")
 	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
 
-	prefix := "vpc-da-fl"
+	prefix := fmt.Sprintf("vpc-da-fl-%s", strings.ToLower(random.UniqueId()))
 	existingTerraformOptions := setupTerraform(t, prefix, "./existing-resources")
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
@@ -345,7 +337,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 	require.True(t, present, checkVariable+" environment variable not set")
 	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
 
-	prefix := "vpc-upg"
+	prefix := fmt.Sprintf("vpc-upg-%s", strings.ToLower(random.UniqueId()))
 	existingTerraformOptions := setupTerraform(t, prefix, "./existing-resources")
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
