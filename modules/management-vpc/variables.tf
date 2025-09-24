@@ -195,9 +195,9 @@ variable "use_public_gateways" {
     zone-3 = optional(bool)
   })
   default = {
-    zone-1 = false
-    zone-2 = false
-    zone-3 = false
+    zone-1 = true
+    zone-2 = true
+    zone-3 = true
   }
 }
 
@@ -230,7 +230,7 @@ variable "subnets" {
         "acl_name" : "management-acl",
         "cidr" : "10.10.10.0/24",
         "name" : "vsi-zone-1",
-        "public_gateway" : false
+        "public_gateway" : true
       },
       {
         "acl_name" : "management-acl",
@@ -250,7 +250,7 @@ variable "subnets" {
         "acl_name" : "management-acl",
         "cidr" : "10.20.10.0/24",
         "name" : "vsi-zone-2",
-        "public_gateway" : false
+        "public_gateway" : true
       },
       {
         "acl_name" : "management-acl",
@@ -264,7 +264,7 @@ variable "subnets" {
         "acl_name" : "management-acl",
         "cidr" : "10.30.10.0/24",
         "name" : "vsi-zone-3",
-        "public_gateway" : false
+        "public_gateway" : true
       },
       {
         "acl_name" : "management-acl",
