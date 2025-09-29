@@ -287,7 +287,7 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 	require.True(t, present, checkVariable+" environment variable not set")
 	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
 
-	prefix := fmt.Sprintf("vpc-da-fl-%s", strings.ToLower(random.UniqueId()))
+	prefix := fmt.Sprintf("vpc-f-%s", strings.ToLower(random.UniqueId()))
 	existingTerraformOptions := setupTerraform(t, prefix, "./existing-resources")
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
@@ -337,7 +337,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 	require.True(t, present, checkVariable+" environment variable not set")
 	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
 
-	prefix := fmt.Sprintf("vpc-upg-%s", strings.ToLower(random.UniqueId()))
+	prefix := fmt.Sprintf("vpc-u-%s", strings.ToLower(random.UniqueId()))
 	existingTerraformOptions := setupTerraform(t, prefix, "./existing-resources")
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
@@ -408,7 +408,7 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing:       t,
-		Prefix:        "vpc-def",
+		Prefix:        "vpc-ad",
 		ResourceGroup: resourceGroup,
 		QuietMode:     false, // Suppress logs except on failure
 	})
@@ -437,7 +437,6 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 			OfferingName:   "deploy-arch-ibm-activity-tracker",
 			OfferingFlavor: "fully-configurable",
 			Inputs: map[string]interface{}{
-				"enable_activity_tracker_event_routing_to_cos_bucket": false,
 				"enable_activity_tracker_event_routing_to_cloud_logs": false,
 			},
 			Enabled: core.BoolPtr(true),
