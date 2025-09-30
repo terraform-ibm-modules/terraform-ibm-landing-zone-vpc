@@ -38,7 +38,7 @@ module "slz_vpc" {
   source                                 = "../../"
   resource_group_id                      = module.resource_group.resource_group_id
   region                                 = var.region
-  name                                   = "vpc"
+  name                                   = var.vpc_name
   routing_table_name                     = "vpc-routing-table"
   public_gateway_name                    = "vpc-public-gateway"
   vpc_flow_logs_name                     = "vpc-flow-logs"

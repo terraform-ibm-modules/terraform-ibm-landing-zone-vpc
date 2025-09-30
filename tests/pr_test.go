@@ -91,6 +91,11 @@ func TestRunNoPrefixExample(t *testing.T) {
 	t.Parallel()
 
 	options := setupOptions(t, "no-prefix-lz", noprefixExampleTerraformDir)
+	options.TerraformVars = map[string]interface{}{
+		"prefix":   options.Prefix,
+		"region":   options.Region,
+		"vpc_name": fmt.Sprintf("%s-vpc", options.Prefix),
+	}
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")
