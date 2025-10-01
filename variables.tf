@@ -299,8 +299,8 @@ variable "use_public_gateways" {
   })
   default = {
     zone-1 = true
-    zone-2 = false
-    zone-3 = false
+    zone-2 = true
+    zone-3 = true
   }
 
   validation {
@@ -372,7 +372,7 @@ variable "subnets" {
       {
         name           = "subnet-c"
         cidr           = "10.30.10.0/24"
-        public_gateway = false
+        public_gateway = true
         acl_name       = "vpc-acl"
         no_addr_prefix = false
       }

@@ -123,7 +123,7 @@ variable "subnets" {
       {
         name           = "subnet-b"
         cidr           = "10.20.10.0/24"
-        public_gateway = false
+        public_gateway = true
         acl_name       = "vpc-acl"
         no_addr_prefix = false
       }
@@ -132,7 +132,7 @@ variable "subnets" {
       {
         name           = "subnet-c"
         cidr           = "10.30.10.0/24"
-        public_gateway = false
+        public_gateway = true
         acl_name       = "vpc-acl"
         no_addr_prefix = false
       }
