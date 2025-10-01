@@ -7,6 +7,7 @@ import (
 	"strings"
 	"testing"
 
+	"github.com/IBM/go-sdk-core/v5/core"
 	"github.com/gruntwork-io/terratest/modules/files"
 	"github.com/gruntwork-io/terratest/modules/logger"
 	"github.com/gruntwork-io/terratest/modules/random"
@@ -21,6 +22,9 @@ import (
 	"github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper/testschematic"
 )
 
+/*
+Global variables
+*/
 const basicExampleTerraformDir = "examples/basic"
 const customSecurityGroupExampleTerraformDir = "examples/custom_security_group"
 const defaultExampleTerraformDir = "examples/default"
@@ -32,9 +36,8 @@ const noprefixExampleTerraformDir = "examples/no-prefix"
 const vpcWithDnsExampleTerraformDir = "examples/vpc-with-dns"
 const fullyConfigFlavorDir = "solutions/fully-configurable"
 const resourceGroup = "geretain-test-resources"
-
-// Define a struct with fields that match the structure of the YAML data
 const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
+const terraformVersion = "terraform_v1.10" // This should match the version in the ibm_catalog.json
 
 var permanentResources map[string]interface{}
 
@@ -198,18 +201,10 @@ func TestRunVpcWithDnsExample(t *testing.T) {
 func TestFullyConfigurable(t *testing.T) {
 	t.Parallel()
 
-	// Verify ibmcloud_api_key variable is set
-	checkVariable := "TF_VAR_ibmcloud_api_key"
-	val, present := os.LookupEnv(checkVariable)
-	require.True(t, present, checkVariable+" environment variable not set")
-	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
-
-	prefix := "vpc-da"
-
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
 		Region:  "eu-de",
-		Prefix:  prefix,
+		Prefix:  "vpc-da",
 		TarIncludePatterns: []string{
 			"*.tf",
 			"dynamic_values/*.tf",
@@ -220,6 +215,7 @@ func TestFullyConfigurable(t *testing.T) {
 		Tags:                   []string{"vpc-da-test"},
 		DeleteWorkspaceOnFail:  false,
 		WaitJobCompleteMinutes: 120,
+		TerraformVersion:       terraformVersion,
 	})
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
@@ -291,7 +287,7 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 	require.True(t, present, checkVariable+" environment variable not set")
 	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
 
-	prefix := "vpc-da-fl"
+	prefix := fmt.Sprintf("vpc-f-%s", strings.ToLower(random.UniqueId()))
 	existingTerraformOptions := setupTerraform(t, prefix, "./existing-resources")
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
@@ -308,6 +304,7 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 		Tags:                   []string{"vpc-da-test"},
 		DeleteWorkspaceOnFail:  false,
 		WaitJobCompleteMinutes: 120,
+		TerraformVersion:       terraformVersion,
 	})
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
@@ -322,7 +319,7 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 		{Name: "kms_encryption_enabled_bucket", Value: "true", DataType: "bool"},
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 		{Name: "vpe_gateway_cloud_services", Value: []map[string]string{{"service_name": "kms"}, {"service_name": "cloud-object-storage"}}, DataType: "list(object{})"},
-		{Name: "vpe_gateway_cloud_service_by_crn", Value: []map[string]string{{"crn": terraform.Output(t, existingTerraformOptions, "postgresql_db_crn")}}, DataType: "list(object{})"},
+		{Name: "vpe_gateway_cloud_service_by_crn", Value: []map[string]string{{"crn": terraform.Output(t, existingTerraformOptions, "postgresql_db_crn"), "vpe_name": "pg"}}, DataType: "list(object{})"},
 		{Name: "vpn_gateways", Value: []map[string]string{{"name": options.Prefix + "-vpn", "subnet_name": "subnet-c"}}, DataType: "list(object{})"},
 	}
 
@@ -340,7 +337,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 	require.True(t, present, checkVariable+" environment variable not set")
 	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
 
-	prefix := "vpc-upg"
+	prefix := fmt.Sprintf("vpc-u-%s", strings.ToLower(random.UniqueId()))
 	existingTerraformOptions := setupTerraform(t, prefix, "./existing-resources")
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
@@ -353,10 +350,12 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 			"dynamic_values/config_modules/*/*.tf",
 			fullyConfigFlavorDir + "/*.tf",
 		},
-		TemplateFolder:         fullyConfigFlavorDir,
-		Tags:                   []string{"vpc-da-test"},
-		DeleteWorkspaceOnFail:  false,
-		WaitJobCompleteMinutes: 120,
+		TemplateFolder:             fullyConfigFlavorDir,
+		Tags:                       []string{"vpc-da-test"},
+		DeleteWorkspaceOnFail:      false,
+		WaitJobCompleteMinutes:     120,
+		CheckApplyResultForUpgrade: true,
+		TerraformVersion:           terraformVersion,
 	})
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
@@ -371,7 +370,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 		{Name: "kms_encryption_enabled_bucket", Value: "true", DataType: "bool"},
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 		{Name: "vpe_gateway_cloud_services", Value: []map[string]string{{"service_name": "kms"}, {"service_name": "cloud-object-storage"}}, DataType: "list(object{})"},
-		{Name: "vpe_gateway_cloud_service_by_crn", Value: []map[string]string{{"crn": terraform.Output(t, existingTerraformOptions, "postgresql_db_crn")}}, DataType: "list(object{})"},
+		{Name: "vpe_gateway_cloud_service_by_crn", Value: []map[string]string{{"crn": terraform.Output(t, existingTerraformOptions, "postgresql_db_crn"), "vpe_name": "pg"}}, DataType: "list(object{})"},
 		{Name: "vpn_gateways", Value: []map[string]string{{"name": options.Prefix + "-vpn", "subnet_name": "subnet-c"}}, DataType: "list(object{})"},
 	}
 
@@ -409,7 +408,7 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 
 	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
 		Testing:       t,
-		Prefix:        "vpc-def",
+		Prefix:        "vpc-ad",
 		ResourceGroup: resourceGroup,
 		QuietMode:     false, // Suppress logs except on failure
 	})
@@ -424,29 +423,26 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 		},
 	)
 
-	err := options.RunAddonTest()
-	require.NoError(t, err)
-}
-
-// TestDependencyPermutations runs dependency permutations for landing zone vpc and all its dependencies
-func TestVpcDependencyPermutations(t *testing.T) {
-
-	t.Skip("Skipping dependency permutations until the test is fixed")
-	t.Parallel()
-	options := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
-		Testing: t,
-		Prefix:  "vpc-per",
-		AddonConfig: cloudinfo.AddonConfig{
-			OfferingName:   "deploy-arch-ibm-slz-vpc",
+	// Disable target / route creation to prevent hitting quota in account
+	options.AddonConfig.Dependencies = []cloudinfo.AddonConfig{
+		{
+			OfferingName:   "deploy-arch-ibm-cloud-monitoring",
 			OfferingFlavor: "fully-configurable",
 			Inputs: map[string]interface{}{
-				"prefix":                    "vpc-per",
-				"region":                    "us-south",
-				"existing_cos_instance_crn": permanentResources["general_test_storage_cos_instance_crn"],
+				"enable_metrics_routing_to_cloud_monitoring": false,
 			},
+			Enabled: core.BoolPtr(true),
 		},
-	})
+		{
+			OfferingName:   "deploy-arch-ibm-activity-tracker",
+			OfferingFlavor: "fully-configurable",
+			Inputs: map[string]interface{}{
+				"enable_activity_tracker_event_routing_to_cloud_logs": false,
+			},
+			Enabled: core.BoolPtr(true),
+		},
+	}
 
-	err := options.RunAddonPermutationTest()
-	assert.NoError(t, err, "Dependency permutation test should not fail")
+	err := options.RunAddonTest()
+	require.NoError(t, err)
 }
