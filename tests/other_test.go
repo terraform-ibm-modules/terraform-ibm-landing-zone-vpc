@@ -57,12 +57,12 @@ func TestRunCustomSecurityGroupExample(t *testing.T) {
 	assert.NotNil(t, output, "Expected some output")
 }
 
-func TestAdvancedAddonMatrix(t *testing.T) {
+func TestAddonPermutations(t *testing.T) {
 	t.Parallel()
 
 	testCases := []testaddons.AddonTestCase{
 		{
-			Name:   "NoAddons",
+			Name:   "no-addons",
 			Prefix: "no-addons",
 			Dependencies: []cloudinfo.AddonConfig{
 				{
@@ -102,13 +102,156 @@ func TestAdvancedAddonMatrix(t *testing.T) {
 				},
 			},
 		},
+		{
+			Name:   "all-addons",
+			Prefix: "all-addons",
+			Dependencies: []cloudinfo.AddonConfig{
+				{
+					OfferingName:   "deploy-arch-ibm-account-infra-base",
+					OfferingFlavor: "resource-group-only",
+					Enabled:        core.BoolPtr(true),
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-kms",
+					OfferingFlavor: "fully-configurable",
+					Enabled:        core.BoolPtr(true),
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-cos",
+					OfferingFlavor: "instance",
+					Enabled:        core.BoolPtr(true),
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-cloud-logs",
+					OfferingFlavor: "fully-configurable",
+					Enabled:        core.BoolPtr(true),
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-cloud-monitoring",
+					OfferingFlavor: "fully-configurable",
+					Enabled:        core.BoolPtr(true),
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-activity-tracker",
+					OfferingFlavor: "fully-configurable",
+					Enabled:        core.BoolPtr(true),
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-scc-workload-protection",
+					OfferingFlavor: "fully-configurable",
+					Enabled:        core.BoolPtr(true),
+				},
+			},
+		},
+		{
+			Name:   "scc-with-appconfig-disabled",
+			Prefix: "scc-no-app",
+			Dependencies: []cloudinfo.AddonConfig{
+				{
+					OfferingName:   "deploy-arch-ibm-account-infra-base",
+					OfferingFlavor: "resource-group-only",
+					Enabled:        core.BoolPtr(false),
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-kms",
+					OfferingFlavor: "fully-configurable",
+					Enabled:        core.BoolPtr(false),
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-cos",
+					OfferingFlavor: "instance",
+					Enabled:        core.BoolPtr(false),
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-cloud-logs",
+					OfferingFlavor: "fully-configurable",
+					Enabled:        core.BoolPtr(false),
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-cloud-monitoring",
+					OfferingFlavor: "fully-configurable",
+					Enabled:        core.BoolPtr(false),
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-activity-tracker",
+					OfferingFlavor: "fully-configurable",
+					Enabled:        core.BoolPtr(false),
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-scc-workload-protection",
+					OfferingFlavor: "fully-configurable",
+					Enabled:        core.BoolPtr(true),
+					Inputs: map[string]interface{}{
+						"app_config_crn": permanentResources["app_config_crn"],
+					},
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-apprapp",
+					OfferingFlavor: "fully-configurable",
+					Enabled:        core.BoolPtr(false),
+				},
+			},
+		},
+		{
+			Name:   "observability-with-no-deps",
+			Prefix: "obs-no-dep",
+			Dependencies: []cloudinfo.AddonConfig{
+				{
+					OfferingName:   "deploy-arch-ibm-account-infra-base",
+					OfferingFlavor: "resource-group-only",
+					Enabled:        core.BoolPtr(false),
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-kms",
+					OfferingFlavor: "fully-configurable",
+					Enabled:        core.BoolPtr(false),
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-cos",
+					OfferingFlavor: "instance",
+					Enabled:        core.BoolPtr(false),
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-cloud-logs",
+					OfferingFlavor: "fully-configurable",
+					Enabled:        core.BoolPtr(true),
+					Inputs: map[string]interface{}{
+						"general_test_storage_cos_instance_crn": permanentResources["app_config_crn"],
+					},
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-cloud-monitoring",
+					OfferingFlavor: "fully-configurable",
+					Enabled:        core.BoolPtr(true),
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-activity-tracker",
+					OfferingFlavor: "fully-configurable",
+					Enabled:        core.BoolPtr(true),
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-scc-workload-protection",
+					OfferingFlavor: "fully-configurable",
+					Enabled:        core.BoolPtr(false),
+					Inputs: map[string]interface{}{
+						"app_config_crn": permanentResources["app_config_crn"],
+					},
+				},
+				{
+					OfferingName:   "deploy-arch-ibm-event-notifications",
+					OfferingFlavor: "fully-configurable",
+					Enabled:        core.BoolPtr(false),
+				},
+			},
+		},
 	}
 
 	baseOptions := testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
-		Testing:       t,
-		Prefix:        "adv-matrix",
-		ResourceGroup: resourceGroup,
-		QuietMode:     true,
+		Testing:              t,
+		Prefix:               "adv-matrix",
+		ResourceGroup:        resourceGroup,
+		QuietMode:            true,
+		DeployTimeoutMinutes: 240,
 	})
 
 	matrix := testaddons.AddonTestMatrix{
