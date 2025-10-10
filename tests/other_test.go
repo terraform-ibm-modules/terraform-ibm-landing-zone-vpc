@@ -216,7 +216,7 @@ func TestAddonPermutations(t *testing.T) {
 					OfferingFlavor: "fully-configurable",
 					Enabled:        core.BoolPtr(true),
 					Inputs: map[string]interface{}{
-						"general_test_storage_cos_instance_crn": permanentResources["app_config_crn"],
+						"existing_cos_instance_crn": permanentResources["general_test_storage_cos_instance_crn"],
 					},
 				},
 				{
@@ -228,14 +228,14 @@ func TestAddonPermutations(t *testing.T) {
 					OfferingName:   "deploy-arch-ibm-activity-tracker",
 					OfferingFlavor: "fully-configurable",
 					Enabled:        core.BoolPtr(true),
+					Inputs: map[string]interface{}{
+						"existing_cos_instance_crn": permanentResources["general_test_storage_cos_instance_crn"],
+					},
 				},
 				{
 					OfferingName:   "deploy-arch-ibm-scc-workload-protection",
 					OfferingFlavor: "fully-configurable",
 					Enabled:        core.BoolPtr(false),
-					Inputs: map[string]interface{}{
-						"app_config_crn": permanentResources["app_config_crn"],
-					},
 				},
 				{
 					OfferingName:   "deploy-arch-ibm-event-notifications",
@@ -259,9 +259,10 @@ func TestAddonPermutations(t *testing.T) {
 		TestCases:   testCases,
 		BaseSetupFunc: func(baseOptions *testaddons.TestAddonOptions, testCase testaddons.AddonTestCase) *testaddons.TestAddonOptions {
 			return testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
-				Testing:       t,
-				Prefix:        testCase.Prefix,
-				ResourceGroup: resourceGroup,
+				Testing:          t,
+				Prefix:           testCase.Prefix,
+				ResourceGroup:    resourceGroup,
+				VerboseOnFailure: true,
 			})
 		},
 		AddonConfigFunc: func(options *testaddons.TestAddonOptions, testCase testaddons.AddonTestCase) cloudinfo.AddonConfig {
