@@ -181,9 +181,6 @@ func TestAddonPermutations(t *testing.T) {
 					OfferingName:   "deploy-arch-ibm-scc-workload-protection",
 					OfferingFlavor: "fully-configurable",
 					Enabled:        core.BoolPtr(true),
-					Inputs: map[string]interface{}{
-						"app_config_crn": permanentResources["app_config_crn"],
-					},
 				},
 				{
 					OfferingName:   "deploy-arch-ibm-apprapp",
@@ -215,9 +212,6 @@ func TestAddonPermutations(t *testing.T) {
 					OfferingName:   "deploy-arch-ibm-cloud-logs",
 					OfferingFlavor: "fully-configurable",
 					Enabled:        core.BoolPtr(true),
-					Inputs: map[string]interface{}{
-						"existing_cos_instance_crn": permanentResources["general_test_storage_cos_instance_crn"],
-					},
 				},
 				{
 					OfferingName:   "deploy-arch-ibm-cloud-monitoring",
@@ -228,9 +222,6 @@ func TestAddonPermutations(t *testing.T) {
 					OfferingName:   "deploy-arch-ibm-activity-tracker",
 					OfferingFlavor: "fully-configurable",
 					Enabled:        core.BoolPtr(true),
-					Inputs: map[string]interface{}{
-						"existing_cos_instance_crn": permanentResources["general_test_storage_cos_instance_crn"],
-					},
 				},
 				{
 					OfferingName:   "deploy-arch-ibm-scc-workload-protection",
