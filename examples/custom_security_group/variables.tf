@@ -10,7 +10,7 @@ variable "region" {
 }
 
 variable "prefix" {
-  description = "The prefix that you would like to append to your resources except ones created in the VPC module itself"
+  description = "The prefix that you would like to append to your resources"
   type        = string
 }
 
@@ -24,16 +24,4 @@ variable "resource_tags" {
   description = "List of Tags for the resource created"
   type        = list(string)
   default     = null
-}
-
-variable "access_tags" {
-  type        = list(string)
-  description = "Optional list of access tags to add to the VPC resources that are created"
-  default     = []
-}
-
-variable "vpc_name" {
-  type        = string
-  description = "Name of the VPC"
-  default     = "vpc"
 }
