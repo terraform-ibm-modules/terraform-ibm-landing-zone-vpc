@@ -419,7 +419,6 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 		"deploy-arch-ibm-slz-vpc",
 		"fully-configurable",
 		map[string]interface{}{
-			"prefix": options.Prefix,
 			"region": "us-south",
 		},
 	)
