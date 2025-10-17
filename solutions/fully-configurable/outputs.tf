@@ -109,3 +109,28 @@ output "security_group_details" {
   description = "Details of security group."
   value       = module.vpc.security_group_details
 }
+
+output "next_steps_text" {
+  value       = "Your Virtual Private Cloud is ready."
+  description = "Next steps text"
+}
+
+output "next_step_primary_label" {
+  value       = "Go to Virtual Private Cloud"
+  description = "Primary label"
+}
+
+output "next_step_primary_url" {
+  value       = "https://cloud.ibm.com/infrastructure/network/vpc/${var.region}~${module.vpc.vpc_id}/overview"
+  description = "Primary URL"
+}
+
+output "next_step_secondary_label" {
+  value       = "Virtual Private Cloud overview page"
+  description = "Secondary label"
+}
+
+output "next_step_secondary_url" {
+  value       = "https://cloud.ibm.com/docs/vpc?topic=vpc-about-vpc"
+  description = "Secondary URL"
+}
