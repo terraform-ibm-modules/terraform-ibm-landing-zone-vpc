@@ -614,7 +614,7 @@
                   "value": true
                 }
               ],
-              "optional": true,
+              "optional": false,
               "on_by_default": true,
               "version": "v10.5.5"
             },
