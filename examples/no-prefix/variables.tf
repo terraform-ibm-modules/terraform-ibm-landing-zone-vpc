@@ -31,3 +31,9 @@ variable "access_tags" {
   description = "Optional list of access tags to add to the VPC resources that are created"
   default     = []
 }
+
+variable "vpc_name" {
+  type        = string
+  description = "Name of the VPC"
+  default     = "vpc"
+}

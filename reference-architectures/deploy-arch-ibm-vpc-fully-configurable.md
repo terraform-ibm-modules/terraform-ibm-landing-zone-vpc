@@ -12,7 +12,7 @@ authors:
   - name: "Jordan Williams"
 
 # The release that the reference architecture describes
-version: 8.2.0
+version: 8.2.1
 
 # Whether the reference architecture is published to Cloud Docs production.
 # When set to false, the file is available only in staging. Default is false.
@@ -46,13 +46,13 @@ content-type: reference-architecture
 
 {{site.data.keyword.attribute-definition-list}}
 
-# Cloud foundation for VPC - Standard (Integrated setup with configurable services) variation
+# Cloud foundation for VPC - Standard (Integrated setup with configurable services)
 {: #vpc-fully-configurable}
 {: toc-content-type="reference-architecture"}
 {: toc-industry="Banking,FinancialSector"}
 {: toc-use-case="Cybersecurity"}
 {: toc-compliance="FedRAMP"}
-{: toc-version="8.2.0"}
+{: toc-version="8.2.1"}
 
 The Cloud foundation for VPC deployable architecture sets up a foundational IBM Cloud Virtual Private Cloud (VPC) environment with full configurability and flexibility. This deployable architecture provides complete control over VPC configuration, including subnets, network ACLs, security groups, public gateways, VPN gateways, and VPE gateways. Unlike pre-configured variations, this solution allows you to customize every aspect of your VPC infrastructure to meet specific requirements.
 
