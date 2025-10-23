@@ -66,11 +66,6 @@ func TestAddonPermutations(t *testing.T) {
 			Prefix: "no-addons",
 			Dependencies: []cloudinfo.AddonConfig{
 				{
-					OfferingName:   "deploy-arch-ibm-account-infra-base",
-					OfferingFlavor: "resource-group-only",
-					Enabled:        core.BoolPtr(false),
-				},
-				{
 					OfferingName:   "deploy-arch-ibm-kms",
 					OfferingFlavor: "fully-configurable",
 					Enabled:        core.BoolPtr(false),
@@ -106,11 +101,6 @@ func TestAddonPermutations(t *testing.T) {
 			Name:   "all-addons",
 			Prefix: "all-addons",
 			Dependencies: []cloudinfo.AddonConfig{
-				{
-					OfferingName:   "deploy-arch-ibm-account-infra-base",
-					OfferingFlavor: "resource-group-only",
-					Enabled:        core.BoolPtr(true),
-				},
 				{
 					OfferingName:   "deploy-arch-ibm-kms",
 					OfferingFlavor: "fully-configurable",
@@ -148,11 +138,6 @@ func TestAddonPermutations(t *testing.T) {
 			Prefix: "scc-no-app",
 			Dependencies: []cloudinfo.AddonConfig{
 				{
-					OfferingName:   "deploy-arch-ibm-account-infra-base",
-					OfferingFlavor: "resource-group-only",
-					Enabled:        core.BoolPtr(false),
-				},
-				{
 					OfferingName:   "deploy-arch-ibm-kms",
 					OfferingFlavor: "fully-configurable",
 					Enabled:        core.BoolPtr(false),
@@ -181,9 +166,6 @@ func TestAddonPermutations(t *testing.T) {
 					OfferingName:   "deploy-arch-ibm-scc-workload-protection",
 					OfferingFlavor: "fully-configurable",
 					Enabled:        core.BoolPtr(true),
-					Inputs: map[string]interface{}{
-						"app_config_crn": permanentResources["app_config_crn"],
-					},
 				},
 				{
 					OfferingName:   "deploy-arch-ibm-apprapp",
@@ -196,11 +178,6 @@ func TestAddonPermutations(t *testing.T) {
 			Name:   "observability-with-no-deps",
 			Prefix: "obs-no-dep",
 			Dependencies: []cloudinfo.AddonConfig{
-				{
-					OfferingName:   "deploy-arch-ibm-account-infra-base",
-					OfferingFlavor: "resource-group-only",
-					Enabled:        core.BoolPtr(false),
-				},
 				{
 					OfferingName:   "deploy-arch-ibm-kms",
 					OfferingFlavor: "fully-configurable",
@@ -215,9 +192,6 @@ func TestAddonPermutations(t *testing.T) {
 					OfferingName:   "deploy-arch-ibm-cloud-logs",
 					OfferingFlavor: "fully-configurable",
 					Enabled:        core.BoolPtr(true),
-					Inputs: map[string]interface{}{
-						"existing_cos_instance_crn": permanentResources["general_test_storage_cos_instance_crn"],
-					},
 				},
 				{
 					OfferingName:   "deploy-arch-ibm-cloud-monitoring",
@@ -228,9 +202,6 @@ func TestAddonPermutations(t *testing.T) {
 					OfferingName:   "deploy-arch-ibm-activity-tracker",
 					OfferingFlavor: "fully-configurable",
 					Enabled:        core.BoolPtr(true),
-					Inputs: map[string]interface{}{
-						"existing_cos_instance_crn": permanentResources["general_test_storage_cos_instance_crn"],
-					},
 				},
 				{
 					OfferingName:   "deploy-arch-ibm-scc-workload-protection",
