@@ -585,10 +585,6 @@
                 {
                   "version_input": "kms_encryption_enabled_bucket",
                   "value": true
-                },
-                {
-                  "version_input": "enable_vpc_flow_logs",
-                  "value": true
                 }
               ],
               "optional": true,
@@ -623,7 +619,7 @@
                   "value": true
                 }
               ],
-              "optional": false,
+              "optional": true,
               "on_by_default": true,
               "version": "v10.5.0"
             },
