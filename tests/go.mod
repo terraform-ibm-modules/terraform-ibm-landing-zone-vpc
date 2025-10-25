@@ -2,13 +2,13 @@ module github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc
 
 go 1.24.0
 
-toolchain go1.25.0
+toolchain go1.25.3
 
 require (
 	github.com/IBM/go-sdk-core/v5 v5.21.0
 	github.com/gruntwork-io/terratest v0.51.0
 	github.com/stretchr/testify v1.11.1
-	github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper v1.60.14
+	github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper v1.60.17
 )
 
 require (
