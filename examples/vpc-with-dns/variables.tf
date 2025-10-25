@@ -36,7 +36,7 @@ variable "resource_tags" {
 
 variable "dns_records" {
   description = "List of DNS records to create"
-  type = list(object({
+  type = map(list(object({
     name       = string
     type       = string
     rdata      = string
@@ -47,8 +47,8 @@ variable "dns_records" {
     protocol   = optional(string)
     service    = optional(string)
     weight     = optional(number)
-  }))
-  default = [
+  })))
+  default = { "dns-example.com" = [
     {
       name  = "testA"
       type  = "A"
@@ -77,11 +77,21 @@ variable "dns_records" {
       rdata = "textinformation"
       ttl   = 900
     }
-  ]
+    ]
+  }
 }
 
-variable "dns_zone_name" {
-  description = "The name of the DNS zone to be created."
-  type        = string
-  default     = "dns-example.com"
+variable "dns_zones" {
+  description = "The DNS zones to be created."
+  type = list(object({
+    name        = string
+    description = optional(string)
+    label       = optional(string, "dns-zone")
+  }))
+  default = [
+    {
+      name        = "dns-example.com"
+      description = "Example DNS zone"
+    }
+  ]
 }

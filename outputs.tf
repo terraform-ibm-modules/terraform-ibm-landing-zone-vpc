@@ -180,17 +180,17 @@ output "dns_custom_resolver_id" {
 ## DNS Zone and Records
 output "dns_zone_state" {
   description = "The state of the DNS zone."
-  value       = length(ibm_dns_zone.dns_zone) > 0 ? ibm_dns_zone.dns_zone[0].state : null
+  value       = length(ibm_dns_zone.dns_zone) > 0 ? [for zone in var.dns_zones : { (zone.name) = ibm_dns_zone.dns_zone[zone.name].state }] : null
 }
 
 output "dns_zone_id" {
   description = "The ID of the DNS zone."
-  value       = length(ibm_dns_zone.dns_zone) > 0 ? ibm_dns_zone.dns_zone[0].zone_id : null
+  value       = length(ibm_dns_zone.dns_zone) > 0 ? [for zone in var.dns_zones : { (zone.name) = ibm_dns_zone.dns_zone[zone.name].zone_id }] : null
 }
 
 output "dns_zone" {
   description = "A map representing DNS zone information."
-  value       = length(ibm_dns_zone.dns_zone) > 0 ? ibm_dns_zone.dns_zone[0] : null
+  value       = length(ibm_dns_zone.dns_zone) > 0 ? [for zone in ibm_dns_zone.dns_zone : zone] : null
 }
 
 output "dns_record_ids" {

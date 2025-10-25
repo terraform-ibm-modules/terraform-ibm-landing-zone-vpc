@@ -361,11 +361,11 @@ resource "ibm_is_flow_log" "flow_logs" {
 ###############################################################################
 
 resource "ibm_dns_zone" "dns_zone" {
-  count       = var.enable_hub && !var.skip_custom_resolver_hub_creation && alltrue([var.dns_zone_name != null, var.dns_zone_name != ""]) ? 1 : 0
-  name        = var.dns_zone_name
+  for_each    = var.enable_hub && !var.skip_custom_resolver_hub_creation ? { for zone in var.dns_zones : zone.name => zone } : {}
+  name        = each.key
   instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
-  description = var.dns_zone_description
-  label       = var.dns_zone_label
+  description = each.value.description == null ? "Hosted zone for ${each.key}" : each.value.description
+  label       = each.value.label
 }
 
 ##############################################################################
@@ -373,9 +373,9 @@ resource "ibm_dns_zone" "dns_zone" {
 ##############################################################################
 
 resource "ibm_dns_permitted_network" "dns_permitted_network" {
-  count       = var.enable_hub && !var.skip_custom_resolver_hub_creation ? 1 : 0
+  for_each    = var.enable_hub && !var.skip_custom_resolver_hub_creation ? ibm_dns_zone.dns_zone : {}
   instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
-  zone_id     = ibm_dns_zone.dns_zone[0].zone_id
+  zone_id     = each.value.zone_id
   vpc_crn     = local.vpc_crn
   type        = "vpc"
 }
@@ -384,10 +384,19 @@ resource "ibm_dns_permitted_network" "dns_permitted_network" {
 # DNS Records
 ##############################################################################
 
+locals {
+  dns_records = flatten([
+    for key, value in var.dns_records : [
+      for idx, record in value : merge(record, { identifier = "${key}-${idx}", dns_zone = (key) })
+    ]
+  ])
+
+}
+
 resource "ibm_dns_resource_record" "dns_record" {
-  for_each    = length(ibm_dns_zone.dns_zone) > 0 ? { for idx, record in var.dns_records : idx => record } : {}
+  for_each    = length(ibm_dns_zone.dns_zone) > 0 ? { for record in local.dns_records : record.identifier => record } : {}
   instance_id = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
-  zone_id     = ibm_dns_zone.dns_zone[0].zone_id
+  zone_id     = ibm_dns_zone.dns_zone[each.value.dns_zone].zone_id
   name        = each.value.name
   type        = each.value.type
 
@@ -407,7 +416,10 @@ resource "ibm_dns_resource_record" "dns_record" {
 }
 
 locals {
-  record_ids = [for record in ibm_dns_resource_record.dns_record : element(split("/", record.id), 2)]
+  record_ids = {
+    for k in distinct([for d in local.dns_records : d.dns_zone]) :
+    k => [for d in local.dns_records : element(split("/", ibm_dns_resource_record.dns_record[d.identifier].id), 2) if d.dns_zone == k]
+  }
 }
 
 ##############################################################################

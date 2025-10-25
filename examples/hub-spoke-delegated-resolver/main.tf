@@ -36,7 +36,11 @@ module "hub_vpc" {
   prefix            = "${var.prefix}-hub"
   tags              = var.resource_tags
   enable_hub        = true
-  dns_zone_name     = "hnsexample.com"
+  dns_zones = [
+    {
+      name = "hnsexample.com"
+    }
+  ]
   subnets = {
     zone-1 = [
       {

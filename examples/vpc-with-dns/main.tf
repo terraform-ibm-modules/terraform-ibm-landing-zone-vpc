@@ -46,7 +46,7 @@ module "slz_vpc" {
   prefix            = var.prefix
   tags              = var.resource_tags
   enable_hub        = true
-  dns_zone_name     = var.dns_zone_name
+  dns_zones         = var.dns_zones
   dns_records       = var.dns_records
   subnets           = local.subnets
 }
