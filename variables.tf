@@ -714,49 +714,44 @@ variable "dns_plan" {
   }
 }
 
-variable "dns_zone_name" {
-  description = "The name of the DNS zone to be created."
-  default     = null
-  type        = string
+variable "dns_zones" {
+  description = "List of the DNS zone to be created."
+  type = list(object({
+    name        = string
+    description = optional(string)
+    label       = optional(string, "dns-zone")
+  }))
+  nullable = false
+  default  = []
 
   validation {
-    condition     = var.enable_hub && !var.skip_custom_resolver_hub_creation ? alltrue([var.dns_zone_name != null, var.dns_zone_name != ""]) : true
-    error_message = "dns_zone_name must not be null or empty when enable_hub is true and skip_custom_resolver_hub_creation is false."
+    condition     = var.enable_hub && !var.skip_custom_resolver_hub_creation ? length(var.dns_zones) != 0 : true
+    error_message = "dns_zones must not be empty list when enable_hub is true and skip_custom_resolver_hub_creation is false."
   }
 
   validation {
-    condition = var.dns_zone_name == null ? true : !contains([
-      "ibm.com",
-      "softlayer.com",
-      "bluemix.net",
-      "softlayer.local",
-      "mybluemix.net",
-      "networklayer.com",
-      "ibmcloud.com",
-      "pdnsibm.net",
-      "appdomain.cloud",
-      "compass.cobaltiron.com"
-    ], var.dns_zone_name)
-
+    condition = alltrue([
+      for zone in var.dns_zones :
+      !contains([
+        "ibm.com",
+        "softlayer.com",
+        "bluemix.net",
+        "softlayer.local",
+        "mybluemix.net",
+        "networklayer.com",
+        "ibmcloud.com",
+        "pdnsibm.net",
+        "appdomain.cloud",
+        "compass.cobaltiron.com"
+      ], zone.name)
+    ])
     error_message = "The specified DNS zone name is not permitted. Please choose a different domain name. [Learn more](https://cloud.ibm.com/docs/dns-svcs?topic=dns-svcs-managing-dns-zones&interface=ui#restricted-dns-zone-names)"
   }
 }
 
-variable "dns_zone_description" {
-  description = "The description of the DNS zone."
-  type        = string
-  default     = "Default DNS Zone"
-}
-
-variable "dns_zone_label" {
-  description = "Label associated with the DNS zone."
-  type        = string
-  default     = "dns-zone"
-}
-
 variable "dns_records" {
   description = "List of DNS records to be created."
-  type = list(object({
+  type = map(list(object({
     name       = string
     type       = string
     ttl        = number
@@ -767,30 +762,41 @@ variable "dns_records" {
     priority   = optional(number, null)
     weight     = optional(number, null)
     port       = optional(number, null)
-  }))
-  default = []
+  })))
+  nullable = false
+  default  = {}
+
   validation {
-    condition     = length(var.dns_records) == 0 || alltrue([for record in var.dns_records != null ? var.dns_records : [] : (contains(["A", "AAAA", "CNAME", "MX", "PTR", "TXT", "SRV"], record.type))])
+    condition = alltrue([
+      length(var.dns_zones) == length(keys(var.dns_records)),
+      alltrue([for k in var.dns_zones : contains(keys(var.dns_records), k.name)]),
+      alltrue([for k in keys(var.dns_records) : contains([for zone in var.dns_zones : zone.name], k)])
+    ])
+    error_message = "The values in DNS names in 'dns_zones' must match exactly the keys of 'dns_records'."
+  }
+
+  validation {
+    condition     = length(var.dns_records) == 0 || alltrue(flatten([for key, record in var.dns_records : [for value in record : (contains(["A", "AAAA", "CNAME", "MX", "PTR", "TXT", "SRV"], value.type))]]))
     error_message = "Invalid domain resource record type is provided."
   }
 
   validation {
-    condition = length(var.dns_records) == 0 || alltrue([
-      for record in var.dns_records == null ? [] : var.dns_records : (
-        record.type != "SRV" || (
-          record.protocol != null && record.port != null &&
-          record.service != null && record.priority != null && record.weight != null
+    condition = length(var.dns_records) == 0 || alltrue(flatten([
+      for key, record in var.dns_records : [for value in record : (
+        value.type != "SRV" || (
+          value.protocol != null && value.port != null &&
+          value.service != null && value.priority != null && value.weight != null
         )
-      )
-    ])
+        )
+    ]]))
     error_message = "Invalid SRV record configuration. For 'SRV' records, 'protocol' , 'service', 'priority', 'port' and 'weight' values must be provided."
   }
   validation {
-    condition = length(var.dns_records) == 0 || alltrue([
-      for record in var.dns_records == null ? [] : var.dns_records : (
-        record.type != "MX" || record.preference != null
-      )
-    ])
+    condition = length(var.dns_records) == 0 || alltrue(flatten([
+      for key, record in var.dns_records : [for value in record : (
+        value.type != "MX" || value.preference != null
+        )
+    ]]))
     error_message = "Invalid MX record configuration. For 'MX' records, value for 'preference' must be provided."
   }
 }
