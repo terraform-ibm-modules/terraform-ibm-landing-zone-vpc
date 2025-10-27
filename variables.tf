@@ -767,12 +767,8 @@ variable "dns_records" {
   default  = {}
 
   validation {
-    condition = length(var.dns_records) == 0 || alltrue([
-      length(var.dns_zones) == length(keys(var.dns_records)),
-      alltrue([for k in var.dns_zones : contains(keys(var.dns_records), k.name)]),
-      alltrue([for k in keys(var.dns_records) : contains([for zone in var.dns_zones : zone.name], k)])
-    ])
-    error_message = "The values in DNS names in 'dns_zones' must match exactly the keys of 'dns_records'."
+    condition     = length(var.dns_records) == 0 || alltrue([for k in keys(var.dns_records) : contains([for zone in var.dns_zones : zone.name], k)])
+    error_message = "The keys of 'dns_records' must match DNS names in 'dns_zones'."
   }
 
   validation {
