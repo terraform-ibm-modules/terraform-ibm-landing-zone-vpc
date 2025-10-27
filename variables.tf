@@ -773,7 +773,7 @@ variable "dns_records" {
 
   validation {
     condition     = length(var.dns_records) == 0 || alltrue(flatten([for key, record in var.dns_records : [for value in record : (contains(["A", "AAAA", "CNAME", "MX", "PTR", "TXT", "SRV"], value.type))]]))
-    error_message = "Invalid domain resource record type is provided."
+    error_message = "Invalid domain resource record type is provided. Allowed values are 'A', 'AAAA', 'CNAME', 'MX', 'PTR', 'TXT', 'SRV'."
   }
 
   validation {
