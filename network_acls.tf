@@ -68,13 +68,13 @@ locals {
   ])
 
   vpc_inbound_rule = flatten([
-    for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] : [
-      for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes :
+    for cidr_index, cidr in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] : [
+      for address_index, address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes :
       {
-        name        = "ibmflow-allow-vpc-connectivity-inbound-${substr(address.id, -4, -1)}-${index}" # Providing unique rule names
+        name        = "ibmflow-allow-vpc-connectivity-inbound-${address_index}-${cidr_index}" # Providing unique rule names
         action      = "allow"
         source      = address.cidr
-        destination = cidrs
+        destination = cidr
         direction   = "inbound"
         tcp         = null
         udp         = null
@@ -83,13 +83,13 @@ locals {
     ]
   ])
   vpc_outbound_rule = flatten([
-    for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes : [
-      for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] :
+    for address_index, address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes : [
+      for cidr_index, cidr in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] :
 
       {
-        name        = "ibmflow-allow-vpc-connectivity-outbound-${substr(address.id, -4, -1)}-${index}"
+        name        = "ibmflow-allow-vpc-connectivity-outbound-${address_index}-${cidr_index}"
         action      = "allow"
-        source      = cidrs
+        source      = cidr
         destination = address.cidr
         direction   = "outbound"
         tcp         = null
