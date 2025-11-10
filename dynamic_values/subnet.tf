@@ -31,11 +31,11 @@ locals {
     ]
   ])
 
-  # Convert list to map
   subnet_map = {
     for subnet in local.subnet_list :
-    "${var.prefix}-${subnet.name}" => subnet
+    "${var.region}-${subnet.zone}-subnet-${subnet.count}" => merge(subnet, {
+      subnet_name = "${var.prefix}-${subnet.name}"
+    })
   }
 }
-
 ##############################################################################
