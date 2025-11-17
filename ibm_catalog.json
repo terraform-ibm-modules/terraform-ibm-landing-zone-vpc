@@ -382,6 +382,13 @@
             },
             {
               "key": "existing_cos_instance_crn",
+              "value_constraints": [
+                {
+                  "type": "regex",
+                  "description": "The value provided for 'existing_cos_instance_crn' is not valid.",
+                  "value": "^crn:(.*:){3}cloud-object-storage:(.*:){2}[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$"
+                }
+              ],
               "custom_config": {
                 "type": "platform_resource",
                 "grouping": "deployment",
