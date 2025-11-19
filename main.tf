@@ -80,6 +80,17 @@ resource "ibm_is_vpc" "vpc" {
       }
     }
   }
+
+  lifecycle {
+    precondition {
+      condition     = var.resource_group_id != null
+      error_message = "Resource Group ID must not be null."
+    }
+    postcondition {
+      condition     = self.status == "available"
+      error_message = "VPC status is ${self.status}, expected available."
+    }
+  }
 }
 
 data "ibm_is_vpc_dns_resolution_bindings" "dns_bindings" {
@@ -288,6 +299,13 @@ resource "ibm_is_public_gateway" "gateway" {
   zone           = each.value
   tags           = var.tags
   access_tags    = var.access_tags
+
+  lifecycle {
+    postcondition {
+      condition     = self.status == "available"
+      error_message = "Public Gateway status is ${self.status}, expected available."
+    }
+  }
 }
 
 ##############################################################################

@@ -44,6 +44,13 @@ resource "ibm_is_subnet" "subnet" {
   tags            = var.tags
   access_tags     = var.access_tags
   depends_on      = [ibm_is_vpc_address_prefix.address_prefixes]
+
+  lifecycle {
+    postcondition {
+      condition     = self.status == "available"
+      error_message = "Subnet status is ${self.status}, expected available."
+    }
+  }
 }
 
 data "ibm_is_subnet" "subnet" {
