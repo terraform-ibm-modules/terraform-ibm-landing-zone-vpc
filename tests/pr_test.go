@@ -26,8 +26,7 @@ import (
 Global variables
 */
 const basicExampleTerraformDir = "examples/basic"
-const customSecurityGroupExampleTerraformDir = "examples/custom_security_group"
-const defaultExampleTerraformDir = "examples/default"
+const vpcFlowLogsExampleTerraformDir = "examples/vpc-flow-logs"
 const landingZoneExampleTerraformDir = "examples/landing_zone"
 const hubAndSpokeDelegatedExampleTerraformDir = "examples/hub-spoke-delegated-resolver"
 const existingVPCExampleTerraformDir = "examples/existing_vpc"
@@ -82,10 +81,10 @@ func setupOptions(t *testing.T, prefix string, terraformDir string) *testhelper.
 	return options
 }
 
-func TestRunDefaultExample(t *testing.T) {
+func TestRunVPCFlowLogsExample(t *testing.T) {
 	t.Parallel()
 
-	options := setupOptions(t, "slz-vpc", defaultExampleTerraformDir)
+	options := setupOptions(t, "slz-vpc", vpcFlowLogsExampleTerraformDir)
 
 	output, err := options.RunTestConsistency()
 	assert.Nil(t, err, "This should not have errored")

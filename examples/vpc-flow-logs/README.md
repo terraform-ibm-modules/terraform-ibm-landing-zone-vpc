@@ -1,4 +1,4 @@
-# Default Example
+# VPC with Flow Logs stored in COS Example
 
 An end to end example using the module's default variable values.
 

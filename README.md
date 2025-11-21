@@ -44,8 +44,6 @@ Expected network connectivity downtime of typically around 20 seconds.
     * [workload-vpc](./modules/workload-vpc)
 * [Examples](./examples)
     * [Basic Example](./examples/basic)
-    * [Custom Security Group Example](./examples/custom_security_group)
-    * [Default Example](./examples/default)
     * [Existing VPC and subnets Example](./examples/existing_vpc)
     * [Hub and Spoke VPC Example](./examples/hub-spoke-delegated-resolver)
     * [Hub and Spoke VPC with manual DNS resolver Example](./examples/hub-spoke-manual-resolver)
@@ -53,6 +51,7 @@ Expected network connectivity downtime of typically around 20 seconds.
     * [No Prefix Example](./examples/no-prefix)
     * [Specific Zone Only Example](./examples/specific-zone-only)
     * [VPC with DNS example](./examples/vpc-with-dns)
+    * [VPC with Flow Logs stored in COS Example](./examples/vpc-flow-logs)
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
