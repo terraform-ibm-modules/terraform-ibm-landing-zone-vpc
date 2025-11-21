@@ -441,6 +441,7 @@ resource "ibm_is_vpn_gateway" "vpn_gateway" {
   access_tags    = each.value.access_tags
 
   timeouts {
+    create = "1h"
     delete = "1h"
   }
 }
