@@ -768,6 +768,194 @@
           "dependency_version_2": true,
           "terraform_version": "1.12.2",
           "ignore_readme": true
+        },
+        {
+          "label": "QuickStart - Basic and Simple",
+          "name": "quickstart",
+          "index": 2,
+          "install_type": "fullstack",
+          "working_directory": "solutions/quickstart",
+          "release_notes_url": "https://cloud.ibm.com/docs/secure-infrastructure-vpc?topic=secure-infrastructure-vpc-secure-infrastructure-vpc-relnotes",
+          "architecture": {
+            "features": [
+              {
+                "title": " ",
+                "description": "Ideal for users new to IBM Cloud or Virtual Private Cloud (VPC) who want to get started without configuring underlying infrastructure."
+              },
+              {
+                "title": " ",
+                "description": "A lightweight, experimental configuration for quickly provisioning Virtual Private Cloud (VPC) instances on IBM Cloud."
+              }
+            ],
+            "diagrams": [
+              {
+                "diagram": {
+                  "caption": "Virtual Private Cloud topology - Quickstart (Basic and simple)",
+                  "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/reference-architectures/deployable-architecture-quickstart-vpc.svg",
+                  "type": "image/svg+xml"
+                },
+                "description": "This architecture provisions and configures a <b>Virtual Private Cloud (VPC)</b> environment. This basic configuration creates a VPC with one subnet in each zone (three subnets total) and applies a predefined network ACL."
+              }
+            ]
+          },
+          "iam_permissions": [
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Viewer"
+              ],
+              "service_name": "Resource group only",
+              "notes": "Viewer access is required in the resource group you want to provision in."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator"
+              ],
+              "service_name": "All Account Management services",
+              "notes": "[Optional] Required to create new resource groups when enabling the Account Configuration integration."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator"
+              ],
+              "service_name": "All Identity and Access enabled services",
+              "notes": "[Optional] Required to to create trusted profile for App Configuration aggregator which is used for compliance scanning."
+            },
+            {
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::role:Administrator"
+              ],
+              "service_name": "is.vpc",
+              "notes": "Required to create Virtual Private Cloud(VPC)"
+            },
+            {
+              "service_name": "cloud-object-storage",
+              "role_crns": [
+                "crn:v1:bluemix:public:iam::::serviceRole:Manager",
+                "crn:v1:bluemix:public:iam::::role:Editor"
+              ],
+              "notes": "[Optional] Required if VPC Flow Logs are enabled."
+            }
+          ],
+          "configuration": [
+            {
+              "key": "ibmcloud_api_key"
+            },
+            {
+              "key": "prefix",
+              "required": true,
+              "default_value": "dev",
+              "random_string": {
+                "length": 4
+              },
+              "value_constraints": [
+                {
+                  "type": "regex",
+                  "description": "Prefix must begin with a lowercase letter and may contain only lowercase letters, digits, and hyphens '-'. It must not end with a hyphen('-'), and cannot contain consecutive hyphens ('--'). It should not exceed 16 characters.",
+                  "value": "^$|^__NULL__$|^[a-z](?!.*--)(?:[a-z0-9-]{0,14}[a-z0-9])?$"
+                }
+              ]
+            },
+            {
+              "key": "region",
+              "required": true,
+              "custom_config": {
+                "config_constraints": {
+                  "generationType": "2"
+                },
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "type": "vpc_region"
+              }
+            },
+            {
+              "key": "vpc_name",
+              "required": true
+            },
+            {
+              "key": "existing_resource_group_name",
+              "display_name": "resource_group",
+              "custom_config": {
+                "type": "resource_group",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "identifier": "rg_name"
+                }
+              },
+              "default_value": "Default",
+              "description": "The name of an existing resource group to provision the resources."
+            },
+            {
+              "key": "skip_vpc_cos_iam_auth_policy"
+            },
+            {
+              "key": "network_acls",
+              "description": "Select a predefined ACL profile for the VPC. Options: open (allow all inbound/outbound), common (allow SSH/HTTP/HTTPS with IBM internal + VPC connectivity), ibm-internal (only IBM internal + VPC connectivity), closed (fully restricted).",
+              "options": [
+                {
+                  "displayname": "open",
+                  "value": "open"
+                },
+                {
+                  "displayname": "common",
+                  "value": "common"
+                },
+                {
+                  "displayname": "ibm-internal",
+                  "value": "ibm-internal"
+                },
+                {
+                  "displayname": "closed",
+                  "value": "closed"
+                }
+              ]
+            },
+            {
+              "key": "resource_tags",
+              "custom_config": {
+                "type": "array",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "key": "access_tags",
+              "custom_config": {
+                "type": "array",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "key": "enable_vpc_flow_logs"
+            },
+            {
+              "key": "provider_visibility",
+              "hidden": true,
+              "options": [
+                {
+                  "displayname": "private",
+                  "value": "private"
+                },
+                {
+                  "displayname": "public",
+                  "value": "public"
+                },
+                {
+                  "displayname": "public-and-private",
+                  "value": "public-and-private"
+                }
+              ]
+            }
+          ],
+          "terraform_version": "1.12.2",
+          "ignore_readme": true
         }
       ]
     }

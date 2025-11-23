@@ -17,31 +17,9 @@ output "vpc_crn" {
   value       = module.vpc.vpc_crn
 }
 
-##############################################################################
-# Public Gateways
-##############################################################################
-
-output "public_gateways" {
-  description = "Map of the public gateways by zone."
-  value       = module.vpc.public_gateways
-}
-
-##############################################################################
-# VPC flow logs
-##############################################################################
-
-output "vpc_flow_logs" {
-  description = "Details of the VPC flow logs collector."
-  value       = module.vpc.vpc_flow_logs
-}
-
-##############################################################################
-# Network ACLs
-##############################################################################
-
 output "network_acls" {
   description = "List of shortnames and IDs of network ACLs."
-  value       = module.vpc.network_acls
+  value       = local.network_acls
 }
 
 ##############################################################################
@@ -73,16 +51,6 @@ output "subnet_detail_map" {
   value       = module.vpc.subnet_detail_map
 }
 
-
-
-##############################################################################
-# Security Group Details
-##############################################################################
-
-output "security_group_details" {
-  description = "Details of security group."
-  value       = module.vpc.security_group_details
-}
 
 output "next_steps_text" {
   value       = "Your Virtual Private Cloud is ready."
