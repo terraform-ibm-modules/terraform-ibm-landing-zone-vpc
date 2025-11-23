@@ -386,9 +386,19 @@
                 {
                   "type": "regex",
                   "description": "The value provided for 'existing_cos_instance_crn' is not valid.",
-                  "value": "^crn:(.*:){3}cloud-object-storage:(.*:){2}[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$"
+                  "value": "^__NULL__$|^crn:(.*:){3}cloud-object-storage:(.*:){2}[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$"
                 }
-              ]
+              ],
+              "custom_config": {
+                "type": "platform_resource",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "resourceType": "cloud-object-storage",
+                  "selection": "single_select",
+                  "valueType": "crn"
+                }
+              }
             },
             {
               "key": "skip_vpc_cos_iam_auth_policy"
@@ -576,15 +586,11 @@
                 {
                   "version_input": "kms_encryption_enabled_bucket",
                   "value": true
-                },
-                {
-                  "version_input": "enable_vpc_flow_logs",
-                  "value": true
                 }
               ],
               "optional": true,
               "on_by_default": true,
-              "version": "v5.4.0"
+              "version": "v5.4.8"
             },
             {
               "name": "deploy-arch-ibm-cos",
@@ -616,7 +622,7 @@
               ],
               "optional": true,
               "on_by_default": true,
-              "version": "v10.5.0"
+              "version": "v10.5.5"
             },
             {
               "name": "deploy-arch-ibm-cloud-logs",
@@ -626,7 +632,7 @@
                 "fully-configurable"
               ],
               "id": "63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global",
-              "version": "v1.9.0",
+              "version": "v1.9.10",
               "optional": true,
               "on_by_default": true,
               "input_mapping": [
@@ -666,7 +672,7 @@
               "name": "deploy-arch-ibm-cloud-monitoring",
               "description": "Sets up a Cloud Monitoring instance to collect the platform metrics.",
               "id": "73debdbf-894f-4c14-81c7-5ece3a70b67d-global",
-              "version": "v1.9.0",
+              "version": "v1.10.6",
               "flavors": [
                 "fully-configurable"
               ],
@@ -700,7 +706,7 @@
               "name": "deploy-arch-ibm-activity-tracker",
               "description": "Configure Activity Tracker Event Routing to route the auditing events.",
               "id": "918453c3-4f97-4583-8c4a-83ef12fc7916-global",
-              "version": "v1.4.3",
+              "version": "v1.4.11",
               "flavors": [
                 "fully-configurable"
               ],
@@ -739,7 +745,7 @@
               "name": "deploy-arch-ibm-scc-workload-protection",
               "description": "Configure an IBM Cloud Security and Compliance Center Workload Protection instance to help you manage security and compliance for your organization.",
               "id": "4322cf44-2289-49aa-a719-dd79e39b14dc-global",
-              "version": "v1.14.0",
+              "version": "v1.15.3",
               "flavors": [
                 "fully-configurable"
               ],
