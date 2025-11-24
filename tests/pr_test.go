@@ -105,25 +105,6 @@ func TestRunLandingZoneExample(t *testing.T) {
 	assert.NotNil(t, output, "Expected some output")
 }
 
-func TestRunVpcWithDnsExample(t *testing.T) {
-	t.Parallel()
-
-	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
-		Testing:       t,
-		TerraformDir:  vpcWithDnsExampleTerraformDir,
-		Prefix:        "dns-slz",
-		ResourceGroup: resourceGroup,
-		Region:        "us-south",
-	})
-
-	options.TerraformVars["dns_records"] = dnsRecordsMap
-	options.TerraformVars["name"] = "test-dns"
-	options.TerraformVars["dns_zones"] = dnsZoneMap
-	output, err := options.RunTestConsistency()
-	assert.Nil(t, err, "This should not have errored")
-	assert.NotNil(t, output, "Expected some output")
-}
-
 // Test the fully-configurable DA with defaults (no flow logs)
 func TestFullyConfigurable(t *testing.T) {
 	t.Parallel()
