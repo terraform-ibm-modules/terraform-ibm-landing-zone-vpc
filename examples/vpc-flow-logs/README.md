@@ -8,3 +8,5 @@ The following resources are provisioned by this example:
 * An IBM Virtual Private Cloud (VPC) with a publicly exposed subnet.
 * An IBM Cloud Object Storage Instance
 * An IBM Cloud Storage Bucket
+
+**Optional**: Creates VPC resources with no prefix when `use_prefix` is set to false.

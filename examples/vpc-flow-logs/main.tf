@@ -40,8 +40,11 @@ module "slz_vpc" {
   source                                 = "../../"
   resource_group_id                      = module.resource_group.resource_group_id
   region                                 = var.region
-  name                                   = "vpc"
-  prefix                                 = var.prefix
+  name                                   = var.vpc_name
+  prefix                                 = var.use_prefix ? var.prefix : null
+  routing_table_name                     = var.use_prefix ? null : "vpc-routing-table"
+  public_gateway_name                    = var.use_prefix ? null : "vpc-public-gateway"
+  vpc_flow_logs_name                     = var.use_prefix ? null : "vpc-flow-logs"
   tags                                   = var.resource_tags
   access_tags                            = var.access_tags
   enable_vpc_flow_logs                   = var.enable_vpc_flow_logs
