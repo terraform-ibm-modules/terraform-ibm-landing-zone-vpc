@@ -40,6 +40,14 @@ resource "ibm_is_vpc" "vpc" {
   access_tags                 = var.access_tags
   no_sg_acl_rules             = var.clean_default_sg_acl
 
+  # Ensures the VPC CRN region matches var.region; fails early if there is a mismatch.
+  lifecycle {
+    postcondition {
+      condition     = regex("^crn(\\:\\w+\\:\\w+\\:\\w+\\:\\w+)\\:([\\w-\\.]+)\\:\\w\\/([\\w-\\.]*\\:[\\w-\\.]*\\:[\\w-\\.]*\\:)[\\w-\\.]*$", self.crn)[1] == var.region
+      error_message = "The region in the VPC CRN and the region specified in `var.region` must be the same and are not. The mismatch might be caused by different regions in the provider region and in the`var.region` input variable. Check the region values and try again"
+    }
+  }
+
   dns {
     enable_hub = var.enable_hub
 
