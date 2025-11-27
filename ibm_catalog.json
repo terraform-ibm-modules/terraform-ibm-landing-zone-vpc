@@ -776,7 +776,7 @@
           "ignore_readme": true
         },
         {
-          "label": "QuickStart - Basic and Simple",
+          "label": "QuickStart - Basic and simple",
           "name": "quickstart",
           "index": 2,
           "install_type": "fullstack",
@@ -892,7 +892,8 @@
               "description": "The name of an existing resource group to provision the resources."
             },
             {
-              "key": "skip_vpc_cos_iam_auth_policy"
+              "key": "skip_vpc_cos_iam_auth_policy",
+              "hidden": true
             },
             {
               "key": "network_acls",
