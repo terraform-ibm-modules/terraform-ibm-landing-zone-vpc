@@ -378,7 +378,21 @@
               }
             },
             {
-              "key": "enable_vpc_flow_logs"
+              "key": "enable_vpc_flow_logs",
+              "type": "boolean",
+              "type_metadata": "boolean",
+              "options": [
+                {
+                  "description": "Do not collect VPC network traffic metadata.",
+                  "displayname": "Disabled",
+                  "value": false
+                },
+                {
+                  "description": "Collect and store IP traffic metadata from VPC network interfaces to Cloud Object Storage for monitoring, security analysis, and troubleshooting.",
+                  "displayname": "Enabled",
+                  "value": true
+                }
+              ]
             },
             {
               "key": "existing_cos_instance_crn",
