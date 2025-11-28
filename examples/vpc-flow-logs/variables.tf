@@ -12,6 +12,13 @@ variable "region" {
 variable "prefix" {
   description = "The prefix that you would like to append to your resources"
   type        = string
+
+}
+
+variable "use_prefix" {
+  type        = bool
+  description = "If true, use prefix for VPC resources. Otherwise, no prefix is used in the names of the VPC resources."
+  default     = true
 }
 
 variable "resource_group" {
@@ -82,4 +89,10 @@ variable "network_cidrs" {
   description = "List of Network CIDRs for the VPC. This is used to manage network ACL rules for cluster provisioning."
   type        = list(string)
   default     = ["10.0.0.0/8", "164.0.0.0/8"]
+}
+
+variable "vpc_name" {
+  type        = string
+  description = "Name of the VPC"
+  default     = "vpc"
 }
