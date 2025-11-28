@@ -20,7 +20,7 @@ module "resource_group" {
 module "existing_cos_crn_parser" {
   count   = var.existing_cos_instance_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.2.0"
+  version = "1.3.0"
   crn     = var.existing_cos_instance_crn
 }
 
@@ -73,7 +73,7 @@ module "cos_buckets" {
   count          = var.enable_vpc_flow_logs ? 1 : 0
   depends_on     = [time_sleep.wait_for_cross_account_authorization_policy[0]]
   source         = "terraform-ibm-modules/cos/ibm//modules/buckets"
-  version        = "10.1.5"
+  version        = "10.5.11"
   bucket_configs = local.bucket_config
 }
 
@@ -134,7 +134,7 @@ resource "time_sleep" "wait_for_cross_account_authorization_policy" {
 module "existing_kms_instance_crn_parser" {
   count   = var.kms_encryption_enabled_bucket && var.existing_kms_instance_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.2.0"
+  version = "1.3.0"
   crn     = var.existing_kms_instance_crn
 }
 
@@ -142,7 +142,7 @@ module "existing_kms_instance_crn_parser" {
 module "existing_kms_key_crn_parser" {
   count   = var.kms_encryption_enabled_bucket && var.existing_flow_logs_bucket_kms_key_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.2.0"
+  version = "1.3.0"
   crn     = var.existing_flow_logs_bucket_kms_key_crn
 }
 
@@ -163,7 +163,7 @@ module "kms" {
   }
   count                       = local.create_kms_key ? 1 : 0 # no need to create any KMS resources if not passing an existing KMS CRN or existing KMS key CRN is provided
   source                      = "terraform-ibm-modules/kms-all-inclusive/ibm"
-  version                     = "5.1.9"
+  version                     = "5.5.0"
   create_key_protect_instance = false
   region                      = local.kms_region
   existing_kms_instance_crn   = var.existing_kms_instance_crn
@@ -230,7 +230,7 @@ module "vpc" {
 
 module "vpe_gateway" {
   source               = "terraform-ibm-modules/vpe-gateway/ibm"
-  version              = "4.6.6"
+  version              = "4.8.4"
   resource_group_id    = module.resource_group.resource_group_id
   region               = var.region
   prefix               = local.prefix
