@@ -26,7 +26,7 @@ variable "lookup_field" {
 }
 
 variable "lookup_value_regex" {
-  description = "regular expression for reurned value"
+  description = "Regular expression for returned value"
   type        = string
   default     = null
 }
