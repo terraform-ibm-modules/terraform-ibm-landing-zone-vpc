@@ -460,21 +460,18 @@
             },
             {
               "key": "management_endpoint_type_for_bucket",
-              "type_metadata": "string",
+              "hidden": true,
               "options": [
                 {
-                  "description": "Access bucket management requests over the public internet.",
-                  "displayname": "Public",
+                  "displayname": "public",
                   "value": "public"
                 },
                 {
-                  "description": "Access bucket management requests through IBM Cloud private network. Requires virtual routing and forwarding (VRF) enabled in your account and Terraform runtime must have access to IBM Cloud Private network.",
-                  "displayname": "Private",
+                  "displayname": "private",
                   "value": "private"
                 },
                 {
-                  "description": "Access bucket management requests originating from resources within VPCs. Direct endpoints can be accessed through Virtual Private Endpoint gateways.",
-                  "displayname": "Direct",
+                  "displayname": "direct",
                   "value": "direct"
                 }
               ]
