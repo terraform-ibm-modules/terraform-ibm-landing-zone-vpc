@@ -223,7 +223,6 @@
               "key": "enable_platform_metrics",
               "type": "boolean",
               "default_value": false,
-              "description": "When set to `true`, the IBM Cloud Monitoring instance will be configured to collect platform metrics from the provided region. You can configure 1 instance only of the IBM Cloud Monitoring service per region to collect platform metrics in that location. Check with the account or service administrator if another monitoring instance has already been configured. You may not have permissions to see all monitoring instances in the region. [Learn more](https://cloud.ibm.com/docs/monitoring?topic=monitoring-platform_metrics_enabling).",
               "required": true,
               "virtual": true,
               "options": [
@@ -384,12 +383,12 @@
               "options": [
                 {
                   "description": "Do not collect VPC network traffic metadata.",
-                  "displayname": "Disabled",
+                  "displayname": "False",
                   "value": false
                 },
                 {
                   "description": "Collect and store IP traffic metadata from VPC network interfaces to Cloud Object Storage for monitoring, security analysis, and troubleshooting.",
-                  "displayname": "Enabled",
+                  "displayname": "True",
                   "value": true
                 }
               ]
@@ -464,16 +463,20 @@
             },
             {
               "key": "management_endpoint_type_for_bucket",
+              "type_metadata": "string",
               "options": [
                 {
+                  "description": "Access bucket management over the public internet.",
                   "displayname": "Public",
                   "value": "public"
                 },
                 {
+                  "description": "Access bucket management through IBM Cloud private network. Requires virtual routing and forwarding (VRF) enabled in your account and Terraform runtime must have access to IBM Cloud Private network.",
                   "displayname": "Private",
                   "value": "private"
                 },
                 {
+                  "description": "Access bucket management requests originating from resources within VPCs. Direct endpoints can be accessed through Virtual Private Endpoint gateways.",
                   "displayname": "Direct",
                   "value": "direct"
                 }
