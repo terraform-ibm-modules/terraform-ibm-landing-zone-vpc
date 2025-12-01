@@ -466,12 +466,12 @@
               "type_metadata": "string",
               "options": [
                 {
-                  "description": "Access bucket management over the public internet.",
+                  "description": "Access bucket management requests over the public internet.",
                   "displayname": "Public",
                   "value": "public"
                 },
                 {
-                  "description": "Access bucket management through IBM Cloud private network. Requires virtual routing and forwarding (VRF) enabled in your account and Terraform runtime must have access to IBM Cloud Private network.",
+                  "description": "Access bucket management requests through IBM Cloud private network. Requires virtual routing and forwarding (VRF) enabled in your account and Terraform runtime must have access to IBM Cloud Private network.",
                   "displayname": "Private",
                   "value": "private"
                 },
