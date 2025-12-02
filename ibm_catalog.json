@@ -63,6 +63,7 @@
       "flavors": [
         {
           "label": "Standard - Integrated setup with configurable services",
+          "short_description": "Provides a flexible yet reliable starting point, offering full control over VPC architecture parameters with well-chosen defaults so users can deploy a functional VPC environment without manual configuration.",
           "name": "fully-configurable",
           "index": 1,
           "install_type": "fullstack",
@@ -777,6 +778,7 @@
         },
         {
           "label": "QuickStart - Basic and simple",
+          "short_description": "Ideal for users new to IBM Cloud or Virtual Private Cloud (VPC) who want to get started without configuring underlying infrastructure.",
           "name": "quickstart",
           "index": 2,
           "install_type": "fullstack",
@@ -847,6 +849,20 @@
               "key": "ibmcloud_api_key"
             },
             {
+              "key": "existing_resource_group_name",
+              "display_name": "resource_group",
+              "custom_config": {
+                "type": "resource_group",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "identifier": "rg_name"
+                }
+              },
+              "default_value": "Default",
+              "description": "The name of an existing resource group to provision the resources."
+            },
+            {
               "key": "prefix",
               "required": true,
               "default_value": "dev",
@@ -878,42 +894,32 @@
               "required": true
             },
             {
-              "key": "existing_resource_group_name",
-              "display_name": "resource_group",
-              "custom_config": {
-                "type": "resource_group",
-                "grouping": "deployment",
-                "original_grouping": "deployment",
-                "config_constraints": {
-                  "identifier": "rg_name"
-                }
-              },
-              "default_value": "Default",
-              "description": "The name of an existing resource group to provision the resources."
-            },
-            {
-              "key": "skip_vpc_cos_iam_auth_policy",
-              "hidden": true
-            },
-            {
-              "key": "network_acls",
-              "description": "Select a predefined ACL profile for the VPC. Options: open (allow all inbound/outbound), common (allow SSH/HTTP/HTTPS with IBM internal + VPC connectivity), ibm-internal (only IBM internal + VPC connectivity), closed (fully restricted).",
+              "key": "network_profile",
+              "type": "string",
+              "displayname": "Network Profile",
+              "required": true,
+              "default_value": "common",
+              "description": "Select the predefined network profile that controls allowed traffic and security posture for the VPC.",
               "options": [
                 {
-                  "displayname": "open",
-                  "value": "open"
+                  "displayname": "Open",
+                  "value": "open",
+                  "description": "Allows all inbound and outbound traffic. Suitable for testing or unrestricted workloads."
                 },
                 {
-                  "displayname": "common",
-                  "value": "common"
+                  "displayname": "Standard",
+                  "value": "common",
+                  "description": "Allows standard access (SSH, HTTP, HTTPS) and includes IBM internal + VPC connectivity rules. Recommended default for most workloads."
                 },
                 {
-                  "displayname": "ibm-internal",
-                  "value": "ibm-internal"
+                  "displayname": "IBM Internal",
+                  "value": "ibm-internal",
+                  "description": "Blocks all customer inbound traffic. Only IBM internal and VPC connectivity traffic is allowed."
                 },
                 {
-                  "displayname": "closed",
-                  "value": "closed"
+                  "displayname": "Closed",
+                  "value": "closed",
+                  "description": "Fully restricted network profile. No inbound or outbound traffic allowed."
                 }
               ]
             },
@@ -940,7 +946,25 @@
               }
             },
             {
-              "key": "enable_vpc_flow_logs"
+              "key": "enable_vpc_flow_logs",
+              "type": "boolean",
+              "type_metadata": "boolean",
+              "options": [
+                {
+                  "description": "Do not collect VPC network traffic metadata.",
+                  "displayname": "False",
+                  "value": false
+                },
+                {
+                  "description": "Collect and store IP traffic metadata from VPC network interfaces to Cloud Object Storage for monitoring, security analysis, and troubleshooting.",
+                  "displayname": "True",
+                  "value": true
+                }
+              ]
+            },
+            {
+              "key": "skip_vpc_cos_iam_auth_policy",
+              "hidden": true
             },
             {
               "key": "provider_visibility",

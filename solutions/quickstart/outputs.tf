@@ -51,6 +51,24 @@ output "subnet_detail_map" {
   value       = module.vpc.subnet_detail_map
 }
 
+##############################################################################
+# Public Gateways
+##############################################################################
+
+output "public_gateways" {
+  description = "Map of the public gateways by zone."
+  value       = module.vpc.public_gateways
+}
+
+
+##############################################################################
+# Security Group Details
+##############################################################################
+
+output "security_group_details" {
+  description = "Details of security group."
+  value       = module.vpc.security_group_details
+}
 
 output "next_steps_text" {
   value       = "Your Virtual Private Cloud is ready."

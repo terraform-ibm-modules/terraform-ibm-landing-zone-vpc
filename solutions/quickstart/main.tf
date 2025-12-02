@@ -112,7 +112,9 @@ locals {
       }
     ]
   }
-  network_acls = lookup(local.acl_profiles, var.network_acls, local.acl_profiles["common"])
+  network_acls         = lookup(local.acl_profiles, var.network_profile, local.acl_profiles["common"])
+  clean_default_sg_acl = contains(["ibm-internal", "closed"], var.network_profile)
+  allow_public_gateway = contains(["open", "common"], var.network_profile)
 }
 
 #############################################################################
@@ -133,7 +135,7 @@ module "vpc" {
       {
         name           = "${local.prefix}subnet-a"
         cidr           = "10.10.10.0/24"
-        public_gateway = true
+        public_gateway = local.allow_public_gateway
         acl_name       = "${local.prefix}acl"
         no_addr_prefix = false
       }
@@ -142,7 +144,7 @@ module "vpc" {
       {
         name           = "${local.prefix}subnet-b"
         cidr           = "10.20.10.0/24"
-        public_gateway = true
+        public_gateway = local.allow_public_gateway
         acl_name       = "${local.prefix}acl"
         no_addr_prefix = false
       }
@@ -151,13 +153,19 @@ module "vpc" {
       {
         name           = "${local.prefix}subnet-c"
         cidr           = "10.30.10.0/24"
-        public_gateway = true
+        public_gateway = local.allow_public_gateway
         acl_name       = "${local.prefix}acl"
         no_addr_prefix = false
       }
     ]
   }
-  network_acls                           = local.network_acls
+  network_acls         = local.network_acls
+  clean_default_sg_acl = local.clean_default_sg_acl
+  use_public_gateways = {
+    zone-1 = local.allow_public_gateway
+    zone-2 = local.allow_public_gateway
+    zone-3 = local.allow_public_gateway
+  }
   enable_vpc_flow_logs                   = var.enable_vpc_flow_logs
   create_authorization_policy_vpc_to_cos = !var.skip_vpc_cos_iam_auth_policy
   existing_cos_instance_guid             = var.enable_vpc_flow_logs ? module.cos[0].cos_instance_guid : null

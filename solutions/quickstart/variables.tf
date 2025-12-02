@@ -80,12 +80,12 @@ variable "access_tags" {
 # Network ACLs
 ##############################################################################
 
-variable "network_acls" {
+variable "network_profile" {
   description = "Predefined ACL profile options: open (allow all inbound and outbound traffic), common (allow SSH 22, HTTP 80, HTTPS 443, and includes IBM internal + VPC connectivity rules), ibm-internal (only IBM internal and VPC connectivity rules; no customer inbound traffic), closed (fully restricted; no inbound or outbound traffic)."
   type        = string
   default     = "common"
   validation {
-    condition     = contains(["open", "common", "ibm-internal", "closed"], var.network_acls)
+    condition     = contains(["open", "common", "ibm-internal", "closed"], var.network_profile)
     error_message = "Valid values: open, common, ibm-internal, closed."
   }
 }
