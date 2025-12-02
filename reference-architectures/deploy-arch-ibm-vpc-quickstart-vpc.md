@@ -52,7 +52,7 @@ content-type: reference-architecture
 {: toc-use-case="Foundational Infrastructure"}
 {: toc-version="1.0.0"}
 
-The QuickStart variation provides a **simple and beginner-friendly** Virtual Private Cloud (VPC) deployment that requires minimal configuration. It helps users rapidly create a functional network environment on IBM Cloud without needing to define subnets, ACL rules, security groups, or connectivity patterns manually.  
+The QuickStart variation provides a **simple and beginner-friendly** Virtual Private Cloud (VPC) deployment that requires minimal configuration. It helps users rapidly create a functional network environment on IBM Cloud without needing to define subnets, ACL rules, security groups, or connectivity patterns manually.
 This variation is ideal for users who want a **basic VPC setup**, lightweight networking defaults, and the option to enable VPC Flow Logs.
 
 Unlike the fully configurable architecture, QuickStart intentionally limits complexity and deploys a clean, minimal network footprint that can be used as a stepping stone toward more advanced architectures.
@@ -119,22 +119,22 @@ Unlike the fully configurable architecture, QuickStart intentionally limits comp
 {: #ra-vpc-quickstart-features}
 
 ### Core VPC Setup
-- Automatically creates a new VPC with IBM-recommended defaults  
+- Automatically creates a new VPC with IBM-recommended defaults
 - Deploys **one subnet per zone** (three total)
 
 ### Built-in Network Profiles
-- **Open** – Unrestricted  
-- **Standard (Common)** – SSH/HTTP/HTTPS + IBM internal rules  
-- **IBM Internal** – No inbound customer traffic  
-- **Closed** – Fully restricted  
+- **Open** – Unrestricted
+- **Standard (Common)** – SSH/HTTP/HTTPS + IBM internal rules
+- **IBM Internal** – No inbound customer traffic
+- **Closed** – Fully restricted
 
 ### Security & Network Defaults
-- ACLs applied according to selected network profile  
-- Security group automatically cleaned for restrictive profiles  
-- Public gateways created only when allowed by the profile  
+- ACLs applied according to selected network profile
+- Security group automatically cleaned for restrictive profiles
+- Public gateways created only when allowed by the profile
 
 ### Optional Flow Logs
-- Enable VPC Flow Logs to create a COS instance and bucket automatically  
+- Enable VPC Flow Logs to create a COS instance and bucket automatically
 
 
 ---
@@ -145,4 +145,3 @@ Unlike the fully configurable architecture, QuickStart intentionally limits comp
 TODO: Decide what next steps to list, if any
 
 Optional section. Include links to your deployment guide or next steps to get started with the architecture. -->
-
