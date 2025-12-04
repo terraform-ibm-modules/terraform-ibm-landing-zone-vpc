@@ -808,7 +808,7 @@ variable "vpn_gateways" {
     object({
       name           = string
       subnet_name    = string # Do not include prefix, use same name as in `var.subnets`
-      mode           = optional(string)
+      mode           = optional(string, "route")
       resource_group = optional(string)
       access_tags    = optional(list(string), [])
     })

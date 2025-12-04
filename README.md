@@ -128,7 +128,41 @@ module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-b"
 module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-c"]
 ```
 
+## ​ Upgrade Guide: Migrating VPN from Landing Zone VPC Module to Standalone Site-to-Site VPN Module
+
+### Overview
+
+The `terraform-ibm-landing-zone-vpc` module previously included built-in VPN provisioning via the `vpn_gateways` variable. That functionality has now been extracted into a dedicated `terraform-ibm-site-to-site-vpn` module for better modularity, flexibility, and maintainability.
+
+> **Note:** The legacy VPN logic within the IBM Cloud Landing Zone VPC module is **deprecated** and will be removed in an upcoming major release.
+
+## Migration Steps
+
+### 1. Retain Legacy Behavior (Deprecated)
+
+If you are still using `vpn_gateways` within the IBM Cloud Landing Zone VPC module, it will continue to work for now. However, you should see a deprecation warning:
+
+```hcl
+module "landing_zone_vpc" {
+  source  = "terraform-ibm-modules/landing-zone-vpc/ibm"
+  version = "X.Y.Z"
+
+  # Legacy VPN provisioning logic (Deprecated)
+  vpn_gateways =   ["vpn-gateway1", "vpn-gateway2"]
+
+  # ​​ Deprecated: VPN provisioning in this module ⚠️
+  #
+  # Note: This functionality will be removed in the upcoming release.
+  # Please migrate to the standalone [terraform-ibm-site-to-site-vpn](https://github.com/terraform-ibm-modules/terraform-ibm-site-to-site-vpn/blob/main) module.
+}
+```
+
+### 2. Add the New Site-to-Site VPN Module
+
+Refer [usage](https://github.com/terraform-ibm-modules/terraform-ibm-site-to-site-vpn/blob/main/README.md#usage) section as mentioned in the [terraform-ibm-site-to-site-vpn](https://github.com/terraform-ibm-modules/terraform-ibm-site-to-site-vpn/blob/main) module.
+
 ### Required IAM access policies
+
 You need the following permissions to run this module.
 
 - IAM services
@@ -247,7 +281,7 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_use_existing_dns_instance"></a> [use\_existing\_dns\_instance](#input\_use\_existing\_dns\_instance) | Whether to use an existing dns instance. If true, existing\_dns\_instance\_id must be set. | `bool` | `false` | no |
 | <a name="input_use_public_gateways"></a> [use\_public\_gateways](#input\_use\_public\_gateways) | Create a public gateway in any of the three zones with `true`. | <pre>object({<br/>    zone-1 = optional(bool)<br/>    zone-2 = optional(bool)<br/>    zone-3 = optional(bool)<br/>  })</pre> | <pre>{<br/>  "zone-1": true,<br/>  "zone-2": true,<br/>  "zone-3": true<br/>}</pre> | no |
 | <a name="input_vpc_flow_logs_name"></a> [vpc\_flow\_logs\_name](#input\_vpc\_flow\_logs\_name) | The name to give the provisioned VPC flow logs. If not set, the module generates a name based on the `prefix` and `name` variables. | `string` | `null` | no |
-| <a name="input_vpn_gateways"></a> [vpn\_gateways](#input\_vpn\_gateways) | List of VPN gateways to create. | <pre>list(<br/>    object({<br/>      name           = string<br/>      subnet_name    = string # Do not include prefix, use same name as in `var.subnets`<br/>      mode           = optional(string)<br/>      resource_group = optional(string)<br/>      access_tags    = optional(list(string), [])<br/>    })<br/>  )</pre> | `[]` | no |
+| <a name="input_vpn_gateways"></a> [vpn\_gateways](#input\_vpn\_gateways) | List of VPN gateways to create. | <pre>list(<br/>    object({<br/>      name           = string<br/>      subnet_name    = string # Do not include prefix, use same name as in `var.subnets`<br/>      mode           = optional(string, "route")<br/>      resource_group = optional(string)<br/>      access_tags    = optional(list(string), [])<br/>    })<br/>  )</pre> | `[]` | no |
 
 ### Outputs
 
