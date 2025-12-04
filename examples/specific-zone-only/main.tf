@@ -32,11 +32,13 @@ module "slz_vpc" {
       }
     ]
   }
+  # Must be in the order
   use_public_gateways = {
     zone-1 = false
     zone-2 = true
     zone-3 = false
   }
+
   network_acls = [{
     name                         = "${var.prefix}-acl"
     add_ibm_cloud_internal_rules = false
