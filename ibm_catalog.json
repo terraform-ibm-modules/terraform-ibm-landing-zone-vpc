@@ -375,7 +375,21 @@
               }
             },
             {
-              "key": "enable_vpc_flow_logs"
+              "key": "enable_vpc_flow_logs",
+              "type": "boolean",
+              "type_metadata": "boolean",
+              "options": [
+                {
+                  "description": "Do not collect VPC network traffic metadata.",
+                  "displayname": "False",
+                  "value": false
+                },
+                {
+                  "description": "Collect and store IP traffic metadata from VPC network interfaces to Cloud Object Storage for monitoring, security analysis, and troubleshooting.",
+                  "displayname": "True",
+                  "value": true
+                }
+              ]
             },
             {
               "key": "existing_cos_instance_crn",
@@ -447,41 +461,48 @@
             },
             {
               "key": "management_endpoint_type_for_bucket",
+              "hidden": true,
               "options": [
                 {
-                  "displayname": "Public",
+                  "displayname": "public",
                   "value": "public"
                 },
                 {
-                  "displayname": "Private",
+                  "displayname": "private",
                   "value": "private"
                 },
                 {
-                  "displayname": "Direct",
+                  "displayname": "direct",
                   "value": "direct"
                 }
               ]
             },
             {
               "key": "cos_bucket_class",
+              "type_metadata": "string",
               "options": [
                 {
+                  "description": "Active data accessed frequently.",
                   "displayname": "Standard",
                   "value": "standard"
                 },
                 {
+                  "description": "Less active data accessed once a month.",
                   "displayname": "Vault",
                   "value": "vault"
                 },
                 {
+                  "description": "Cold data accessed a few times yearly.",
                   "displayname": "Cold",
                   "value": "cold"
                 },
                 {
+                  "description": "Automatic cost optimization for data of any activity or access.",
                   "displayname": "Smart",
                   "value": "smart"
                 },
                 {
+                  "description": "Single all-inclusive price for storage, API operations, and bandwidth. Ideal for active workloads with large usage.",
                   "displayname": "OneRate Active",
                   "value": "onerate_active"
                 }
@@ -495,12 +516,15 @@
             },
             {
               "key": "flow_logs_cos_bucket_archive_type",
+              "type_metadata": "string",
               "options": [
                 {
+                  "description": "Lower-cost archive storage. Data retrieval takes hours.",
                   "displayname": "Glacier",
                   "value": "Glacier"
                 },
                 {
+                  "description": "Higher-cost archive with faster retrieval.",
                   "displayname": "Accelerated",
                   "value": "Accelerated"
                 }
