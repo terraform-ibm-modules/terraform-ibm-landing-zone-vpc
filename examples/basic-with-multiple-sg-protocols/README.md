@@ -1,6 +1,6 @@
 # Basic Example with multiple Security Group rules
 
-A simple example to provision a Secure Landing Zone (SLZ) Virtual Private Cloud (VPC).
+A simple example to provision a Secure Landing Zone (SLZ) Virtual Private Cloud (VPC) with multiple Security Group rules.
 
 The following resources are provisioned by this example:
 
