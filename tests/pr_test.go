@@ -25,7 +25,7 @@ import (
 /*
 Global variables
 */
-const basicExampleTerraformDir = "examples/basic"
+const basicWithMultipleSGProtocolsExampleTerraformDir = "examples/basic-with-multiple-sg-protocols"
 const vpcFlowLogsExampleTerraformDir = "examples/vpc-flow-logs"
 const landingZoneExampleTerraformDir = "examples/landing_zone"
 const hubAndSpokeDelegatedExampleTerraformDir = "examples/hub-spoke-delegated-resolver"
