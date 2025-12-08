@@ -479,6 +479,21 @@ variable "security_group_rules" {
     condition     = !(var.clean_default_sg_acl && var.security_group_rules != null && length(var.security_group_rules) > 0)
     error_message = "var.clean_default_sg_acl is true and var.security_group_rules are not empty, which are in direct conflict. If you want to clean the default VPC Security Group, you must not pass security_group_rules."
   }
+
+  validation {
+    error_message = "Each security group rule must specify at most one protocol (tcp, udp, or icmp), or omit all protocol blocks to allow all protocols. Found a rule with multiple protocols defined. To allow multiple protocols, create separate rules - one for each protocol. For example, instead of one rule with both tcp and udp blocks, create two rules: one with tcp only and another with udp only."
+    condition = (var.security_group_rules == null || length(var.security_group_rules) == 0) ? true : length(distinct(
+      flatten([
+        for rule in var.security_group_rules :
+        # Count how many protocols are specified (non-null)
+        # Return false if more than one protocol is specified
+        false if length([
+          for protocol in [rule.tcp, rule.udp, rule.icmp] :
+          protocol if protocol != null
+        ]) > 1
+      ])
+    )) == 0
+  }
 }
 
 variable "clean_default_sg_acl" {
