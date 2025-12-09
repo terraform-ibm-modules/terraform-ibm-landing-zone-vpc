@@ -433,6 +433,7 @@ locals {
 ##############################################################################
 # Create VPN Gateways
 ##############################################################################
+# ⚠️ [DEPRECATED]. Refer the [migration guide](./migration_guide.md) for more information.
 
 locals {
   # Convert the vpn_gateway input from list to a map
