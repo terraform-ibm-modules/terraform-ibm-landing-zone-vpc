@@ -2,9 +2,9 @@
 
 This variable lets you choose from predefined network security profiles that control the default **Network ACL behavior**, **public gateway availability**, and whether **default Security Group (SG) rules are cleaned**. It simplifies deployment by offering four security levels ranging from fully open to fully restricted.
 
-- **Variable name:** `network_profile`  
-- **Type:** `string`  
-- **Default value:** `"standard"`  
+- **Variable name:** `network_profile`
+- **Type:** `string`
+- **Default value:** `"standard"`
 - **Allowed values:** `open`, `standard`, `ibm-internal`, `closed`
 
 The selected profile automatically defines:
