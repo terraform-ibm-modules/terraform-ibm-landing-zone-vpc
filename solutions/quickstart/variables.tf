@@ -81,12 +81,12 @@ variable "access_tags" {
 ##############################################################################
 
 variable "network_profile" {
-  description = "Predefined ACL profile options: open (allow all inbound and outbound traffic), common (allow SSH 22, HTTP 80, HTTPS 443, and includes IBM internal + VPC connectivity rules), ibm-internal (only IBM internal and VPC connectivity rules; no customer inbound traffic), closed (fully restricted; no inbound or outbound traffic)."
+  description = "Predefined ACL profile options: open (allow all inbound and outbound traffic), standard (allow SSH 22, HTTP 80, HTTPS 443, and includes IBM internal + VPC connectivity rules), ibm-internal (only IBM internal and VPC connectivity rules; no customer inbound traffic), closed (fully restricted; no inbound or outbound traffic). [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/quickstart/DA-types.md) about each profile."
   type        = string
-  default     = "common"
+  default     = "standard"
   validation {
-    condition     = contains(["open", "common", "ibm-internal", "closed"], var.network_profile)
-    error_message = "Valid values: open, common, ibm-internal, closed."
+    condition     = contains(["open", "standard", "ibm-internal", "closed"], var.network_profile)
+    error_message = "Valid values: open, standard, ibm-internal, closed."
   }
 }
 ##############################################################################

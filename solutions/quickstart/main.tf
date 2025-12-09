@@ -59,7 +59,7 @@ locals {
         ]
       }
     ]
-    common = [
+    standard = [
       {
         name                         = "${local.prefix}acl"
         add_ibm_cloud_internal_rules = true
@@ -112,9 +112,9 @@ locals {
       }
     ]
   }
-  network_acls         = lookup(local.acl_profiles, var.network_profile, local.acl_profiles["common"])
+  network_acls         = lookup(local.acl_profiles, var.network_profile, local.acl_profiles["standard"])
   clean_default_sg_acl = contains(["ibm-internal", "closed"], var.network_profile)
-  allow_public_gateway = contains(["open", "common"], var.network_profile)
+  allow_public_gateway = contains(["open", "standard"], var.network_profile)
 }
 
 #############################################################################

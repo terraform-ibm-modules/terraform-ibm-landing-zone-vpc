@@ -55,7 +55,6 @@ content-type: reference-architecture
 The QuickStart variation provides a **simple and beginner-friendly** Virtual Private Cloud (VPC) deployment that requires minimal configuration. It helps users rapidly create a functional network environment on IBM Cloud without needing to define subnets, ACL rules, security groups, or connectivity patterns manually.
 This variation is ideal for users who want a **basic VPC setup**, lightweight networking defaults, and the option to enable VPC Flow Logs.
 
-Unlike the fully configurable architecture, QuickStart intentionally limits complexity and deploys a clean, minimal network footprint that can be used as a stepping stone toward more advanced architectures.
 
 ---
 
@@ -64,14 +63,6 @@ Unlike the fully configurable architecture, QuickStart intentionally limits comp
 
 ![Architecture diagram for the QuickStart variation of Cloud foundation for VPC](deployable-architecture-quickstart-vpc.svg "QuickStart VPC architecture"){: caption="QuickStart VPC architecture" caption-side="bottom"}{: external download="deployable-architecture-quickstart-vpc.svg"}
 
----
-
-## Design requirements
-{: #ra-vpc-quickstart-design-requirements}
-
-![Design requirements for QuickStart VPC](heat-map-deploy-arch-slz-vpc-quickstart.svg "Design requirements"){: caption="Scope of the QuickStart design requirements" caption-side="bottom"}
-
----
 
 ## Components
 {: #ra-vpc-quickstart-components}
@@ -83,7 +74,7 @@ Unlike the fully configurable architecture, QuickStart intentionally limits comp
 |------------|-----------|--------------------|-------------|
 | *Provide a basic, ready-to-use VPC with minimal inputs* | Predefined VPC | Deploys a VPC quickly without requiring the user to design the network | Use the fully configurable variation for deeper customization |
 | *Create availability-zone redundancy* | Fixed three-zone subnets | One subnet per zone to ensure multi-AZ coverage | Single-zone deployment (not recommended) |
-| *Basic traffic governance* | Network profile selector (open, common, ibm-internal, closed) | Users can choose the desired security posture without written ACL rules | Manually writing custom ACLs |
+| *Basic traffic governance* | Network profile selector (open, standard, ibm-internal, closed) | Users can choose the desired security posture without written ACL rules | Manually writing custom ACLs |
 
 {: caption="VPC architecture decisions" caption-side="bottom"}
 
@@ -94,7 +85,7 @@ Unlike the fully configurable architecture, QuickStart intentionally limits comp
 
 | Requirement | Component | Reason | Alternative |
 |------------|-----------|--------|-------------|
-| *Optional access to the internet* | Public gateways per zone (automatic) | Enabled only for `open` and `common` profiles | No public gateways for locked-down profiles |
+| *Optional access to the internet* | Public gateways per zone (automatic) | Enabled only for `open` and `standard` profiles | No public gateways for locked-down profiles |
 | *Subnet-level traffic control* | Network ACL profiles | Simplifies security without requiring rule definitions | Fully customizable ACLs (in advanced variation) |
 | *Instance-level default security* | Default VPC security group | Automatically cleaned when selecting restrictive profiles (`ibm-internal`, `closed`) | Custom security group rules |
 
@@ -124,7 +115,7 @@ Unlike the fully configurable architecture, QuickStart intentionally limits comp
 
 ### Built-in Network Profiles
 - **Open** – Unrestricted
-- **Standard (Common)** – SSH/HTTP/HTTPS + IBM internal rules
+- **Standard** – SSH/HTTP/HTTPS + IBM internal rules
 - **IBM Internal** – No inbound customer traffic
 - **Closed** – Fully restricted
 

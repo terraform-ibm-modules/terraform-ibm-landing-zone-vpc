@@ -894,28 +894,28 @@
               "type": "string",
               "displayname": "Network Profile",
               "required": true,
-              "default_value": "common",
-              "description": "Select the predefined network profile that controls allowed traffic and security posture for the VPC.",
+              "default_value": "standard",
+              "description": "Choose a predefined network security posture for the VPC (Open, Standard, IBM Internal, Closed). See details in Network Profile documentation. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/quickstart/DA-types.md).",
               "options": [
                 {
-                  "displayname": "Open",
+                  "displayname": "Open (Public & Open Access)",
                   "value": "open",
-                  "description": "Allows all inbound and outbound traffic. Suitable for testing or unrestricted workloads."
+                  "description": "Allows all inbound/outbound traffic. Suitable for testing or unrestricted workloads."
                 },
                 {
-                  "displayname": "Standard",
-                  "value": "common",
-                  "description": "Allows standard access (SSH, HTTP, HTTPS) and includes IBM internal + VPC connectivity rules. Recommended default for most workloads."
+                  "displayname": "Standard (Internet & Internal Access) (Default)",
+                  "value": "standard",
+                  "description": "Allows SSH/HTTP/HTTPS + IBM internal connectivity. Recommended default for general workloads."
                 },
                 {
-                  "displayname": "IBM Internal",
+                  "displayname": "IBM Internal (Private Network Only)",
                   "value": "ibm-internal",
-                  "description": "Blocks all customer inbound traffic. Only IBM internal and VPC connectivity traffic is allowed."
+                  "description": "No external/public connectivity. Only IBM internal + VPC connectivity allowed."
                 },
                 {
-                  "displayname": "Closed",
+                  "displayname": "Closed (Fully Isolated)",
                   "value": "closed",
-                  "description": "Fully restricted network profile. No inbound or outbound traffic allowed."
+                  "description": "No inbound or outbound traffic. High-security and locked-down environments."
                 }
               ]
             },
