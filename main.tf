@@ -433,8 +433,7 @@ locals {
 ##############################################################################
 # Create VPN Gateways
 ##############################################################################
-# ⚠️ Provisioning of VPN Gateways will soon be deprecated.
-# Please refer [IBM Cloud site-to-site VPN](https://github.com/terraform-ibm-modules/terraform-ibm-site-to-site-vpn/blob/main/README.md#usage) module.
+# ⚠️ [DEPRECATED]. Refer the [migration guide](./migration_guide.md) for more information.
 
 locals {
   # Convert the vpn_gateway input from list to a map

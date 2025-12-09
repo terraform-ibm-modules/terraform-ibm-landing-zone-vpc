@@ -1,20 +1,17 @@
 # Migration Guide
 
-## ⚠️ Deprecation Notice
+## VPN Gateway changes in v9.0.0
 
-In the upcoming version, the direct use of `ibm_is_vpn_gateway` resources in the root module will be **deprecated**.
-These resources have been refactored into the reusable [`terraform-ibm-modules/site-to-site-vpn`](https://github.com/terraform-ibm-modules/terraform-ibm-site-to-site-vpn) module.
-Users must migrate their Terraform state and update outputs to avoid resource recreation and broken references.
+* Starting with version `v9.0.0`, direct use of the VPN gateway in the main setup will be **deprecated**.
+* Instead of defining the VPN gateway resources, reference the [`terraform-ibm-modules/site-to-site-vpn`](https://github.com/terraform-ibm-modules/terraform-ibm-site-to-site-vpn) module.
+* Users must migrate their Terraform state and update outputs to avoid resource recreation and broken references.
 
 ## Overview
 
 This change improves maintainability and consistency by consolidating VPN gateway logic into a dedicated module.
 Because resource addresses and outputs have changed, you must migrate your Terraform state and update any dependent references.
 
-
-## Changes
-
-Below changes are planned :
+This release introduces the following changes:
 
 1. Resource address migration (using `terraform state mv` and new helper resources).
 2. Output block changes (deprecation of `vpn_gateways_name` and link to new outputs).

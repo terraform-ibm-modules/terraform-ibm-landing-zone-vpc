@@ -817,7 +817,7 @@ variable "dns_records" {
 ##############################################################################
 
 variable "vpn_gateways" {
-  description = "List of VPN gateways to create."
+  description = "[DEPRECATED] List of VPN gateways to create. For more information please refer the [migration guide](./migration_guide.md)."
   nullable    = false
   type = list(
     object({
