@@ -11,14 +11,15 @@ locals {
     [
       for value in var.subnets[zone] :
       {
-        name        = value.name                                            # Subnet shortname
-        prefix_name = "${var.prefix}-${value.name}"                         # Creates a name of the prefix and subnet name
-        zone        = index(keys(var.subnets), zone) + 1                    # Zone 1, 2, or 3
-        zone_name   = "${var.region}-${index(keys(var.subnets), zone) + 1}" # Contains region and zone
-        cidr        = value.cidr                                            # CIDR Block
-        no_prefix   = value.no_addr_prefix                                  # If true will not create addr prefix for subnet under any circumstance
-        count       = index(var.subnets[zone], value) + 1                   # Count of the subnet within the zone
-        acl         = value.acl_name
+        name          = value.name
+        resource_name = (var.prefix != null ? "${var.prefix}-${value.name}" : value.name)
+        prefix_name   = "${var.prefix}-${value.name}"                         # Creates a name of the prefix and subnet name
+        zone          = index(keys(var.subnets), zone) + 1                    # Zone 1, 2, or 3
+        zone_name     = "${var.region}-${index(keys(var.subnets), zone) + 1}" # Contains region and zone
+        cidr          = value.cidr                                            # CIDR Block
+        no_prefix     = value.no_addr_prefix                                  # If true will not create addr prefix for subnet under any circumstance
+        count         = index(var.subnets[zone], value) + 1                   # Count of the subnet within the zone
+        acl           = value.acl_name
         # Public gateway ID
         public_gateway = (
           lookup(value, "public_gateway", null) == true && lookup(var.use_public_gateways, zone, null) != null
@@ -34,7 +35,7 @@ locals {
   # Convert list to map
   subnet_map = {
     for subnet in local.subnet_list :
-    "${var.prefix}-${subnet.name}" => subnet
+    subnet.name => subnet
   }
 }
 

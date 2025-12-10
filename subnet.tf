@@ -19,7 +19,7 @@ resource "ibm_is_vpc_address_prefix" "subnet_prefix" {
   # Address prefixes replace subnet prefixes
   # Only create prefix if creating subnets, flag not set to disable prefix creation, and no specific prefixes were supplied
   for_each = { for k, v in local.subnet_object : k => v if(v.no_prefix == false && var.create_subnets == true && length(local.address_prefixes) == 0) }
-  name     = each.value.prefix_name
+  name     = "${each.value.resource_name}-prefix"
   zone     = each.value.zone_name
   vpc      = local.vpc_id
   cidr     = each.value.cidr
@@ -35,10 +35,10 @@ resource "ibm_is_vpc_address_prefix" "subnet_prefix" {
 resource "ibm_is_subnet" "subnet" {
   for_each        = var.create_subnets ? local.subnet_object : {}
   vpc             = local.vpc_id
-  name            = each.key
+  name            = each.value.resource_name
   zone            = each.value.zone_name
   resource_group  = var.resource_group_id
-  ipv4_cidr_block = length(keys(local.address_prefixes)) == 0 && !each.value.no_prefix ? ibm_is_vpc_address_prefix.subnet_prefix[each.value.prefix_name].cidr : each.value.cidr
+  ipv4_cidr_block = length(keys(local.address_prefixes)) == 0 && !each.value.no_prefix ? ibm_is_vpc_address_prefix.subnet_prefix[each.value.name].cidr : each.value.cidr
   network_acl     = ibm_is_network_acl.network_acl[each.value.acl].id
   public_gateway  = each.value.public_gateway
   tags            = var.tags
