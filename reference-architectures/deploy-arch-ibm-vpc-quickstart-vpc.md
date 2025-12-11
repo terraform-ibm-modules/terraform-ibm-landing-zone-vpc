@@ -62,6 +62,11 @@ The QuickStart variation of the Cloud foundation for VPC provides a **basic and 
 
 ![Architecture diagram for the QuickStart variation of Cloud foundation for VPC](deployable-architecture-quickstart-vpc.svg "QuickStart VPC architecture"){: caption="Quickstart variation of Cloud foundation for VPC" caption-side="bottom"}{: external download="deployable-architecture-quickstart-vpc.svg"}
 
+## Design requirements
+{: #ra-vpc-qs-design-requirements}
+
+![Design requirements for Cloud foundation for VPC](heat-map-deploy-arch-slz-vpc-quickstart.svg "Design requirements"){: caption="Scope of the design requirements" caption-side="bottom"}
+
 
 ## Components
 {: #ra-vpc-quickstart-components}
@@ -69,24 +74,24 @@ The QuickStart variation of the Cloud foundation for VPC provides a **basic and 
 ### VPC architecture decisions
 {: #ra-vpc-quickstart-components-arch}
 
-| Requirement | Component | Reasons for choice |
-|------------|-----------|--------------------|
-| *Provide a basic, ready-to-use VPC with minimal inputs* | Predefined VPC | Deploys a VPC quickly without requiring the user to design the network | Use the fully configurable variation for deeper customization |
-| *Create availability-zone redundancy* | Fixed three-zone subnets | One subnet per zone to ensure multi-AZ coverage |  |
-| *Basic traffic governance* | Network profile selector (open, standard, ibm-internal, closed) | Users can choose the desired security posture without written ACL rules |  |
+| Requirement | Component | Reasons for choice | Alternative choice |
+|------------|-----------|--------------------|--------------------|
+| *Provide a basic, ready-to-use VPC with minimal inputs* | Predefined VPC | Deploys a VPC quickly without requiring users to design networking components | Use the fully configurable variation for granular control |
+| *Create availability-zone redundancy* | Fixed three-zone subnets | Ensures high availability by provisioning one subnet per zone automatically | Use the fully configurable variation for flexibility |
+| *Basic traffic governance* | Network profile selector (open, standard, ibm-internal, closed) | Provides simple, predefined ACL behavior without requiring custom rules | Define custom ACL rules and SG rules manually in the fully configurable variation |
 
-{: caption="Quickstart variation of Cloud foundation for VPC" caption-side="bottom"}
+{: caption="QuickStart variation of Cloud foundation for VPC" caption-side="bottom"}
 
 ---
 
 ### Networking and connectivity decisions
 {: #ra-vpc-quickstart-components-connectivity}
 
-| Requirement | Component | Reason |
-|------------|-----------|--------|
-| *Optional access to the internet* | Public gateways per zone (automatic) | Enabled only for `open` and `standard` profiles |
-| *Subnet-level traffic control* | Network ACL profiles | Simplifies security without requiring rule definitions |
-| *Instance-level default security* | Default VPC security group | Automatically cleaned when selecting restrictive profiles (`ibm-internal`, `closed`) | Custom security group rules |
+| Requirement | Component | Reason | Alternative choice |
+|------------|-----------|--------|--------------------|
+| *Optional access to the internet* | Public gateways per zone (automatic) | Created only for `open` and `standard` profiles to support internet-bound workloads | Disable public gateways entirely or configure per-subnet in the fully configurable variation |
+| *Subnet-level traffic control* | Predefined Network ACL profiles | Simplifies security posture selection for beginner users |  |
+| *Instance-level basic security* | Default VPC security group | Automatically cleaned for restrictive profiles (`ibm-internal`, `closed`) to enforce isolation |  |
 
 {: caption="Networking and connectivity decisions" caption-side="bottom"}
 
@@ -95,13 +100,14 @@ The QuickStart variation of the Cloud foundation for VPC provides a **basic and 
 ### Simplicity and user experience decisions
 {: #ra-vpc-quickstart-components-simplicity}
 
-| Requirement | Component | Reasons |
-|------------|-----------|---------|
-| *Zero-effort deployment* | Predefined subnets and ACL network profile | Provide only prefix, region and network_profile |
-| *Security posture options* | User-friendly “Network Profile” options | Shows descriptions and recommendations |  |
-| *Observability integration* | VPC Flow Logs  | Enabled via toggle |
+| Requirement | Component | Reasons | Alternative choice |
+|------------|-----------|---------|--------------------|
+| *Zero-effort deployment* | Predefined subnets + predefined ACL profiles | Only requires prefix, region, and network profile input |
+| *Security posture options* | User-friendly Network Profile selector | Provides clear recommendations and aligns with IBM Cloud terminology | Full manual configuration of ACLs and SG rules in fully configurable variation |
+| *Observability integration* | VPC Flow Logs (optional) | Simplifies enabling flow logs and creates COS resources automatically | Allow users to reuse existing COS instances and buckets in fully configurable variation |
 
 {: caption="Simplicity decision points" caption-side="bottom"}
+
 
 ---
 
