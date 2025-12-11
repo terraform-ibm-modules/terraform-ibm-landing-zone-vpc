@@ -86,7 +86,7 @@ variable "network_profile" {
   default     = "standard"
   validation {
     condition     = contains(["open", "standard", "ibm-internal", "closed"], var.network_profile)
-    error_message = "Valid values: open, standard, ibm-internal, closed."
+    error_message = "Valid values for network_profile: open, standard, ibm-internal, closed."
   }
 }
 ##############################################################################
