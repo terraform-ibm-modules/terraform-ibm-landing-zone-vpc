@@ -142,10 +142,17 @@ func TestFullyConfigurable(t *testing.T) {
 
 func TestQuickstartDefaultConfigSchematics(t *testing.T) {
 	t.Parallel()
+	// Verify ibmcloud_api_key variable is set
+	checkVariable := "TF_VAR_ibmcloud_api_key"
+	val, present := os.LookupEnv(checkVariable)
+	require.True(t, present, checkVariable+" environment variable not set")
+	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
+	// Programmatically determine region to use based on availability
+	region, _ := testhelper.GetBestVpcRegion(val, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
-		Region:  "eu-de",
+		Region:  region,
 		Prefix:  "vpc-qs",
 		TarIncludePatterns: []string{
 			"*.tf",
@@ -175,11 +182,18 @@ func TestQuickstartDefaultConfigSchematics(t *testing.T) {
 
 func TestQuickstartDefaultConfigUpgradeSchematics(t *testing.T) {
 	t.Parallel()
+	// Verify ibmcloud_api_key variable is set
+	checkVariable := "TF_VAR_ibmcloud_api_key"
+	val, present := os.LookupEnv(checkVariable)
+	require.True(t, present, checkVariable+" environment variable not set")
+	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
+	// Programmatically determine region to use based on availability
+	region, _ := testhelper.GetBestVpcRegion(val, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
-		Region:  "us-south",
-		Prefix:  "vpc-qs",
+		Region:  region,
+		Prefix:  "vpc-qs-upg",
 		TarIncludePatterns: []string{
 			"*.tf",
 			"dynamic_values/*.tf",

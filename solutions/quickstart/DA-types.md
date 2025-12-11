@@ -32,3 +32,4 @@ The selected profile automatically defines:
 ```hcl
 # Recommended default configuration
 network_profile = "standard"
+```

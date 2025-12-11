@@ -826,7 +826,7 @@
                   "url": "https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/reference-architectures/deployable-architecture-quickstart-vpc.svg",
                   "type": "image/svg+xml"
                 },
-                "description": "This architecture provisions and configures a <b>Virtual Private Cloud (VPC)</b> environment. This basic configuration creates a VPC with one subnet in each zone (three subnets total) and applies a predefined network ACL."
+                "description": "This architecture provisions and configures a Virtual Private Cloud (VPC) environment with one subnet per zone (three total). The network behavior is controlled through a user-selectable Network Profile (Open, Standard, IBM Internal, or Closed), each applying a predefined ACL configuration that defines allowed traffic patterns. Public gateway creation and default security group cleanup are also determined by the selected profile. The solution optionally enables VPC Flow Logs, creating a Cloud Object Storage instance and bucket for storing VPC Flow Logs. Refer the [Network Profile documentation](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/quickstart/DA-types.md) for more details."
               }
             ]
           },
@@ -837,20 +837,6 @@
               ],
               "service_name": "Resource group only",
               "notes": "Viewer access is required in the resource group you want to provision in."
-            },
-            {
-              "role_crns": [
-                "crn:v1:bluemix:public:iam::::role:Administrator"
-              ],
-              "service_name": "All Account Management services",
-              "notes": "[Optional] Required to create new resource groups when enabling the Account Configuration integration."
-            },
-            {
-              "role_crns": [
-                "crn:v1:bluemix:public:iam::::role:Administrator"
-              ],
-              "service_name": "All Identity and Access enabled services",
-              "notes": "[Optional] Required to to create trusted profile for App Configuration aggregator which is used for compliance scanning."
             },
             {
               "role_crns": [
@@ -923,7 +909,6 @@
               "displayname": "Network Profile",
               "required": true,
               "default_value": "standard",
-              "description": "Choose a predefined network security posture for the VPC (Open, Standard, IBM Internal, Closed). See details in Network Profile documentation. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/quickstart/DA-types.md).",
               "options": [
                 {
                   "displayname": "Open (Public & Open Access)",
@@ -933,12 +918,12 @@
                 {
                   "displayname": "Standard (Internet & Internal Access) (Default)",
                   "value": "standard",
-                  "description": "Allows SSH/HTTP/HTTPS + IBM internal connectivity. Recommended default for general workloads."
+                  "description": "Allows SSH/HTTP/HTTPS and IBM internal connectivity. Recommended default for general workloads."
                 },
                 {
                   "displayname": "IBM Internal (Private Network Only)",
                   "value": "ibm-internal",
-                  "description": "No external/public connectivity. Only IBM internal + VPC connectivity allowed."
+                  "description": "No external/public connectivity. Only IBM internal and VPC connectivity allowed."
                 },
                 {
                   "displayname": "Closed (Fully Isolated)",
