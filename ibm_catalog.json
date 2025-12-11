@@ -943,7 +943,7 @@
                 {
                   "displayname": "Closed (Fully Isolated)",
                   "value": "closed",
-                  "description": "No inbound or outbound traffic. High-security and locked-down environments."
+                  "description": "Fully locked-down environment with no inbound or outbound traffic for maximum security."
                 }
               ]
             },
