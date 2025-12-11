@@ -12,8 +12,8 @@ The selected profile automatically defines:
 | Profile        | Default Behavior                                                  | Public Gateway | Default SG Rules |
 |----------------|------------------------------------------------------------------|----------------|------------------|
 | `open`         | Allow all inbound and outbound traffic                           | **Enabled**    | **Preserved**    |
-| `standard`       | Allow SSH(22), HTTP(80), HTTPS(443) + IBM internal rules         | **Enabled**    | **Preserved**    |
-| `ibm-internal` | No customer inbound traffic, only IBM internal + VPC connectivity| **Disabled**   | **Cleaned**      |
+| `standard`       | Allow SSH(22), HTTP(80), HTTPS(443) and IBM internal rules         | **Enabled**    | **Preserved**    |
+| `ibm-internal` | No customer inbound traffic, only IBM internal and VPC connectivity| **Disabled**   | **Cleaned**      |
 | `closed`       | Fully isolated, no inbound or outbound                           | **Disabled**   | **Cleaned**      |
 
 ### When to use which profile?
