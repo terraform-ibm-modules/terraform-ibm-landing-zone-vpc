@@ -857,7 +857,7 @@
                 "crn:v1:bluemix:public:iam::::role:Administrator"
               ],
               "service_name": "is.vpc",
-              "notes": "Required to create Virtual Private Cloud(VPC)"
+              "notes": "Required to create Virtual Private Cloud(VPC)."
             },
             {
               "service_name": "cloud-object-storage",
