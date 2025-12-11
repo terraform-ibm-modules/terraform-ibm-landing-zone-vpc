@@ -98,7 +98,7 @@ The QuickStart variation of the Cloud foundation for VPC provides a **basic and 
 | Requirement | Component | Reasons | Alternative |
 |------------|-----------|---------|-------------|
 | *Zero-effort deployment* | Predefined subnets + ACL mapping | Users only pick prefix, region, and profile | Manual subnet planning |
-| *Clear security posture options* | User-friendly “Network Profile” widget | Shows descriptions and recommendations | Plain text input |
+| *Security posture options* | User-friendly “Network Profile” options | Shows descriptions and recommendations |  |
 | *Observability integration* | VPC Flow Logs  | Enabled via toggle | External log collectors |
 
 {: caption="Simplicity decision points" caption-side="bottom"}
