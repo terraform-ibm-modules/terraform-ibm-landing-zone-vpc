@@ -108,7 +108,7 @@ The QuickStart variation of the Cloud foundation for VPC provides a **basic and 
 ## Key features
 {: #ra-vpc-quickstart-features}
 
-### Core VPC Setup
+### VPC Setup
 - Automatically creates a new VPC with IBM-recommended defaults
 - Deploys **one subnet per zone** (three total)
 
