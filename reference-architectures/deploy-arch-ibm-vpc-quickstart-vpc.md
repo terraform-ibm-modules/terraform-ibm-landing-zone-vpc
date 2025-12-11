@@ -68,11 +68,10 @@ The QuickStart variation of the Cloud foundation for VPC provides a **basic and 
 ![Design requirements for Cloud foundation for VPC](heat-map-deploy-arch-slz-vpc-quickstart.svg "Design requirements"){: caption="Scope of the design requirements" caption-side="bottom"}
 
 
-## Components
+## Requirements
 {: #ra-vpc-quickstart-components}
 
-### VPC architecture decisions
-{: #ra-vpc-quickstart-components-arch}
+### The following table outlines the requirements that are addressed in this architecture.
 
 | Requirement | Component | Reasons for choice | Alternative choice |
 |------------|-----------|--------------------|--------------------|
@@ -81,33 +80,6 @@ The QuickStart variation of the Cloud foundation for VPC provides a **basic and 
 | *Basic traffic governance* | Network profile selector (open, standard, ibm-internal, closed) | Provides simple, predefined ACL behavior without requiring custom rules | Define custom ACL rules and SG rules manually in the fully configurable variation |
 
 {: caption="QuickStart variation of Cloud foundation for VPC" caption-side="bottom"}
-
----
-
-### Networking and connectivity decisions
-{: #ra-vpc-quickstart-components-connectivity}
-
-| Requirement | Component | Reason | Alternative choice |
-|------------|-----------|--------|--------------------|
-| *Optional access to the internet* | Public gateways per zone (automatic) | Created only for `open` and `standard` profiles to support internet-bound workloads | Disable public gateways entirely or configure per-subnet in the fully configurable variation |
-| *Subnet-level traffic control* | Predefined Network ACL profiles | Simplifies security posture selection for beginner users |  |
-| *Instance-level basic security* | Default VPC security group | Automatically cleaned for restrictive profiles (`ibm-internal`, `closed`) to enforce isolation |  |
-
-{: caption="Networking and connectivity decisions" caption-side="bottom"}
-
----
-
-### Simplicity and user experience decisions
-{: #ra-vpc-quickstart-components-simplicity}
-
-| Requirement | Component | Reasons | Alternative choice |
-|------------|-----------|---------|--------------------|
-| *Zero-effort deployment* | Predefined subnets + predefined ACL profiles | Only requires prefix, region, and network profile input |
-| *Security posture options* | User-friendly Network Profile selector | Provides clear recommendations and aligns with IBM Cloud terminology | Full manual configuration of ACLs and SG rules in fully configurable variation |
-| *Observability integration* | VPC Flow Logs (optional) | Simplifies enabling flow logs and creates COS resources automatically | Allow users to reuse existing COS instances and buckets in fully configurable variation |
-
-{: caption="Simplicity decision points" caption-side="bottom"}
-
 
 ---
 
@@ -134,10 +106,3 @@ The QuickStart variation of the Cloud foundation for VPC provides a **basic and 
 
 
 ---
-<!--
-## Next steps
-{: #ra-vpc-fully-configurable-next-steps}
-
-TODO: Decide what next steps to list, if any
-
-Optional section. Include links to your deployment guide or next steps to get started with the architecture. -->
