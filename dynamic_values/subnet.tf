@@ -35,7 +35,13 @@ locals {
   # Convert list to map
   subnet_map = {
     for subnet in local.subnet_list :
-    subnet.name => subnet
+    "${subnet.zone}-${subnet.name}" => merge(
+      subnet,
+      {
+        subnet_id     = "${subnet.zone}-${subnet.name}",
+        resource_name = var.prefix != null ? "${var.prefix}-${subnet.name}" : subnet.name
+      }
+    )
   }
 }
 
