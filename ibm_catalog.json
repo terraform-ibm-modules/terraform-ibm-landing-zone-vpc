@@ -980,7 +980,7 @@
                   "value": false
                 },
                 {
-                  "description": "Collect and store IP traffic metadata from VPC network interfaces to Cloud Object Storage for monitoring, security analysis, and troubleshooting.",
+                  "description": "Collect and store VPC network traffic metadata to Object Storage for monitoring, analysis, and troubleshooting.",
                   "displayname": "True",
                   "value": true
                 }
