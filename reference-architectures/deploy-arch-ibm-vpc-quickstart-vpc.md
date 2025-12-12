@@ -101,8 +101,8 @@ The QuickStart variation of the Cloud foundation for VPC provides a **basic and 
 - Security group automatically cleaned for restrictive profiles
 - Public gateways created only when allowed by the profile
 
-### Optional Flow Logs
-- Enable VPC Flow Logs to create a Object Storage instance and bucket automatically
+### Flow Logs
+- VPC Flow Logs can be enabled if needed.
 
 
 ---
