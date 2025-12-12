@@ -92,12 +92,12 @@ The QuickStart variation of the Cloud foundation for VPC provides a **basic and 
 
 ### Built-in Network Profiles
 - **Open** – Public & Open Access
-- **Standard** – Allows specific inbound ports (SSH/HTTP/HTTPS) and enable IBM internal connectivity
+- **Standard** – Allow specific ports (SSH/HTTP/HTTPS) and enable IBM internal connectivity
 - **IBM Internal** – Private Network Only
 - **Closed** – Fully Isolated
 
 ### Security & Network Defaults
-- ACLs applied according to selected network profile
+- ACLs applied according to the selected network profile
 - Security group automatically cleaned for restrictive profiles
 - Public gateways created only when allowed by the profile
 

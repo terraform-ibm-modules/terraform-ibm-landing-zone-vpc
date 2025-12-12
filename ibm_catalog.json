@@ -869,7 +869,6 @@
                   "identifier": "rg_name"
                 }
               },
-              "default_value": "Default",
               "description": "The name of an existing resource group to provision the resources."
             },
             {
@@ -916,7 +915,7 @@
                   "description": "Allows all inbound/outbound traffic. Suitable for testing or unrestricted workloads."
                 },
                 {
-                  "displayname": "Standard (Internet & Internal Access) (Default)",
+                  "displayname": "Standard (Specific Ports & Internal Access) (Default)",
                   "value": "standard",
                   "description": "Allows SSH/HTTP/HTTPS and IBM internal connectivity. Recommended default for general workloads."
                 },
