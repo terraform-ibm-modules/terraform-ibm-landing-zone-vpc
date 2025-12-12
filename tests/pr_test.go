@@ -33,6 +33,7 @@ const existingVPCExampleTerraformDir = "examples/existing_vpc"
 const specificZoneExampleTerraformDir = "examples/specific-zone-only"
 const vpcWithDnsExampleTerraformDir = "examples/vpc-with-dns"
 const fullyConfigFlavorDir = "solutions/fully-configurable"
+const quickStartFlavorDir = "solutions/quickstart"
 
 const resourceGroup = "geretain-test-resources"
 const yamlLocation = "../common-dev-assets/common-go-assets/common-permanent-resources.yaml"
@@ -137,6 +138,88 @@ func TestFullyConfigurable(t *testing.T) {
 
 	err := options.RunSchematicTest()
 	assert.Nil(t, err, "This should not have errored")
+}
+
+func TestQuickstartDefaultConfigSchematics(t *testing.T) {
+	t.Parallel()
+	// Verify ibmcloud_api_key variable is set
+	checkVariable := "TF_VAR_ibmcloud_api_key"
+	val, present := os.LookupEnv(checkVariable)
+	require.True(t, present, checkVariable+" environment variable not set")
+	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
+	// Programmatically determine region to use based on availability
+	region, _ := testhelper.GetBestVpcRegion(val, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
+
+	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
+		Testing: t,
+		Region:  region,
+		Prefix:  "vpc-qs",
+		TarIncludePatterns: []string{
+			"*.tf",
+			"dynamic_values/*.tf",
+			"dynamic_values/config_modules/*/*.tf",
+			quickStartFlavorDir + "/*.tf",
+		},
+		TemplateFolder:         quickStartFlavorDir,
+		Tags:                   []string{"vpc-qs-test"},
+		DeleteWorkspaceOnFail:  false,
+		WaitJobCompleteMinutes: 120,
+		TerraformVersion:       terraformVersion,
+	})
+
+	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
+		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
+		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
+		{Name: "region", Value: options.Region, DataType: "string"},
+		{Name: "resource_tags", Value: options.Tags, DataType: "list(string)"},
+		{Name: "access_tags", Value: permanentResources["accessTags"], DataType: "list(string)"},
+		{Name: "prefix", Value: options.Prefix, DataType: "string"},
+	}
+
+	err := options.RunSchematicTest()
+	assert.Nil(t, err, "This should not have errored")
+}
+
+func TestQuickstartDefaultConfigUpgradeSchematics(t *testing.T) {
+	t.Parallel()
+	// Verify ibmcloud_api_key variable is set
+	checkVariable := "TF_VAR_ibmcloud_api_key"
+	val, present := os.LookupEnv(checkVariable)
+	require.True(t, present, checkVariable+" environment variable not set")
+	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
+	// Programmatically determine region to use based on availability
+	region, _ := testhelper.GetBestVpcRegion(val, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "eu-de")
+
+	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
+		Testing: t,
+		Region:  region,
+		Prefix:  "vpc-qs-upg",
+		TarIncludePatterns: []string{
+			"*.tf",
+			"dynamic_values/*.tf",
+			"dynamic_values/config_modules/*/*.tf",
+			quickStartFlavorDir + "/*.tf",
+		},
+		TemplateFolder:         quickStartFlavorDir,
+		Tags:                   []string{"vpc-qs-test"},
+		DeleteWorkspaceOnFail:  false,
+		WaitJobCompleteMinutes: 120,
+		TerraformVersion:       terraformVersion,
+	})
+
+	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
+		{Name: "ibmcloud_api_key", Value: options.RequiredEnvironmentVars["TF_VAR_ibmcloud_api_key"], DataType: "string", Secure: true},
+		{Name: "existing_resource_group_name", Value: resourceGroup, DataType: "string"},
+		{Name: "region", Value: options.Region, DataType: "string"},
+		{Name: "resource_tags", Value: options.Tags, DataType: "list(string)"},
+		{Name: "access_tags", Value: permanentResources["accessTags"], DataType: "list(string)"},
+		{Name: "prefix", Value: options.Prefix, DataType: "string"},
+	}
+
+	err := options.RunSchematicUpgradeTest()
+	if !options.UpgradeTestSkipped {
+		assert.Nil(t, err, "This should not have errored")
+	}
 }
 
 func validateEnvVariable(t *testing.T, varName string) string {
