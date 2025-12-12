@@ -9,7 +9,7 @@ This variable lets you choose from predefined network security profiles that con
 
 The selected profile automatically defines:
 
-| Profile        | Default Behavior                                                  | Public Gateway | Default SG Rules |
+| Profile name        | Default Behavior                                                  | Public Gateway | Default SG Rules |
 |----------------|------------------------------------------------------------------|----------------|------------------|
 | `open`         | Allow all inbound and outbound traffic                           | **Enabled**    | **Preserved**    |
 | `standard`       | Allow SSH(22), HTTP(80), HTTPS(443) and IBM internal rules         | **Enabled**    | **Preserved**    |
@@ -21,7 +21,7 @@ The selected profile automatically defines:
 | Scenario / Intent                                                  | Recommended Profile |
 |-------------------------------------------------------------------|---------------------|
 | Experimenting or testing without restrictions                     | `open`              |
-| Standard workloads with internet access and common ports allowed  | `standard`            |
+| Standard workloads that require access on common ports such as SSH, HTTP, and HTTPS. | `standard`            |
 | Internal-only workloads, private environments                     | `ibm-internal`      |
 | High-security isolated setups without external communication      | `closed`            |
 

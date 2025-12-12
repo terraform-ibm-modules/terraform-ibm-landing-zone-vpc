@@ -31,11 +31,6 @@ output "subnet_ids" {
   value       = module.vpc.subnet_ids
 }
 
-output "private_path_subnet_id" {
-  description = "The IDs of the subnets."
-  value       = length(module.vpc.subnet_ids) > 0 ? module.vpc.subnet_ids[0] : null
-}
-
 output "subnet_detail_list" {
   description = "A list of subnets containing names, CIDR blocks, and zones."
   value       = module.vpc.subnet_detail_list

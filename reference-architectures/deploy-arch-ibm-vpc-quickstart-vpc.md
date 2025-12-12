@@ -88,11 +88,11 @@ The QuickStart variation of the Cloud foundation for VPC provides a **basic and 
 
 ### VPC Setup
 - Automatically creates a new VPC with IBM-recommended defaults
-- Deploys **one subnet per zone** (three total)
+- Sets up one subnet per zone, resulting in three subnets.
 
 ### Built-in Network Profiles
 - **Open** – Public & Open Access
-- **Standard** – Internet & Internal Access (Default)
+- **Standard** – Allows specific inbound ports (SSH/HTTP/HTTPS) and enable IBM internal connectivity
 - **IBM Internal** – Private Network Only
 - **Closed** – Fully Isolated
 
