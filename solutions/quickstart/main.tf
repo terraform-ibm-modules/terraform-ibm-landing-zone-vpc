@@ -29,36 +29,42 @@ module "cos" {
   kms_encryption_enabled = false
 }
 
-locals {
-  enable_public_sg_rules = contains(["open", "standard"], var.network_profile)
+###########################################################################
+# SECURITY GROUP RULES
+###########################################################################
 
-  public_security_group_rules = local.enable_public_sg_rules ? [
+locals {
+  public_security_group_rules = var.network_profile == "open" ? [
+    {
+      name      = "allow-all-inbound"
+      direction = "inbound"
+      remote    = "0.0.0.0/0"
+      tcp       = null
+    },
+    {
+      name      = "allow-all-outbound"
+      direction = "outbound"
+      remote    = "0.0.0.0/0"
+      tcp       = null
+    }
+    ] : var.network_profile == "standard" ? [
     {
       name      = "allow-ssh"
       direction = "inbound"
       remote    = "0.0.0.0/0"
-      tcp = {
-        port_min = 22
-        port_max = 22
-      }
+      tcp       = { port_min = 22, port_max = 22 }
     },
     {
       name      = "allow-http"
       direction = "inbound"
       remote    = "0.0.0.0/0"
-      tcp = {
-        port_min = 80
-        port_max = 80
-      }
+      tcp       = { port_min = 80, port_max = 80 }
     },
     {
       name      = "allow-https"
       direction = "inbound"
       remote    = "0.0.0.0/0"
-      tcp = {
-        port_min = 443
-        port_max = 443
-      }
+      tcp       = { port_min = 443, port_max = 443 }
     }
   ] : []
 }
@@ -69,6 +75,7 @@ locals {
 
 locals {
   acl_profiles = {
+
     open = [
       {
         name                         = "${local.prefix}acl"
@@ -100,53 +107,77 @@ locals {
         add_ibm_cloud_internal_rules = true
         add_vpc_connectivity_rules   = true
         prepend_ibm_rules            = true
+
         rules = [
           {
-            name        = "allow-ssh"
+            name        = "allow-inbound-ssh"
             action      = "allow"
             direction   = "inbound"
             source      = "0.0.0.0/0"
             destination = "0.0.0.0/0"
-            tcp         = { port_min = 22, port_max = 22 }
-          },
-          {
-            name        = "allow-https"
-            action      = "allow"
-            direction   = "inbound"
-            source      = "0.0.0.0/0"
-            destination = "0.0.0.0/0"
-            tcp         = { port_min = 443, port_max = 443 }
-          },
-          {
-            name        = "allow-http"
-            action      = "allow"
-            direction   = "inbound"
-            source      = "0.0.0.0/0"
-            destination = "0.0.0.0/0"
-            tcp         = { port_min = 80, port_max = 80 }
-          },
-          {
-            name        = "allow-ephemeral-inbound"
-            action      = "allow"
-            direction   = "inbound"
-            source      = "0.0.0.0/0"
-            destination = "10.0.0.0/8"
             tcp = {
-              port_min = 1024
-              port_max = 65535
+              port_min = 22
+              port_max = 22
             }
           },
-
           {
-            name        = "allow-all-outbound"
+            name        = "allow-inbound-http"
+            action      = "allow"
+            direction   = "inbound"
+            source      = "0.0.0.0/0"
+            destination = "0.0.0.0/0"
+            tcp = {
+              port_min = 80
+              port_max = 80
+            }
+          },
+          {
+            name        = "allow-inbound-https"
+            action      = "allow"
+            direction   = "inbound"
+            source      = "0.0.0.0/0"
+            destination = "0.0.0.0/0"
+            tcp = {
+              port_min = 443
+              port_max = 443
+            }
+          },
+          {
+            name        = "allow-outbound-ssh"
             action      = "allow"
             direction   = "outbound"
-            source      = "10.0.0.0/8"
+            source      = "0.0.0.0/0"
             destination = "0.0.0.0/0"
+            tcp = {
+              source_port_min = 22
+              source_port_max = 22
+            }
+          },
+          {
+            name        = "allow-outbound-http"
+            action      = "allow"
+            direction   = "outbound"
+            source      = "0.0.0.0/0"
+            destination = "0.0.0.0/0"
+            tcp = {
+              source_port_min = 80
+              source_port_max = 80
+            }
+          },
+          {
+            name        = "allow-outbound-https"
+            action      = "allow"
+            direction   = "outbound"
+            source      = "0.0.0.0/0"
+            destination = "0.0.0.0/0"
+            tcp = {
+              source_port_min = 443
+              source_port_max = 443
+            }
           }
         ]
       }
-    ]
+    ],
 
     ibm-cloud-private-backbone = [
       {
@@ -169,12 +200,11 @@ locals {
     ]
   }
 
-
   network_acls         = lookup(local.acl_profiles, var.network_profile, local.acl_profiles["standard"])
   clean_default_sg_acl = contains(["ibm-cloud-private-backbone", "closed"], var.network_profile)
   allow_public_gateway = contains(["open", "standard"], var.network_profile)
-
 }
+
 #############################################################################
 # VPC
 #############################################################################
