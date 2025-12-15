@@ -14,5 +14,5 @@ offerings:
           region: us-south
           scope_resource_group_var_name: existing_resource_group_name
       - name: quickstart
-        mark_ready: true
+        mark_ready: false
         install_type: fullstack

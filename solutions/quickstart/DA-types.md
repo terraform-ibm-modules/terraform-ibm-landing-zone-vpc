@@ -5,31 +5,26 @@ This variable lets you choose from predefined network security profiles that con
 - **Variable name:** `network_profile`
 - **Type:** `string`
 - **Default value:** `"standard"`
-- **Allowed values:** `open`, `standard`, `ibm-internal`, `closed`
+- **Allowed values:** `open`, `standard`, `ibm-cloud-private-backbone`, `closed`
 
 The selected profile automatically defines:
+The selected network profile automatically defines the following behavior:
 
-| Profile name        | Default Behavior                                                  | Public Gateway | Default SG Rules |
-|----------------|------------------------------------------------------------------|----------------|------------------|
-| `open`         | Allow all inbound and outbound traffic                           | **Enabled**    | **Preserved**    |
-| `standard`       | Allow SSH(22), HTTP(80), HTTPS(443) and IBM internal rules         | **Enabled**    | **Preserved**    |
-| `ibm-internal` | No customer inbound traffic, only IBM internal and VPC connectivity| **Disabled**   | **Cleaned**      |
-| `closed`       | Fully isolated, no inbound or outbound                           | **Disabled**   | **Cleaned**      |
+| Profile                                   | Default Behavior                                                                 | Public Gateway | Default Security Group Rules |
+|-------------------------------------------------------------|----------------------------------------------------------------------------------|----------------|------------------------------|
+| **Open (Public & Open Access)**                              | Allows all inbound and outbound traffic                                          | **Enabled**    | **Preserved**                |
+| **Standard (Specific Ports & Internal Access)** *(Default)* | Allows inbound SSH (22), HTTP (80), HTTPS (443) and IBM internal connectivity     | **Enabled**    | **Preserved**                |
+| **IBM Cloud private backbone (Private Network Only)**       | No public inbound access; allows only IBM Cloud private backbone and VPC traffic | **Disabled**   | **Cleaned**                  |
+| **Closed (Fully Isolated)**                                  | Fully locked-down environment with no inbound or outbound traffic                | **Disabled**   | **Cleaned**                  |
+
 
 ### When to use which profile?
 
 | Scenario / Intent                                                  | Recommended Profile |
 |-------------------------------------------------------------------|---------------------|
-| Experimenting or testing without restrictions                     | `open`              |
-| Standard workloads that require access on common ports such as SSH, HTTP, and HTTPS. | `standard`            |
-| Internal-only workloads, private environments                     | `ibm-internal`      |
-| High-security isolated setups without external communication      | `closed`            |
+| Experimenting or testing without restrictions                     | `Open`              |
+| Standard workloads that require access on common ports such as SSH, HTTP, and HTTPS. | `Standard`            |
+| Internal-only workloads that must communicate only within IBM Cloud using the private backbone network (no public internet exposure). [Learn more](https://cloud.ibm.com/docs/vpc?topic=vpc-private-network-connectivity#:~:text=A%20private%20backbone%20for%20all%20connectivity) | `IBM Cloud private backbone` |
+| High-security isolated setups without external communication      | `Closed`            |
 
 ---
-
-### Examples
-
-```hcl
-# Recommended default configuration
-network_profile = "standard"
-```

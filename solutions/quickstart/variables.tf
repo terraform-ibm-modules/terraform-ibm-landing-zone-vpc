@@ -81,12 +81,12 @@ variable "access_tags" {
 ##############################################################################
 
 variable "network_profile" {
-  description = "Predefined ACL profile options: open (allow all inbound and outbound traffic), standard (allow SSH 22, HTTP 80, HTTPS 443, and includes IBM internal + VPC connectivity rules), ibm-internal (only IBM internal and VPC connectivity rules; no customer inbound traffic), closed (fully restricted; no inbound or outbound traffic). [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/quickstart/DA-types.md) about each profile."
+  description = "Predefined network ACL profile to control inbound and outbound traffic behavior. Supported options are: open, standard, ibm-cloud-private-backbone, and closed. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/quickstart/DA-types.md) about each profile."
   type        = string
   default     = "standard"
   validation {
-    condition     = contains(["open", "standard", "ibm-internal", "closed"], var.network_profile)
-    error_message = "Valid values for network_profile: open, standard, ibm-internal, closed."
+    condition     = contains(["open", "standard", "ibm-cloud-private-backbone", "closed"], var.network_profile)
+    error_message = "Valid values for network_profile: open, standard, ibm-cloud-private-backbone, closed."
   }
 }
 ##############################################################################
@@ -94,7 +94,7 @@ variable "network_profile" {
 ##############################################################################
 
 variable "enable_vpc_flow_logs" {
-  description = "To enable VPC Flow logs, set this to true."
+  description = "When set to true, enables VPC Flow Logs and automatically creates a Cloud Object Storage (COS) instance and bucket to store the flow log data."
   type        = bool
   nullable    = false
   default     = false

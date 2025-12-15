@@ -12,7 +12,7 @@ authors:
   - name: "Khuzaima Shakeel"
 
 # The release that the reference architecture describes
-version: 1.0.0
+version: 8.11.0
 
 # Whether the reference architecture is published to Cloud Docs production.
 # When set to false, the file is available only in staging. Default is false.
@@ -77,7 +77,7 @@ The QuickStart variation of the Cloud foundation for VPC provides a **basic and 
 |------------|-----------|--------------------|--------------------|
 | *Provide a basic, ready-to-use VPC with minimal inputs* | Predefined VPC | Deploys a VPC quickly without requiring users to design networking components | Use the fully configurable variation for granular control |
 | *Create availability-zone redundancy* | Fixed three-zone subnets | Ensures high availability by provisioning one subnet per zone automatically | Use the fully configurable variation for flexibility |
-| *Basic traffic governance* | Network profile selector (open, standard, ibm-internal, closed) | Provides simple, predefined ACL behavior without requiring custom rules | Define custom ACL rules and SG rules manually in the fully configurable variation |
+| *Basic traffic governance* | Network profile selector (open, standard, ibm-cloud-private-backbone, closed) | Provides simple, predefined ACL behavior without requiring custom rules | Define custom ACL rules and SG rules manually in the fully configurable variation |
 
 {: caption="QuickStart variation of Cloud foundation for VPC" caption-side="bottom"}
 
@@ -91,10 +91,22 @@ The QuickStart variation of the Cloud foundation for VPC provides a **basic and 
 - Sets up one subnet per zone, resulting in three subnets.
 
 ### Built-in Network Profiles
-- **Open** – Public & Open Access
-- **Standard** – Allow specific ports (SSH/HTTP/HTTPS) and enable IBM internal connectivity
-- **IBM Internal** – Private Network Only
-- **Closed** – Fully Isolated
+
+The following network profiles provide predefined security postures by configuring **Network ACLs**, **public gateway access**, and **default security group behavior**. These profiles align exactly with the options exposed in the IBM Cloud catalog UI.
+
+- **Open (Public & Open Access)**
+  Allows all inbound and outbound traffic. Suitable for experimentation, demos, or unrestricted testing environments.
+
+- **Standard (Specific Ports & Internal Access)** *(Default)*
+  Allows inbound access on common ports (SSH 22, HTTP 80, HTTPS 443) and enables IBM Cloud internal connectivity. Recommended default for most general-purpose workloads.
+
+- **IBM Cloud private backbone (Private Network Only)**
+  Disables public internet access and allows communication **only over the IBM Cloud private backbone and VPC connectivity**. Intended for internal-only workloads that must not be exposed publicly.
+  Learn more: https://cloud.ibm.com/docs/vpc?topic=vpc-about-networking#private-network
+
+- **Closed (Fully Isolated)**
+  Fully locked-down environment with no inbound or outbound connectivity. Suitable for highly sensitive or isolated security scenarios.
+
 
 ### Security & Network Defaults
 - ACLs applied according to the selected network profile
@@ -102,7 +114,8 @@ The QuickStart variation of the Cloud foundation for VPC provides a **basic and 
 - Public gateways created only when allowed by the profile
 
 ### Flow Logs
-- VPC Flow Logs can be enabled if needed.
+- When enabled, VPC Flow Logs capture network traffic metadata and automatically create an IBM Cloud Object Storage (COS) instance and bucket to store the logs.
+
 
 
 ---

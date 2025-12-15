@@ -29,6 +29,40 @@ module "cos" {
   kms_encryption_enabled = false
 }
 
+locals {
+  enable_public_sg_rules = contains(["open", "standard"], var.network_profile)
+
+  public_security_group_rules = local.enable_public_sg_rules ? [
+    {
+      name      = "allow-ssh"
+      direction = "inbound"
+      remote    = "0.0.0.0/0"
+      tcp = {
+        port_min = 22
+        port_max = 22
+      }
+    },
+    {
+      name      = "allow-http"
+      direction = "inbound"
+      remote    = "0.0.0.0/0"
+      tcp = {
+        port_min = 80
+        port_max = 80
+      }
+    },
+    {
+      name      = "allow-https"
+      direction = "inbound"
+      remote    = "0.0.0.0/0"
+      tcp = {
+        port_min = 443
+        port_max = 443
+      }
+    }
+  ] : []
+}
+
 ###########################################################################
 # NETWORK ACL PROFILES
 ###########################################################################
@@ -59,6 +93,7 @@ locals {
         ]
       }
     ]
+
     standard = [
       {
         name                         = "${local.prefix}acl"
@@ -89,11 +124,31 @@ locals {
             source      = "0.0.0.0/0"
             destination = "0.0.0.0/0"
             tcp         = { port_min = 80, port_max = 80 }
+          },
+          {
+            name        = "allow-ephemeral-inbound"
+            action      = "allow"
+            direction   = "inbound"
+            source      = "0.0.0.0/0"
+            destination = "10.0.0.0/8"
+            tcp = {
+              port_min = 1024
+              port_max = 65535
+            }
+          },
+
+          {
+            name        = "allow-all-outbound"
+            action      = "allow"
+            direction   = "outbound"
+            source      = "10.0.0.0/8"
+            destination = "0.0.0.0/0"
           }
         ]
       }
     ]
-    ibm-internal = [
+
+    ibm-cloud-private-backbone = [
       {
         name                         = "${local.prefix}acl"
         add_ibm_cloud_internal_rules = true
@@ -102,6 +157,7 @@ locals {
         rules                        = []
       }
     ]
+
     closed = [
       {
         name                         = "${local.prefix}acl"
@@ -112,11 +168,13 @@ locals {
       }
     ]
   }
-  network_acls         = lookup(local.acl_profiles, var.network_profile, local.acl_profiles["standard"])
-  clean_default_sg_acl = contains(["ibm-internal", "closed"], var.network_profile)
-  allow_public_gateway = contains(["open", "standard"], var.network_profile)
-}
 
+
+  network_acls         = lookup(local.acl_profiles, var.network_profile, local.acl_profiles["standard"])
+  clean_default_sg_acl = contains(["ibm-cloud-private-backbone", "closed"], var.network_profile)
+  allow_public_gateway = contains(["open", "standard"], var.network_profile)
+
+}
 #############################################################################
 # VPC
 #############################################################################
@@ -160,6 +218,7 @@ module "vpc" {
     ]
   }
   network_acls         = local.network_acls
+  security_group_rules = local.public_security_group_rules
   clean_default_sg_acl = local.clean_default_sg_acl
   use_public_gateways = {
     zone-1 = local.allow_public_gateway
