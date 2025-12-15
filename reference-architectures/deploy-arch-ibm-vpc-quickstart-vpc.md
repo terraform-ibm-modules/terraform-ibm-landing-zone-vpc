@@ -95,13 +95,13 @@ The QuickStart variation of the Cloud foundation for VPC provides a **basic and 
 The following network profiles provide predefined security postures by configuring **Network ACLs**, **public gateway access**, and **default security group behavior**. These profiles align exactly with the options exposed in the IBM Cloud catalog UI.
 
 - **Open (Public & Open Access)**
-  Allows all inbound and outbound traffic. Suitable for experimentation, demos, or unrestricted testing environments.
+  Allows all inbound and outbound traffic. Suitable for testing or unrestricted workloads.
 
 - **Standard (Specific Ports & Internal Access)** *(Default)*
-  Allows inbound access on common ports (SSH 22, HTTP 80, HTTPS 443) and enables IBM Cloud internal connectivity. Recommended default for most general-purpose workloads.
+  Allows inbound access on common service ports (SSH 22, HTTP 80, HTTPS 443), enables IBM Cloud internal connectivity, and permits outbound TCP return traffic required for these services.
 
 - **IBM Cloud private backbone (Private Network Only)**
-  Disables public internet access and allows communication **only over the IBM Cloud private backbone and VPC connectivity**. Intended for internal-only workloads that must not be exposed publicly.
+  No external/public connectivity. Only IBM internal and VPC connectivity allowed. Intended for internal-only workloads that must not be exposed publicly.
   Learn more: https://cloud.ibm.com/docs/vpc?topic=vpc-about-networking#private-network
 
 - **Closed (Fully Isolated)**
