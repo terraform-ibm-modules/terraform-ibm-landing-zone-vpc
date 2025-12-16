@@ -71,26 +71,25 @@ The QuickStart variation of the Cloud foundation for VPC provides a **basic and 
 ## Requirements
 {: #ra-vpc-quickstart-components}
 
-### The following table outlines the requirements that are addressed in this architecture.
+The following table outlines the requirements that are addressed in this architecture.
 
 | Requirement | Component | Reasons for choice | Alternative choice |
 |------------|-----------|--------------------|--------------------|
-| *Provide a basic, ready-to-use VPC with minimal inputs* | Predefined VPC | Deploys a VPC quickly without requiring users to design networking components | Use the fully configurable variation for granular control |
-| *Create availability-zone redundancy* | Fixed three-zone subnets | Ensures high availability by provisioning one subnet per zone automatically | Use the fully configurable variation for flexibility |
-| *Basic traffic governance* | Network profile selector (open, standard, ibm-cloud-private-backbone, closed) | Provides simple, predefined ACL behavior without requiring custom rules | Define custom ACL rules and SG rules manually in the fully configurable variation |
+| Provide a basic, ready-to-use VPC with minimal inputs | Predefined VPC | Deploys a VPC quickly without requiring users to design networking components | Use the fully configurable variation for granular control |
+| Create availability-zone redundancy | Fixed three-zone subnets | Ensures high availability by provisioning one subnet per zone automatically | Use the fully configurable variation for flexibility |
+| Basic traffic governance | Network profile selector (open, standard, ibm-cloud-private-backbone, closed) | Provides simple, predefined ACL behavior without requiring custom rules | Define custom ACL rules and SG rules manually in the fully configurable variation |
 
 {: caption="QuickStart variation of Cloud foundation for VPC" caption-side="bottom"}
 
----
 
-## Key features
+# Key features
 {: #ra-vpc-quickstart-features}
 
-### VPC Setup
+## VPC Setup
 - Automatically creates a new VPC with IBM-recommended defaults
 - Sets up one subnet per zone, resulting in three subnets.
 
-### Built-in Network Profiles
+## Built-in Network Profiles
 
 The following network profiles provide predefined security postures by configuring **Network ACLs**, **public gateway access**, and **default security group behavior**. These profiles align exactly with the options exposed in the IBM Cloud catalog UI.
 
@@ -108,14 +107,10 @@ The following network profiles provide predefined security postures by configuri
   Fully locked-down environment with no inbound or outbound connectivity. Suitable for highly sensitive or isolated security scenarios.
 
 
-### Security & Network Defaults
+## Security & Network Defaults
 - ACLs applied according to the selected network profile
 - Security group automatically cleaned for restrictive profiles
 - Public gateways created only when allowed by the profile
 
-### Flow Logs
+## Flow Logs
 - When enabled, VPC Flow Logs capture network traffic metadata and automatically create an IBM Cloud Object Storage (COS) instance and bucket to store the logs.
-
-
-
----

@@ -7,7 +7,6 @@ This variable lets you choose from predefined network security profiles that con
 - **Default value:** `"standard"`
 - **Allowed values:** `open`, `standard`, `ibm-cloud-private-backbone`, `closed`
 
-The selected profile automatically defines:
 The selected network profile automatically defines the following behavior:
 
 | Profile                                   | Default Behavior                                                                 | Public Gateway | Default Security Group Rules |
