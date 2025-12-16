@@ -97,7 +97,7 @@ The following network profiles provide predefined security postures by configuri
   Allows all inbound and outbound traffic. Suitable for testing or unrestricted workloads.
 
 - **Standard (Specific Ports & Internal Access)** *(Default)*
-  Allows inbound access on common service ports (SSH 22, HTTP 80, HTTPS 443), enables IBM Cloud internal connectivity, and permits outbound TCP return traffic required for these services.
+  Allows traffic on common service ports (SSH 22, HTTP 80, HTTPS 443), enables IBM Cloud internal connectivity.
 
 - **IBM Cloud private backbone (Private Network Only)**
   No external/public connectivity. Only IBM internal and VPC connectivity allowed. Intended for internal-only workloads that must not be exposed publicly.
