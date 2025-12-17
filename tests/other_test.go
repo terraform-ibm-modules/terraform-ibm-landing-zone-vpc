@@ -21,12 +21,12 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-func TestRunBasicWithMultipleSGProtocolsExample(t *testing.T) {
+func TestRunBasicExample(t *testing.T) {
 	t.Parallel()
 
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
 		Testing:       t,
-		TerraformDir:  basicWithMultipleSGProtocolsExampleTerraformDir,
+		TerraformDir:  basicExampleTerraformDir,
 		Prefix:        "bas-slz",
 		ResourceGroup: resourceGroup,
 	})

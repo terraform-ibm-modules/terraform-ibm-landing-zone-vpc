@@ -32,7 +32,8 @@ module "slz_vpc" {
       }
     ]
   }
-  # The following Security Group rule allow all inbound traffic from anywhere to anywhere on all ports for ipv4.
+  # The following Security Group rule allows all inbound traffic from anywhere (0.0.0.0/0) using any protocol for ipv4.
+  # Note: When no protocol is specified (tcp, udp, icmp), the rule applies to all protocols.
   #  security_group_rules = [{
   #    name       = "allow-all-inbound-sg"
   #    direction  = "inbound"
