@@ -32,6 +32,7 @@ const hubAndSpokeDelegatedExampleTerraformDir = "examples/hub-spoke-delegated-re
 const existingVPCExampleTerraformDir = "examples/existing_vpc"
 const specificZoneExampleTerraformDir = "examples/specific-zone-only"
 const vpcWithDnsExampleTerraformDir = "examples/vpc-with-dns"
+const multipleSGExampleTerraformDir = "examples/multiple-sg-protocols"
 const fullyConfigFlavorDir = "solutions/fully-configurable"
 
 const resourceGroup = "geretain-test-resources"
