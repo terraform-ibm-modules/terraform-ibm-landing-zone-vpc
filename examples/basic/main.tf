@@ -32,4 +32,11 @@ module "slz_vpc" {
       }
     ]
   }
+  security_group_rules = [{
+    name       = "allow-all-inbound-sg"
+    direction  = "inbound"
+    remote     = "0.0.0.0/0" # source of the traffic. 0.0.0.0/0 traffic from all across the internet.
+    local      = "0.0.0.0/0" # A CIDR block of 0.0.0.0/0 allows traffic to all local IP addresses (or from all local IP addresses, for outbound rules).
+    ip_version = "ipv4"
+  }]
 }

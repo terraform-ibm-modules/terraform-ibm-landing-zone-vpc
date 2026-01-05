@@ -1,3 +1,5 @@
-# Existing VPC and subnets Example
+# Existing networking resources Example
 
-An example of calling the module with an existing VPC and subnets.
+This example demonstrate how to configure the module without creating new resources.
+
+It configures existing VPC, existing subnets and an existing Public Gateway.
