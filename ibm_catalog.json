@@ -905,24 +905,24 @@
               "default_value": "standard",
               "options": [
                 {
-                  "displayname": "Open (Public & Open Access)",
+                  "displayname": "Unrestricted (All Traffic Allowed)",
                   "value": "open",
-                  "description": "Allows all inbound/outbound traffic."
+                  "description": "Allows all inbound and outbound traffic from any source (0.0.0.0/0). No network filtering applied. Use only for development or testing environments."
                 },
                 {
-                  "displayname": "Standard (Specific Ports & Internal Access) (Default)",
+                  "displayname": "Public Web Services (SSH, HTTP, HTTPS + IBM Cloud Internal)",
                   "value": "standard",
-                  "description": "Allows traffic on common service ports (SSH 22, HTTP 80, HTTPS 443), enables IBM Cloud internal connectivity."
+                  "description": "Allows inbound traffic on SSH (port 22), HTTP (port 80), and HTTPS (port 443). Includes IBM Cloud internal service connectivity and VPC-to-VPC communication. Suitable for web-facing applications."
                 },
                 {
-                  "displayname": "IBM Cloud private backbone (Private Network Only)",
+                  "displayname": "Private Only (IBM Cloud Internal + VPC)",
                   "value": "ibm-cloud-private-backbone",
-                  "description": "No external/public connectivity. Only IBM internal and VPC connectivity allowed."
+                  "description": "No public internet connectivity. Only allows IBM Cloud internal service communication and VPC-to-VPC traffic. Ideal for backend services and databases."
                 },
                 {
-                  "displayname": "Closed (Fully Isolated)",
+                  "displayname": "Isolated (No Network Access)",
                   "value": "closed",
-                  "description": "Fully locked-down environment with no inbound or outbound traffic for maximum security."
+                  "description": "Completely isolated with no inbound or outbound network traffic allowed. Maximum security for highly sensitive workloads requiring manual network configuration."
                 }
               ]
             },
