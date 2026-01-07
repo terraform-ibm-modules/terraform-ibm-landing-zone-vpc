@@ -15,9 +15,6 @@ if [[ -z "$STATE_JSON" || "$STATE_JSON" == "null" ]]; then
     exit 1
 fi
 
-###############################################
-# Helper: Extract resources from module.slz_vpc
-###############################################
 extract_resources() {
     echo "$STATE_JSON" | jq -r '
         .values.root_module.child_modules[]
@@ -32,12 +29,6 @@ SUBNETS=$(extract_resources | jq -r '
     | .address
 ')
 
-echo "🔍 Scanning state for SLZ VPC address prefixes..."
-PREFIXES=$(extract_resources | jq -r '
-    select(.type == "ibm_is_vpc_address_prefix")
-    | .address
-')
-
 if [[ -z "$SUBNETS" ]]; then
     echo "❌ No SLZ subnets found in state. Nothing to migrate."
     exit 1
@@ -48,20 +39,14 @@ echo "Found subnet resources:"
 echo "$SUBNETS"
 echo ""
 
-###############################################
-# Determine new keys
-# Old key example: test25-vpc-subnet-a
-# New key example: 1-subnet-a
-###############################################
-
 generate_new_key() {
     local old="$1"
-    # old key always ends with "-subnet-a" or "-subnet-b"
-    # extract letter
-    local letter=$(echo "$old" | sed -E 's/.*subnet-([a-z])/\1/')
-    
-    # extract zone number from index inside subnet resource
-    local zone=$(echo "$STATE_JSON" | jq -r \
+
+    local letter
+    letter=$(echo "$old" | sed -E 's/.*subnet-([a-z])/\1/')
+
+    local zone
+    zone=$(echo "$STATE_JSON" | jq -r \
         --arg old "$old" '
         .values.root_module.child_modules[]
         | select(.address == "module.slz_vpc")
@@ -71,15 +56,11 @@ generate_new_key() {
         | .values.zone
     ')
 
-    # zone returned as "us-south-1" → extract trailing number
-    local zone_num=$(echo "$zone" | sed -E 's/.*-([0-9]+)$/\1/')
+    local zone_num
+    zone_num=$(echo "$zone" | sed -E 's/.*-([0-9]+)$/\1/')
 
     echo "${zone_num}-subnet-${letter}"
 }
-
-###############################################
-# Build migration commands
-###############################################
 
 MOVED_COMMANDS=()
 
@@ -92,10 +73,13 @@ for subnet in $SUBNETS; do
 
     echo "➡ Subnet: $OLD_KEY → $NEW_KEY"
 
-    MOVED_COMMANDS+=("terraform state mv \"module.slz_vpc.ibm_is_subnet.subnet[\\\"$OLD_KEY\\\"]\" \"module.slz_vpc.ibm_is_subnet.subnet[\\\"$NEW_KEY\\\"]\"")
+    MOVED_COMMANDS+=(
+      "terraform state mv \"module.slz_vpc.ibm_is_subnet.subnet[\\\"$OLD_KEY\\\"]\" \"module.slz_vpc.ibm_is_subnet.subnet[\\\"$NEW_KEY\\\"]\""
+    )
 
-    # same for prefix
-    MOVED_COMMANDS+=("terraform state mv \"module.slz_vpc.ibm_is_vpc_address_prefix.subnet_prefix[\\\"$OLD_KEY\\\"]\" \"module.slz_vpc.ibm_is_vpc_address_prefix.subnet_prefix[\\\"$NEW_KEY\\\"]\"")
+    MOVED_COMMANDS+=(
+      "terraform state mv \"module.slz_vpc.ibm_is_vpc_address_prefix.subnet_prefix[\\\"$OLD_KEY\\\"]\" \"module.slz_vpc.ibm_is_vpc_address_prefix.subnet_prefix[\\\"$NEW_KEY\\\"]\""
+    )
 done
 
 echo ""
@@ -105,11 +89,7 @@ echo "=============================================================="
 printf "%s\n" "${MOVED_COMMANDS[@]}"
 echo ""
 
-###############################################
-# Confirm and apply
-###############################################
-
-read -p "Apply these migration commands? (y/N): " confirm
+read -r -p "Apply these migration commands? (y/N): " confirm
 if [[ "$confirm" != "y" ]]; then
     echo "❌ Migration aborted by user."
     exit 0
@@ -119,7 +99,7 @@ echo ""
 echo "🚀 Applying migration..."
 for cmd in "${MOVED_COMMANDS[@]}"; do
     echo "Running: $cmd"
-    eval $cmd
+    eval "$cmd"
 done
 
 echo ""
