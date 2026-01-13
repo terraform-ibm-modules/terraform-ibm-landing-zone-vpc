@@ -464,6 +464,13 @@ variable "existing_cos_instance_crn" {
     condition     = var.enable_vpc_flow_logs ? (var.existing_cos_instance_crn != null ? true : false) : true
     error_message = "'existing_cos_instance_crn' is required if 'enable_vpc_flow_logs' is set to true."
   }
+  validation {
+    condition = anytrue([
+      var.existing_cos_instance_crn == null,
+      can(regex("^crn:v\\d:(.*:){2}cloud-object-storage:(.*:)([aos]\\/[\\w_\\-]+):[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$", var.existing_cos_instance_crn))
+    ])
+    error_message = "The value provided for 'existing_cos_instance_crn' is not valid."
+  }
 }
 
 variable "flow_logs_cos_bucket_name" {
@@ -597,12 +604,28 @@ variable "existing_flow_logs_bucket_kms_key_crn" {
   type        = string
   default     = null
   description = "The CRN of the existing root key of key management service (KMS) that is used to encrypt the flow logs Cloud Object Storage bucket. If no value is set for this variable, specify a value for the `existing_kms_instance_crn` variable to create a key ring and key."
+
+  validation {
+    condition = anytrue([
+      var.existing_flow_logs_bucket_kms_key_crn == null,
+      can(regex("^crn:v\\d:(.*:){2}(kms|hs-crypto):(.*:)([aos]\\/[\\w_\\-]+):[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}:key:[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$", var.existing_flow_logs_bucket_kms_key_crn))
+    ])
+    error_message = "The value provided for 'existing_flow_logs_bucket_kms_key_crn’ is not valid."
+  }
 }
 
 variable "existing_kms_instance_crn" {
   type        = string
   default     = null
   description = "The CRN of the existing key management service (KMS) that is used to create keys for encrypting the flow logs Cloud Object Storage bucket. Used to create a new KMS key unless an existing key is passed using the `existing_flow_logs_bucket_kms_key_crn` input."
+
+  validation {
+    condition = anytrue([
+      var.existing_kms_instance_crn == null,
+      can(regex("^crn:v\\d:(.*:){2}(kms|hs-crypto):(.*:)([aos]\\/[\\w_\\-]+):[0-9a-fA-F]{8}(?:-[0-9a-fA-F]{4}){3}-[0-9a-fA-F]{12}::$", var.existing_kms_instance_crn))
+    ])
+    error_message = "The value provided for 'existing_kms_instance_crn' is not valid."
+  }
 }
 
 variable "kms_endpoint_type" {
