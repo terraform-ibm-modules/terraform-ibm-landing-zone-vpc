@@ -3,7 +3,7 @@ set -euo pipefail
 
 echo ""
 echo "=============================================================="
-echo "   SLZ VPC v3 → v4 Migration Script for IBM Schematics"
+echo "   SLZ VPC v8 → v9 Migration Script for IBM Schematics"
 echo "=============================================================="
 
 WORKSPACE_ID=""
