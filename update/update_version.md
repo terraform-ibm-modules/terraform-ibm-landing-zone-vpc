@@ -1,11 +1,11 @@
 # Updating from v8 to v9
 
-Version 9 of the Landing Zone VPC module changes how **subnets and VPC address prefixes are identified in Terraform state**.  
+Version 9 of the Landing Zone VPC module changes how **subnets and VPC address prefixes are identified in Terraform state**.
 Subnets and address prefixes now use a **stable, prefix-independent `resource_name`** as the Terraform state key.
 
 In version 9, subnets and address prefixes use a **stable, prefix-independent `resource_name`** as the Terraform state key.
 
-:information_source: **Important:**  
+:information_source: **Important:**
 Without migrating existing Terraform state, updating the `prefix` value will result in **subnet and address prefix destruction and recreation**.
 
 Follow the steps below to safely upgrade to version 9 **without recreating networking resources**.
@@ -99,7 +99,7 @@ If you deployed your IBM Cloud infrastructure by using Schematics, the `schemati
 - Detects SLZ VPC subnet and address prefix resources
 - Migrates state keys using `ibmcloud schematics state mv`
 
-    
+
 
 1.  Monitor the status of the job by selecting the workspace from your [Schematics workspaces dashboard](https://cloud.ibm.com/schematics/workspaces).
     - When the job completes successfully, go to the next step.
@@ -134,7 +134,7 @@ If you store both the Terraform code and state file locally, run the `update_v8_
 
 1. Download the script to the directory with the state file by running this Curl command:
 
-    ```sh 
+    ```sh
     curl https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/update/update_v8_to_v9.sh > update_v8_to_v9.sh
     ```
 
@@ -154,7 +154,7 @@ If you store both the Terraform code and state file locally, run the `update_v8_
 
    - Prompts for confirmation before applying changes
 
-   
+
 1. Initialize, check the planned changes, and apply the changes:
 
 
@@ -162,7 +162,7 @@ If you store both the Terraform code and state file locally, run the `update_v8_
     1. Run the `terraform plan` command to make sure that none of the VPC resources will be re-created.
 
         - You should see in-place updates to names. No resources should be set to be destroyed or re-created.
-       
+
     1. Run `terraform apply` to upgrade to the 9 version of the module and apply the update in place.
     1. If the commands are successful, follow the steps in [Clean up](#clean-up).
 
