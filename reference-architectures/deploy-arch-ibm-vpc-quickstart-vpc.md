@@ -93,17 +93,17 @@ The following table outlines the requirements that are addressed in this archite
 
 The following network profiles provide predefined security postures by configuring **Network ACLs**, **public gateway access**, and **default security group behavior**. These profiles align exactly with the options exposed in the IBM Cloud catalog UI.
 
-- **Open (Public & Open Access)**
+- **Unrestricted (All Traffic Allowed)**
   Allows all inbound and outbound traffic. Suitable for testing or unrestricted workloads.
 
-- **Standard (Specific Ports & Internal Access)** *(Default)*
+- **Public Web Services (SSH, HTTP, HTTPS + IBM Cloud Internal)** *(Default)*
   Allows traffic on common service ports (SSH 22, HTTP 80, HTTPS 443), enables IBM Cloud internal connectivity.
 
-- **IBM Cloud private backbone (Private Network Only)**
+- **Private Only (IBM Cloud Internal + VPC)**
   No external/public connectivity. Only IBM internal and VPC connectivity allowed. Intended for internal-only workloads that must not be exposed publicly.
   Learn more: https://cloud.ibm.com/docs/vpc?topic=vpc-about-networking#private-network
 
-- **Closed (Fully Isolated)**
+- **Isolated (No Network Access)**
   Fully locked-down environment with no inbound or outbound connectivity. Suitable for highly sensitive or isolated security scenarios.
 
 

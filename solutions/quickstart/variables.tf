@@ -86,7 +86,7 @@ variable "network_profile" {
   default     = "standard"
   validation {
     condition     = contains(["open", "standard", "ibm-cloud-private-backbone", "closed"], var.network_profile)
-    error_message = "Valid values for network_profile: open, standard, ibm-cloud-private-backbone, closed."
+    error_message = "Valid value for network_profile is not provided."
   }
 }
 ##############################################################################
