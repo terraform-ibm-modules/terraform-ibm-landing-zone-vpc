@@ -1,6 +1,6 @@
 # VPN Gateway migration steps
 
-## VPN Gateway changes in v9.0.0
+## VPN Gateway changes in `v9.0.0`
 
 * Starting with version `v9.0.0`, direct use of the VPN gateway in the main setup will be **removed**.
 * Instead of defining the VPN gateway resources, reference the [`terraform-ibm-modules/site-to-site-vpn`](https://github.com/terraform-ibm-modules/terraform-ibm-site-to-site-vpn) module.
@@ -45,8 +45,8 @@ module "vpn_gateways" {
 }
 ```
 
-**Resource address (current):** `module.slz_vpc.ibm_is_vpn_gateway.vpn_gateway["<gateway-name>"]`
-**Resource address (after migration):** `module.slz_vpc.module.vpn_gateways["<gateway-name>"]`.ibm_is_vpn_gateway.vpn_gateway[0]`
+**Resource address (current):** `module.<module-name>.ibm_is_vpn_gateway.vpn_gateway["<gateway-name>"]`
+**Resource address (after migration):** `module.<module-name>.module.vpn_gateways["<gateway-name>"]`.ibm_is_vpn_gateway.vpn_gateway[0]`
 
 ## Migration Command
 
@@ -56,8 +56,8 @@ If you are upgrading an existing environment, you need to tell Terraform that th
 
 ```hcl
 moved {
-  from = module.slz_vpc.ibm_is_vpn_gateway.vpn_gateway["gateway-1"]
-  to   = module.slz_vpc.module.vpn_gateways["gateway-1"].ibm_is_vpn_gateway.vpn_gateway[0]
+  from = module.<module-name>.ibm_is_vpn_gateway.vpn_gateway["gateway-1"]
+  to   = module.<module-name>.module.vpn_gateways["gateway-1"].ibm_is_vpn_gateway.vpn_gateway[0]
 }
 ```
 
@@ -66,7 +66,7 @@ moved {
 Use the terraform state mv command to migrate each gateway:
 
 ```sh
-terraform state mv 'module.slz_vpc.ibm_is_vpn_gateway.vpn_gateway[<gateway-name>]' 'module.slz_vpc.module.vpn_gateways[<gateway-name>].ibm_is_vpn_gateway.vpn_gateway[0]'
+terraform state mv 'module.<module-name>.ibm_is_vpn_gateway.vpn_gateway[<gateway-name>]' 'module.<module-name>.module.vpn_gateways[<gateway-name>].ibm_is_vpn_gateway.vpn_gateway[0]'
 ```
 
 **Example:**
@@ -83,7 +83,7 @@ vpn_gateways = [{
 Then terraform state moved command that can be used is:
 
 ```sh
-terraform state mv 'module.slz_vpc.ibm_is_vpn_gateway.vpn_gateway["gateway-1"]' 'module.slz_vpc.module.vpn_gateways["gateway-1"].ibm_is_vpn_gateway.vpn_gateway[0]'
+terraform state mv 'module.<module-name>.ibm_is_vpn_gateway.vpn_gateway["gateway-1"]' 'module.<module-name>.module.vpn_gateways["gateway-1"].ibm_is_vpn_gateway.vpn_gateway[0]'
 ```
 
 ## New Resources

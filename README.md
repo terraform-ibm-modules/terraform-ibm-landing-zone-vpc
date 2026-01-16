@@ -280,8 +280,8 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="output_vpc_flow_logs"></a> [vpc\_flow\_logs](#output\_vpc\_flow\_logs) | Details of VPC flow logs collector |
 | <a name="output_vpc_id"></a> [vpc\_id](#output\_vpc\_id) | ID of VPC created |
 | <a name="output_vpc_name"></a> [vpc\_name](#output\_vpc\_name) | Name of VPC created |
-| <a name="output_vpn_gateways_data"></a> [vpn\_gateways\_data](#output\_vpn\_gateways\_data) | Details of VPN gateways data. |
-| <a name="output_vpn_gateways_name"></a> [vpn\_gateways\_name](#output\_vpn\_gateways\_name) | List of names of VPN gateways. |
+| <a name="output_vpn_gateways_data"></a> [vpn\_gateways\_data](#output\_vpn\_gateways\_data) | [DEPRECATED] Details of VPN gateways data. For more information please refer the [migration guide](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md). |
+| <a name="output_vpn_gateways_name"></a> [vpn\_gateways\_name](#output\_vpn\_gateways\_name) | [DEPRECATED] List of names of VPN gateways. For more information please refer the [migration guide](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md). |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 
 ## Contributing

@@ -460,7 +460,7 @@ resource "ibm_is_vpn_gateway" "vpn_gateway" {
 resource "terraform_data" "deprecation_warning" {
 
   triggers_replace = [
-    join(",", [for gw in ibm_is_vpn_gateway.vpn_gateway : gw.id])
+    timestamp()
   ]
   provisioner "local-exec" {
     command = "echo '⚠️  Deprecation Notice: In v9.0.0 this module will no longer support VPN gateway functionality. Please refer the migration guide: https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md'"
