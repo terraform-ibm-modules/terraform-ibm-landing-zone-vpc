@@ -77,6 +77,16 @@ func setupOptions(t *testing.T, prefix string, terraformDir string) *testhelper.
 		TerraformVars: map[string]interface{}{
 			"access_tags": permanentResources["accessTags"],
 		},
+		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
+			List: []string{
+				"module.slz_vpc.terraform_data.deprecation_warning",
+			},
+		},
+		IgnoreDestroys: testhelper.Exemptions{ // Ignore for consistency check
+			List: []string{
+				"module.slz_vpc.terraform_data.deprecation_warning",
+			},
+		},
 	})
 
 	return options
