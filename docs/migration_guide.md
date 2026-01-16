@@ -18,50 +18,64 @@ This release introduces the following changes:
 
 ## Resource Address Migration
 
-### Before:
-
-```hcl
-resource "ibm_is_vpn_gateway" "vpn_gateway" {
-  for_each = local.vpn_gateway_map
-  ...
-}
-```
-
-**Resource address:** `module.slz_vpc.ibm_is_vpn_gateway.vpn_gateway["<key>"]`
-
-### After:
+The module to create VPN gateways can now be used as shown in the below example.
 
 ```hcl
 module "vpn_gateways" {
   source                = "terraform-ibm-modules/site-to-site-vpn/ibm"
-  version               = "3.0.0"
-  for_each              = local.vpn_gateway_map
-  resource_group_id     = each.value.resource_group == null ? var.resource_group_id : each.value.resource_group
-  tags                  = var.tags
-
-  vpn_gateway_name      = var.prefix != null ? "${var.prefix}-${each.key}" : each.key
-  vpn_gateway_subnet_id = local.subnets["${local.vpc_name}-${each.value.subnet_name}"].id
+  version               = "3.0.4" # Replace with the version of site to site VPN Module
+  for_each              = {
+    vpn_gw_1 = {
+      resource_group_id     = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX" # Replace with your resource group id.
+      name      = "gateway-1"
+      mode      = "route"
+      subnet_id = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX" # Replace with the subnet id where VPN Gateway will be created.
+    }
+    vpn_gw_2 = {
+      resource_group_id     = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX" # Replace with your resource group id.
+      name      = "gateway-2"
+      mode      = "policy"
+      subnet_id = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX" # Replace with the subnet id where VPN Gateway will be created.
+    }
+  }
+  resource_group_id     = each.value.resource_group_id
+  vpn_gateway_name      = each.value.name
+  vpn_gateway_subnet_id = each.value.subnet_id
   vpn_gateway_mode      = each.value.mode
 }
 ```
 
-**Resource address:** `module.slz_vpc.module.vpn_gateways["<key>"].ibm_is_vpn_gateway.vpn_gateway[0]`
+**Resource address (current):** `module.slz_vpc.ibm_is_vpn_gateway.vpn_gateway["<gateway-name>"]`
+**Resource address (after migration):** `module.slz_vpc.module.vpn_gateways["<gateway-name>"]`.ibm_is_vpn_gateway.vpn_gateway[0]`
 
 ## Migration Command
+
+If you are upgrading an existing environment, you need to tell Terraform that the resource has moved so it doesn’t try to recreate it.
+
+**Option 1: Using moved block :**
+
+```hcl
+moved {
+  from = module.slz_vpc.ibm_is_vpn_gateway.vpn_gateway["gateway-1"]
+  to   = module.slz_vpc.module.vpn_gateways["gateway-1"].ibm_is_vpn_gateway.vpn_gateway[0]
+}
+```
+
+**Option 2: Using terraform state mv (manual alternative):**
 
 Use the terraform state mv command to migrate each gateway:
 
 ```sh
-terraform state mv 'module.slz_vpc.ibm_is_vpn_gateway.vpn_gateway[<key>]' 'module.slz_vpc.module.vpn_gateways[<key>].ibm_is_vpn_gateway.vpn_gateway[0]'
+terraform state mv 'module.slz_vpc.ibm_is_vpn_gateway.vpn_gateway[<gateway-name>]' 'module.slz_vpc.module.vpn_gateways[<gateway-name>].ibm_is_vpn_gateway.vpn_gateway[0]'
 ```
 
 **Example:**
 
-If the name of `vpn_gateway` is `"vpg1"`, i.e.
+If the name of `vpn_gateway` is `gateway-1`, i.e.
 
 ```hcl
 vpn_gateways = [{
-      name           = "vpg1"
+      name           = "gateway-1"
       subnet_name    = "subnet-a"
   }]
 ```
@@ -69,12 +83,8 @@ vpn_gateways = [{
 Then terraform state moved command that can be used is:
 
 ```sh
-terraform state mv \
-  'module.slz_vpc.ibm_is_vpn_gateway.vpn_gateway["vpg1"]' \
-  'module.slz_vpc.module.vpn_gateways["vpg1"].ibm_is_vpn_gateway.vpn_gateway[0]'
+terraform state mv 'module.slz_vpc.ibm_is_vpn_gateway.vpn_gateway["gateway-1"]' 'module.slz_vpc.module.vpn_gateways["gateway-1"].ibm_is_vpn_gateway.vpn_gateway[0]'
 ```
-
-Repeat this for all the keys in `local.vpn_gateway_map`.
 
 ## New Resources
 
