@@ -433,7 +433,7 @@ locals {
 ##############################################################################
 # Create VPN Gateways
 ##############################################################################
-# ⚠️ [DEPRECATED]. Refer the [migration guide](./migration_guide.md) for more information.
+# ⚠️ [DEPRECATED]. Refer the [migration guide](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md) for more information.
 
 locals {
   # Convert the vpn_gateway input from list to a map
@@ -455,4 +455,18 @@ resource "ibm_is_vpn_gateway" "vpn_gateway" {
   }
 }
 
+# This block will be removed once the migration to the [terraform-ibm-site-to-site-vpn](https://github.com/terraform-ibm-modules/terraform-ibm-site-to-site-vpn) module is completed.
+
+resource "terraform_data" "deprecation_warning" {
+
+  triggers_replace = [
+    join(",", [for gw in ibm_is_vpn_gateway.vpn_gateway : gw.id])
+  ]
+  provisioner "local-exec" {
+    command = <<EOT
+    echo "⚠️ Deprecation Notice: In `v9.0.0` this module will no longer support VPN gateway functionality.
+    Please refer the migration guide: https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md"
+    EOT
+  }
+}
 ##############################################################################

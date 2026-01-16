@@ -1,8 +1,8 @@
-# Migration Guide
+# VPN Gateway migration steps
 
 ## VPN Gateway changes in v9.0.0
 
-* Starting with version `v9.0.0`, direct use of the VPN gateway in the main setup will be **deprecated**.
+* Starting with version `v9.0.0`, direct use of the VPN gateway in the main setup will be **removed**.
 * Instead of defining the VPN gateway resources, reference the [`terraform-ibm-modules/site-to-site-vpn`](https://github.com/terraform-ibm-modules/terraform-ibm-site-to-site-vpn) module.
 * Users must migrate their Terraform state and update outputs to avoid resource recreation and broken references.
 
