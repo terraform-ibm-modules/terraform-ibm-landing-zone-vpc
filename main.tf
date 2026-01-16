@@ -459,11 +459,16 @@ resource "ibm_is_vpn_gateway" "vpn_gateway" {
 
 resource "terraform_data" "deprecation_warning" {
 
-  triggers_replace = [
-    timestamp()
-  ]
+  count = length(var.vpn_gateways) > 0 ? 1 : 0
+
+  triggers_replace = {
+    always_run = timestamp()
+  }
   provisioner "local-exec" {
-    command = "echo '⚠️  Deprecation Notice: In v9.0.0 this module will no longer support VPN gateway functionality. Please refer the migration guide: https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md'"
+    command = <<EOT
+echo "[WARNING] DEPRECATED variable 'vpn_gateways' is in use. Please migrate to the new variable.
+See migration guide: https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md"
+EOT
   }
 }
 ##############################################################################
