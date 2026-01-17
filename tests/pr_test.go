@@ -57,6 +57,16 @@ var dnsZoneMap = []map[string]interface{}{
 	{"name": "slz.com"},
 }
 
+var IgnoreUpdates = []string{
+	"module.slz_vpc.terraform_data.deprecation_warning",
+	"module.vpc.terraform_data.deprecation_warning[0]",
+}
+
+var IgnoreDestroys = []string{
+	"module.slz_vpc.terraform_data.deprecation_warning",
+	"module.vpc.terraform_data.deprecation_warning[0]",
+}
+
 func TestMain(m *testing.M) {
 	// Read the YAML file contents
 	var err error
@@ -76,6 +86,12 @@ func setupOptions(t *testing.T, prefix string, terraformDir string) *testhelper.
 		ResourceGroup: resourceGroup,
 		TerraformVars: map[string]interface{}{
 			"access_tags": permanentResources["accessTags"],
+		},
+		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
+			List: IgnoreUpdates,
+		},
+		IgnoreDestroys: testhelper.Exemptions{ // Ignore for consistency check
+			List: IgnoreDestroys,
 		},
 	})
 
