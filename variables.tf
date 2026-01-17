@@ -281,6 +281,22 @@ variable "network_acls" {
     )) == 0
   }
 
+  validation {
+    error_message = "Each network ACL rule must specify at most one protocol (tcp, udp, or icmp), or omit all protocol blocks to allow all protocols. Found a rule with multiple protocols defined. To allow multiple protocols, create separate rules - one for each protocol. For example, instead of one rule with both tcp and udp blocks, create two rules: one with tcp only and another with udp only."
+    condition = length(distinct(
+      flatten([
+        # Check through rules
+        for rule in flatten([var.network_acls[*].rules]) :
+        # Count how many protocols are specified (non-null)
+        # Return false if more than one protocol is specified
+        false if length([
+          for protocol in [rule.tcp, rule.udp, rule.icmp] :
+          protocol if protocol != null
+        ]) > 1
+      ])
+    )) == 0
+  }
+
 }
 
 ##############################################################################
