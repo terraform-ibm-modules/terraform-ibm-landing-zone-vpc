@@ -73,7 +73,7 @@ module "cos_buckets" {
   count          = var.enable_vpc_flow_logs ? 1 : 0
   depends_on     = [time_sleep.wait_for_cross_account_authorization_policy[0]]
   source         = "terraform-ibm-modules/cos/ibm//modules/buckets"
-  version        = "10.8.3"
+  version        = "10.8.5"
   bucket_configs = local.bucket_config
 }
 
@@ -230,7 +230,7 @@ module "vpc" {
 
 module "vpe_gateway" {
   source               = "terraform-ibm-modules/vpe-gateway/ibm"
-  version              = "4.8.19"
+  version              = "5.0.0"
   resource_group_id    = module.resource_group.resource_group_id
   region               = var.region
   prefix               = local.prefix
