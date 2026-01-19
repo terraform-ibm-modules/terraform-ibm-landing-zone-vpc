@@ -230,6 +230,12 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 		DeleteWorkspaceOnFail:  false,
 		WaitJobCompleteMinutes: 120,
 		TerraformVersion:       terraformVersion,
+		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
+			List: IgnoreUpdates,
+		},
+		IgnoreDestroys: testhelper.Exemptions{ // Ignore for consistency check
+			List: IgnoreDestroys,
+		},
 	})
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
