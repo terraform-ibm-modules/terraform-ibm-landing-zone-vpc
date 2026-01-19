@@ -440,9 +440,12 @@ locals {
 }
 
 resource "ibm_is_vpn_gateway" "vpn_gateway" {
-  for_each       = local.vpn_gateway_map
-  name           = var.prefix != null ? "${var.prefix}-${each.key}" : each.key
-  subnet         = local.subnets["${local.vpc_name}-${each.value.subnet_name}"].id
+  for_each = local.vpn_gateway_map
+  name     = var.prefix != null ? "${var.prefix}-${each.key}" : each.key
+  subnet = one([
+    for k, s in local.subnets :
+    s.id if endswith(k, "-${each.value.subnet_name}")
+  ])
   mode           = each.value.mode
   resource_group = each.value.resource_group == null ? var.resource_group_id : each.value.resource_group
   tags           = var.tags

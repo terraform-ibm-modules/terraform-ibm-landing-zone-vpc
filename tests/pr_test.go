@@ -201,7 +201,7 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
-		Region:  "eu-de", // Hardcoding region to avoid jp-osa, as jp-osa does not support COS association with HPCS.
+		Region:  "us-south", // Hardcoding region to avoid jp-osa, as jp-osa does not support COS association with HPCS.
 		Prefix:  prefix,
 		TarIncludePatterns: []string{
 			"*.tf",
