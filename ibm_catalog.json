@@ -929,22 +929,22 @@
               "options": [
                 {
                   "displayname": "Unrestricted (All Traffic Allowed)",
-                  "value": "open",
+                  "value": "unrestricted",
                   "description": "Allows all inbound and outbound traffic from any source (0.0.0.0/0). No network filtering applied. Use only for development or testing environments."
                 },
                 {
                   "displayname": "Public Web Services (SSH, HTTP, HTTPS + IBM Cloud Internal)",
-                  "value": "standard",
+                  "value": "public_web_services",
                   "description": "Allows inbound traffic on SSH (port 22), HTTP (port 80), and HTTPS (port 443). Includes IBM Cloud internal service connectivity and VPC-to-VPC communication. Suitable for web-facing applications."
                 },
                 {
                   "displayname": "Private Only (IBM Cloud Internal + VPC)",
-                  "value": "ibm-cloud-private-backbone",
+                  "value": "private_only",
                   "description": "No public internet connectivity. Only allows IBM Cloud internal service communication and VPC-to-VPC traffic. Ideal for backend services and databases."
                 },
                 {
                   "displayname": "Isolated (No Network Access)",
-                  "value": "closed",
+                  "value": "isolated",
                   "description": "Completely isolated with no inbound or outbound network traffic allowed. Maximum security for highly sensitive workloads requiring manual network configuration."
                 }
               ]

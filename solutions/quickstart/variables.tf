@@ -83,9 +83,9 @@ variable "access_tags" {
 variable "network_profile" {
   description = "Predefined network ACL profile to control inbound and outbound traffic behavior. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/quickstart/DA-types.md) about each profile."
   type        = string
-  default     = "standard"
+  default     = "public_web_services"
   validation {
-    condition     = contains(["open", "standard", "ibm-cloud-private-backbone", "closed"], var.network_profile)
+    condition     = contains(["unrestricted", "public_web_services", "private_only", "isolated"], var.network_profile)
     error_message = "Valid value for network_profile is not provided."
   }
 }

@@ -34,7 +34,7 @@ module "cos" {
 ###########################################################################
 
 locals {
-  public_security_group_rules = var.network_profile == "open" ? [
+  public_security_group_rules = var.network_profile == "unrestricted" ? [
     {
       name      = "allow-all-inbound"
       direction = "inbound"
@@ -47,7 +47,7 @@ locals {
       remote    = "0.0.0.0/0"
       tcp       = null
     }
-    ] : var.network_profile == "standard" ? [
+    ] : var.network_profile == "public_web_services" ? [
     {
       name      = "allow-ssh"
       direction = "inbound"
@@ -76,7 +76,7 @@ locals {
 locals {
   acl_profiles = {
 
-    open = [
+    unrestricted = [
       {
         name                         = "${local.prefix}acl"
         add_ibm_cloud_internal_rules = false
@@ -101,7 +101,7 @@ locals {
       }
     ]
 
-    standard = [
+    public_web_services = [
       {
         name                         = "${local.prefix}acl"
         add_ibm_cloud_internal_rules = true
@@ -179,7 +179,7 @@ locals {
       }
     ],
 
-    ibm-cloud-private-backbone = [
+    private_only = [
       {
         name                         = "${local.prefix}acl"
         add_ibm_cloud_internal_rules = true
@@ -189,7 +189,7 @@ locals {
       }
     ]
 
-    closed = [
+    isolated = [
       {
         name                         = "${local.prefix}acl"
         add_ibm_cloud_internal_rules = false
@@ -200,9 +200,9 @@ locals {
     ]
   }
 
-  network_acls         = lookup(local.acl_profiles, var.network_profile, local.acl_profiles["standard"])
-  clean_default_sg_acl = contains(["ibm-cloud-private-backbone", "closed"], var.network_profile)
-  allow_public_gateway = contains(["open", "standard"], var.network_profile)
+  network_acls         = lookup(local.acl_profiles, var.network_profile, local.acl_profiles["public_web_services"])
+  clean_default_sg_acl = contains(["private_only", "isolated"], var.network_profile)
+  allow_public_gateway = contains(["unrestricted", "public_web_services"], var.network_profile)
 }
 
 #############################################################################

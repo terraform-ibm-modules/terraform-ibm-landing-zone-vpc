@@ -77,7 +77,7 @@ The following table outlines the requirements that are addressed in this archite
 |------------|-----------|--------------------|--------------------|
 | Provide a basic, ready-to-use VPC with minimal inputs | Predefined VPC | Deploys a VPC quickly without requiring users to design networking components | Use the fully configurable variation for granular control |
 | Create availability-zone redundancy | Fixed three-zone subnets | Ensures high availability by provisioning one subnet per zone automatically | Use the fully configurable variation for flexibility |
-| Basic traffic governance | Network profile selector (open, standard, ibm-cloud-private-backbone, closed) | Provides simple, predefined ACL behavior without requiring custom rules | Define custom ACL rules and SG rules manually in the fully configurable variation |
+| Basic traffic governance | Network profile selector (unrestricted, public_web_services, private_only, isolated) | Provides simple, predefined ACL behavior without requiring custom rules | Define custom ACL rules and SG rules manually in the fully configurable variation |
 
 {: caption="QuickStart variation of Cloud foundation for VPC" caption-side="bottom"}
 
