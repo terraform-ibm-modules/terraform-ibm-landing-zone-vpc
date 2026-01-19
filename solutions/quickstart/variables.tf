@@ -81,7 +81,7 @@ variable "access_tags" {
 ##############################################################################
 
 variable "network_profile" {
-  description = "Predefined network ACL profile to control inbound and outbound traffic behavior. Supported options are: open, standard, ibm-cloud-private-backbone, and closed. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/quickstart/DA-types.md) about each profile."
+  description = "Predefined network ACL profile to control inbound and outbound traffic behavior. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/quickstart/DA-types.md) about each profile."
   type        = string
   default     = "standard"
   validation {

@@ -261,8 +261,7 @@
                 "config_constraints": {
                   "identifier": "rg_name"
                 }
-              },
-              "default_value": "Default"
+              }
             },
             {
               "key": "subnets"
