@@ -203,8 +203,8 @@ variable "network_acls" {
           action    = "allow"
           direction = "inbound"
           tcp = {
-            port_min        = 22
-            port_max        = 22
+            port_min = 22
+            port_max = 22
           }
           destination = "0.0.0.0/0"
           source      = "0.0.0.0/0"
@@ -225,8 +225,8 @@ variable "network_acls" {
           action    = "allow"
           direction = "inbound"
           tcp = {
-            port_min        = 80
-            port_max        = 80
+            port_min = 80
+            port_max = 80
           }
           destination = "0.0.0.0/0"
           source      = "0.0.0.0/0"
@@ -247,8 +247,8 @@ variable "network_acls" {
           action    = "allow"
           direction = "inbound"
           tcp = {
-            port_min        = 443
-            port_max        = 443
+            port_min = 443
+            port_max = 443
           }
           destination = "0.0.0.0/0"
           source      = "0.0.0.0/0"
