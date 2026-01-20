@@ -1,8 +1,8 @@
 ---
 
 copyright:
-  years: 2025
-lastupdated: "2025-12-02"
+  years: 2026
+lastupdated: "2026-01-20"
 
 keywords:
 
@@ -50,7 +50,7 @@ content-type: reference-architecture
 {: toc-content-type="reference-architecture"}
 {: toc-industry="CrossIndustry"}
 {: toc-use-case="Foundational Infrastructure"}
-{: toc-version="1.0.0"}
+{: toc-version="8.11.0"}
 
 The QuickStart variation of the Cloud foundation for VPC provides a **basic and simple** Virtual Private Cloud (VPC) deployment that requires minimal configuration. It enables users to quickly create a functional network environment on IBM Cloud. This variation is best suited for users who need a **basic VPC configuration** with lightweight networking defaults and support for VPC Flow Logs.
 
