@@ -925,7 +925,7 @@
               "type": "string",
               "displayname": "Network Profile",
               "required": true,
-              "default_value": "standard",
+              "default_value": "public_web_services",
               "options": [
                 {
                   "displayname": "Unrestricted (All Traffic Allowed)",
