@@ -4,7 +4,7 @@
 
 module "resource_group" {
   source  = "terraform-ibm-modules/resource-group/ibm"
-  version = "1.2.1"
+  version = "1.4.7"
   # if an existing resource group is not set (null) create a new one using prefix
   resource_group_name          = var.resource_group == null ? "${var.prefix}-resource-group" : null
   existing_resource_group_name = var.resource_group
@@ -33,7 +33,7 @@ resource "ibm_is_subnet" "testacc_subnet" {
 module "postgresql_db" {
   count               = var.create_db ? 1 : 0
   source              = "terraform-ibm-modules/icd-postgresql/ibm"
-  version             = "4.2.6"
+  version             = "4.6.5"
   resource_group_id   = module.resource_group.resource_group_id
   name                = "${var.prefix}-vpe-pg"
   region              = var.region
