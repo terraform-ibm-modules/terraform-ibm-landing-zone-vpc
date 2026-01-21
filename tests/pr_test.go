@@ -353,6 +353,12 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 		WaitJobCompleteMinutes:     120,
 		CheckApplyResultForUpgrade: true,
 		TerraformVersion:           terraformVersion,
+		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
+			List: IgnoreUpdates,
+		},
+		IgnoreDestroys: testhelper.Exemptions{ // Ignore for consistency check
+			List: IgnoreDestroys,
+		},
 	})
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
