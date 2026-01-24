@@ -4,7 +4,7 @@ terraform {
     # Lock DA into an exact provider version - renovate automation will keep it updated
     ibm = {
       source  = "IBM-Cloud/ibm"
-      version = "1.87.1"
+      version = "1.87.2"
     }
     time = {
       source  = "hashicorp/time"
