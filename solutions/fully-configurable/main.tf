@@ -73,7 +73,7 @@ module "cos_buckets" {
   count          = var.enable_vpc_flow_logs ? 1 : 0
   depends_on     = [time_sleep.wait_for_cross_account_authorization_policy[0]]
   source         = "terraform-ibm-modules/cos/ibm//modules/buckets"
-  version        = "10.9.1"
+  version        = "10.9.2"
   bucket_configs = local.bucket_config
 }
 
@@ -163,7 +163,7 @@ module "kms" {
   }
   count                       = local.create_kms_key ? 1 : 0 # no need to create any KMS resources if not passing an existing KMS CRN or existing KMS key CRN is provided
   source                      = "terraform-ibm-modules/kms-all-inclusive/ibm"
-  version                     = "5.5.22"
+  version                     = "5.5.23"
   create_key_protect_instance = false
   region                      = local.kms_region
   existing_kms_instance_crn   = var.existing_kms_instance_crn
@@ -230,7 +230,7 @@ module "vpc" {
 
 module "vpe_gateway" {
   source               = "terraform-ibm-modules/vpe-gateway/ibm"
-  version              = "5.0.1"
+  version              = "5.0.2"
   resource_group_id    = module.resource_group.resource_group_id
   region               = var.region
   prefix               = local.prefix
