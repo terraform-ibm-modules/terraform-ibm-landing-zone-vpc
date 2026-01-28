@@ -89,15 +89,15 @@ variable "dns_custom_resolver_name" {
 variable "dns_custom_resolver_profile" {
   description = "The profile name for the provisioned DNS custom resolver instance."
   type        = string
-  default     = "ESSENTIAL"
+  default     = "essential"
 
   validation {
     condition = anytrue([
-      var.dns_custom_resolver_profile == "ESSENTIAL",
-      var.dns_custom_resolver_profile == "ADVANCED",
-      var.dns_custom_resolver_profile == "PREMIER"
+      var.dns_custom_resolver_profile == "essential",
+      var.dns_custom_resolver_profile == "advanced",
+      var.dns_custom_resolver_profile == "premier"
     ])
-    error_message = "`dns_custom_resolver_profile` can only be set to the string 'ESSENTIAL', 'ADVANCED' or 'PREMIER'."
+    error_message = "`dns_custom_resolver_profile` can only be set to the string 'essential', 'advanced' or 'premier'."
   }
 }
 
