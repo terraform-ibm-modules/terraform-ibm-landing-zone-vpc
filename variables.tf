@@ -86,6 +86,21 @@ variable "dns_custom_resolver_name" {
   default     = null
 }
 
+variable "dns_custom_resolver_profile" {
+  description = "The profile name for the provisioned DNS custom resolver instance."
+  type        = string
+  default     = "ESSENTIAL"
+
+  validation {
+    condition = anytrue([
+      var.dns_custom_resolver_profile == "ESSENTIAL",
+      var.dns_custom_resolver_profile == "ADVANCED",
+      var.dns_custom_resolver_profile == "PREMIER"
+    ])
+    error_message = "`dns_custom_resolver_profile` can only be set to the string 'ESSENTIAL', 'ADVANCED' or 'PREMIER'."
+  }
+}
+
 variable "routing_table_name" {
   description = "The name to give the provisioned routing tables. If not set, the module generates a name based on the `prefix` and `name` variables."
   type        = string
