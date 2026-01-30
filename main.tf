@@ -201,6 +201,7 @@ resource "ibm_dns_custom_resolver" "custom_resolver_hub" {
   instance_id       = var.use_existing_dns_instance ? var.existing_dns_instance_id : ibm_resource_instance.dns_instance_hub[0].guid
   high_availability = true
   enabled           = true
+  profile           = var.dns_custom_resolver_profile
 
   dynamic "locations" {
     for_each = local.subnets
