@@ -58,7 +58,7 @@ variable "access_tags" {
 ##############################################################################
 
 variable "prefix" {
-  description = "The value that you would like to prefix to the name of the resources provisioned by this module. Explicitly set to null if you do not wish to use a prefix. This value is ignored if using one of the optional variables for explicit control over naming."
+  description = "The value that you would like to prefix to the name of the resources provisioned by this module. Explicitly set to null if you do not wish to use a prefix. This value is ignored if using one of the optional variables for explicit control over naming. **Important:** Changing the prefix after initial deployment will cause Terraform to plan destruction and recreation of resources. Changing the prefix should be treated as provisioning a new environment, not renaming existing resources."
   type        = string
   default     = null
 }
