@@ -261,7 +261,11 @@ This variable configuration allows you to specify the list of cloud services use
 
 - `service_name` (required): The name of the Cloud service.
 - `vpe_name` (optional): The name of the VPE gateway. If it is not specified, VPE name will be automatically generated in the format `<prefix>-<vpc_name>-<service_name>`.
-- `allow_dns_resolution_binding` (optional): (bool) Set to `true` to allow this endpoint gateway to participate in DNS resolution bindings with a VPC.
+- `dns_resolution_binding_mode` (optional): Configure the DNS resolution binding mode used for the endpoint gateway. Following are the allowed values -
+  - `disabled` - The endpoint gateway is not participating in DNS sharing for VPE gateways.
+  - `primary` - The endpoint gateway is participating in DNS sharing for VPE gateways if the VPC this endpoint gateway resides in has a DNS resolution binding to another VPC.
+  - `per_resource_binding` - The endpoint gateway is participating in DNS sharing for VPE gateways if the VPC this endpoint gateway resides in has a DNS resolution binding to another VPC, and resource binding is enabled for the target service.
+
 
 ### Example
 
@@ -269,6 +273,7 @@ This variable configuration allows you to specify the list of cloud services use
  {
   service_name = "cloud-object-storage"
   vpe_name = "vpe1"
+  dns_resolution_binding_mode = "primary"
  }
 ```
 
@@ -285,7 +290,10 @@ This variable defines cloud service CRNs required to create endpoint gateways. T
 - `crn` (required): The CRN of the Cloud service.
 - `vpe_name` (optional): The name of the VPE gateway. If it is not specified, VPE name will be automatically generated in the format `<prefix>-<vpc_name>-<service_name>`.
 - `service_name` (optional): The name of the service. Required to compute the name of VPE. If not specified, the service name will be obtained from the crn.
-- `allow_dns_resolution_binding` (optional): (bool) Set to `true` to allow this endpoint gateway to participate in DNS resolution bindings with a VPC.
+- `dns_resolution_binding_mode` (optional): Configure the DNS resolution binding mode used for the endpoint gateway. Following are the allowed values -
+  - `disabled` - The endpoint gateway is not participating in DNS sharing for VPE gateways.
+  - `primary` - The endpoint gateway is participating in DNS sharing for VPE gateways if the VPC this endpoint gateway resides in has a DNS resolution binding to another VPC.
+  - `per_resource_binding` - The endpoint gateway is participating in DNS sharing for VPE gateways if the VPC this endpoint gateway resides in has a DNS resolution binding to another VPC, and resource binding is enabled for the target service.
 
 ### Example
 
