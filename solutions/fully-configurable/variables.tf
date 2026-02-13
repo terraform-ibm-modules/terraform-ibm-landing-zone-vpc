@@ -694,9 +694,9 @@ variable "vpn_gateways" {
 variable "vpe_gateway_cloud_services" {
   description = "The list of cloud services used to create endpoint gateways. If `vpe_name` is not specified in the list, VPE names are created in the format `<prefix>-<vpc_name>-<service_name>`. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#vpe-gateway-cloud-services-)."
   type = set(object({
-    service_name                 = string
-    vpe_name                     = optional(string), # Full control on the VPE name. If not specified, the VPE name will be computed based on prefix, vpc name and service name.
-    allow_dns_resolution_binding = optional(bool, false)
+    service_name                = string
+    vpe_name                    = optional(string), # Full control on the VPE name. If not specified, the VPE name will be computed based on prefix, vpc name and service name.
+    dns_resolution_binding_mode = optional(string, "disabled")
   }))
   default = []
 }
@@ -705,10 +705,10 @@ variable "vpe_gateway_cloud_service_by_crn" {
   description = "The list of cloud service CRNs used to create endpoint gateways. Use this list to identify services that are not supported by service name in the `cloud_services` variable. For a list of supported services, see [VPE-enabled services](https://cloud.ibm.com/docs/vpc?topic=vpc-vpe-supported-services). If `service_name` is not specified, the CRN is used to find the name. If `vpe_name` is not specified in the list, VPE names are created in the format `<prefix>-<vpc_name>-<service_name>`. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#vpe-gateway-cloud-service-by-crn-)."
   type = set(
     object({
-      crn                          = string
-      vpe_name                     = optional(string) # Full control on the VPE name. If not specified, the VPE name will be computed based on prefix, vpc name and service name.
-      service_name                 = optional(string) # Name of the service used to compute the name of the VPE. If not specified, the service name will be obtained from the crn.
-      allow_dns_resolution_binding = optional(bool, true)
+      crn                         = string
+      vpe_name                    = optional(string) # Full control on the VPE name. If not specified, the VPE name will be computed based on prefix, vpc name and service name.
+      service_name                = optional(string) # Name of the service used to compute the name of the VPE. If not specified, the service name will be obtained from the crn.
+      dns_resolution_binding_mode = optional(string, "primary")
     })
   )
   default = []

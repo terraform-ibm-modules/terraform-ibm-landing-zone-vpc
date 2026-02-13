@@ -330,11 +330,29 @@
             },
             {
               "key": "vpe_gateway_cloud_services",
-              "type": "array"
+              "custom_config": {
+                "type": "code_editor",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "supportedLanguages": [
+                    "hcl"
+                  ]
+                }
+              }
             },
             {
               "key": "vpe_gateway_cloud_service_by_crn",
-              "type": "array"
+              "custom_config": {
+                "type": "code_editor",
+                "grouping": "deployment",
+                "original_grouping": "deployment",
+                "config_constraints": {
+                  "supportedLanguages": [
+                    "hcl"
+                  ]
+                }
+              }
             },
             {
               "key": "vpe_gateway_security_group_ids",
