@@ -18,29 +18,28 @@ resource "ibm_is_security_group_rule" "default_vpc_rule" {
   local      = each.value.local
   ip_version = each.value.ip_version
 
-  dynamic "tcp" {
-    for_each = each.value.tcp == null ? [] : [each.value]
-    content {
-      port_min = each.value.tcp.port_min
-      port_max = each.value.tcp.port_max
-    }
-  }
+  # Replace deprecated nested protocol blocks with top-level attributes.
+  protocol = (
+    each.value.tcp != null ? "tcp" :
+    each.value.udp != null ? "udp" :
+    each.value.icmp != null ? "icmp" :
+    null
+  )
 
-  dynamic "udp" {
-    for_each = each.value.udp == null ? [] : [each.value]
-    content {
-      port_min = each.value.udp.port_min
-      port_max = each.value.udp.port_max
-    }
-  }
+  port_min = (
+    each.value.tcp != null ? lookup(each.value.tcp, "port_min", null) :
+    each.value.udp != null ? lookup(each.value.udp, "port_min", null) :
+    null
+  )
 
-  dynamic "icmp" {
-    for_each = each.value.icmp == null ? [] : [each.value]
-    content {
-      type = lookup(each.value.icmp, "type", null)
-      code = lookup(each.value.icmp, "code", null)
-    }
-  }
+  port_max = (
+    each.value.tcp != null ? lookup(each.value.tcp, "port_max", null) :
+    each.value.udp != null ? lookup(each.value.udp, "port_max", null) :
+    null
+  )
+
+  type = each.value.icmp != null ? lookup(each.value.icmp, "type", null) : null
+  code = each.value.icmp != null ? lookup(each.value.icmp, "code", null) : null
 }
 
 ##############################################################################
