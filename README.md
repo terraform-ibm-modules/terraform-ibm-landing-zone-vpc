@@ -5,6 +5,7 @@
 [![pre-commit](https://img.shields.io/badge/pre--commit-enabled-brightgreen?logo=pre-commit&logoColor=white)](https://github.com/pre-commit/pre-commit)
 [![latest release](https://img.shields.io/github/v/release/terraform-ibm-modules/terraform-ibm-landing-zone-vpc?logo=GitHub&sort=semver)](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/releases/latest)
 [![Renovate enabled](https://img.shields.io/badge/renovate-enabled-brightgreen.svg)](https://renovatebot.com/)
+[![Terraform Registry](https://img.shields.io/badge/terraform-registry-623CE4?logo=terraform)](https://registry.terraform.io/modules/terraform-ibm-modules/landing-zone-vpc/ibm/latest)
 
 > ⚠️ In `v9.0.0` this module will no longer support VPN gateway functionality. Please see [migration guide](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md) for steps on how to migrate to the [terraform-ibm-site-to-site-vpn](https://github.com/terraform-ibm-modules/terraform-ibm-site-to-site-vpn) module.
 
@@ -55,6 +56,9 @@ Expected network connectivity downtime of typically around 20 seconds.
     * <a href="./examples/specific-zone-only">Specific Zone Only Example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-specific-zone-only-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/specific-zone-only"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
     * <a href="./examples/vpc-flow-logs">VPC with Flow Logs stored in COS Example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-vpc-flow-logs-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/vpc-flow-logs"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
     * <a href="./examples/vpc-with-dns">VPC with DNS example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-vpc-with-dns-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/vpc-with-dns"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+* [Deployable Architectures](./solutions)
+    * <a href="./solutions/fully-configurable">Cloud automation for VPC (Fully configurable)</a>
+    * <a href="./solutions/quickstart">Cloud foundation for VPC (Quickstart)</a>
 * [Contributing](#contributing)
 <!-- END OVERVIEW HOOK -->
 
