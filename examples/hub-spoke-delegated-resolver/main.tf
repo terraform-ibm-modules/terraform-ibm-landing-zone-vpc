@@ -4,7 +4,7 @@
 
 module "resource_group" {
   source  = "terraform-ibm-modules/resource-group/ibm"
-  version = "1.4.7"
+  version = "1.4.8"
   # if an existing resource group is not set (null) create a new one using prefix
   resource_group_name          = var.resource_group == null ? "${var.prefix}-resource-group" : null
   existing_resource_group_name = var.resource_group
@@ -120,7 +120,7 @@ module "spoke_vpc" {
 
 module "tg_gateway_connection" {
   source                    = "terraform-ibm-modules/transit-gateway/ibm"
-  version                   = "2.5.9"
+  version                   = "2.5.10"
   transit_gateway_name      = "${var.prefix}-tg"
   region                    = var.region
   global_routing            = false
