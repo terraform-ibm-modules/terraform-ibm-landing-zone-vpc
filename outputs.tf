@@ -152,6 +152,14 @@ output "vpc_data" {
 # Routing Tables
 ##############################################################################
 
+output "default_routing_table" {
+  description = "The default routing table ID and name that is created along with the VPC."
+  value = {
+    routing_table_id   = data.ibm_is_vpc.vpc.default_routing_table
+    routing_table_name = data.ibm_is_vpc.vpc.default_routing_table_name
+  }
+}
+
 output "routing_table_ids" {
   description = "List of routing table IDs created by this module."
   value = [
