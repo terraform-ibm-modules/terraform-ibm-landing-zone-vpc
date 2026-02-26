@@ -293,7 +293,8 @@ To attach access management tags to resources in this module, you need the follo
 
 ## Known issues
 
-- Changing the VPC prefix after deployment can force resource re-creation. See [VPC prefix changes can require re-creation](https://cloud.ibm.com/docs/secure-infrastructure-vpc?topic=secure-infrastructure-vpc-known-issues#ki-vpc-prefix-change-recreate).
+For a list of common known issues see: 
+- [Known issues with Terraform IBM Module for Virtual Private Cloud (VPC)](https://cloud.ibm.com/docs/ibm-cloud-provider-for-terraform?topic=ibm-cloud-provider-for-terraform-known-issues-vpc).
 
 ## Contributing
 
