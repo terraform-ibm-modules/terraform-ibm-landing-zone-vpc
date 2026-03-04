@@ -28,7 +28,7 @@ variable "existing_resource_group_name" {
 variable "prefix" {
   type        = string
   nullable    = true
-  description = "The prefix to add to all resources that this solution creates (e.g `prod`, `test`, `dev`). To skip using a prefix, set this value to null or an empty string. **Important:** Changing the prefix after initial deployment will cause Terraform to plan destruction and recreation of resources. Changing the prefix should be treated as provisioning a new environment, not renaming existing resources. [Learn more](https://terraform-ibm-modules.github.io/documentation/#/prefix.md)."
+  description = "The prefix to add to all resources that this solution creates (e.g `prod`, `test`, `dev`). To skip using a prefix, set this value to null or an empty string. [Learn more](https://terraform-ibm-modules.github.io/documentation/#/prefix.md). **Important:** Updating the prefix after the initial deployment may require recreating certain resources. Learn more about this limitation [here](https://cloud.ibm.com/docs/secure-infrastructure-vpc?topic=secure-infrastructure-vpc-known-issues#ki-vpc-prefix-change-recreate)."
 
   validation {
     # - null and empty string is allowed
