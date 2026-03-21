@@ -41,26 +41,64 @@ Expected network connectivity downtime of typically around 20 seconds.
 <!-- Below content is automatically populated via pre-commit hook -->
 <!-- BEGIN OVERVIEW HOOK -->
 ## Overview
-* [terraform-ibm-landing-zone-vpc](#terraform-ibm-landing-zone-vpc)
-* [Submodules](./modules)
-    * [management-vpc](./modules/management-vpc)
-    * [workload-vpc](./modules/workload-vpc)
-* [Examples](./examples)
-:information_source: Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab
-    * <a href="./examples/basic">Basic Example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/basic"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/existing_vpc">Existing networking resources Example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-existing_vpc-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/existing_vpc"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/hub-spoke-delegated-resolver">Hub and Spoke VPC Example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-hub-spoke-delegated-resolver-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/hub-spoke-delegated-resolver"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/hub-spoke-manual-resolver">Hub and Spoke VPC with manual DNS resolver Example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-hub-spoke-manual-resolver-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/hub-spoke-manual-resolver"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/landing_zone">Landing Zone example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-landing_zone-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/landing_zone"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/multiple-sg-protocols">Multiple Security Group Protocols Example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-multiple-sg-protocols-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/multiple-sg-protocols"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/specific-zone-only">Specific Zone Only Example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-specific-zone-only-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/specific-zone-only"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/vpc-flow-logs">VPC with Flow Logs stored in COS Example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-vpc-flow-logs-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/vpc-flow-logs"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/vpc-with-dns">VPC with DNS example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-vpc-with-dns-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/vpc-with-dns"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-* [Deployable Architectures](./solutions)
-    * <a href="./solutions/fully-configurable">Cloud automation for VPC (Fully configurable)</a>
-    * <a href="./solutions/quickstart">Cloud foundation for VPC (Quickstart)</a>
-* [Known issues](#known-issues)
-* [Contributing](#contributing)
+<ul>
+  <li><a href="#terraform-ibm-landing-zone-vpc">terraform-ibm-landing-zone-vpc</a></li>
+  <li><a href="./modules">Submodules</a>
+    <ul>
+      <li><a href="./modules/management-vpc">management-vpc</a></li>
+      <li><a href="./modules/workload-vpc">workload-vpc</a></li>
+    </ul>
+  </li>
+  <li><a href="./examples">Examples</a>
+    <ul>
+      <li>
+        <a href="./examples/basic">Basic Example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/basic"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/existing_vpc">Existing networking resources Example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-existing_vpc-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/existing_vpc"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/hub-spoke-delegated-resolver">Hub and Spoke VPC Example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-hub-spoke-delegated-resolver-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/hub-spoke-delegated-resolver"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/hub-spoke-manual-resolver">Hub and Spoke VPC with manual DNS resolver Example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-hub-spoke-manual-resolver-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/hub-spoke-manual-resolver"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/landing_zone">Landing Zone example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-landing_zone-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/landing_zone"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/multiple-sg-protocols">Multiple Security Group Protocols Example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-multiple-sg-protocols-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/multiple-sg-protocols"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/specific-zone-only">Specific Zone Only Example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-specific-zone-only-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/specific-zone-only"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/vpc-flow-logs">VPC with Flow Logs stored in COS Example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-vpc-flow-logs-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/vpc-flow-logs"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/vpc-with-dns">VPC with DNS example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-vpc-with-dns-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/vpc-with-dns"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+    </ul>
+    ℹ️ Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab.
+  </li>
+  <li><a href="./solutions">Deployable Architectures</a>
+    <ul>
+      <li><a href="./solutions/fully-configurable">Cloud automation for VPC (Fully configurable)</a></li>
+      <li><a href="./solutions/quickstart">Cloud foundation for VPC (Quickstart)</a></li>
+    </ul>
+  </li>
+  <li><a href="#known-issues">Known issues</a></li>
+  <li><a href="#contributing">Contributing</a></li>
+</ul>
 <!-- END OVERVIEW HOOK -->
 
 <!-- Match this heading to the name of the root level module (the repo name) -->

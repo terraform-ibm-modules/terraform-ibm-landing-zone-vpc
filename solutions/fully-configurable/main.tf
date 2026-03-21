@@ -8,7 +8,7 @@ locals {
 
 module "resource_group" {
   source                       = "terraform-ibm-modules/resource-group/ibm"
-  version                      = "1.4.8"
+  version                      = "1.5.0"
   existing_resource_group_name = var.existing_resource_group_name
 }
 
@@ -73,7 +73,7 @@ module "cos_buckets" {
   count          = var.enable_vpc_flow_logs ? 1 : 0
   depends_on     = [time_sleep.wait_for_cross_account_authorization_policy[0]]
   source         = "terraform-ibm-modules/cos/ibm//modules/buckets"
-  version        = "10.14.8"
+  version        = "10.14.9"
   bucket_configs = local.bucket_config
 }
 
