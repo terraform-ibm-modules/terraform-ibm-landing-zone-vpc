@@ -45,6 +45,25 @@ output "network_acls" {
 }
 
 ##############################################################################
+# Routing Tables
+##############################################################################
+
+output "default_routing_table" {
+  description = "The default routing table ID and name that is created along with the VPC."
+  value       = module.vpc.default_routing_table
+}
+
+output "routing_table_ids" {
+  description = "List of routing table IDs created by this module."
+  value       = module.vpc.routing_table_ids
+}
+
+output "routing_table_routes" {
+  description = "List of routing table routes created by this module."
+  value       = module.vpc.routing_table_routes
+}
+
+##############################################################################
 # Subnet Outputs
 ##############################################################################
 
