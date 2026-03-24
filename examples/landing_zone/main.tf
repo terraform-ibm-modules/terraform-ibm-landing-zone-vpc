@@ -25,7 +25,6 @@ module "cos_bucket" {
   cos_tags               = var.resource_tags
   bucket_name            = "${var.prefix}-vpc-logs-cos-bucket"
   kms_encryption_enabled = false
-  retention_enabled      = false
 }
 
 #############################################################################
