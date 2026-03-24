@@ -305,6 +305,7 @@ To attach access management tags to resources in this module, you need the follo
 |------|-------------|
 | <a name="output_cidr_blocks"></a> [cidr\_blocks](#output\_cidr\_blocks) | List of CIDR blocks present in VPC stack |
 | <a name="output_custom_resolver_hub"></a> [custom\_resolver\_hub](#output\_custom\_resolver\_hub) | The custom resolver created for the hub vpc. Only set if enable\_hub is set and skip\_custom\_resolver\_hub\_creation is false. |
+| <a name="output_default_routing_table"></a> [default\_routing\_table](#output\_default\_routing\_table) | The default routing table ID and name that is created along with the VPC. |
 | <a name="output_dns_custom_resolver_id"></a> [dns\_custom\_resolver\_id](#output\_dns\_custom\_resolver\_id) | The ID of the DNS Custom Resolver. |
 | <a name="output_dns_endpoint_gateways_by_crn"></a> [dns\_endpoint\_gateways\_by\_crn](#output\_dns\_endpoint\_gateways\_by\_crn) | The list of VPEs that are made available for DNS resolution in the created Spoke VPC. Only set if enable\_hub is false and enable\_hub\_vpc\_id OR enable\_hub\_vpc\_crn are true. |
 | <a name="output_dns_endpoint_gateways_by_id"></a> [dns\_endpoint\_gateways\_by\_id](#output\_dns\_endpoint\_gateways\_by\_id) | The list of VPEs that are made available for DNS resolution in the created Spoke VPC. Only set if enable\_hub is false and enable\_hub\_vpc\_id OR enable\_hub\_vpc\_crn are true. |
@@ -315,6 +316,8 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="output_dns_zone_state"></a> [dns\_zone\_state](#output\_dns\_zone\_state) | The state of the DNS zone. |
 | <a name="output_network_acls"></a> [network\_acls](#output\_network\_acls) | List of shortnames and IDs of network ACLs |
 | <a name="output_public_gateways"></a> [public\_gateways](#output\_public\_gateways) | Map of public gateways by zone |
+| <a name="output_routing_table_ids"></a> [routing\_table\_ids](#output\_routing\_table\_ids) | List of routing table IDs created by this module. |
+| <a name="output_routing_table_routes"></a> [routing\_table\_routes](#output\_routing\_table\_routes) | List of routing table routes created by this module. |
 | <a name="output_security_group_details"></a> [security\_group\_details](#output\_security\_group\_details) | Details of security group. |
 | <a name="output_subnet_detail_list"></a> [subnet\_detail\_list](#output\_subnet\_detail\_list) | A list of subnets containing names, CIDR blocks, and zones. |
 | <a name="output_subnet_detail_map"></a> [subnet\_detail\_map](#output\_subnet\_detail\_map) | A map of subnets containing IDs, CIDR blocks, and zones |
