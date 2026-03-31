@@ -848,7 +848,7 @@ variable "dns_records" {
 ##############################################################################
 
 variable "vpn_gateways" {
-  description = "[DEPRECATED] List of VPN gateways to create. For more information please refer the [migration guide](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md)."
+  description = "List of VPN gateways to create by using the site-to-site VPN module. For migration details, see the [migration guide](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md). Access tags are no longer supported for VPN gateways in `v9.0.0`; leave `access_tags` empty."
   nullable    = false
   type = list(
     object({
@@ -860,4 +860,9 @@ variable "vpn_gateways" {
     })
   )
   default = []
+
+  validation {
+    condition     = length(flatten([for gateway in var.vpn_gateways : gateway.access_tags])) == 0
+    error_message = "The `vpn_gateways[*].access_tags` input is not supported in v9.0.0 because VPN gateways are now created through the site-to-site VPN module."
+  }
 }

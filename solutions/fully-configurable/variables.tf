@@ -672,7 +672,7 @@ variable "default_routing_table_name" {
 ##############################################################################
 
 variable "vpn_gateways" {
-  description = "List of VPN Gateways to create. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#vpn-gateways-)."
+  description = "List of VPN Gateways to create. VPN gateways are provisioned by using the site-to-site VPN module. Access tags are not supported for VPN gateways in `v9.0.0`. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#vpn-gateways-)."
   nullable    = false
   type = list(
     object({
@@ -685,6 +685,11 @@ variable "vpn_gateways" {
   )
 
   default = []
+
+  validation {
+    condition     = length(flatten([for gateway in var.vpn_gateways : gateway.access_tags])) == 0
+    error_message = "The `vpn_gateways[*].access_tags` input is not supported in v9.0.0 because VPN gateways are now created through the site-to-site VPN module."
+  }
 }
 
 ##############################################################################
