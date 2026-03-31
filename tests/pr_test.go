@@ -58,15 +58,9 @@ var dnsZoneMap = []map[string]interface{}{
 	{"name": "slz.com"},
 }
 
-var IgnoreUpdates = []string{
-	"module.slz_vpc.terraform_data.deprecation_warning",
-	"module.vpc.terraform_data.deprecation_warning[0]",
-}
+var IgnoreUpdates = []string{}
 
-var IgnoreDestroys = []string{
-	"module.slz_vpc.terraform_data.deprecation_warning",
-	"module.vpc.terraform_data.deprecation_warning[0]",
-}
+var IgnoreDestroys = []string{}
 
 func TestMain(m *testing.M) {
 	// Read the YAML file contents
@@ -317,7 +311,6 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 		{Name: "vpe_gateway_cloud_services", Value: []map[string]string{{"service_name": "kms"}, {"service_name": "cloud-object-storage"}}, DataType: "list(object{})"},
 		{Name: "vpe_gateway_cloud_service_by_crn", Value: []map[string]string{{"crn": terraform.Output(t, existingTerraformOptions, "postgresql_db_crn"), "vpe_name": "pg"}}, DataType: "list(object{})"},
-		{Name: "vpn_gateways", Value: []map[string]string{{"name": options.Prefix + "-vpn", "subnet_name": "subnet-c"}}, DataType: "list(object{})"},
 	}
 
 	require.NoError(t, options.RunSchematicTest(), "This should not have errored")
@@ -374,7 +367,6 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 		{Name: "vpe_gateway_cloud_services", Value: []map[string]string{{"service_name": "kms"}, {"service_name": "cloud-object-storage"}}, DataType: "list(object{})"},
 		{Name: "vpe_gateway_cloud_service_by_crn", Value: []map[string]string{{"crn": terraform.Output(t, existingTerraformOptions, "postgresql_db_crn"), "vpe_name": "pg"}}, DataType: "list(object{})"},
-		{Name: "vpn_gateways", Value: []map[string]string{{"name": options.Prefix + "-vpn", "subnet_name": "subnet-c"}}, DataType: "list(object{})"},
 	}
 
 	err := options.RunSchematicUpgradeTest()

@@ -434,42 +434,22 @@ locals {
 ##############################################################################
 # Create VPN Gateways
 ##############################################################################
-# ⚠️ [DEPRECATED]. Refer the [migration guide](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md) for more information.
 
 locals {
   # Convert the vpn_gateway input from list to a map
   vpn_gateway_map = { for gateway in var.vpn_gateways : gateway.name => gateway }
 }
 
-resource "ibm_is_vpn_gateway" "vpn_gateway" {
-  for_each       = local.vpn_gateway_map
-  name           = var.prefix != null ? "${var.prefix}-${each.key}" : each.key
-  subnet         = local.subnets["${local.vpc_name}-${each.value.subnet_name}"].id
-  mode           = each.value.mode
-  resource_group = each.value.resource_group == null ? var.resource_group_id : each.value.resource_group
-  tags           = var.tags
-  access_tags    = each.value.access_tags
+module "vpn_gateways" {
+  source  = "terraform-ibm-modules/site-to-site-vpn/ibm"
+  version = "3.0.5"
 
-  timeouts {
-    create = "1h"
-    delete = "1h"
-  }
-}
+  for_each = local.vpn_gateway_map
 
-# This block will be removed once the migration to the [terraform-ibm-site-to-site-vpn](https://github.com/terraform-ibm-modules/terraform-ibm-site-to-site-vpn) module is completed.
-
-resource "terraform_data" "deprecation_warning" {
-
-  count = length(var.vpn_gateways) > 0 ? 1 : 0
-
-  triggers_replace = {
-    always_run = timestamp()
-  }
-  provisioner "local-exec" {
-    command = <<EOT
-echo "[WARNING] DEPRECATED variable 'vpn_gateways' is in use. Please migrate to the new variable.
-See migration guide: https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md"
-EOT
-  }
+  resource_group_id     = each.value.resource_group == null ? var.resource_group_id : each.value.resource_group
+  vpn_gateway_name      = var.prefix != null ? "${var.prefix}-${each.key}" : each.key
+  vpn_gateway_subnet_id = local.subnets["${local.vpc_name}-${each.value.subnet_name}"].id
+  vpn_gateway_mode      = each.value.mode
+  tags                  = var.tags
 }
 ##############################################################################
