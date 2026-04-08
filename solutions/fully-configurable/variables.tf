@@ -680,16 +680,10 @@ variable "vpn_gateways" {
       subnet_name    = string # Do not include prefix, use same name as in `var.subnets`
       mode           = optional(string)
       resource_group = optional(string)
-      access_tags    = optional(list(string), [])
     })
   )
 
   default = []
-
-  validation {
-    condition     = length(flatten([for gateway in var.vpn_gateways : gateway.access_tags])) == 0
-    error_message = "The `vpn_gateways[*].access_tags` input is not supported in v9.0.0 because VPN gateways are now created through the site-to-site VPN module."
-  }
 }
 
 ##############################################################################
