@@ -58,15 +58,9 @@ var dnsZoneMap = []map[string]interface{}{
 	{"name": "slz.com"},
 }
 
-var IgnoreUpdates = []string{
-	"module.slz_vpc.terraform_data.deprecation_warning",
-	"module.vpc.terraform_data.deprecation_warning[0]",
-}
+var IgnoreUpdates = []string{}
 
-var IgnoreDestroys = []string{
-	"module.slz_vpc.terraform_data.deprecation_warning",
-	"module.vpc.terraform_data.deprecation_warning[0]",
-}
+var IgnoreDestroys = []string{}
 
 func TestMain(m *testing.M) {
 	// Read the YAML file contents

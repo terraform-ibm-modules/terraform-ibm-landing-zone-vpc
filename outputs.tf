@@ -242,18 +242,10 @@ output "dns_record_ids" {
 # VPN Gateways
 ##############################################################################
 
-output "vpn_gateways_name" {
-  description = "[DEPRECATED] List of names of VPN gateways. For more information please refer the [migration guide](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md)."
-  value = [
-    for gateway in ibm_is_vpn_gateway.vpn_gateway :
-    gateway.name
-  ]
-}
-
 output "vpn_gateways_data" {
-  description = "[DEPRECATED] Details of VPN gateways data. For more information please refer the [migration guide](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md)."
+  description = "Details of VPN gateways data."
   value = [
-    for gateway in ibm_is_vpn_gateway.vpn_gateway :
+    for gateway in module.vpn_gateways :
     gateway
   ]
 }
