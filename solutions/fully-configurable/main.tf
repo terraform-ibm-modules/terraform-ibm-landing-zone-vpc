@@ -20,7 +20,7 @@ module "resource_group" {
 module "existing_cos_crn_parser" {
   count   = var.existing_cos_instance_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.4.2"
+  version = "1.4.3"
   crn     = var.existing_cos_instance_crn
 }
 
@@ -73,7 +73,7 @@ module "cos_buckets" {
   count          = var.enable_vpc_flow_logs ? 1 : 0
   depends_on     = [time_sleep.wait_for_cross_account_authorization_policy[0]]
   source         = "terraform-ibm-modules/cos/ibm//modules/buckets"
-  version        = "10.14.9"
+  version        = "10.14.10"
   bucket_configs = local.bucket_config
 }
 
@@ -134,7 +134,7 @@ resource "time_sleep" "wait_for_cross_account_authorization_policy" {
 module "existing_kms_instance_crn_parser" {
   count   = var.kms_encryption_enabled_bucket && var.existing_kms_instance_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.4.2"
+  version = "1.4.3"
   crn     = var.existing_kms_instance_crn
 }
 
@@ -142,7 +142,7 @@ module "existing_kms_instance_crn_parser" {
 module "existing_kms_key_crn_parser" {
   count   = var.kms_encryption_enabled_bucket && var.existing_flow_logs_bucket_kms_key_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.4.2"
+  version = "1.4.3"
   crn     = var.existing_flow_logs_bucket_kms_key_crn
 }
 
