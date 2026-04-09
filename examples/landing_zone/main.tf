@@ -70,10 +70,12 @@ module "tg_gateway_connection" {
   resource_group_id    = module.resource_group.resource_group_id
   vpc_connections = [
     {
-      vpc_crn = module.workload_vpc.vpc_crn
+      vpc_crn         = module.workload_vpc.vpc_crn
+      connection_name = "${var.prefix}-conn-1"
     },
     {
-      vpc_crn = module.management_vpc.vpc_crn
+      vpc_crn         = module.management_vpc.vpc_crn
+      connection_name = "${var.prefix}-conn-2"
     }
   ]
   classic_connections_count = 0

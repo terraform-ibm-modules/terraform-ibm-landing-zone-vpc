@@ -119,13 +119,22 @@ module "spoke_vpc" {
 ##############################################################################
 
 module "tg_gateway_connection" {
-  source                    = "terraform-ibm-modules/transit-gateway/ibm"
-  version                   = "3.0.1"
-  transit_gateway_name      = "${var.prefix}-tg"
-  region                    = var.region
-  global_routing            = false
-  resource_tags             = var.resource_tags
-  resource_group_id         = module.resource_group.resource_group_id
-  vpc_connections           = [{ vpc_crn = module.hub_vpc.vpc_crn }, { vpc_crn = module.spoke_vpc.vpc_crn }]
+  source               = "terraform-ibm-modules/transit-gateway/ibm"
+  version              = "3.0.1"
+  transit_gateway_name = "${var.prefix}-tg"
+  region               = var.region
+  global_routing       = false
+  resource_tags        = var.resource_tags
+  resource_group_id    = module.resource_group.resource_group_id
+  vpc_connections = [
+    {
+      vpc_crn         = module.hub_vpc.vpc_crn
+      connection_name = "${var.prefix}-conn-1"
+    },
+    {
+      vpc_crn         = module.spoke_vpc.vpc_crn
+      connection_name = "${var.prefix}-conn-2"
+    }
+  ]
   classic_connections_count = 0
 }
