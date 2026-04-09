@@ -31,6 +31,7 @@ module "unit_tests" {
     zone-1 = ["1"]
     zone-2 = ["2"]
     zone-3 = null
+    zone-4 = null
   }
   routes = [
     {
@@ -48,6 +49,7 @@ module "unit_tests" {
     zone-1 = true
     zone-2 = null
     zone-3 = true
+    zone-4 = null
   }
   security_group_rules = [
     {
@@ -92,6 +94,7 @@ module "unit_tests" {
       }
     ]
     zone-3 = null
+    zone-4 = null
   }
   public_gateways = {
     zone-1 = {

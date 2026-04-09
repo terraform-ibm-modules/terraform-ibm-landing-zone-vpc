@@ -7,7 +7,7 @@ locals {
   address_prefixes = var.address_prefixes == null ? [] : flatten([
     # For each zone
     for zone in [
-      for zone in ["zone-1", "zone-2", "zone-3"] :
+      for zone in ["zone-1", "zone-2", "zone-3", "zone-4"] :
       zone if var.address_prefixes[zone] != null && length(
         # If zone is null return empty array, otherwise get zone length
         var.address_prefixes[zone] == null ? [] : var.address_prefixes[zone]
