@@ -47,14 +47,6 @@ module "slz_vpc" {
         acl_name       = "vpc-acl"
       }
     ]
-    zone-4 = [
-      {
-        name           = "subnet-d"
-        cidr           = "10.40.10.0/24"
-        public_gateway = true
-        acl_name       = "vpc-acl"
-      }
-    ]
   }
   security_group_rules = [{
     name       = "allow-all-inbound-sg"
