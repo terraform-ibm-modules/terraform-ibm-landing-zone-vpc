@@ -107,6 +107,14 @@ variable "subnets" {
       no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true
       subnet_tags    = optional(list(string), [])
     })))
+    zone-4 = optional(list(object({
+      name           = string
+      cidr           = string
+      public_gateway = optional(bool)
+      acl_name       = string
+      no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true
+      subnet_tags    = optional(list(string), [])
+    })))
   })
 
   default = {
@@ -132,6 +140,15 @@ variable "subnets" {
       {
         name           = "subnet-c"
         cidr           = "10.30.10.0/24"
+        public_gateway = true
+        acl_name       = "vpc-acl"
+        no_addr_prefix = false
+      }
+    ],
+    zone-4 = [
+      {
+        name           = "subnet-c"
+        cidr           = "10.40.10.0/24"
         public_gateway = true
         acl_name       = "vpc-acl"
         no_addr_prefix = false
@@ -383,18 +400,21 @@ variable "address_prefixes" {
     zone-1 = optional(list(string))
     zone-2 = optional(list(string))
     zone-3 = optional(list(string))
+    zone-4 = optional(list(string))
   })
   default = {
     zone-1 = null
     zone-2 = null
     zone-3 = null
+    zone-4 = null
   }
   validation {
-    error_message = "Keys for `use_public_gateways` must be in the order `zone-1`, `zone-2`, `zone-3`."
+    error_message = "Keys for `use_public_gateways` must be in the order `zone-1`, `zone-2`, `zone-3`, `zone-4`."
     condition = var.address_prefixes == null ? true : (
       (length(var.address_prefixes) == 1 && keys(var.address_prefixes)[0] == "zone-1") ||
       (length(var.address_prefixes) == 2 && keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2") ||
-      (length(var.address_prefixes) == 3 && keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2") && keys(var.address_prefixes)[2] == "zone-3"
+      (length(var.address_prefixes) == 3 && keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2") && keys(var.address_prefixes)[2] == "zone-3" ||
+      (length(var.address_prefixes) == 4 && keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2") && keys(var.address_prefixes)[2] == "zone-3" && keys(var.address_prefixes)[3] == "zone-4"
     )
   }
 }
