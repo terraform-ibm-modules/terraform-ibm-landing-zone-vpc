@@ -78,7 +78,7 @@ This architecture lays the groundwork for adding Virtual Server Instances (VSI),
 |-------------|-----------|--------------------|--------------------|
 | * Provide flexible VPC infrastructure foundation  \n * Support diverse workload requirements  \n * Enable customization for specific use cases | Standard VPC | Offers complete control over VPC configuration including subnets, zones, and networking components | Use pre-configured VPC patterns with limited customization options |
 | * Create isolated network segments  \n * Support multi-zone deployments  \n * Enable proper subnet planning | Configurable subnets | Create one to three zones with customizable subnet configurations in each zone | Use default subnet configurations |
-| * Control network traffic at subnet level  \n * Implement security policies  \n * Meet compliance requirements | Network ACLs | Create network ACLs with multiple customizable rules (up to 25 rules per ACL) | Use default VPC ACL rules |
+| * Control network traffic at subnet level  \n * Implement security policies  \n * Meet compliance requirements | Network ACLs | Create network ACLs with multiple customizable rules (up to 200 rules per ACL) | Use default VPC ACL rules |
 | * Manage instance-level security  \n * Control application traffic  \n * Implement fine-grained access control | Security groups | Configurable security group rules for precise traffic control | Use default security group settings |
 {: caption="VPC architecture decisions" caption-side="bottom"}
 
