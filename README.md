@@ -12,8 +12,8 @@
 This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) network components:
 
 - VPC: Creates a VPC in a resource group. The VPC and components are specified in the [main.tf](main.tf) file.
-- Public gateways: Optionally create public gateways in the VPC in each of the three zones of the VPC's region.
-- Subnets: Create one to three zones in the [subnet.tf](subnet.tf) file.
+- Public gateways: Optionally create public gateways in the VPC in each of the four zones of the VPC's region.
+- Subnets: Create one to four zones in the [subnet.tf](subnet.tf) file.
 - Network ACLs: Create network ACLs with multiple rules. By default, VPC network ACLs can have no more than 200 rules.
 - VPN gateways: Create VPN gateways on your subnets by using the `vpn_gateways` variable. For more information about VPN gateways on VPC, see [About site-to-site VPN gateways](https://cloud.ibm.com/docs/vpc?topic=vpc-using-vpn) in the IBM Cloud docs.
 - VPN gateway connections: Add connections to a VPN gateway.
@@ -164,15 +164,17 @@ The module automatically generates names for the all provisioned VPC resources u
 
 ### Subnets
 
- You can create a maximum of three zones in the [subnet.tf](subnet.tf) file. The zones are defined as lists in the file, and then are converted to objects before the resources are provisioned. The conversion ensures that the addition or deletion of subnets affects only the added or deleted subnets, as shown in the following example.
+ You can create a maximum of four zones in the [subnet.tf](subnet.tf) file. The zones are defined as lists in the file, and then are converted to objects before the resources are provisioned. The conversion ensures that the addition or deletion of subnets affects only the added or deleted subnets, as shown in the following example.
 
 ```terraform
 module.subnets.ibm_is_subnet.subnet["gcat-multizone-subnet-a"]
 module.subnets.ibm_is_subnet.subnet["gcat-multizone-subnet-b"]
 module.subnets.ibm_is_subnet.subnet["gcat-multizone-subnet-c"]
+module.subnets.ibm_is_subnet.subnet["gcat-multizone-subnet-d"]
 module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-a"]
 module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-b"]
 module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-c"]
+module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-d"]
 ```
 
 ### Required IAM access policies
