@@ -62,7 +62,7 @@ module "management_vpc" {
 
 module "tg_gateway_connection" {
   source               = "terraform-ibm-modules/transit-gateway/ibm"
-  version              = "3.0.1"
+  version              = "3.1.0"
   transit_gateway_name = "${var.prefix}-tg"
   region               = var.region
   global_routing       = false
