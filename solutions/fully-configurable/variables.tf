@@ -147,7 +147,7 @@ variable "subnets" {
     ],
     zone-4 = [
       {
-        name           = "subnet-c"
+        name           = "subnet-d"
         cidr           = "10.40.10.0/24"
         public_gateway = true
         acl_name       = "vpc-acl"

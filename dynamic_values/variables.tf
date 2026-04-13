@@ -67,6 +67,7 @@ variable "use_public_gateways" {
     zone-1 = optional(bool)
     zone-2 = optional(bool)
     zone-3 = optional(bool)
+    zone-4 = optional(bool)
   })
 }
 
