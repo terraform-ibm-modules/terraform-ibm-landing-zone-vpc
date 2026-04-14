@@ -81,7 +81,7 @@ variable "access_tags" {
 ##############################################################################
 
 variable "subnets" {
-  description = "List of subnets for the vpc. For each item in each array, a subnet will be created. Items can be either CIDR blocks or total ipv4 addresses. Public gateways will be enabled only in zones where a gateway has been created. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#subnets-)."
+  description = "List of subnets for the vpc. For each item in each array, a subnet will be created. Items can be either CIDR blocks or total ipv4 addresses. Public gateways will be enabled only in zones where a gateway has been created. You can pass value for `zone-4` only if your IBM cloud account is allowlisted for accessing zone-4. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#subnets-)."
   type = object({
     zone-1 = list(object({
       name           = string
@@ -140,15 +140,6 @@ variable "subnets" {
       {
         name           = "subnet-c"
         cidr           = "10.30.10.0/24"
-        public_gateway = true
-        acl_name       = "vpc-acl"
-        no_addr_prefix = false
-      }
-    ],
-    zone-4 = [
-      {
-        name           = "subnet-d"
-        cidr           = "10.40.10.0/24"
         public_gateway = true
         acl_name       = "vpc-acl"
         no_addr_prefix = false
@@ -395,7 +386,7 @@ variable "clean_default_security_group_acl" {
 ##############################################################################
 
 variable "address_prefixes" {
-  description = "The IP range that will be defined for the VPC for a certain location. Use only with manual address prefixes. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#address-prefixes-)."
+  description = "The IP range that will be defined for the VPC for a certain location. Use only with manual address prefixes. You can pass address prefixes for `zone-4` only if your IBM cloud account is allowlisted for accessing zone-4. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#address-prefixes-)."
   type = object({
     zone-1 = optional(list(string))
     zone-2 = optional(list(string))
@@ -406,7 +397,6 @@ variable "address_prefixes" {
     zone-1 = null
     zone-2 = null
     zone-3 = null
-    zone-4 = null
   }
   validation {
     error_message = "Keys for `use_public_gateways` must be in the order `zone-1`, `zone-2`, `zone-3`, `zone-4`."
