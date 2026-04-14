@@ -4,7 +4,7 @@
 
 module "resource_group" {
   source  = "terraform-ibm-modules/resource-group/ibm"
-  version = "1.5.0"
+  version = "1.6.0"
   # if an existing resource group is not set (null) create a new one using prefix
   resource_group_name          = var.resource_group == null ? "${var.prefix}-resource-group" : null
   existing_resource_group_name = var.resource_group
@@ -17,7 +17,7 @@ module "resource_group" {
 module "cos_bucket" {
   count                  = var.enable_vpc_flow_logs ? 1 : 0
   source                 = "terraform-ibm-modules/cos/ibm"
-  version                = "10.14.10"
+  version                = "10.15.1"
   resource_group_id      = module.resource_group.resource_group_id
   region                 = var.region
   cross_region_location  = null
@@ -62,7 +62,7 @@ module "management_vpc" {
 
 module "tg_gateway_connection" {
   source               = "terraform-ibm-modules/transit-gateway/ibm"
-  version              = "3.0.1"
+  version              = "3.1.0"
   transit_gateway_name = "${var.prefix}-tg"
   region               = var.region
   global_routing       = false

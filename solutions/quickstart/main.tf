@@ -8,7 +8,7 @@ locals {
 
 module "resource_group" {
   source                       = "terraform-ibm-modules/resource-group/ibm"
-  version                      = "1.5.0"
+  version                      = "1.6.0"
   existing_resource_group_name = var.existing_resource_group_name
 }
 
@@ -20,7 +20,7 @@ module "resource_group" {
 module "cos" {
   count                  = var.enable_vpc_flow_logs ? 1 : 0
   source                 = "terraform-ibm-modules/cos/ibm"
-  version                = "10.14.10"
+  version                = "10.15.1"
   resource_group_id      = module.resource_group.resource_group_id
   region                 = var.region
   cos_instance_name      = "${var.prefix}-cos"
