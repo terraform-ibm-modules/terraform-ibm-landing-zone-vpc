@@ -13,7 +13,7 @@ This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) net
 - Public gateways: Optionally create public gateways in the VPC in each of the three zones of the VPC's region.
 - Subnets: Create one to three zones in the [subnet.tf](subnet.tf) file.
 - Network ACLs: Create network ACLs with multiple rules. By default, VPC network ACLs can have no more than 25 rules.
-- VPN gateways: Create VPN gateways on your subnets by using the `vpn_gateways` variable. This module uses the [terraform-ibm-site-to-site-vpn](https://github.com/terraform-ibm-modules/terraform-ibm-site-to-site-vpn) module internally for VPN gateway creation. For more information about VPN gateways on VPC, see [About site-to-site VPN gateways](https://cloud.ibm.com/docs/vpc?topic=vpc-using-vpn) in the IBM Cloud docs.
+- VPN gateways: Create VPN gateways on your subnets by using the `vpn_gateways` variable. For more information about VPN gateways on VPC, see [About site-to-site VPN gateways](https://cloud.ibm.com/docs/vpc?topic=vpc-using-vpn) in the IBM Cloud docs.
 - VPN gateway connections: Add connections to a VPN gateway.
 - Hub and spoke DNS-sharing model: Optionally create a hub or spoke VPC, with associated custom resolver and DNS resolution binding, as well as a service-to-service authorization policy which supports the hub and spoke VPCs to be in separate accounts. See [About DNS sharing for VPE gateways](https://cloud.ibm.com/docs/vpc?topic=vpc-vpe-dns-sharing) and [hub and spoke communication](https://cloud.ibm.com/docs/solution-tutorials?topic=solution-tutorials-vpc-transit1) in the IBM Cloud docs for details.
 
@@ -154,9 +154,18 @@ module vpc {
   }
   vpn_gateways = [
     {
-      name        = "vpn-gateway1"
-      subnet_name = "subnet1"
-      mode        = "route"
+      name           = "vpn-gateway1"
+      subnet_name    = "subnet1"
+      mode           = "policy"
+      resource_group = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX"
+      tags           = ["prod", "branch"]
+    }
+    {
+      name           = "vpn-gateway2"
+      subnet_name    = "subnet2"
+      mode           = "policy"
+      resource_group = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX"
+      tags           = ["branch"]
     }
   ]
 }
@@ -212,7 +221,7 @@ To attach access management tags to resources in this module, you need the follo
 |------|--------|---------|
 | <a name="module_dynamic_values"></a> [dynamic\_values](#module\_dynamic\_values) | ./dynamic_values | n/a |
 | <a name="module_unit_tests"></a> [unit\_tests](#module\_unit\_tests) | ./dynamic_values | n/a |
-| <a name="module_vpn_gateways"></a> [vpn\_gateways](#module\_vpn\_gateways) | terraform-ibm-modules/site-to-site-vpn/ibm | 3.0.5 |
+| <a name="module_vpn_gateways"></a> [vpn\_gateways](#module\_vpn\_gateways) | terraform-ibm-modules/site-to-site-vpn/ibm | 3.0.7 |
 
 ### Resources
 
@@ -300,7 +309,7 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_use_existing_dns_instance"></a> [use\_existing\_dns\_instance](#input\_use\_existing\_dns\_instance) | Whether to use an existing dns instance. If true, existing\_dns\_instance\_id must be set. | `bool` | `false` | no |
 | <a name="input_use_public_gateways"></a> [use\_public\_gateways](#input\_use\_public\_gateways) | Create a public gateway in any of the three zones with `true`. | <pre>object({<br/>    zone-1 = optional(bool)<br/>    zone-2 = optional(bool)<br/>    zone-3 = optional(bool)<br/>  })</pre> | <pre>{<br/>  "zone-1": true,<br/>  "zone-2": true,<br/>  "zone-3": true<br/>}</pre> | no |
 | <a name="input_vpc_flow_logs_name"></a> [vpc\_flow\_logs\_name](#input\_vpc\_flow\_logs\_name) | The name to give the provisioned VPC flow logs. If not set, the module generates a name based on the `prefix` and `name` variables. | `string` | `null` | no |
-| <a name="input_vpn_gateways"></a> [vpn\_gateways](#input\_vpn\_gateways) | List of VPN gateways to create by using the site-to-site VPN module. For migration details, see the [migration guide](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md). Access tags are no longer supported for VPN gateways in `v9.0.0`; leave `access_tags` empty. | <pre>list(<br/>    object({<br/>      name           = string<br/>      subnet_name    = string # Do not include prefix, use same name as in `var.subnets`<br/>      mode           = optional(string, "route")<br/>      resource_group = optional(string)<br/>    })<br/>  )</pre> | `[]` | no |
+| <a name="input_vpn_gateways"></a> [vpn\_gateways](#input\_vpn\_gateways) | List of VPN gateways to be created. For migration details, refer to the [migration guide](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md). | <pre>list(<br/>    object({<br/>      name           = string<br/>      subnet_name    = string # Do not include prefix, use same name as in `var.subnets`<br/>      mode           = optional(string, "route")<br/>      resource_group = optional(string)<br/>      tags           = optional(list(string))<br/>    })<br/>  )</pre> | `[]` | no |
 
 ### Outputs
 

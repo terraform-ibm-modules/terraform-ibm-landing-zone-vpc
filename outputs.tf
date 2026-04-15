@@ -245,8 +245,21 @@ output "dns_record_ids" {
 output "vpn_gateways_data" {
   description = "Details of VPN gateways data."
   value = [
-    for gateway in module.vpn_gateways :
-    gateway
+    for key, gateway in module.vpn_gateways : {
+      crn                = gateway.vpn_gateway_crn
+      id                 = gateway.vpn_gateway_id
+      health_state       = gateway.vpn_gateway_status
+      members            = gateway.vpn_gateway_members
+      public_ip_address  = gateway.vpn_gateway_public_ip
+      public_ip_address2 = gateway.vpn_gateway_public_ip_2
+      resource_crn       = gateway.vpn_gateway_crn
+      resource_name      = var.prefix != null ? "${var.prefix}-${key}" : key
+      name               = var.prefix != null ? "${var.prefix}-${key}" : key
+      vpc                = gateway.vpn_gateway_vpc_info
+      mode               = local.vpn_gateway_map[key].mode
+      resource_group     = local.vpn_gateway_map[key].resource_group == null ? var.resource_group_id : local.vpn_gateway_map[key].resource_group
+      tags               = local.vpn_gateway_map[key].tags
+    }
   ]
 }
 

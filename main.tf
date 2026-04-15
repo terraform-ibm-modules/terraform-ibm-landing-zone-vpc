@@ -442,7 +442,7 @@ locals {
 
 module "vpn_gateways" {
   source  = "terraform-ibm-modules/site-to-site-vpn/ibm"
-  version = "3.0.5"
+  version = "3.0.7"
 
   for_each = local.vpn_gateway_map
 
@@ -450,6 +450,6 @@ module "vpn_gateways" {
   vpn_gateway_name      = var.prefix != null ? "${var.prefix}-${each.key}" : each.key
   vpn_gateway_subnet_id = local.subnets["${local.vpc_name}-${each.value.subnet_name}"].id
   vpn_gateway_mode      = each.value.mode
-  tags                  = var.tags
+  tags                  = each.value.tags
 }
 ##############################################################################

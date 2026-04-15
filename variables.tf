@@ -856,6 +856,7 @@ variable "vpn_gateways" {
       subnet_name    = string # Do not include prefix, use same name as in `var.subnets`
       mode           = optional(string, "route")
       resource_group = optional(string)
+      tags           = optional(list(string))
     })
   )
   default = []
