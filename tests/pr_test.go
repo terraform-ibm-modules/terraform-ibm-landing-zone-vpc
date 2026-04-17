@@ -58,10 +58,6 @@ var dnsZoneMap = []map[string]interface{}{
 	{"name": "slz.com"},
 }
 
-var IgnoreUpdates = []string{}
-
-var IgnoreDestroys = []string{}
-
 func TestMain(m *testing.M) {
 	// Read the YAML file contents
 	var err error
@@ -83,10 +79,10 @@ func setupOptions(t *testing.T, prefix string, terraformDir string) *testhelper.
 			"access_tags": permanentResources["accessTags"],
 		},
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
-			List: IgnoreUpdates,
+			List: []string{},
 		},
 		IgnoreDestroys: testhelper.Exemptions{ // Ignore for consistency check
-			List: IgnoreDestroys,
+			List: []string{},
 		},
 	})
 
@@ -291,10 +287,10 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 		WaitJobCompleteMinutes: 120,
 		TerraformVersion:       terraformVersion,
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
-			List: IgnoreUpdates,
+			List: []string{},
 		},
 		IgnoreDestroys: testhelper.Exemptions{ // Ignore for consistency check
-			List: IgnoreDestroys,
+			List: []string{},
 		},
 	})
 
@@ -348,10 +344,10 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 		CheckApplyResultForUpgrade: true,
 		TerraformVersion:           terraformVersion,
 		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
-			List: IgnoreUpdates,
+			List: []string{},
 		},
 		IgnoreDestroys: testhelper.Exemptions{ // Ignore for consistency check
-			List: IgnoreDestroys,
+			List: []string{},
 		},
 	})
 
