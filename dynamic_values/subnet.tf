@@ -13,7 +13,7 @@ locals {
       {
         name        = value.name                                            # Subnet shortname
         prefix_name = "${var.prefix}-${value.name}"                         # Creates a name of the prefix and subnet name
-        zone        = index(keys(var.subnets), zone) + 1                    # Zone 1, 2, or 3
+        zone        = index(keys(var.subnets), zone) + 1                    # Zone 1, 2, 3 or 4
         zone_name   = "${var.region}-${index(keys(var.subnets), zone) + 1}" # Contains region and zone
         cidr        = value.cidr                                            # CIDR Block
         no_prefix   = value.no_addr_prefix                                  # If true will not create addr prefix for subnet under any circumstance

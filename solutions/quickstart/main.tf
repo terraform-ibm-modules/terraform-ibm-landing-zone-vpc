@@ -246,6 +246,15 @@ module "vpc" {
         no_addr_prefix = false
       }
     ]
+    zone-4 = [
+      {
+        name           = "${local.prefix}subnet-d"
+        cidr           = "10.40.10.0/24"
+        public_gateway = local.allow_public_gateway
+        acl_name       = "${local.prefix}acl"
+        no_addr_prefix = false
+      }
+    ]
   }
   network_acls         = local.network_acls
   security_group_rules = local.public_security_group_rules
@@ -254,6 +263,7 @@ module "vpc" {
     zone-1 = local.allow_public_gateway
     zone-2 = local.allow_public_gateway
     zone-3 = local.allow_public_gateway
+    zone-4 = local.allow_public_gateway
   }
   enable_vpc_flow_logs                   = var.enable_vpc_flow_logs
   create_authorization_policy_vpc_to_cos = !var.skip_vpc_cos_iam_auth_policy
