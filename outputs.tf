@@ -242,19 +242,22 @@ output "dns_record_ids" {
 # VPN Gateways
 ##############################################################################
 
-output "vpn_gateways_name" {
-  description = "[DEPRECATED] List of names of VPN gateways. For more information please refer the [migration guide](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md)."
-  value = [
-    for gateway in ibm_is_vpn_gateway.vpn_gateway :
-    gateway.name
-  ]
-}
-
 output "vpn_gateways_data" {
-  description = "[DEPRECATED] Details of VPN gateways data. For more information please refer the [migration guide](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md)."
+  description = "Details of VPN gateways data."
   value = [
-    for gateway in ibm_is_vpn_gateway.vpn_gateway :
-    gateway
+    for key, gateway in module.vpn_gateways : {
+      crn                = gateway.vpn_gateway_crn
+      id                 = gateway.vpn_gateway_id
+      health_state       = gateway.vpn_gateway_status
+      members            = gateway.vpn_gateway_members
+      mode               = local.vpn_gateway_map[key].mode
+      name               = var.prefix != null ? "${var.prefix}-${key}" : key
+      public_ip_address  = gateway.vpn_gateway_public_ip
+      public_ip_address2 = gateway.vpn_gateway_public_ip_2
+      resource_group     = local.vpn_gateway_map[key].resource_group == null ? var.resource_group_id : local.vpn_gateway_map[key].resource_group
+      tags               = try(local.vpn_gateway_map[key].tags, [])
+      vpc                = gateway.vpn_gateway_vpc_info
+    }
   ]
 }
 
