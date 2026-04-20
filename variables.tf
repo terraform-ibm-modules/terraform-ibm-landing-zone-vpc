@@ -848,7 +848,7 @@ variable "dns_records" {
 ##############################################################################
 
 variable "vpn_gateways" {
-  description = "[DEPRECATED] List of VPN gateways to create. For more information please refer the [migration guide](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md)."
+  description = "List of VPN gateways to be created. For migration details, refer to the [migration guide](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md)."
   nullable    = false
   type = list(
     object({
@@ -856,7 +856,7 @@ variable "vpn_gateways" {
       subnet_name    = string # Do not include prefix, use same name as in `var.subnets`
       mode           = optional(string, "route")
       resource_group = optional(string)
-      access_tags    = optional(list(string), [])
+      tags           = optional(list(string))
     })
   )
   default = []

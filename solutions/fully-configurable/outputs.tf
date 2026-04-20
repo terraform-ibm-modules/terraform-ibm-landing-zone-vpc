@@ -96,11 +96,6 @@ output "subnet_detail_map" {
 # VPN Gateways Outputs
 ##############################################################################
 
-output "vpn_gateways_name" {
-  description = "List of names of VPN gateways."
-  value       = module.vpc.vpn_gateways_name
-}
-
 output "vpn_gateways_data" {
   description = "Details of VPN gateways data."
   value       = module.vpc.vpn_gateways_data

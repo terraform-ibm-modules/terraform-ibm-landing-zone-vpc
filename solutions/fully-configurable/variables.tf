@@ -672,7 +672,7 @@ variable "default_routing_table_name" {
 ##############################################################################
 
 variable "vpn_gateways" {
-  description = "List of VPN Gateways to create. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#vpn-gateways-)."
+  description = "List of VPN gateways to be created. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#vpn-gateways-)."
   nullable    = false
   type = list(
     object({
@@ -680,7 +680,7 @@ variable "vpn_gateways" {
       subnet_name    = string # Do not include prefix, use same name as in `var.subnets`
       mode           = optional(string)
       resource_group = optional(string)
-      access_tags    = optional(list(string), [])
+      tags           = optional(list(string))
     })
   )
 

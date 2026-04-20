@@ -237,7 +237,7 @@ This variable allows you to specify the list of VPN Gateways to create.
 - `subnet_name` (required): Name of the subnet to attach a VPN gateway.
 - `mode` (optional): Mode in VPN gateway. Allowed values are `route` and `policy`.
 - `resource_group` (optional): The resource group where the VPN gateway to be created.
-- `access_tags` (optional): (list) A list of tags to add to your VPN gateway.
+- `tags` (optional): (list) A list of tags to add to your VPN gateway.
 
 ### Example
 
