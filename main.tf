@@ -246,7 +246,7 @@ data "ibm_is_vpc_address_prefixes" "get_address_prefixes" {
 resource "time_sleep" "wait_for_authorization_policy" {
   depends_on      = [ibm_iam_authorization_policy.policy]
   count           = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? 1 : 0) : 0
-  create_duration = "30s"
+  create_duration = "90s"
 }
 
 ##############################################################################
@@ -306,15 +306,13 @@ resource "ibm_is_public_gateway" "gateway" {
 # Add VPC to Flow Logs
 ##############################################################################
 
-# Create authorization policy with both Reader and Writer roles
-# Reader: Required for flow log collector to list buckets and verify bucket existence in COS instance
-# Writer: Required for flow log collector to write flow log data to the specific bucket
+# Create authorization policy to allow VPC to access COS Bucket
 resource "ibm_iam_authorization_policy" "policy" {
   count = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? 1 : 0) : 0
 
   source_service_name  = "is"
   source_resource_type = "flow-log-collector"
-  roles                = ["Reader", "Writer"]
+  roles                = ["Writer"]
 
   resource_attributes {
     name     = "accountId"
