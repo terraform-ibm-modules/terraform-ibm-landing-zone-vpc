@@ -333,15 +333,15 @@ resource "ibm_iam_authorization_policy" "policy" {
   }
 
   resource_attributes {
-    name     = "resourceType"
-    operator = "stringEquals"
-    value    = "bucket"
-  }
-
-  resource_attributes {
     name     = "resource"
     operator = "stringEquals"
     value    = var.existing_storage_bucket_name
+  }
+
+  resource_attributes {
+    name     = "resourceType"
+    operator = "stringEquals"
+    value    = "bucket"
   }
 
   lifecycle {
@@ -351,7 +351,8 @@ resource "ibm_iam_authorization_policy" "policy" {
 
 # Create VPC flow logs collector
 resource "ibm_is_flow_log" "flow_logs" {
-  count = (var.enable_vpc_flow_logs) ? 1 : 0
+  depends_on = [time_sleep.wait_for_authorization_policy]
+  count      = (var.enable_vpc_flow_logs) ? 1 : 0
 
   # Use var.vpc_flow_logs_name if not null, otherwise, use var.prefix and var.name combination.
   name = coalesce(
