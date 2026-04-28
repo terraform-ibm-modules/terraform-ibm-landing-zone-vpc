@@ -14,7 +14,7 @@ This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) net
 - VPC: Creates a VPC in a resource group. The VPC and components are specified in the [main.tf](main.tf) file.
 - Public gateways: Optionally create public gateways in the VPC in each of the three zones of the VPC's region.
 - Subnets: Create one to three zones in the [subnet.tf](subnet.tf) file.
-- Network ACLs: Create network ACLs with multiple rules. By default, VPC network ACLs can have no more than 25 rules.
+- Network ACLs: Create network ACLs with multiple rules. By default, VPC network ACLs can have no more than 200 rules.
 - VPN gateways: Create VPN gateways on your subnets by using the `vpn_gateways` variable. For more information about VPN gateways on VPC, see [About site-to-site VPN gateways](https://cloud.ibm.com/docs/vpc?topic=vpc-using-vpn) in the IBM Cloud docs.
 - VPN gateway connections: Add connections to a VPN gateway.
 - Hub and spoke DNS-sharing model: Optionally create a hub or spoke VPC, with associated custom resolver and DNS resolution binding, as well as a service-to-service authorization policy which supports the hub and spoke VPCs to be in separate accounts. See [About DNS sharing for VPE gateways](https://cloud.ibm.com/docs/vpc?topic=vpc-vpe-dns-sharing) and [hub and spoke communication](https://cloud.ibm.com/docs/solution-tutorials?topic=solution-tutorials-vpc-transit1) in the IBM Cloud docs for details.
@@ -41,25 +41,64 @@ Expected network connectivity downtime of typically around 20 seconds.
 <!-- Below content is automatically populated via pre-commit hook -->
 <!-- BEGIN OVERVIEW HOOK -->
 ## Overview
-* [terraform-ibm-landing-zone-vpc](#terraform-ibm-landing-zone-vpc)
-* [Submodules](./modules)
-    * [management-vpc](./modules/management-vpc)
-    * [workload-vpc](./modules/workload-vpc)
-* [Examples](./examples)
-:information_source: Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab
-    * <a href="./examples/basic">Basic Example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/basic"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/existing_vpc">Existing networking resources Example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-existing_vpc-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/existing_vpc"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/hub-spoke-delegated-resolver">Hub and Spoke VPC Example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-hub-spoke-delegated-resolver-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/hub-spoke-delegated-resolver"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/hub-spoke-manual-resolver">Hub and Spoke VPC with manual DNS resolver Example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-hub-spoke-manual-resolver-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/hub-spoke-manual-resolver"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/landing_zone">Landing Zone example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-landing_zone-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/landing_zone"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/multiple-sg-protocols">Multiple Security Group Protocols Example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-multiple-sg-protocols-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/multiple-sg-protocols"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/specific-zone-only">Specific Zone Only Example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-specific-zone-only-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/specific-zone-only"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/vpc-flow-logs">VPC with Flow Logs stored in COS Example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-vpc-flow-logs-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/vpc-flow-logs"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-    * <a href="./examples/vpc-with-dns">VPC with DNS example</a> <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-vpc-with-dns-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/vpc-with-dns"><img src="https://img.shields.io/badge/Deploy%20with IBM%20Cloud%20Schematics-0f62fe?logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
-* [Deployable Architectures](./solutions)
-    * <a href="./solutions/fully-configurable">Cloud automation for VPC (Fully configurable)</a>
-    * <a href="./solutions/quickstart">Cloud foundation for VPC (Quickstart)</a>
-* [Contributing](#contributing)
+<ul>
+  <li><a href="#terraform-ibm-landing-zone-vpc">terraform-ibm-landing-zone-vpc</a></li>
+  <li><a href="./modules">Submodules</a>
+    <ul>
+      <li><a href="./modules/management-vpc">management-vpc</a></li>
+      <li><a href="./modules/workload-vpc">workload-vpc</a></li>
+    </ul>
+  </li>
+  <li><a href="./examples">Examples</a>
+    <ul>
+      <li>
+        <a href="./examples/basic">Basic Example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-basic-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/basic"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/existing_vpc">Existing networking resources Example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-existing_vpc-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/existing_vpc"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/hub-spoke-delegated-resolver">Hub and Spoke VPC Example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-hub-spoke-delegated-resolver-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/hub-spoke-delegated-resolver"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/hub-spoke-manual-resolver">Hub and Spoke VPC with manual DNS resolver Example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-hub-spoke-manual-resolver-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/hub-spoke-manual-resolver"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/landing_zone">Landing Zone example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-landing_zone-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/landing_zone"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/multiple-sg-protocols">Multiple Security Group Protocols Example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-multiple-sg-protocols-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/multiple-sg-protocols"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/specific-zone-only">Specific Zone Only Example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-specific-zone-only-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/specific-zone-only"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/vpc-flow-logs">VPC with Flow Logs stored in COS Example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-vpc-flow-logs-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/vpc-flow-logs"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+      <li>
+        <a href="./examples/vpc-with-dns">VPC with DNS example</a>
+        <a href="https://cloud.ibm.com/schematics/workspaces/create?workspace_name=landing-zone-vpc-vpc-with-dns-example&repository=https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/examples/vpc-with-dns"><img src="https://img.shields.io/badge/Deploy%20with%20IBM%20Cloud%20Schematics-0f62fe?style=flat&logo=ibm&logoColor=white&labelColor=0f62fe" alt="Deploy with IBM Cloud Schematics" style="height: 16px; vertical-align: text-bottom; margin-left: 5px;"></a>
+      </li>
+    </ul>
+    ℹ️ Ctrl/Cmd+Click or right-click on the Schematics deploy button to open in a new tab.
+  </li>
+  <li><a href="./solutions">Deployable Architectures</a>
+    <ul>
+      <li><a href="./solutions/fully-configurable">Cloud automation for VPC (Fully configurable)</a></li>
+      <li><a href="./solutions/quickstart">Cloud foundation for VPC (Quickstart)</a></li>
+    </ul>
+  </li>
+  <li><a href="#known-issues">Known issues</a></li>
+  <li><a href="#contributing">Contributing</a></li>
+</ul>
 <!-- END OVERVIEW HOOK -->
 
 <!-- Match this heading to the name of the root level module (the repo name) -->
@@ -160,7 +199,7 @@ To attach access management tags to resources in this module, you need the follo
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.87.3, < 2.0.0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 1.87.3, < 3.0.0 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9.1, < 1.0.0 |
 
 ### Modules
@@ -242,7 +281,7 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_name"></a> [name](#input\_name) | Used for the naming of the VPC (if create\_vpc is set to true), as well as in the naming for any resources created inside the VPC (unless using one of the optional variables for explicit control over naming). | `string` | n/a | yes |
 | <a name="input_network_acls"></a> [network\_acls](#input\_network\_acls) | The list of ACLs to create. Provide at least one rule for each ACL. | <pre>list(<br/>    object({<br/>      name                         = string<br/>      add_ibm_cloud_internal_rules = optional(bool)<br/>      add_vpc_connectivity_rules   = optional(bool)<br/>      prepend_ibm_rules            = optional(bool)<br/>      rules = list(<br/>        object({<br/>          name        = string<br/>          action      = string<br/>          destination = string<br/>          direction   = string<br/>          source      = string<br/>          tcp = optional(<br/>            object({<br/>              port_max        = optional(number)<br/>              port_min        = optional(number)<br/>              source_port_max = optional(number)<br/>              source_port_min = optional(number)<br/>            })<br/>          )<br/>          udp = optional(<br/>            object({<br/>              port_max        = optional(number)<br/>              port_min        = optional(number)<br/>              source_port_max = optional(number)<br/>              source_port_min = optional(number)<br/>            })<br/>          )<br/>          icmp = optional(<br/>            object({<br/>              type = optional(number)<br/>              code = optional(number)<br/>            })<br/>          )<br/>        })<br/>      )<br/>    })<br/>  )</pre> | <pre>[<br/>  {<br/>    "add_ibm_cloud_internal_rules": true,<br/>    "add_vpc_connectivity_rules": true,<br/>    "name": "vpc-acl",<br/>    "prepend_ibm_rules": true,<br/>    "rules": []<br/>  }<br/>]</pre> | no |
 | <a name="input_network_cidrs"></a> [network\_cidrs](#input\_network\_cidrs) | List of Network CIDRs for the VPC. This is used to manage network ACL rules for cluster provisioning. | `list(string)` | <pre>[<br/>  "10.0.0.0/8"<br/>]</pre> | no |
-| <a name="input_prefix"></a> [prefix](#input\_prefix) | The value that you would like to prefix to the name of the resources provisioned by this module. Explicitly set to null if you do not wish to use a prefix. This value is ignored if using one of the optional variables for explicit control over naming. **Important:** Changing the prefix after initial deployment will cause Terraform to plan destruction and recreation of resources. Changing the prefix should be treated as provisioning a new environment, not renaming existing resources. | `string` | `null` | no |
+| <a name="input_prefix"></a> [prefix](#input\_prefix) | The value that you would like to prefix to the name of the resources provisioned by this module. Explicitly set to null if you do not wish to use a prefix. This value is ignored if using one of the optional variables for explicit control over naming. **Important:** Updating the prefix after the initial deployment may require recreating certain resources. Learn more about this limitation [here](https://cloud.ibm.com/docs/ibm-cloud-provider-for-terraform?topic=ibm-cloud-provider-for-terraform-known-issues-vpc). | `string` | `null` | no |
 | <a name="input_public_gateway_name"></a> [public\_gateway\_name](#input\_public\_gateway\_name) | The name to give the provisioned VPC public gateways. If not set, the module generates a name based on the `prefix` and `name` variables. | `string` | `null` | no |
 | <a name="input_region"></a> [region](#input\_region) | The region to which to deploy the VPC | `string` | n/a | yes |
 | <a name="input_resolver_type"></a> [resolver\_type](#input\_resolver\_type) | Resolver type. Can be system or manual or delegated. | `string` | `null` | no |
@@ -266,6 +305,7 @@ To attach access management tags to resources in this module, you need the follo
 |------|-------------|
 | <a name="output_cidr_blocks"></a> [cidr\_blocks](#output\_cidr\_blocks) | List of CIDR blocks present in VPC stack |
 | <a name="output_custom_resolver_hub"></a> [custom\_resolver\_hub](#output\_custom\_resolver\_hub) | The custom resolver created for the hub vpc. Only set if enable\_hub is set and skip\_custom\_resolver\_hub\_creation is false. |
+| <a name="output_default_routing_table"></a> [default\_routing\_table](#output\_default\_routing\_table) | The default routing table ID and name that is created along with the VPC. |
 | <a name="output_dns_custom_resolver_id"></a> [dns\_custom\_resolver\_id](#output\_dns\_custom\_resolver\_id) | The ID of the DNS Custom Resolver. |
 | <a name="output_dns_endpoint_gateways_by_crn"></a> [dns\_endpoint\_gateways\_by\_crn](#output\_dns\_endpoint\_gateways\_by\_crn) | The list of VPEs that are made available for DNS resolution in the created Spoke VPC. Only set if enable\_hub is false and enable\_hub\_vpc\_id OR enable\_hub\_vpc\_crn are true. |
 | <a name="output_dns_endpoint_gateways_by_id"></a> [dns\_endpoint\_gateways\_by\_id](#output\_dns\_endpoint\_gateways\_by\_id) | The list of VPEs that are made available for DNS resolution in the created Spoke VPC. Only set if enable\_hub is false and enable\_hub\_vpc\_id OR enable\_hub\_vpc\_crn are true. |
@@ -276,6 +316,8 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="output_dns_zone_state"></a> [dns\_zone\_state](#output\_dns\_zone\_state) | The state of the DNS zone. |
 | <a name="output_network_acls"></a> [network\_acls](#output\_network\_acls) | List of shortnames and IDs of network ACLs |
 | <a name="output_public_gateways"></a> [public\_gateways](#output\_public\_gateways) | Map of public gateways by zone |
+| <a name="output_routing_table_ids"></a> [routing\_table\_ids](#output\_routing\_table\_ids) | List of routing table IDs created by this module. |
+| <a name="output_routing_table_routes"></a> [routing\_table\_routes](#output\_routing\_table\_routes) | List of routing table routes created by this module. |
 | <a name="output_security_group_details"></a> [security\_group\_details](#output\_security\_group\_details) | Details of security group. |
 | <a name="output_subnet_detail_list"></a> [subnet\_detail\_list](#output\_subnet\_detail\_list) | A list of subnets containing names, CIDR blocks, and zones. |
 | <a name="output_subnet_detail_map"></a> [subnet\_detail\_map](#output\_subnet\_detail\_map) | A map of subnets containing IDs, CIDR blocks, and zones |
@@ -289,6 +331,11 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="output_vpn_gateways_data"></a> [vpn\_gateways\_data](#output\_vpn\_gateways\_data) | [DEPRECATED] Details of VPN gateways data. For more information please refer the [migration guide](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md). |
 | <a name="output_vpn_gateways_name"></a> [vpn\_gateways\_name](#output\_vpn\_gateways\_name) | [DEPRECATED] List of names of VPN gateways. For more information please refer the [migration guide](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/docs/migration_guide.md). |
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+## Known issues
+
+For a list of common known issues see:
+- [Known issues with Terraform IBM Module for Virtual Private Cloud (VPC)](https://cloud.ibm.com/docs/ibm-cloud-provider-for-terraform?topic=ibm-cloud-provider-for-terraform-known-issues-vpc).
 
 ## Contributing
 
