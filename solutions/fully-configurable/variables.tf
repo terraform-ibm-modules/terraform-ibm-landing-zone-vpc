@@ -81,7 +81,7 @@ variable "access_tags" {
 ##############################################################################
 
 variable "subnets" {
-  description = "List of subnets for the vpc. For each item in each array, a subnet will be created. Items can be either CIDR blocks or total ipv4 addresses. Public gateways will be enabled only in zones where a gateway has been created. You can pass value for `zone-4` only if your IBM cloud account is allowlisted for accessing zone-4. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#subnets-)."
+  description = "List of subnets for the vpc. For each item in each array, a subnet will be created. Items can be either CIDR blocks or total ipv4 addresses. Public gateways will be enabled only in zones where a gateway has been created. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#subnets-)."
   type = object({
     zone-1 = list(object({
       name           = string
@@ -100,14 +100,6 @@ variable "subnets" {
       subnet_tags    = optional(list(string), [])
     })))
     zone-3 = optional(list(object({
-      name           = string
-      cidr           = string
-      public_gateway = optional(bool)
-      acl_name       = string
-      no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true
-      subnet_tags    = optional(list(string), [])
-    })))
-    zone-4 = optional(list(object({
       name           = string
       cidr           = string
       public_gateway = optional(bool)

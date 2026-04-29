@@ -161,7 +161,6 @@ variable "address_prefixes" {
     zone-1 = null
     zone-2 = null
     zone-3 = null
-    zone-4 = null
   }
   validation {
     error_message = "Keys for `use_public_gateways` must be in the order `zone-1`, `zone-2`, `zone-3`, `zone-4`."
@@ -336,7 +335,6 @@ variable "use_public_gateways" {
     zone-1 = true
     zone-2 = true
     zone-3 = true
-    zone-4 = true
   }
 
   validation {
