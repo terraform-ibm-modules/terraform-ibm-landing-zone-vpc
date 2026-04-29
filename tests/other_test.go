@@ -43,6 +43,7 @@ func TestRunBasicExample(t *testing.T) {
 		Testing:       t,
 		TerraformDir:  basicExampleTerraformDir,
 		Prefix:        "bas-slz",
+		Region:        "us-south",
 		ResourceGroup: resourceGroup,
 	})
 

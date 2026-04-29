@@ -378,11 +378,12 @@ variable "clean_default_security_group_acl" {
 ##############################################################################
 
 variable "address_prefixes" {
-  description = "The IP range that will be defined for the VPC for a certain location. Use only with manual address prefixes. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#address-prefixes-)."
+  description = "The IP range that will be defined for the VPC for a certain location. Use only with manual address prefixes. You can pass address prefixes for `zone-4` only if your IBM cloud account is allowlisted for accessing zone-4. [Learn more](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/blob/main/solutions/fully-configurable/DA-types.md#address-prefixes-)."
   type = object({
     zone-1 = optional(list(string))
     zone-2 = optional(list(string))
     zone-3 = optional(list(string))
+    zone-4 = optional(list(string))
   })
   default = {
     zone-1 = null
@@ -390,11 +391,12 @@ variable "address_prefixes" {
     zone-3 = null
   }
   validation {
-    error_message = "Keys for `use_public_gateways` must be in the order `zone-1`, `zone-2`, `zone-3`."
+    error_message = "Keys for `use_public_gateways` must be in the order `zone-1`, `zone-2`, `zone-3`, `zone-4`."
     condition = var.address_prefixes == null ? true : (
       (length(var.address_prefixes) == 1 && keys(var.address_prefixes)[0] == "zone-1") ||
       (length(var.address_prefixes) == 2 && keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2") ||
-      (length(var.address_prefixes) == 3 && keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2") && keys(var.address_prefixes)[2] == "zone-3"
+      (length(var.address_prefixes) == 3 && keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2") && keys(var.address_prefixes)[2] == "zone-3" ||
+      (length(var.address_prefixes) == 4 && keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2") && keys(var.address_prefixes)[2] == "zone-3" && keys(var.address_prefixes)[3] == "zone-4"
     )
   }
 }

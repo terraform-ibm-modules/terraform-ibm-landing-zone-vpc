@@ -24,6 +24,7 @@ variable "address_prefixes" {
     zone-1 = optional(list(string))
     zone-2 = optional(list(string))
     zone-3 = optional(list(string))
+    zone-4 = optional(list(string))
   })
 }
 
@@ -66,6 +67,7 @@ variable "use_public_gateways" {
     zone-1 = optional(bool)
     zone-2 = optional(bool)
     zone-3 = optional(bool)
+    zone-4 = optional(bool)
   })
 }
 
@@ -176,6 +178,9 @@ variable "public_gateways" {
     zone-3 = optional(object({
       id = string
     }))
+    zone-4 = optional(object({
+      id = string
+    }))
   })
 }
 
@@ -197,6 +202,13 @@ variable "subnets" {
       no_addr_prefix = optional(bool, false)
     }))
     zone-3 = list(object({
+      name           = string
+      cidr           = string
+      public_gateway = optional(bool)
+      acl_name       = string
+      no_addr_prefix = optional(bool, false)
+    }))
+    zone-4 = list(object({
       name           = string
       cidr           = string
       public_gateway = optional(bool)

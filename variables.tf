@@ -150,11 +150,12 @@ variable "default_routing_table_name" {
 }
 
 variable "address_prefixes" {
-  description = "OPTIONAL - IP range that will be defined for the VPC for a certain location. Use only with manual address prefixes"
+  description = "OPTIONAL - IP range that will be defined for the VPC for a certain location. Use only with manual address prefixes. You can pass value for `zone-4` only if your IBM cloud account is allowlisted for accessing zone-4."
   type = object({
     zone-1 = optional(list(string))
     zone-2 = optional(list(string))
     zone-3 = optional(list(string))
+    zone-4 = optional(list(string))
   })
   default = {
     zone-1 = null
@@ -162,11 +163,12 @@ variable "address_prefixes" {
     zone-3 = null
   }
   validation {
-    error_message = "Keys for `use_public_gateways` must be in the order `zone-1`, `zone-2`, `zone-3`."
+    error_message = "Keys for `use_public_gateways` must be in the order `zone-1`, `zone-2`, `zone-3`, `zone-4`."
     condition = var.address_prefixes == null ? true : (
       (length(var.address_prefixes) == 1 && keys(var.address_prefixes)[0] == "zone-1") ||
       (length(var.address_prefixes) == 2 && keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2") ||
-      (length(var.address_prefixes) == 3 && keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2") && keys(var.address_prefixes)[2] == "zone-3"
+      (length(var.address_prefixes) == 3 && keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2") && keys(var.address_prefixes)[2] == "zone-3" ||
+      (length(var.address_prefixes) == 4 && keys(var.address_prefixes)[0] == "zone-1" && keys(var.address_prefixes)[1] == "zone-2") && keys(var.address_prefixes)[2] == "zone-3" && keys(var.address_prefixes)[3] == "zone-4"
     )
   }
 }
@@ -322,11 +324,12 @@ variable "network_acls" {
 ##############################################################################
 
 variable "use_public_gateways" {
-  description = "Create a public gateway in any of the three zones with `true`."
+  description = "Create a public gateway in any of the three zones with `true`. You can set the value for `zone-4` only if your IBM cloud account is allowlisted for accessing zone-4."
   type = object({
     zone-1 = optional(bool)
     zone-2 = optional(bool)
     zone-3 = optional(bool)
+    zone-4 = optional(bool)
   })
   default = {
     zone-1 = true
@@ -335,11 +338,12 @@ variable "use_public_gateways" {
   }
 
   validation {
-    error_message = "Keys for `use_public_gateways` must be in the order `zone-1`, `zone-2`, `zone-3`."
+    error_message = "Keys for `use_public_gateways` must be in the order `zone-1`, `zone-2`, `zone-3`, `zone-4`."
     condition = (
       (length(var.use_public_gateways) == 1 && keys(var.use_public_gateways)[0] == "zone-1") ||
       (length(var.use_public_gateways) == 2 && keys(var.use_public_gateways)[0] == "zone-1" && keys(var.use_public_gateways)[1] == "zone-2") ||
-      (length(var.use_public_gateways) == 3 && keys(var.use_public_gateways)[0] == "zone-1" && keys(var.use_public_gateways)[1] == "zone-2") && keys(var.use_public_gateways)[2] == "zone-3"
+      (length(var.use_public_gateways) == 3 && keys(var.use_public_gateways)[0] == "zone-1" && keys(var.use_public_gateways)[1] == "zone-2") && keys(var.use_public_gateways)[2] == "zone-3" ||
+      (length(var.use_public_gateways) == 4 && keys(var.use_public_gateways)[0] == "zone-1" && keys(var.use_public_gateways)[1] == "zone-2") && keys(var.use_public_gateways)[2] == "zone-3" && keys(var.use_public_gateways)[3] == "zone-4"
     )
   }
 }
@@ -352,7 +356,7 @@ variable "use_public_gateways" {
 ##############################################################################
 
 variable "subnets" {
-  description = "List of subnets for the vpc. For each item in each array, a subnet will be created. Items can be either CIDR blocks or total ipv4 addresses. Public gateways will be enabled only in zones where a gateway has been created"
+  description = "List of subnets for the vpc. For each item in each array, a subnet will be created. Items can be either CIDR blocks or total ipv4 addresses. Public gateways will be enabled only in zones where a gateway has been created.  You can pass value for `zone-4` only if your IBM cloud account is allowlisted for accessing zone-4."
   type = object({
     zone-1 = list(object({
       name           = string
@@ -371,6 +375,14 @@ variable "subnets" {
       subnet_tags    = optional(list(string), [])
     })))
     zone-3 = optional(list(object({
+      name           = string
+      cidr           = string
+      public_gateway = optional(bool)
+      acl_name       = string
+      no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true
+      subnet_tags    = optional(list(string), [])
+    })))
+    zone-4 = optional(list(object({
       name           = string
       cidr           = string
       public_gateway = optional(bool)
@@ -411,11 +423,12 @@ variable "subnets" {
   }
 
   validation {
-    error_message = "Keys for `subnets` must be in the order `zone-1`, `zone-2`, `zone-3`. "
+    error_message = "Keys for `subnets` must be in the order `zone-1`, `zone-2`, `zone-3`, `zone-4`. "
     condition = (
       (length(var.subnets) == 1 && keys(var.subnets)[0] == "zone-1") ||
       (length(var.subnets) == 2 && keys(var.subnets)[0] == "zone-1" && keys(var.subnets)[1] == "zone-2") ||
-      (length(var.subnets) == 3 && keys(var.subnets)[0] == "zone-1" && keys(var.subnets)[1] == "zone-2") && keys(var.subnets)[2] == "zone-3"
+      (length(var.subnets) == 3 && keys(var.subnets)[0] == "zone-1" && keys(var.subnets)[1] == "zone-2") && keys(var.subnets)[2] == "zone-3" ||
+      (length(var.subnets) == 4 && keys(var.subnets)[0] == "zone-1" && keys(var.subnets)[1] == "zone-2") && keys(var.subnets)[2] == "zone-3" && keys(var.subnets)[3] == "zone-4"
     )
   }
 }
