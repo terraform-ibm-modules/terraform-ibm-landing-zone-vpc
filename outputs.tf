@@ -149,6 +149,46 @@ output "vpc_data" {
 }
 
 ##############################################################################
+# Routing Tables
+##############################################################################
+
+output "default_routing_table" {
+  description = "The default routing table ID and name that is created along with the VPC."
+  value = {
+    routing_table_id   = data.ibm_is_vpc.vpc.default_routing_table
+    routing_table_name = data.ibm_is_vpc.vpc.default_routing_table_name
+  }
+}
+
+output "routing_table_ids" {
+  description = "List of routing table IDs created by this module."
+  value = [
+    for table in ibm_is_vpc_routing_table.route_table :
+    {
+      name             = table.name
+      routing_table_id = table.routing_table
+    }
+  ]
+}
+
+output "routing_table_routes" {
+  description = "List of routing table routes created by this module."
+  value = [
+    for route in ibm_is_vpc_routing_table_route.routing_table_routes :
+    {
+      name             = route.name
+      routing_table_id = route.routing_table
+      destination      = route.destination
+      action           = route.action
+      next_hop         = route.next_hop
+      zone             = route.zone
+    }
+  ]
+}
+
+##############################################################################
+
+##############################################################################
 # Hub and Spoke specific configuration
 ##############################################################################
 

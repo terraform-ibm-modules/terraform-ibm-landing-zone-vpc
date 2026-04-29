@@ -188,6 +188,7 @@ resource "ibm_resource_instance" "dns_instance_hub" {
   location          = var.dns_location
   service           = "dns-svcs"
   plan              = var.dns_plan
+  tags              = var.tags
 }
 
 resource "ibm_dns_custom_resolver" "custom_resolver_hub" {

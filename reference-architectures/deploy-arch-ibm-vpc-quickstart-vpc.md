@@ -12,7 +12,7 @@ authors:
   - name: "Khuzaima Shakeel"
 
 # The release that the reference architecture describes
-version: 8.11.0
+version: 8.15.0
 
 # Whether the reference architecture is published to Cloud Docs production.
 # When set to false, the file is available only in staging. Default is false.
@@ -49,7 +49,7 @@ content-type: reference-architecture
 {: toc-content-type="reference-architecture"}
 {: toc-industry="CrossIndustry"}
 {: toc-use-case="Foundational Infrastructure"}
-{: toc-version="8.11.0"}
+{: toc-version="8.15.0"}
 
 The QuickStart variation of the Cloud foundation for VPC provides a **basic and simple** Virtual Private Cloud (VPC) deployment that requires minimal configuration. It enables users to quickly create a functional network environment on IBM Cloud. This variation is best suited for users who need a **basic VPC configuration** with lightweight networking defaults and support for VPC Flow Logs.
 
