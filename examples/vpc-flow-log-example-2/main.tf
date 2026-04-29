@@ -61,7 +61,7 @@ module "cos" {
   kms_encryption_enabled              = true
   bucket_storage_class                = "standard"
   kms_key_crn                         = module.kms.keys["${local.full_prefix}-key-ring.${var.kms_key_name}"].crn
-  management_endpoint_type_for_bucket = "public"
+  management_endpoint_type_for_bucket = "direct"
   force_delete                        = var.force_delete_buckets
   skip_iam_authorization_policy       = false
   archive_days                        = null
