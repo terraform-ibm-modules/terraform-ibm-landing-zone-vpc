@@ -246,7 +246,7 @@ data "ibm_is_vpc_address_prefixes" "get_address_prefixes" {
 resource "time_sleep" "wait_for_authorization_policy" {
   depends_on      = [ibm_iam_authorization_policy.policy]
   count           = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? 1 : 0) : 0
-  create_duration = "90s"
+  create_duration = "30s"
 }
 
 ##############################################################################
@@ -312,7 +312,7 @@ resource "ibm_iam_authorization_policy" "policy" {
 
   source_service_name  = "is"
   source_resource_type = "flow-log-collector"
-  roles                = ["Writer"]
+  roles                = ["Reader", "Writer"]
 
   resource_attributes {
     name     = "accountId"
@@ -333,15 +333,15 @@ resource "ibm_iam_authorization_policy" "policy" {
   }
 
   resource_attributes {
-    name     = "resource"
-    operator = "stringEquals"
-    value    = var.existing_storage_bucket_name
-  }
-
-  resource_attributes {
     name     = "resourceType"
     operator = "stringEquals"
     value    = "bucket"
+  }
+
+  resource_attributes {
+    name     = "resource"
+    operator = "stringEquals"
+    value    = var.existing_storage_bucket_name
   }
 
   lifecycle {

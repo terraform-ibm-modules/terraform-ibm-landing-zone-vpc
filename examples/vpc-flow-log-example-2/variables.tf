@@ -32,9 +32,9 @@ variable "environment" {
   default     = "dev"
 }
 
-variable "use_module_policy" {
+variable "use_example_policy" {
   type        = bool
-  description = "Use the policy created by root module"
+  description = "Use the policy created by the example i.e only writer role"
   default     = true
 }
 

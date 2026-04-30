@@ -81,8 +81,9 @@ module "cos" {
 data "ibm_iam_account_settings" "iam_account_settings" {}
 
 module "ibm_vpc" {
-  source     = "terraform-ibm-modules/landing-zone-vpc/ibm"
-  version    = "8.17.2"
+  # source     = "terraform-ibm-modules/landing-zone-vpc/ibm"
+  # version    = "8.17.2"
+  source     = "git::https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc.git?ref=hp1"
   depends_on = [ibm_iam_authorization_policy.policy]
   # Core VPC Configuration
   resource_group_id = module.iz_resource_group.resource_group_id
@@ -105,15 +106,15 @@ module "ibm_vpc" {
   enable_vpc_flow_logs                   = true
   existing_cos_instance_guid             = module.cos.cos_instance_guid
   existing_storage_bucket_name           = module.cos.bucket_name
-  create_authorization_policy_vpc_to_cos = var.use_module_policy ? false : true
+  create_authorization_policy_vpc_to_cos = var.use_example_policy ? false : true
 }
 
 resource "ibm_iam_authorization_policy" "policy" {
-  count                = var.use_module_policy ? 1 : 0
+  count                = var.use_example_policy ? 1 : 0
   depends_on           = [module.cos]
   source_service_name  = "is"
   source_resource_type = "flow-log-collector"
-  roles                = ["Reader", "Writer"]
+  roles                = ["Writer"]
 
   resource_attributes {
     name     = "accountId"
