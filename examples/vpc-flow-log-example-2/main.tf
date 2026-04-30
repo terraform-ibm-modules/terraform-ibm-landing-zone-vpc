@@ -61,7 +61,7 @@ module "cos" {
   kms_encryption_enabled              = true
   bucket_storage_class                = "standard"
   kms_key_crn                         = module.kms.keys["${local.full_prefix}-key-ring.${var.kms_key_name}"].crn
-  management_endpoint_type_for_bucket = "direct"
+  management_endpoint_type_for_bucket = var.management_endpoint_type_for_bucket
   force_delete                        = var.force_delete_buckets
   skip_iam_authorization_policy       = false
   archive_days                        = null
@@ -78,10 +78,12 @@ module "cos" {
 # VPC Module with Flow Logs
 ##############################################################################
 
-module "ibm_vpc" {
-  source  = "terraform-ibm-modules/landing-zone-vpc/ibm"
-  version = "8.17.2"
+data "ibm_iam_account_settings" "iam_account_settings" {}
 
+module "ibm_vpc" {
+  source     = "terraform-ibm-modules/landing-zone-vpc/ibm"
+  version    = "8.17.2"
+  depends_on = [ibm_iam_authorization_policy.policy]
   # Core VPC Configuration
   resource_group_id = module.iz_resource_group.resource_group_id
   region            = var.region
@@ -103,5 +105,46 @@ module "ibm_vpc" {
   enable_vpc_flow_logs                   = true
   existing_cos_instance_guid             = module.cos.cos_instance_guid
   existing_storage_bucket_name           = module.cos.bucket_name
-  create_authorization_policy_vpc_to_cos = true
+  create_authorization_policy_vpc_to_cos = false
+}
+
+resource "ibm_iam_authorization_policy" "policy" {
+  depends_on           = [module.cos]
+  source_service_name  = "is"
+  source_resource_type = "flow-log-collector"
+  roles                = ["Reader", "Writer"]
+
+  resource_attributes {
+    name     = "accountId"
+    operator = "stringEquals"
+    value    = data.ibm_iam_account_settings.iam_account_settings.account_id
+  }
+
+  resource_attributes {
+    name     = "serviceName"
+    operator = "stringEquals"
+    value    = "cloud-object-storage"
+  }
+
+  resource_attributes {
+    name     = "serviceInstance"
+    operator = "stringEquals"
+    value    = module.cos.cos_instance_guid
+  }
+
+  resource_attributes {
+    name     = "resource"
+    operator = "stringEquals"
+    value    = "${local.full_prefix}-cos-bucket"
+  }
+
+  resource_attributes {
+    name     = "resourceType"
+    operator = "stringEquals"
+    value    = "bucket"
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
 }

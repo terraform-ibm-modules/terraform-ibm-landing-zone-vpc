@@ -44,6 +44,12 @@ variable "kms_key_name" {
   default     = "cos-encryption-key"
 }
 
+variable "management_endpoint_type_for_bucket" {
+  type        = string
+  description = "value"
+  default     = "direct"
+}
+
 variable "force_delete_buckets" {
   description = "Force delete COS buckets even if they contain objects"
   type        = bool
