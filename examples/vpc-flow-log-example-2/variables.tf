@@ -32,6 +32,12 @@ variable "environment" {
   default     = "dev"
 }
 
+variable "use_module_policy" {
+  type        = bool
+  description = "Use the policy created by root module"
+  default     = true
+}
+
 variable "tags" {
   description = "List of tags to apply to resources"
   type        = list(string)

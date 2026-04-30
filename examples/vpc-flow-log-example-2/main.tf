@@ -105,10 +105,11 @@ module "ibm_vpc" {
   enable_vpc_flow_logs                   = true
   existing_cos_instance_guid             = module.cos.cos_instance_guid
   existing_storage_bucket_name           = module.cos.bucket_name
-  create_authorization_policy_vpc_to_cos = false
+  create_authorization_policy_vpc_to_cos = var.use_module_policy ? false : true
 }
 
 resource "ibm_iam_authorization_policy" "policy" {
+  count                = var.use_module_policy ? 1 : 0
   depends_on           = [module.cos]
   source_service_name  = "is"
   source_resource_type = "flow-log-collector"
