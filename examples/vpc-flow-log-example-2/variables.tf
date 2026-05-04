@@ -34,7 +34,7 @@ variable "environment" {
 
 variable "use_example_policy" {
   type        = bool
-  description = "Use the policy created by the example i.e only writer role"
+  description = "Use the policy created by the example i.e two policies reader for COS and writer for bucket."
   default     = true
 }
 
