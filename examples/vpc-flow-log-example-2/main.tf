@@ -123,7 +123,7 @@ resource "ibm_iam_authorization_policy" "policy" {
   }
 }
 
-resource "ibm_iam_authorization_policy" "policy" {
+resource "ibm_iam_authorization_policy" "policy2" {
   count                = var.use_example_policy ? 1 : 0
   depends_on           = [module.cos]
   source_service_name  = "is"
