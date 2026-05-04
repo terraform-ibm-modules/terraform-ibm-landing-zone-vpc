@@ -18,12 +18,11 @@ resource "ibm_is_security_group_rule" "default_vpc_rule" {
   local      = each.value.local
   ip_version = each.value.ip_version
 
-  # Replace deprecated nested protocol blocks with top-level attributes.
   protocol = (
     each.value.tcp != null ? "tcp" :
     each.value.udp != null ? "udp" :
     each.value.icmp != null ? "icmp" :
-    null
+    "icmp_tcp_udp"
   )
 
   port_min = (
