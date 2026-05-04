@@ -217,7 +217,7 @@ To attach access management tags to resources in this module, you need the follo
 | [ibm_dns_permitted_network.dns_permitted_network](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/dns_permitted_network) | resource |
 | [ibm_dns_resource_record.dns_record](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/dns_resource_record) | resource |
 | [ibm_dns_zone.dns_zone](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/dns_zone) | resource |
-| [ibm_iam_authorization_policy.policy_bucket](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/iam_authorization_policy) | resource |
+| [ibm_iam_authorization_policy.policy](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/iam_authorization_policy) | resource |
 | [ibm_iam_authorization_policy.policy_instance](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/iam_authorization_policy) | resource |
 | [ibm_iam_authorization_policy.vpc_dns_resolution_auth_policy](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/iam_authorization_policy) | resource |
 | [ibm_is_flow_log.flow_logs](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_flow_log) | resource |

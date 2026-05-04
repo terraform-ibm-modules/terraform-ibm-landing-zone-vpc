@@ -244,7 +244,7 @@ data "ibm_is_vpc_address_prefixes" "get_address_prefixes" {
 
 # workaround for https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4478
 resource "time_sleep" "wait_for_authorization_policy" {
-  depends_on      = [ibm_iam_authorization_policy.policy_instance, ibm_iam_authorization_policy.policy_bucket]
+  depends_on      = [ibm_iam_authorization_policy.policy_instance, ibm_iam_authorization_policy.policy]
   count           = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? 1 : 0) : 0
   create_duration = "30s"
 }
@@ -340,7 +340,7 @@ resource "ibm_iam_authorization_policy" "policy_instance" {
 
 # Create authorization policy for Writer role on specific bucket
 # Writer: Required for flow log collector to write flow log data to the bucket
-resource "ibm_iam_authorization_policy" "policy_bucket" {
+resource "ibm_iam_authorization_policy" "policy" {
   count = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? 1 : 0) : 0
 
   source_service_name  = "is"
