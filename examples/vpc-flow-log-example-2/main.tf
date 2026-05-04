@@ -110,41 +110,13 @@ module "ibm_vpc" {
 }
 
 resource "ibm_iam_authorization_policy" "policy" {
-  count                = var.use_example_policy ? 1 : 0
-  depends_on           = [module.cos]
-  source_service_name  = "is"
-  source_resource_type = "flow-log-collector"
-  roles                = ["Writer"]
-
-  resource_attributes {
-    name     = "accountId"
-    operator = "stringEquals"
-    value    = data.ibm_iam_account_settings.iam_account_settings.account_id
-  }
-
-  resource_attributes {
-    name     = "serviceName"
-    operator = "stringEquals"
-    value    = "cloud-object-storage"
-  }
-
-  resource_attributes {
-    name     = "serviceInstance"
-    operator = "stringEquals"
-    value    = module.cos.cos_instance_guid
-  }
-
-  resource_attributes {
-    name     = "resource"
-    operator = "stringEquals"
-    value    = "${local.full_prefix}-cos-bucket"
-  }
-
-  resource_attributes {
-    name     = "resourceType"
-    operator = "stringEquals"
-    value    = "bucket"
-  }
+  count                       = var.use_example_policy ? 1 : 0
+  depends_on                  = [module.cos]
+  source_service_name         = "is"
+  source_resource_type        = "flow-log-collector"
+  target_service_name         = "cloud-object-storage"
+  target_resource_instance_id = module.cos.cos_instance_guid
+  roles                       = ["Writer"]
 
   lifecycle {
     create_before_destroy = true
