@@ -78,12 +78,6 @@ func setupOptions(t *testing.T, prefix string, terraformDir string) *testhelper.
 		TerraformVars: map[string]interface{}{
 			"access_tags": permanentResources["accessTags"],
 		},
-		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
-			List: []string{},
-		},
-		IgnoreDestroys: testhelper.Exemptions{ // Ignore for consistency check
-			List: []string{},
-		},
 	})
 
 	return options
@@ -286,12 +280,6 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 		DeleteWorkspaceOnFail:  false,
 		WaitJobCompleteMinutes: 120,
 		TerraformVersion:       terraformVersion,
-		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
-			List: []string{},
-		},
-		IgnoreDestroys: testhelper.Exemptions{ // Ignore for consistency check
-			List: []string{},
-		},
 	})
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
@@ -343,12 +331,6 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 		WaitJobCompleteMinutes:     120,
 		CheckApplyResultForUpgrade: true,
 		TerraformVersion:           terraformVersion,
-		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
-			List: []string{},
-		},
-		IgnoreDestroys: testhelper.Exemptions{ // Ignore for consistency check
-			List: []string{},
-		},
 	})
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
