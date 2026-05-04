@@ -244,7 +244,7 @@ data "ibm_is_vpc_address_prefixes" "get_address_prefixes" {
 
 # workaround for https://github.com/IBM-Cloud/terraform-provider-ibm/issues/4478
 resource "time_sleep" "wait_for_authorization_policy" {
-  depends_on      = [ibm_iam_authorization_policy.policy]
+  depends_on      = [ibm_iam_authorization_policy.policy_instance, ibm_iam_authorization_policy.policy_bucket]
   count           = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? 1 : 0) : 0
   create_duration = "30s"
 }
@@ -306,13 +306,46 @@ resource "ibm_is_public_gateway" "gateway" {
 # Add VPC to Flow Logs
 ##############################################################################
 
-# Create authorization policy to allow VPC to access COS Bucket
-resource "ibm_iam_authorization_policy" "policy" {
+# Create authorization policy for Reader role on COS instance level
+# Reader: Required for flow log collector to list buckets in the COS instance
+resource "ibm_iam_authorization_policy" "policy_instance" {
   count = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? 1 : 0) : 0
 
   source_service_name  = "is"
   source_resource_type = "flow-log-collector"
-  roles                = ["Reader", "Writer"]
+  roles                = ["Reader"]
+
+  resource_attributes {
+    name     = "accountId"
+    operator = "stringEquals"
+    value    = data.ibm_iam_account_settings.iam_account_settings.account_id
+  }
+
+  resource_attributes {
+    name     = "serviceName"
+    operator = "stringEquals"
+    value    = "cloud-object-storage"
+  }
+
+  resource_attributes {
+    name     = "serviceInstance"
+    operator = "stringEquals"
+    value    = var.existing_cos_instance_guid
+  }
+
+  lifecycle {
+    create_before_destroy = true
+  }
+}
+
+# Create authorization policy for Writer role on specific bucket
+# Writer: Required for flow log collector to write flow log data to the bucket
+resource "ibm_iam_authorization_policy" "policy_bucket" {
+  count = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? 1 : 0) : 0
+
+  source_service_name  = "is"
+  source_resource_type = "flow-log-collector"
+  roles                = ["Writer"]
 
   resource_attributes {
     name     = "accountId"
