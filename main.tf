@@ -341,7 +341,8 @@ resource "ibm_iam_authorization_policy" "policy_instance" {
 # Create authorization policy for Writer role on specific bucket
 # Writer: Required for flow log collector to write flow log data to the bucket
 resource "ibm_iam_authorization_policy" "policy" {
-  count = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? 1 : 0) : 0
+  count      = (var.enable_vpc_flow_logs) ? ((var.create_authorization_policy_vpc_to_cos) ? 1 : 0) : 0
+  depends_on = [ibm_iam_authorization_policy.policy_instance]
 
   source_service_name  = "is"
   source_resource_type = "flow-log-collector"
