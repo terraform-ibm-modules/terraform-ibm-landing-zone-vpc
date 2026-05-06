@@ -101,70 +101,26 @@ locals {
 
   vpc_connectivity_rules = distinct(flatten(concat(local.vpc_inbound_rule, local.vpc_outbound_rule)))
 
-  # The IBM VPC API does not allow action=deny with protocol=icmp_tcp_udp (the
-  # "all protocols" sentinel).  Deny rules must target a specific protocol, so
-  # the two generic deny-all rules are expanded into one rule per protocol per
-  # direction (tcp / udp / icmp × inbound / outbound).
   deny_all_rules = [
     {
-      name        = "ibmflow-deny-all-inbound-tcp"
-      action      = "deny"
-      source      = "0.0.0.0/0"
-      destination = "0.0.0.0/0"
-      direction   = "inbound"
-      tcp         = {}
-      udp         = null
-      icmp        = null
-    },
-    {
-      name        = "ibmflow-deny-all-inbound-udp"
-      action      = "deny"
-      source      = "0.0.0.0/0"
-      destination = "0.0.0.0/0"
-      direction   = "inbound"
-      tcp         = null
-      udp         = {}
-      icmp        = null
-    },
-    {
-      name        = "ibmflow-deny-all-inbound-icmp"
+      name        = "ibmflow-deny-all-inbound"
       action      = "deny"
       source      = "0.0.0.0/0"
       destination = "0.0.0.0/0"
       direction   = "inbound"
       tcp         = null
       udp         = null
-      icmp        = {}
-    },
-    {
-      name        = "ibmflow-deny-all-outbound-tcp"
-      action      = "deny"
-      source      = "0.0.0.0/0"
-      destination = "0.0.0.0/0"
-      direction   = "outbound"
-      tcp         = {}
-      udp         = null
       icmp        = null
     },
     {
-      name        = "ibmflow-deny-all-outbound-udp"
-      action      = "deny"
-      source      = "0.0.0.0/0"
-      destination = "0.0.0.0/0"
-      direction   = "outbound"
-      tcp         = null
-      udp         = {}
-      icmp        = null
-    },
-    {
-      name        = "ibmflow-deny-all-outbound-icmp"
+      name        = "ibmflow-deny-all-outbound"
       action      = "deny"
       source      = "0.0.0.0/0"
       destination = "0.0.0.0/0"
       direction   = "outbound"
       tcp         = null
       udp         = null
-      icmp        = {}
+      icmp        = null
     }
   ]
 
@@ -229,7 +185,7 @@ resource "ibm_is_network_acl" "network_acl" {
         rules.value.tcp != null ? "tcp" :
         rules.value.udp != null ? "udp" :
         rules.value.icmp != null ? "icmp" :
-        "icmp_tcp_udp"
+        "any"
       )
 
       port_min = (
