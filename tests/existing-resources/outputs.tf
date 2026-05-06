@@ -19,5 +19,5 @@ output "postgresql_db_crn" {
 
 output "cos_crn" {
   description = "Cloud Object Storage instance CRN"
-  value       = var.create_cos ? module.cos[0].crn : null
+  value       = var.create_cos ? module.cos[0].cos_instance_crn : null
 }
