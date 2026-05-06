@@ -387,7 +387,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 func TestRunHubAndSpokeDelegatedExample(t *testing.T) {
 	t.Parallel()
 
-	apiKey := validateEnvVariable(t, "TF_VAR_ibmcloud_api_key")
+	apiKey := validateEnvVariable(t, "TF_VAR_ibmcloud_api_key") // pragma: allowlist secret
 	region, _ := testhelper.GetBestVpcRegion(apiKey, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "us-south")
 
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
