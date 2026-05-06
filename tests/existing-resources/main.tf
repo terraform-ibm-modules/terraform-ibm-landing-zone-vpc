@@ -49,3 +49,16 @@ resource "time_sleep" "sleep_time" {
   create_duration  = "180s"
   destroy_duration = "120s"
 }
+
+#############################################################################
+# Provision VPC
+#############################################################################
+module "cos" {
+  count             = var.create_cos ? 1 : 0
+  source            = "terraform-ibm-modules/cos/ibm"
+  version           = "10.16.0"
+  resource_group_id = module.resource_group.resource_group_id
+  cos_instance_name = "${var.prefix}-cos"
+  resource_tags     = var.resource_tags
+  create_cos_bucket = false
+}

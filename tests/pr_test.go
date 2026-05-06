@@ -243,6 +243,7 @@ func setupTerraform(t *testing.T, prefix, realTerraformDir string) *terraform.Op
 			"region":     region,
 			"create_vpc": false,
 			"create_db":  true,
+			"create_cos": true,
 		},
 		// Set Upgrade to true to ensure latest version of providers and modules are used by terratest.
 		// This is the same as setting the -upgrade=true flag with terraform.
@@ -312,7 +313,7 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 		{Name: "access_tags", Value: permanentResources["accessTags"], DataType: "list(string)"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
 		{Name: "enable_vpc_flow_logs", Value: "true", DataType: "bool"},
-		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
+		{Name: "existing_cos_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "cos_crn"), DataType: "string"},
 		{Name: "kms_encryption_enabled_bucket", Value: "true", DataType: "bool"},
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 		{Name: "vpe_gateway_cloud_services", Value: []map[string]string{{"service_name": "kms"}, {"service_name": "cloud-object-storage"}}, DataType: "list(object{})"},
@@ -369,7 +370,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 		{Name: "access_tags", Value: permanentResources["accessTags"], DataType: "list(string)"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
 		{Name: "enable_vpc_flow_logs", Value: "true", DataType: "bool"},
-		{Name: "existing_cos_instance_crn", Value: permanentResources["general_test_storage_cos_instance_crn"], DataType: "string"},
+		{Name: "existing_cos_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "cos_crn"), DataType: "string"},
 		{Name: "kms_encryption_enabled_bucket", Value: "true", DataType: "bool"},
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 		{Name: "vpe_gateway_cloud_services", Value: []map[string]string{{"service_name": "kms"}, {"service_name": "cloud-object-storage"}}, DataType: "list(object{})"},

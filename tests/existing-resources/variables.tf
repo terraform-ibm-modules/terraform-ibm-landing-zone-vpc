@@ -39,3 +39,9 @@ variable "create_db" {
   type        = bool
   default     = false
 }
+
+variable "create_cos" {
+  description = "Indicates whether to create COS."
+  type        = bool
+  default     = false
+}
