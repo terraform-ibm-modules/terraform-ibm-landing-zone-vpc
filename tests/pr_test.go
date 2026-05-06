@@ -387,12 +387,15 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 func TestRunHubAndSpokeDelegatedExample(t *testing.T) {
 	t.Parallel()
 
+	apiKey := validateEnvVariable(t, "TF_VAR_ibmcloud_api_key")
+	region, _ := testhelper.GetBestVpcRegion(apiKey, "../common-dev-assets/common-go-assets/cloudinfo-region-vpc-gen2-prefs.yaml", "us-south")
+
 	options := testhelper.TestOptionsDefaultWithVars(&testhelper.TestOptions{
 		Testing:       t,
 		TerraformDir:  hubAndSpokeDelegatedExampleTerraformDir,
 		Prefix:        "has-slz",
 		ResourceGroup: resourceGroup,
-		Region:        "us-south",
+		Region:        region,
 		PostApplyHook: func(options *testhelper.TestOptions) error {
 			terraformOptions := options.TerraformOptions
 			terraformOptions.Vars["update_delegated_resolver"] = true
