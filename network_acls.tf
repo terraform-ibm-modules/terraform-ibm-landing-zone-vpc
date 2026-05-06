@@ -185,7 +185,7 @@ resource "ibm_is_network_acl" "network_acl" {
         rules.value.tcp != null ? "tcp" :
         rules.value.udp != null ? "udp" :
         rules.value.icmp != null ? "icmp" :
-        "any"
+        rules.value.action == "deny" ? "any" : "icmp_tcp_udp"
       )
 
       port_min = (
