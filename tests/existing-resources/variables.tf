@@ -31,11 +31,17 @@ variable "resource_group" {
 variable "resource_tags" {
   description = "List of Tags for the resource created"
   type        = list(string)
-  default     = null
+  default     = []
 }
 
 variable "create_db" {
   description = "Indicates whether to create DB."
+  type        = bool
+  default     = false
+}
+
+variable "create_cos" {
+  description = "Indicates whether to create COS."
   type        = bool
   default     = false
 }
