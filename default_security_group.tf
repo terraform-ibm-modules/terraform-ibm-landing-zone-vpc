@@ -22,7 +22,8 @@ resource "ibm_is_security_group_rule" "default_vpc_rule" {
     each.value.tcp != null ? "tcp" :
     each.value.udp != null ? "udp" :
     each.value.icmp != null ? "icmp" :
-    "icmp_tcp_udp"
+    each.value.protocol != null ? each.value.protocol :
+    "any"
   )
 
   port_min = (

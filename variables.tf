@@ -215,6 +215,9 @@ variable "network_acls" {
               code = optional(number)
             })
           )
+          # Use this field for protocols other than tcp, udp, or icmp (e.g. "esp", "ah", "gre").
+          # Cannot be combined with the tcp, udp, or icmp blocks.
+          protocol = optional(string)
         })
       )
     })
@@ -297,17 +300,13 @@ variable "network_acls" {
   }
 
   validation {
-    error_message = "Each network ACL rule must specify at most one protocol (tcp, udp, or icmp), or omit all protocol blocks to allow all protocols. Found a rule with multiple protocols defined. To allow multiple protocols, create separate rules - one for each protocol. For example, instead of one rule with both tcp and udp blocks, create two rules: one with tcp only and another with udp only."
+    error_message = "Each network ACL rule must specify at most one protocol. Use tcp, udp, or icmp blocks for those protocols, or the protocol field for others (e.g. \"esp\", \"ah\", \"gre\"). These cannot be combined — set only one per rule."
     condition = length(distinct(
       flatten([
-        # Check through rules
         for rule in flatten([var.network_acls[*].rules]) :
-        # Count how many protocols are specified (non-null)
-        # Return false if more than one protocol is specified
         false if length([
-          for protocol in [rule.tcp, rule.udp, rule.icmp] :
-          protocol if protocol != null
-        ]) > 1
+          for p in [rule.tcp, rule.udp, rule.icmp] : p if p != null
+        ]) + (rule.protocol != null ? 1 : 0) > 1
       ])
     )) == 0
   }
@@ -479,6 +478,9 @@ variable "security_group_rules" {
           code = optional(number)
         })
       )
+      # Use this field for protocols other than tcp, udp, or icmp (e.g. "esp", "ah", "gre").
+      # Cannot be combined with the tcp, udp, or icmp blocks.
+      protocol = optional(string)
     })
   )
 
@@ -512,16 +514,13 @@ variable "security_group_rules" {
   }
 
   validation {
-    error_message = "Each security group rule must specify at most one protocol (tcp, udp, or icmp), or omit all protocol blocks to allow all protocols. Found a rule with multiple protocols defined. To allow multiple protocols, create separate rules - one for each protocol. For example, instead of one rule with both tcp and udp blocks, create two rules: one with tcp only and another with udp only."
+    error_message = "Each security group rule must specify at most one protocol. Use tcp, udp, or icmp blocks for those protocols, or the protocol field for others (e.g. \"esp\", \"ah\", \"gre\"). These cannot be combined — set only one per rule."
     condition = (var.security_group_rules == null || length(var.security_group_rules) == 0) ? true : length(distinct(
       flatten([
         for rule in var.security_group_rules :
-        # Count how many protocols are specified (non-null)
-        # Return false if more than one protocol is specified
         false if length([
-          for protocol in [rule.tcp, rule.udp, rule.icmp] :
-          protocol if protocol != null
-        ]) > 1
+          for p in [rule.tcp, rule.udp, rule.icmp] : p if p != null
+        ]) + (rule.protocol != null ? 1 : 0) > 1
       ])
     )) == 0
   }

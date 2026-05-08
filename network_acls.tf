@@ -14,6 +14,7 @@ locals {
       tcp         = null
       udp         = null
       icmp        = null
+      protocol    = null
     },
     {
       name        = "ibmflow-iaas-outbound"
@@ -24,6 +25,7 @@ locals {
       tcp         = null
       udp         = null
       icmp        = null
+      protocol    = null
     },
     {
       name        = "ibmflow-paas-inbound"
@@ -34,6 +36,7 @@ locals {
       tcp         = null
       udp         = null
       icmp        = null
+      protocol    = null
     },
     {
       name        = "ibmflow-paas-outbound"
@@ -44,6 +47,7 @@ locals {
       tcp         = null
       udp         = null
       icmp        = null
+      protocol    = null
     }
   ]
 
@@ -79,6 +83,7 @@ locals {
         tcp         = null
         udp         = null
         icmp        = null
+        protocol    = null
       }
     ]
   ])
@@ -95,6 +100,7 @@ locals {
         tcp         = null
         udp         = null
         icmp        = null
+        protocol    = null
       }
     ]
   ])
@@ -111,6 +117,7 @@ locals {
       tcp         = null
       udp         = null
       icmp        = null
+      protocol    = null
     },
     {
       name        = "ibmflow-deny-all-outbound"
@@ -121,6 +128,7 @@ locals {
       tcp         = null
       udp         = null
       icmp        = null
+      protocol    = null
     }
   ]
 
@@ -185,7 +193,8 @@ resource "ibm_is_network_acl" "network_acl" {
         rules.value.tcp != null ? "tcp" :
         rules.value.udp != null ? "udp" :
         rules.value.icmp != null ? "icmp" :
-        rules.value.action == "deny" ? "any" : "icmp_tcp_udp"
+        rules.value.protocol != null ? rules.value.protocol :
+        "any"
       )
 
       port_min = (
