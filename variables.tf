@@ -326,10 +326,10 @@ variable "network_acls" {
 variable "use_public_gateways" {
   description = "Create a public gateway in any of the three zones with `true`. You can set the value for `zone-4` only if your IBM cloud account is allowlisted for accessing zone-4."
   type = object({
-    zone-1 = optional(bool)
-    zone-2 = optional(bool)
-    zone-3 = optional(bool)
-    zone-4 = optional(bool)
+    zone-1 = optional(bool, false)
+    zone-2 = optional(bool, false)
+    zone-3 = optional(bool, false)
+    zone-4 = optional(bool, false)
   })
   default = {
     zone-1 = true
@@ -361,7 +361,7 @@ variable "subnets" {
     zone-1 = list(object({
       name           = string
       cidr           = string
-      public_gateway = optional(bool)
+      public_gateway = optional(bool, false)
       acl_name       = string
       no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true
       subnet_tags    = optional(list(string), [])
@@ -369,7 +369,7 @@ variable "subnets" {
     zone-2 = optional(list(object({
       name           = string
       cidr           = string
-      public_gateway = optional(bool)
+      public_gateway = optional(bool, false)
       acl_name       = string
       no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true
       subnet_tags    = optional(list(string), [])
@@ -377,7 +377,7 @@ variable "subnets" {
     zone-3 = optional(list(object({
       name           = string
       cidr           = string
-      public_gateway = optional(bool)
+      public_gateway = optional(bool, false)
       acl_name       = string
       no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true
       subnet_tags    = optional(list(string), [])
@@ -385,7 +385,7 @@ variable "subnets" {
     zone-4 = optional(list(object({
       name           = string
       cidr           = string
-      public_gateway = optional(bool)
+      public_gateway = optional(bool, false)
       acl_name       = string
       no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true
       subnet_tags    = optional(list(string), [])
