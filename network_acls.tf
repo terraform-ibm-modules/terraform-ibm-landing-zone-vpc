@@ -189,40 +189,13 @@ resource "ibm_is_network_acl" "network_acl" {
       destination = rules.value.destination
       direction   = rules.value.direction
 
-      protocol = (
-        rules.value.tcp != null ? "tcp" :
-        rules.value.udp != null ? "udp" :
-        rules.value.icmp != null ? "icmp" :
-        rules.value.protocol != null ? rules.value.protocol :
-        "any"
-      )
-
-      port_min = (
-        rules.value.tcp != null ? lookup(rules.value.tcp, "port_min", null) :
-        rules.value.udp != null ? lookup(rules.value.udp, "port_min", null) :
-        null
-      )
-
-      port_max = (
-        rules.value.tcp != null ? lookup(rules.value.tcp, "port_max", null) :
-        rules.value.udp != null ? lookup(rules.value.udp, "port_max", null) :
-        null
-      )
-
-      source_port_min = (
-        rules.value.tcp != null ? lookup(rules.value.tcp, "source_port_min", null) :
-        rules.value.udp != null ? lookup(rules.value.udp, "source_port_min", null) :
-        null
-      )
-
-      source_port_max = (
-        rules.value.tcp != null ? lookup(rules.value.tcp, "source_port_max", null) :
-        rules.value.udp != null ? lookup(rules.value.udp, "source_port_max", null) :
-        null
-      )
-
-      type = rules.value.icmp != null ? lookup(rules.value.icmp, "type", null) : null
-      code = rules.value.icmp != null ? lookup(rules.value.icmp, "code", null) : null
+      protocol        = rules.value.protocol
+      port_min        = rules.value.port_min
+      port_max        = rules.value.port_max
+      source_port_min = rules.value.source_port_min
+      source_port_max = rules.value.source_port_max
+      type            = rules.value.type
+      code            = rules.value.code
     }
   }
 }

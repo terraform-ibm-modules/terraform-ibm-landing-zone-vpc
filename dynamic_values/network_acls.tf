@@ -35,9 +35,13 @@ locals {
       source      = "161.26.0.0/16"
       destination = "0.0.0.0/0"
       direction   = "inbound"
-      tcp         = null
-      udp         = null
-      icmp        = null
+      protocol        = null
+      port_min        = null
+      port_max        = null
+      source_port_min = null
+      source_port_max = null
+      type            = null
+      code            = null
     },
     {
       name        = "roks-create-worker-nodes-outbound"
@@ -45,9 +49,13 @@ locals {
       destination = "161.26.0.0/16"
       source      = "0.0.0.0/0"
       direction   = "outbound"
-      tcp         = null
-      udp         = null
-      icmp        = null
+      protocol        = null
+      port_min        = null
+      port_max        = null
+      source_port_min = null
+      source_port_max = null
+      type            = null
+      code            = null
     },
     {
       name        = "roks-nodes-to-service-inbound"
@@ -55,9 +63,13 @@ locals {
       source      = "166.8.0.0/14"
       destination = "0.0.0.0/0"
       direction   = "inbound"
-      tcp         = null
-      udp         = null
-      icmp        = null
+      protocol        = null
+      port_min        = null
+      port_max        = null
+      source_port_min = null
+      source_port_max = null
+      type            = null
+      code            = null
     },
     {
       name        = "roks-nodes-to-service-outbound"
@@ -65,9 +77,13 @@ locals {
       destination = "166.8.0.0/14"
       source      = "0.0.0.0/0"
       direction   = "outbound"
-      tcp         = null
-      udp         = null
-      icmp        = null
+      protocol        = null
+      port_min        = null
+      port_max        = null
+      source_port_min = null
+      source_port_max = null
+      type            = null
+      code            = null
     }
   ]
 
@@ -89,12 +105,13 @@ locals {
       source      = "0.0.0.0/0"
       destination = "0.0.0.0/0"
       direction   = "inbound"
-      tcp = {
-        source_port_min = 30000
-        source_port_max = 32767
-      }
-      udp  = null
-      icmp = null
+      protocol        = "tcp"
+      port_min        = null
+      port_max        = null
+      source_port_min = 30000
+      source_port_max = 32767
+      type            = null
+      code            = null
     },
     {
       name        = "allow-app-outgoing-traffic-requests"
@@ -102,12 +119,13 @@ locals {
       source      = "0.0.0.0/0"
       destination = "0.0.0.0/0"
       direction   = "outbound"
-      tcp = {
-        port_min = 30000
-        port_max = 32767
-      }
-      udp  = null
-      icmp = null
+      protocol        = "tcp"
+      port_min        = 30000
+      port_max        = 32767
+      source_port_min = null
+      source_port_max = null
+      type            = null
+      code            = null
     },
     {
       name        = "allow-lb-incoming-traffic-requests"
@@ -115,12 +133,13 @@ locals {
       source      = "0.0.0.0/0"
       destination = "0.0.0.0/0"
       direction   = "inbound"
-      tcp = {
-        port_min = 443
-        port_max = 443
-      }
-      udp  = null
-      icmp = null
+      protocol        = "tcp"
+      port_min        = 443
+      port_max        = 443
+      source_port_min = null
+      source_port_max = null
+      type            = null
+      code            = null
     },
     {
       name        = "allow-lb-outgoing-traffic-requests"
@@ -128,12 +147,13 @@ locals {
       source      = "0.0.0.0/0"
       destination = "0.0.0.0/0"
       direction   = "outbound"
-      tcp = {
-        source_port_min = 443
-        source_port_max = 443
-      }
-      udp  = null
-      icmp = null
+      protocol        = "tcp"
+      port_min        = null
+      port_max        = null
+      source_port_min = 443
+      source_port_max = 443
+      type            = null
+      code            = null
     }
   ]
 

@@ -39,32 +39,36 @@ locals {
       name      = "allow-all-inbound"
       direction = "inbound"
       remote    = "0.0.0.0/0"
-      tcp       = null
     },
     {
       name      = "allow-all-outbound"
       direction = "outbound"
       remote    = "0.0.0.0/0"
-      tcp       = null
     }
     ] : var.network_profile == "public_web_services" ? [
     {
       name      = "allow-ssh"
       direction = "inbound"
       remote    = "0.0.0.0/0"
-      tcp       = { port_min = 22, port_max = 22 }
+      protocol  = "tcp"
+      port_min  = 22
+      port_max  = 22
     },
     {
       name      = "allow-http"
       direction = "inbound"
       remote    = "0.0.0.0/0"
-      tcp       = { port_min = 80, port_max = 80 }
+      protocol  = "tcp"
+      port_min  = 80
+      port_max  = 80
     },
     {
       name      = "allow-https"
       direction = "inbound"
       remote    = "0.0.0.0/0"
-      tcp       = { port_min = 443, port_max = 443 }
+      protocol  = "tcp"
+      port_min  = 443
+      port_max  = 443
     }
   ] : []
 }
@@ -115,10 +119,11 @@ locals {
             direction   = "inbound"
             source      = "0.0.0.0/0"
             destination = "0.0.0.0/0"
-            tcp = {
-              port_min = 22
-              port_max = 22
-            }
+            protocol        = "tcp"
+              port_min        = 22
+              port_max        = 22
+              source_port_min = null
+              source_port_max = null
           },
           {
             name        = "allow-inbound-http"
@@ -126,10 +131,11 @@ locals {
             direction   = "inbound"
             source      = "0.0.0.0/0"
             destination = "0.0.0.0/0"
-            tcp = {
-              port_min = 80
-              port_max = 80
-            }
+            protocol        = "tcp"
+            port_min        = 80
+            port_max        = 80
+            source_port_min = null
+            source_port_max = null
           },
           {
             name        = "allow-inbound-https"
@@ -137,10 +143,11 @@ locals {
             direction   = "inbound"
             source      = "0.0.0.0/0"
             destination = "0.0.0.0/0"
-            tcp = {
-              port_min = 443
-              port_max = 443
-            }
+            protocol        = "tcp"
+            port_min        = 443
+            port_max        = 443
+            source_port_min = null
+            source_port_max = null
           },
           {
             name        = "allow-outbound-ssh"
@@ -148,10 +155,11 @@ locals {
             direction   = "outbound"
             source      = "0.0.0.0/0"
             destination = "0.0.0.0/0"
-            tcp = {
-              source_port_min = 22
-              source_port_max = 22
-            }
+            protocol        = "tcp"
+            port_min        = null
+            port_max        = null
+            source_port_min = 22
+            source_port_max = 22
           },
           {
             name        = "allow-outbound-http"
@@ -159,10 +167,11 @@ locals {
             direction   = "outbound"
             source      = "0.0.0.0/0"
             destination = "0.0.0.0/0"
-            tcp = {
-              source_port_min = 80
-              source_port_max = 80
-            }
+            protocol        = "tcp"
+            port_min        = null
+            port_max        = null
+            source_port_min = 80
+            source_port_max = 80
           },
           {
             name        = "allow-outbound-https"
@@ -170,10 +179,11 @@ locals {
             direction   = "outbound"
             source      = "0.0.0.0/0"
             destination = "0.0.0.0/0"
-            tcp = {
-              source_port_min = 443
-              source_port_max = 443
-            }
+            protocol        = "tcp"
+            port_min        = null
+            port_max        = null
+            source_port_min = 443
+            source_port_max = 443
           }
         ]
       }

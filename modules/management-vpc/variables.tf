@@ -64,24 +64,11 @@ variable "default_security_group_rules" {
       remote     = optional(string)
       local      = optional(string)
       ip_version = optional(string)
-      tcp = optional(
-        object({
-          port_max = optional(number)
-          port_min = optional(number)
-        })
-      )
-      udp = optional(
-        object({
-          port_max = optional(number)
-          port_min = optional(number)
-        })
-      )
-      icmp = optional(
-        object({
-          type = optional(number)
-          code = optional(number)
-        })
-      )
+      protocol   = optional(string)
+      port_min   = optional(number)
+      port_max   = optional(number)
+      type       = optional(number)
+      code       = optional(number)
     })
   )
 
@@ -120,28 +107,13 @@ variable "network_acls" {
           destination = string
           direction   = string
           source      = string
-          tcp = optional(
-            object({
-              port_max        = optional(number)
-              port_min        = optional(number)
-              source_port_max = optional(number)
-              source_port_min = optional(number)
-            })
-          )
-          udp = optional(
-            object({
-              port_max        = optional(number)
-              port_min        = optional(number)
-              source_port_max = optional(number)
-              source_port_min = optional(number)
-            })
-          )
-          icmp = optional(
-            object({
-              type = optional(number)
-              code = optional(number)
-            })
-          )
+          protocol        = optional(string)
+          port_min        = optional(number)
+          port_max        = optional(number)
+          source_port_min = optional(number)
+          source_port_max = optional(number)
+          type            = optional(number)
+          code            = optional(number)
         })
       )
     })

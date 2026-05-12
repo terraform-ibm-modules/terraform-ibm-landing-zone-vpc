@@ -17,29 +17,11 @@ resource "ibm_is_security_group_rule" "default_vpc_rule" {
   remote     = each.value.remote
   local      = each.value.local
   ip_version = each.value.ip_version
-
-  protocol = (
-    each.value.tcp != null ? "tcp" :
-    each.value.udp != null ? "udp" :
-    each.value.icmp != null ? "icmp" :
-    each.value.protocol != null ? each.value.protocol :
-    "any"
-  )
-
-  port_min = (
-    each.value.tcp != null ? lookup(each.value.tcp, "port_min", null) :
-    each.value.udp != null ? lookup(each.value.udp, "port_min", null) :
-    null
-  )
-
-  port_max = (
-    each.value.tcp != null ? lookup(each.value.tcp, "port_max", null) :
-    each.value.udp != null ? lookup(each.value.udp, "port_max", null) :
-    null
-  )
-
-  type = each.value.icmp != null ? lookup(each.value.icmp, "type", null) : null
-  code = each.value.icmp != null ? lookup(each.value.icmp, "code", null) : null
+  protocol   = each.value.protocol
+  port_min   = each.value.port_min
+  port_max   = each.value.port_max
+  type       = each.value.type
+  code       = each.value.code
 }
 
 ##############################################################################

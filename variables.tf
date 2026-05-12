@@ -193,31 +193,13 @@ variable "network_acls" {
           destination = string
           direction   = string
           source      = string
-          tcp = optional(
-            object({
-              port_max        = optional(number)
-              port_min        = optional(number)
-              source_port_max = optional(number)
-              source_port_min = optional(number)
-            })
-          )
-          udp = optional(
-            object({
-              port_max        = optional(number)
-              port_min        = optional(number)
-              source_port_max = optional(number)
-              source_port_min = optional(number)
-            })
-          )
-          icmp = optional(
-            object({
-              type = optional(number)
-              code = optional(number)
-            })
-          )
-          # Use this field for protocols other than tcp, udp, or icmp (e.g. "esp", "ah", "gre").
-          # Cannot be combined with the tcp, udp, or icmp blocks.
-          protocol = optional(string)
+          protocol        = optional(string)
+          port_min        = optional(number)
+          port_max        = optional(number)
+          source_port_min = optional(number)
+          source_port_max = optional(number)
+          type            = optional(number)
+          code            = optional(number)
         })
       )
     })
@@ -300,13 +282,11 @@ variable "network_acls" {
   }
 
   validation {
-    error_message = "Each network ACL rule must specify at most one protocol. Use tcp, udp, or icmp blocks for those protocols, or the protocol field for others (e.g. \"esp\", \"ah\", \"gre\"). These cannot be combined — set only one per rule."
+    error_message = "Network ACL rule protocol must be one of: `tcp`, `udp`, `icmp`, `icmp_tcp_udp`."
     condition = length(distinct(
       flatten([
         for rule in flatten([var.network_acls[*].rules]) :
-        false if length([
-          for p in [rule.tcp, rule.udp, rule.icmp] : p if p != null
-        ]) + (rule.protocol != null ? 1 : 0) > 1
+        false if rule.protocol != null && !contains(["tcp", "udp", "icmp", "icmp_tcp_udp"], rule.protocol)
       ])
     )) == 0
   }
@@ -460,27 +440,11 @@ variable "security_group_rules" {
       remote     = optional(string)
       local      = optional(string)
       ip_version = optional(string)
-      tcp = optional(
-        object({
-          port_max = optional(number)
-          port_min = optional(number)
-        })
-      )
-      udp = optional(
-        object({
-          port_max = optional(number)
-          port_min = optional(number)
-        })
-      )
-      icmp = optional(
-        object({
-          type = optional(number)
-          code = optional(number)
-        })
-      )
-      # Use this field for protocols other than tcp, udp, or icmp (e.g. "esp", "ah", "gre").
-      # Cannot be combined with the tcp, udp, or icmp blocks.
-      protocol = optional(string)
+      protocol   = optional(string)
+      port_min   = optional(number)
+      port_max   = optional(number)
+      type       = optional(number)
+      code       = optional(number)
     })
   )
 
@@ -514,15 +478,11 @@ variable "security_group_rules" {
   }
 
   validation {
-    error_message = "Each security group rule must specify at most one protocol. Use tcp, udp, or icmp blocks for those protocols, or the protocol field for others (e.g. \"esp\", \"ah\", \"gre\"). These cannot be combined — set only one per rule."
-    condition = (var.security_group_rules == null || length(var.security_group_rules) == 0) ? true : length(distinct(
-      flatten([
-        for rule in var.security_group_rules :
-        false if length([
-          for p in [rule.tcp, rule.udp, rule.icmp] : p if p != null
-        ]) + (rule.protocol != null ? 1 : 0) > 1
-      ])
-    )) == 0
+    error_message = "Security group rule protocol must be one of: `tcp`, `udp`, `icmp`, `icmp_tcp_udp`."
+    condition = (var.security_group_rules == null || length(var.security_group_rules) == 0) ? true : alltrue([
+      for rule in var.security_group_rules :
+      rule.protocol == null || contains(["tcp", "udp", "icmp", "icmp_tcp_udp"], rule.protocol)
+    ])
   }
 }
 
