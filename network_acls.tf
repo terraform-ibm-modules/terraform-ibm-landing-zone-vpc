@@ -6,48 +6,60 @@ locals {
   internal_rules = [
     # IaaS and PaaS Rules. Note that this coarse grained list will be narrowed in upcoming releases.
     {
-      name        = "ibmflow-iaas-inbound"
-      action      = "allow"
-      source      = "161.26.0.0/16"
-      destination = "0.0.0.0/0"
-      direction   = "inbound"
-      tcp         = null
-      udp         = null
-      icmp        = null
-      protocol    = null
+      name            = "ibmflow-iaas-inbound"
+      action          = "allow"
+      source          = "161.26.0.0/16"
+      destination     = "0.0.0.0/0"
+      direction       = "inbound"
+      protocol        = null
+      port_min        = null
+      port_max        = null
+      source_port_min = null
+      source_port_max = null
+      type            = null
+      code            = null
     },
     {
-      name        = "ibmflow-iaas-outbound"
-      action      = "allow"
-      destination = "161.26.0.0/16"
-      source      = "0.0.0.0/0"
-      direction   = "outbound"
-      tcp         = null
-      udp         = null
-      icmp        = null
-      protocol    = null
+      name            = "ibmflow-iaas-outbound"
+      action          = "allow"
+      destination     = "161.26.0.0/16"
+      source          = "0.0.0.0/0"
+      direction       = "outbound"
+      protocol        = null
+      port_min        = null
+      port_max        = null
+      source_port_min = null
+      source_port_max = null
+      type            = null
+      code            = null
     },
     {
-      name        = "ibmflow-paas-inbound"
-      action      = "allow"
-      source      = "166.8.0.0/14"
-      destination = "0.0.0.0/0"
-      direction   = "inbound"
-      tcp         = null
-      udp         = null
-      icmp        = null
-      protocol    = null
+      name            = "ibmflow-paas-inbound"
+      action          = "allow"
+      source          = "166.8.0.0/14"
+      destination     = "0.0.0.0/0"
+      direction       = "inbound"
+      protocol        = null
+      port_min        = null
+      port_max        = null
+      source_port_min = null
+      source_port_max = null
+      type            = null
+      code            = null
     },
     {
-      name        = "ibmflow-paas-outbound"
-      action      = "allow"
-      destination = "166.8.0.0/14"
-      source      = "0.0.0.0/0"
-      direction   = "outbound"
-      tcp         = null
-      udp         = null
-      icmp        = null
-      protocol    = null
+      name            = "ibmflow-paas-outbound"
+      action          = "allow"
+      destination     = "166.8.0.0/14"
+      source          = "0.0.0.0/0"
+      direction       = "outbound"
+      protocol        = null
+      port_min        = null
+      port_max        = null
+      source_port_min = null
+      source_port_max = null
+      type            = null
+      code            = null
     }
   ]
 
@@ -75,15 +87,18 @@ locals {
     for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] : [
       for address in data.ibm_is_vpc_address_prefixes.get_address_prefixes.address_prefixes :
       {
-        name        = "ibmflow-allow-vpc-connectivity-inbound-${substr(address.id, -4, -1)}-${index}" # Providing unique rule names
-        action      = "allow"
-        source      = address.cidr
-        destination = cidrs
-        direction   = "inbound"
-        tcp         = null
-        udp         = null
-        icmp        = null
-        protocol    = null
+        name            = "ibmflow-allow-vpc-connectivity-inbound-${substr(address.id, -4, -1)}-${index}" # Providing unique rule names
+        action          = "allow"
+        source          = address.cidr
+        destination     = cidrs
+        direction       = "inbound"
+        protocol        = null
+        port_min        = null
+        port_max        = null
+        source_port_min = null
+        source_port_max = null
+        type            = null
+        code            = null
       }
     ]
   ])
@@ -92,15 +107,18 @@ locals {
       for index, cidrs in var.network_cidrs != null ? var.network_cidrs : ["0.0.0.0/0"] :
 
       {
-        name        = "ibmflow-allow-vpc-connectivity-outbound-${substr(address.id, -4, -1)}-${index}"
-        action      = "allow"
-        source      = cidrs
-        destination = address.cidr
-        direction   = "outbound"
-        tcp         = null
-        udp         = null
-        icmp        = null
-        protocol    = null
+        name            = "ibmflow-allow-vpc-connectivity-outbound-${substr(address.id, -4, -1)}-${index}"
+        action          = "allow"
+        source          = cidrs
+        destination     = address.cidr
+        direction       = "outbound"
+        protocol        = null
+        port_min        = null
+        port_max        = null
+        source_port_min = null
+        source_port_max = null
+        type            = null
+        code            = null
       }
     ]
   ])
@@ -109,26 +127,32 @@ locals {
 
   deny_all_rules = [
     {
-      name        = "ibmflow-deny-all-inbound"
-      action      = "deny"
-      source      = "0.0.0.0/0"
-      destination = "0.0.0.0/0"
-      direction   = "inbound"
-      tcp         = null
-      udp         = null
-      icmp        = null
-      protocol    = null
+      name            = "ibmflow-deny-all-inbound"
+      action          = "deny"
+      source          = "0.0.0.0/0"
+      destination     = "0.0.0.0/0"
+      direction       = "inbound"
+      protocol        = null
+      port_min        = null
+      port_max        = null
+      source_port_min = null
+      source_port_max = null
+      type            = null
+      code            = null
     },
     {
-      name        = "ibmflow-deny-all-outbound"
-      action      = "deny"
-      source      = "0.0.0.0/0"
-      destination = "0.0.0.0/0"
-      direction   = "outbound"
-      tcp         = null
-      udp         = null
-      icmp        = null
-      protocol    = null
+      name            = "ibmflow-deny-all-outbound"
+      action          = "deny"
+      source          = "0.0.0.0/0"
+      destination     = "0.0.0.0/0"
+      direction       = "outbound"
+      protocol        = null
+      port_min        = null
+      port_max        = null
+      source_port_min = null
+      source_port_max = null
+      type            = null
+      code            = null
     }
   ]
 
