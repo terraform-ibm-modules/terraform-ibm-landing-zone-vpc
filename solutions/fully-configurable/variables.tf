@@ -159,11 +159,11 @@ variable "network_acls" {
       prepend_ibm_rules            = optional(bool)
       rules = list(
         object({
-          name        = string
-          action      = string
-          destination = string
-          direction   = string
-          source      = string
+          name            = string
+          action          = string
+          destination     = string
+          direction       = string
+          source          = string
           protocol        = optional(string)
           port_min        = optional(number)
           port_max        = optional(number)

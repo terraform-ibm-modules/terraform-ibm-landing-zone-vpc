@@ -114,23 +114,23 @@ locals {
 
         rules = [
           {
-            name        = "allow-inbound-ssh"
-            action      = "allow"
-            direction   = "inbound"
-            source      = "0.0.0.0/0"
-            destination = "0.0.0.0/0"
+            name            = "allow-inbound-ssh"
+            action          = "allow"
+            direction       = "inbound"
+            source          = "0.0.0.0/0"
+            destination     = "0.0.0.0/0"
             protocol        = "tcp"
-              port_min        = 22
-              port_max        = 22
-              source_port_min = null
-              source_port_max = null
+            port_min        = 22
+            port_max        = 22
+            source_port_min = null
+            source_port_max = null
           },
           {
-            name        = "allow-inbound-http"
-            action      = "allow"
-            direction   = "inbound"
-            source      = "0.0.0.0/0"
-            destination = "0.0.0.0/0"
+            name            = "allow-inbound-http"
+            action          = "allow"
+            direction       = "inbound"
+            source          = "0.0.0.0/0"
+            destination     = "0.0.0.0/0"
             protocol        = "tcp"
             port_min        = 80
             port_max        = 80
@@ -138,11 +138,11 @@ locals {
             source_port_max = null
           },
           {
-            name        = "allow-inbound-https"
-            action      = "allow"
-            direction   = "inbound"
-            source      = "0.0.0.0/0"
-            destination = "0.0.0.0/0"
+            name            = "allow-inbound-https"
+            action          = "allow"
+            direction       = "inbound"
+            source          = "0.0.0.0/0"
+            destination     = "0.0.0.0/0"
             protocol        = "tcp"
             port_min        = 443
             port_max        = 443
@@ -150,11 +150,11 @@ locals {
             source_port_max = null
           },
           {
-            name        = "allow-outbound-ssh"
-            action      = "allow"
-            direction   = "outbound"
-            source      = "0.0.0.0/0"
-            destination = "0.0.0.0/0"
+            name            = "allow-outbound-ssh"
+            action          = "allow"
+            direction       = "outbound"
+            source          = "0.0.0.0/0"
+            destination     = "0.0.0.0/0"
             protocol        = "tcp"
             port_min        = null
             port_max        = null
@@ -162,11 +162,11 @@ locals {
             source_port_max = 22
           },
           {
-            name        = "allow-outbound-http"
-            action      = "allow"
-            direction   = "outbound"
-            source      = "0.0.0.0/0"
-            destination = "0.0.0.0/0"
+            name            = "allow-outbound-http"
+            action          = "allow"
+            direction       = "outbound"
+            source          = "0.0.0.0/0"
+            destination     = "0.0.0.0/0"
             protocol        = "tcp"
             port_min        = null
             port_max        = null
@@ -174,11 +174,11 @@ locals {
             source_port_max = 80
           },
           {
-            name        = "allow-outbound-https"
-            action      = "allow"
-            direction   = "outbound"
-            source      = "0.0.0.0/0"
-            destination = "0.0.0.0/0"
+            name            = "allow-outbound-https"
+            action          = "allow"
+            direction       = "outbound"
+            source          = "0.0.0.0/0"
+            destination     = "0.0.0.0/0"
             protocol        = "tcp"
             port_min        = null
             port_max        = null
