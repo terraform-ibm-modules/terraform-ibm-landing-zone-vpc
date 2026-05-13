@@ -282,13 +282,14 @@ variable "network_acls" {
   }
 
   validation {
-    error_message = "Network ACL rule protocol must be one of: `tcp`, `udp`, `icmp`, `icmp_tcp_udp`."
-    condition = length(distinct(
-      flatten([
-        for rule in flatten([var.network_acls[*].rules]) :
-        false if rule.protocol != null && !contains(["tcp", "udp", "icmp", "icmp_tcp_udp"], rule.protocol)
-      ])
-    )) == 0
+    error_message = "When protocol is `icmp`, `port_min`, `port_max`, `source_port_min`, and `source_port_max` must be null. When protocol is `tcp` or `udp`, `type` and `code` must be null."
+    condition = length(distinct(flatten([
+      for rule in flatten([var.network_acls[*].rules]) :
+      false if (
+        (rule.protocol == "icmp" && (rule.port_min != null || rule.port_max != null || rule.source_port_min != null || rule.source_port_max != null)) ||
+        ((rule.protocol == "tcp" || rule.protocol == "udp") && (rule.type != null || rule.code != null))
+      )
+    ]))) == 0
   }
 
 }
@@ -478,12 +479,15 @@ variable "security_group_rules" {
   }
 
   validation {
-    error_message = "Security group rule protocol must be one of: `tcp`, `udp`, `icmp`, `icmp_tcp_udp`."
+    error_message = "When protocol is `icmp`, `port_min` and `port_max` must be null. When protocol is `tcp` or `udp`, `type` and `code` must be null."
     condition = (var.security_group_rules == null || length(var.security_group_rules) == 0) ? true : alltrue([
       for rule in var.security_group_rules :
-      rule.protocol == null || contains(["tcp", "udp", "icmp", "icmp_tcp_udp"], rule.protocol)
+      rule.protocol == "icmp" ? (rule.port_min == null && rule.port_max == null) :
+      (rule.protocol == "tcp" || rule.protocol == "udp") ? (rule.type == null && rule.code == null) :
+      true
     ])
   }
+
 }
 
 variable "clean_default_sg_acl" {
