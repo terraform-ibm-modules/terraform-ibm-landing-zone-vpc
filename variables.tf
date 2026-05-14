@@ -190,33 +190,18 @@ variable "network_acls" {
       prepend_ibm_rules            = optional(bool)
       rules = list(
         object({
-          name        = string
-          action      = string
-          destination = string
-          direction   = string
-          source      = string
-          tcp = optional(
-            object({
-              port_max        = optional(number)
-              port_min        = optional(number)
-              source_port_max = optional(number)
-              source_port_min = optional(number)
-            })
-          )
-          udp = optional(
-            object({
-              port_max        = optional(number)
-              port_min        = optional(number)
-              source_port_max = optional(number)
-              source_port_min = optional(number)
-            })
-          )
-          icmp = optional(
-            object({
-              type = optional(number)
-              code = optional(number)
-            })
-          )
+          name            = string
+          action          = string
+          destination     = string
+          direction       = string
+          source          = string
+          protocol        = optional(string)
+          port_min        = optional(number)
+          port_max        = optional(number)
+          source_port_min = optional(number)
+          source_port_max = optional(number)
+          type            = optional(number)
+          code            = optional(number)
         })
       )
     })
@@ -299,19 +284,14 @@ variable "network_acls" {
   }
 
   validation {
-    error_message = "Each network ACL rule must specify at most one protocol (tcp, udp, or icmp), or omit all protocol blocks to allow all protocols. Found a rule with multiple protocols defined. To allow multiple protocols, create separate rules - one for each protocol. For example, instead of one rule with both tcp and udp blocks, create two rules: one with tcp only and another with udp only."
-    condition = length(distinct(
-      flatten([
-        # Check through rules
-        for rule in flatten([var.network_acls[*].rules]) :
-        # Count how many protocols are specified (non-null)
-        # Return false if more than one protocol is specified
-        false if length([
-          for protocol in [rule.tcp, rule.udp, rule.icmp] :
-          protocol if protocol != null
-        ]) > 1
-      ])
-    )) == 0
+    error_message = "When protocol is `icmp`, `port_min`, `port_max`, `source_port_min`, and `source_port_max` must be null. When protocol is `tcp` or `udp`, `type` and `code` must be null."
+    condition = length(distinct(flatten([
+      for rule in flatten([var.network_acls[*].rules]) :
+      false if(
+        (rule.protocol == "icmp" && (rule.port_min != null || rule.port_max != null || rule.source_port_min != null || rule.source_port_max != null)) ||
+        ((rule.protocol == "tcp" || rule.protocol == "udp") && (rule.type != null || rule.code != null))
+      )
+    ]))) == 0
   }
 
 }
@@ -474,24 +454,11 @@ variable "security_group_rules" {
       remote     = optional(string)
       local      = optional(string)
       ip_version = optional(string)
-      tcp = optional(
-        object({
-          port_max = optional(number)
-          port_min = optional(number)
-        })
-      )
-      udp = optional(
-        object({
-          port_max = optional(number)
-          port_min = optional(number)
-        })
-      )
-      icmp = optional(
-        object({
-          type = optional(number)
-          code = optional(number)
-        })
-      )
+      protocol   = optional(string)
+      port_min   = optional(number)
+      port_max   = optional(number)
+      type       = optional(number)
+      code       = optional(number)
     })
   )
 
@@ -525,19 +492,15 @@ variable "security_group_rules" {
   }
 
   validation {
-    error_message = "Each security group rule must specify at most one protocol (tcp, udp, or icmp), or omit all protocol blocks to allow all protocols. Found a rule with multiple protocols defined. To allow multiple protocols, create separate rules - one for each protocol. For example, instead of one rule with both tcp and udp blocks, create two rules: one with tcp only and another with udp only."
-    condition = (var.security_group_rules == null || length(var.security_group_rules) == 0) ? true : length(distinct(
-      flatten([
-        for rule in var.security_group_rules :
-        # Count how many protocols are specified (non-null)
-        # Return false if more than one protocol is specified
-        false if length([
-          for protocol in [rule.tcp, rule.udp, rule.icmp] :
-          protocol if protocol != null
-        ]) > 1
-      ])
-    )) == 0
+    error_message = "When protocol is `icmp`, `port_min` and `port_max` must be null. When protocol is `tcp` or `udp`, `type` and `code` must be null."
+    condition = (var.security_group_rules == null || length(var.security_group_rules) == 0) ? true : alltrue([
+      for rule in var.security_group_rules :
+      rule.protocol == "icmp" ? (rule.port_min == null && rule.port_max == null) :
+      (rule.protocol == "tcp" || rule.protocol == "udp") ? (rule.type == null && rule.code == null) :
+      true
+    ])
   }
+
 }
 
 variable "clean_default_sg_acl" {
