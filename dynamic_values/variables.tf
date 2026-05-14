@@ -79,25 +79,12 @@ variable "security_group_rules" {
   description = "direct reference to security group rules"
   type = list(
     object({
-      name = string
-      tcp = optional(
-        object({
-          port_max = optional(number)
-          port_min = optional(number)
-        })
-      )
-      udp = optional(
-        object({
-          port_max = optional(number)
-          port_min = optional(number)
-        })
-      )
-      icmp = optional(
-        object({
-          type = optional(number)
-          code = optional(number)
-        })
-      )
+      name     = string
+      protocol = optional(string)
+      port_min = optional(number)
+      port_max = optional(number)
+      type     = optional(number)
+      code     = optional(number)
     })
   )
 }
@@ -129,29 +116,14 @@ variable "network_acls" {
       prepend_ibm_rules            = optional(bool)
       rules = list(
         object({
-          name = string
-          tcp = optional(
-            object({
-              port_max        = optional(number)
-              port_min        = optional(number)
-              source_port_max = optional(number)
-              source_port_min = optional(number)
-            })
-          )
-          udp = optional(
-            object({
-              port_max        = optional(number)
-              port_min        = optional(number)
-              source_port_max = optional(number)
-              source_port_min = optional(number)
-            })
-          )
-          icmp = optional(
-            object({
-              type = optional(number)
-              code = optional(number)
-            })
-          )
+          name            = string
+          protocol        = optional(string)
+          port_min        = optional(number)
+          port_max        = optional(number)
+          source_port_min = optional(number)
+          source_port_max = optional(number)
+          type            = optional(number)
+          code            = optional(number)
         })
       )
     })
