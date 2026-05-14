@@ -285,7 +285,7 @@ variable "network_acls" {
     error_message = "When protocol is `icmp`, `port_min`, `port_max`, `source_port_min`, and `source_port_max` must be null. When protocol is `tcp` or `udp`, `type` and `code` must be null."
     condition = length(distinct(flatten([
       for rule in flatten([var.network_acls[*].rules]) :
-      false if (
+      false if(
         (rule.protocol == "icmp" && (rule.port_min != null || rule.port_max != null || rule.source_port_min != null || rule.source_port_max != null)) ||
         ((rule.protocol == "tcp" || rule.protocol == "udp") && (rule.type != null || rule.code != null))
       )
