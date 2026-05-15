@@ -285,7 +285,7 @@ locals {
   # create object that only contains gateways that will be created
   gateway_object = {
     for zone in keys(var.use_public_gateways) :
-    zone => "${var.region}-${index(keys(var.use_public_gateways), zone) + 1}" if var.use_public_gateways[zone]
+    zone => "${var.region}-${index(keys(var.use_public_gateways), zone) + 1}" if var.use_public_gateways[zone] != null && var.use_public_gateways[zone]
   }
 }
 
