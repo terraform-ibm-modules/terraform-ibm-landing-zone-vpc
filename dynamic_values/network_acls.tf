@@ -30,44 +30,60 @@ locals {
   cluster_rules = [
     # Cluster Rules
     {
-      name        = "roks-create-worker-nodes-inbound"
-      action      = "allow"
-      source      = "161.26.0.0/16"
-      destination = "0.0.0.0/0"
-      direction   = "inbound"
-      tcp         = null
-      udp         = null
-      icmp        = null
+      name            = "roks-create-worker-nodes-inbound"
+      action          = "allow"
+      source          = "161.26.0.0/16"
+      destination     = "0.0.0.0/0"
+      direction       = "inbound"
+      protocol        = null
+      port_min        = null
+      port_max        = null
+      source_port_min = null
+      source_port_max = null
+      type            = null
+      code            = null
     },
     {
-      name        = "roks-create-worker-nodes-outbound"
-      action      = "allow"
-      destination = "161.26.0.0/16"
-      source      = "0.0.0.0/0"
-      direction   = "outbound"
-      tcp         = null
-      udp         = null
-      icmp        = null
+      name            = "roks-create-worker-nodes-outbound"
+      action          = "allow"
+      destination     = "161.26.0.0/16"
+      source          = "0.0.0.0/0"
+      direction       = "outbound"
+      protocol        = null
+      port_min        = null
+      port_max        = null
+      source_port_min = null
+      source_port_max = null
+      type            = null
+      code            = null
     },
     {
-      name        = "roks-nodes-to-service-inbound"
-      action      = "allow"
-      source      = "166.8.0.0/14"
-      destination = "0.0.0.0/0"
-      direction   = "inbound"
-      tcp         = null
-      udp         = null
-      icmp        = null
+      name            = "roks-nodes-to-service-inbound"
+      action          = "allow"
+      source          = "166.8.0.0/14"
+      destination     = "0.0.0.0/0"
+      direction       = "inbound"
+      protocol        = null
+      port_min        = null
+      port_max        = null
+      source_port_min = null
+      source_port_max = null
+      type            = null
+      code            = null
     },
     {
-      name        = "roks-nodes-to-service-outbound"
-      action      = "allow"
-      destination = "166.8.0.0/14"
-      source      = "0.0.0.0/0"
-      direction   = "outbound"
-      tcp         = null
-      udp         = null
-      icmp        = null
+      name            = "roks-nodes-to-service-outbound"
+      action          = "allow"
+      destination     = "166.8.0.0/14"
+      source          = "0.0.0.0/0"
+      direction       = "outbound"
+      protocol        = null
+      port_min        = null
+      port_max        = null
+      source_port_min = null
+      source_port_max = null
+      type            = null
+      code            = null
     }
   ]
 
@@ -84,56 +100,60 @@ locals {
   # App Rules
   app_rules = [
     {
-      name        = "allow-app-incoming-traffic-requests"
-      action      = "allow"
-      source      = "0.0.0.0/0"
-      destination = "0.0.0.0/0"
-      direction   = "inbound"
-      tcp = {
-        source_port_min = 30000
-        source_port_max = 32767
-      }
-      udp  = null
-      icmp = null
+      name            = "allow-app-incoming-traffic-requests"
+      action          = "allow"
+      source          = "0.0.0.0/0"
+      destination     = "0.0.0.0/0"
+      direction       = "inbound"
+      protocol        = "tcp"
+      port_min        = null
+      port_max        = null
+      source_port_min = 30000
+      source_port_max = 32767
+      type            = null
+      code            = null
     },
     {
-      name        = "allow-app-outgoing-traffic-requests"
-      action      = "allow"
-      source      = "0.0.0.0/0"
-      destination = "0.0.0.0/0"
-      direction   = "outbound"
-      tcp = {
-        port_min = 30000
-        port_max = 32767
-      }
-      udp  = null
-      icmp = null
+      name            = "allow-app-outgoing-traffic-requests"
+      action          = "allow"
+      source          = "0.0.0.0/0"
+      destination     = "0.0.0.0/0"
+      direction       = "outbound"
+      protocol        = "tcp"
+      port_min        = 30000
+      port_max        = 32767
+      source_port_min = null
+      source_port_max = null
+      type            = null
+      code            = null
     },
     {
-      name        = "allow-lb-incoming-traffic-requests"
-      action      = "allow"
-      source      = "0.0.0.0/0"
-      destination = "0.0.0.0/0"
-      direction   = "inbound"
-      tcp = {
-        port_min = 443
-        port_max = 443
-      }
-      udp  = null
-      icmp = null
+      name            = "allow-lb-incoming-traffic-requests"
+      action          = "allow"
+      source          = "0.0.0.0/0"
+      destination     = "0.0.0.0/0"
+      direction       = "inbound"
+      protocol        = "tcp"
+      port_min        = 443
+      port_max        = 443
+      source_port_min = null
+      source_port_max = null
+      type            = null
+      code            = null
     },
     {
-      name        = "allow-lb-outgoing-traffic-requests"
-      action      = "allow"
-      source      = "0.0.0.0/0"
-      destination = "0.0.0.0/0"
-      direction   = "outbound"
-      tcp = {
-        source_port_min = 443
-        source_port_max = 443
-      }
-      udp  = null
-      icmp = null
+      name            = "allow-lb-outgoing-traffic-requests"
+      action          = "allow"
+      source          = "0.0.0.0/0"
+      destination     = "0.0.0.0/0"
+      direction       = "outbound"
+      protocol        = "tcp"
+      port_min        = null
+      port_max        = null
+      source_port_min = 443
+      source_port_max = 443
+      type            = null
+      code            = null
     }
   ]
 

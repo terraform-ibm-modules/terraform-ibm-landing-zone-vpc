@@ -11,7 +11,7 @@ variable "ibmcloud_api_key" {
 variable "provider_visibility" {
   description = "Set the visibility value for the IBM terraform provider. Supported values are `public`, `private`, `public-and-private`. [Learn more](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/guides/custom-service-endpoints)."
   type        = string
-  default     = "private"
+  default     = "public"
 
   validation {
     condition     = contains(["public", "private", "public-and-private"], var.provider_visibility)
@@ -159,33 +159,18 @@ variable "network_acls" {
       prepend_ibm_rules            = optional(bool)
       rules = list(
         object({
-          name        = string
-          action      = string
-          destination = string
-          direction   = string
-          source      = string
-          tcp = optional(
-            object({
-              port_max        = optional(number)
-              port_min        = optional(number)
-              source_port_max = optional(number)
-              source_port_min = optional(number)
-            })
-          )
-          udp = optional(
-            object({
-              port_max        = optional(number)
-              port_min        = optional(number)
-              source_port_max = optional(number)
-              source_port_min = optional(number)
-            })
-          )
-          icmp = optional(
-            object({
-              type = optional(number)
-              code = optional(number)
-            })
-          )
+          name            = string
+          action          = string
+          destination     = string
+          direction       = string
+          source          = string
+          protocol        = optional(string)
+          port_min        = optional(number)
+          port_max        = optional(number)
+          source_port_min = optional(number)
+          source_port_max = optional(number)
+          type            = optional(number)
+          code            = optional(number)
         })
       )
     })
@@ -199,70 +184,76 @@ variable "network_acls" {
       prepend_ibm_rules            = true
       rules = [
         {
-          name      = "allow-22-inbound"
-          action    = "allow"
-          direction = "inbound"
-          tcp = {
-            port_min = 22
-            port_max = 22
-          }
-          destination = "0.0.0.0/0"
-          source      = "0.0.0.0/0"
+          name            = "allow-22-inbound"
+          action          = "allow"
+          direction       = "inbound"
+          protocol        = "tcp"
+          port_min        = 22
+          port_max        = 22
+          source_port_min = null
+          source_port_max = null
+          destination     = "0.0.0.0/0"
+          source          = "0.0.0.0/0"
         },
         {
-          name      = "allow-22-inbound-response"
-          action    = "allow"
-          direction = "outbound"
-          tcp = {
-            source_port_min = 22
-            source_port_max = 22
-          }
-          destination = "0.0.0.0/0"
-          source      = "0.0.0.0/0"
+          name            = "allow-22-inbound-response"
+          action          = "allow"
+          direction       = "outbound"
+          protocol        = "tcp"
+          port_min        = null
+          port_max        = null
+          source_port_min = 22
+          source_port_max = 22
+          destination     = "0.0.0.0/0"
+          source          = "0.0.0.0/0"
         },
         {
-          name      = "allow-80-inbound"
-          action    = "allow"
-          direction = "inbound"
-          tcp = {
-            port_min = 80
-            port_max = 80
-          }
-          destination = "0.0.0.0/0"
-          source      = "0.0.0.0/0"
+          name            = "allow-80-inbound"
+          action          = "allow"
+          direction       = "inbound"
+          protocol        = "tcp"
+          port_min        = 80
+          port_max        = 80
+          source_port_min = null
+          source_port_max = null
+          destination     = "0.0.0.0/0"
+          source          = "0.0.0.0/0"
         },
         {
-          name      = "allow-80-inbound-response"
-          action    = "allow"
-          direction = "outbound"
-          tcp = {
-            source_port_min = 80
-            source_port_max = 80
-          }
-          destination = "0.0.0.0/0"
-          source      = "0.0.0.0/0"
+          name            = "allow-80-inbound-response"
+          action          = "allow"
+          direction       = "outbound"
+          protocol        = "tcp"
+          port_min        = null
+          port_max        = null
+          source_port_min = 80
+          source_port_max = 80
+          destination     = "0.0.0.0/0"
+          source          = "0.0.0.0/0"
         },
         {
-          name      = "allow-443-inbound"
-          action    = "allow"
-          direction = "inbound"
-          tcp = {
-            port_min = 443
-            port_max = 443
-          }
-          destination = "0.0.0.0/0"
-          source      = "0.0.0.0/0"
+          name            = "allow-443-inbound"
+          action          = "allow"
+          direction       = "inbound"
+          protocol        = "tcp"
+          port_min        = 443
+          port_max        = 443
+          source_port_min = null
+          source_port_max = null
+          destination     = "0.0.0.0/0"
+          source          = "0.0.0.0/0"
         },
         {
-          name      = "allow-443-inbound-response"
-          action    = "allow"
-          direction = "outbound"
-          tcp = {
-            source_port_min = 443
-            source_port_max = 443
-          }
-          destination = "0.0.0.0/0"
-          source      = "0.0.0.0/0"
+          name            = "allow-443-inbound-response"
+          action          = "allow"
+          direction       = "outbound"
+          protocol        = "tcp"
+          port_min        = null
+          port_max        = null
+          source_port_min = 443
+          source_port_max = 443
+          destination     = "0.0.0.0/0"
+          source          = "0.0.0.0/0"
         }
       ]
     }
@@ -320,24 +311,11 @@ variable "security_group_rules" {
       remote     = optional(string)
       local      = optional(string)
       ip_version = optional(string)
-      tcp = optional(
-        object({
-          port_max = optional(number)
-          port_min = optional(number)
-        })
-      )
-      udp = optional(
-        object({
-          port_max = optional(number)
-          port_min = optional(number)
-        })
-      )
-      icmp = optional(
-        object({
-          type = optional(number)
-          code = optional(number)
-        })
-      )
+      protocol   = optional(string)
+      port_min   = optional(number)
+      port_max   = optional(number)
+      type       = optional(number)
+      code       = optional(number)
     })
   )
 

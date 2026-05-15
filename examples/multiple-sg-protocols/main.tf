@@ -49,10 +49,9 @@ module "slz_vpc" {
       remote     = "0.0.0.0/0"
       local      = "0.0.0.0/0"
       ip_version = "ipv4"
-      tcp = {
-        port_min = 22
-        port_max = 22
-      }
+      protocol   = "tcp"
+      port_min   = 22
+      port_max   = 22
     },
     {
       name       = "allow-all-inbound-http"
@@ -60,10 +59,9 @@ module "slz_vpc" {
       remote     = "0.0.0.0/0"
       local      = "0.0.0.0/0"
       ip_version = "ipv4"
-      tcp = {
-        port_min = 80
-        port_max = 80
-      }
+      protocol   = "tcp"
+      port_min   = 80
+      port_max   = 80
     },
     {
       name       = "allow-all-inbound-https"
@@ -71,10 +69,9 @@ module "slz_vpc" {
       remote     = "0.0.0.0/0"
       local      = "0.0.0.0/0"
       ip_version = "ipv4"
-      tcp = {
-        port_min = 443
-        port_max = 443
-      }
+      protocol   = "tcp"
+      port_min   = 443
+      port_max   = 443
     },
     {
       name       = "allow-all-inbound-dns-udp"
@@ -82,10 +79,9 @@ module "slz_vpc" {
       remote     = "0.0.0.0/0"
       local      = "0.0.0.0/0"
       ip_version = "ipv4"
-      udp = {
-        port_min = 53
-        port_max = 53
-      }
+      protocol   = "udp"
+      port_min   = 53
+      port_max   = 53
     },
     {
       name       = "allow-all-inbound-icmp-echo"
@@ -93,10 +89,9 @@ module "slz_vpc" {
       remote     = "0.0.0.0/0"
       local      = "0.0.0.0/0"
       ip_version = "ipv4"
-      icmp = {
-        type = 8
-        code = 0
-      }
+      protocol   = "icmp"
+      type       = 8
+      code       = 0
     }
   ]
 }
