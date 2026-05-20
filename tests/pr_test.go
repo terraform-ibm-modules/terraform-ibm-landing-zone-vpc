@@ -59,16 +59,6 @@ var dnsZoneMap = []map[string]interface{}{
 	{"name": "slz.com"},
 }
 
-var IgnoreUpdates = []string{
-	"module.slz_vpc.terraform_data.deprecation_warning",
-	"module.vpc.terraform_data.deprecation_warning[0]",
-}
-
-var IgnoreDestroys = []string{
-	"module.slz_vpc.terraform_data.deprecation_warning",
-	"module.vpc.terraform_data.deprecation_warning[0]",
-}
-
 func TestMain(m *testing.M) {
 	// Read the YAML file contents
 	var err error
@@ -88,12 +78,6 @@ func setupOptions(t *testing.T, prefix string, terraformDir string) *testhelper.
 		ResourceGroup: resourceGroup,
 		TerraformVars: map[string]interface{}{
 			"access_tags": permanentResources["accessTags"],
-		},
-		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
-			List: IgnoreUpdates,
-		},
-		IgnoreDestroys: testhelper.Exemptions{ // Ignore for consistency check
-			List: IgnoreDestroys,
 		},
 	})
 
@@ -298,12 +282,6 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 		DeleteWorkspaceOnFail:  false,
 		WaitJobCompleteMinutes: 120,
 		TerraformVersion:       terraformVersion,
-		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
-			List: IgnoreUpdates,
-		},
-		IgnoreDestroys: testhelper.Exemptions{ // Ignore for consistency check
-			List: IgnoreDestroys,
-		},
 	})
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
@@ -355,12 +333,6 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 		WaitJobCompleteMinutes:     120,
 		CheckApplyResultForUpgrade: true,
 		TerraformVersion:           terraformVersion,
-		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
-			List: IgnoreUpdates,
-		},
-		IgnoreDestroys: testhelper.Exemptions{ // Ignore for consistency check
-			List: IgnoreDestroys,
-		},
 	})
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
