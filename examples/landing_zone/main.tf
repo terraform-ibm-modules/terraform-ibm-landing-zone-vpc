@@ -22,7 +22,7 @@ module "cos_bucket" {
   region                 = var.region
   cross_region_location  = null
   cos_instance_name      = "${var.prefix}-vpc-logs-cos"
-  cos_tags               = var.resource_tags
+  resource_tags          = var.resource_tags
   bucket_name            = "${var.prefix}-vpc-logs-cos-bucket"
   kms_encryption_enabled = false
 }
