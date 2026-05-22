@@ -2,6 +2,7 @@
 package test
 
 import (
+	"context"
 	"fmt"
 	"github.com/gruntwork-io/terratest/modules/files"
 	"github.com/gruntwork-io/terratest/modules/logger"
@@ -85,9 +86,9 @@ func TestRunSpecificZoneExample(t *testing.T) {
 func TestRunExistingVPCExample(t *testing.T) {
 	t.Parallel()
 
-	prefix := fmt.Sprintf("existing-vpc-test-%s", strings.ToLower(random.UniqueId()))
+	prefix := fmt.Sprintf("existing-vpc-test-%s", strings.ToLower(random.UniqueID()))
 	realTerraformDir := "./existing-resources"
-	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueId())))
+	tempTerraformDir, _ := files.CopyTerraformFolderToTemp(realTerraformDir, fmt.Sprintf(prefix+"-%s", strings.ToLower(random.UniqueID())))
 	tags := common.GetTagsFromTravis()
 
 	// Verify ibmcloud_api_key variable is set
@@ -112,8 +113,8 @@ func TestRunExistingVPCExample(t *testing.T) {
 		Upgrade: true,
 	})
 
-	terraform.WorkspaceSelectOrNew(t, existingTerraformOptions, prefix)
-	_, existErr := terraform.InitAndApplyE(t, existingTerraformOptions)
+	terraform.WorkspaceSelectOrNewContext(t, context.Background(), existingTerraformOptions, prefix)
+	_, existErr := terraform.InitAndApplyContextE(t, context.Background(), existingTerraformOptions)
 	if existErr != nil {
 		assert.True(t, existErr == nil, "Init and Apply of temp existing resource failed")
 	} else {
@@ -125,8 +126,8 @@ func TestRunExistingVPCExample(t *testing.T) {
 
 		options.TerraformVars = map[string]interface{}{
 			"region":                       region,
-			"vpc_id":                       terraform.Output(t, existingTerraformOptions, "vpc_id"),
-			"subnet_ids":                   terraform.OutputJson(t, existingTerraformOptions, "subnet_id"),
+			"vpc_id":                       terraform.OutputContext(t, context.Background(), existingTerraformOptions, "vpc_id"),
+			"subnet_ids":                   terraform.OutputJSONContext(t, context.Background(), existingTerraformOptions, "subnet_id"),
 			"public_gateway_name":          fmt.Sprintf("%s-public-gateway", prefix),
 			"existing_resource_group_name": fmt.Sprintf("%s-resource-group", prefix),
 			"name":                         prefix,
@@ -144,8 +145,8 @@ func TestRunExistingVPCExample(t *testing.T) {
 		fmt.Println("Terratest failed. Debug the test and delete resources manually.")
 	} else {
 		logger.Log(t, "START: Destroy (existing resources)")
-		terraform.Destroy(t, existingTerraformOptions)
-		terraform.WorkspaceDelete(t, existingTerraformOptions, prefix)
+		terraform.DestroyContext(t, context.Background(), existingTerraformOptions)
+		terraform.WorkspaceDeleteContext(t, context.Background(), existingTerraformOptions, prefix)
 		logger.Log(t, "END: Destroy (existing resources)")
 	}
 }

@@ -1,6 +1,7 @@
 package test
 
 import (
+	"context"
 	"fmt"
 	"log"
 	"os"
@@ -58,16 +59,6 @@ var dnsZoneMap = []map[string]interface{}{
 	{"name": "slz.com"},
 }
 
-var IgnoreUpdates = []string{
-	"module.slz_vpc.terraform_data.deprecation_warning",
-	"module.vpc.terraform_data.deprecation_warning[0]",
-}
-
-var IgnoreDestroys = []string{
-	"module.slz_vpc.terraform_data.deprecation_warning",
-	"module.vpc.terraform_data.deprecation_warning[0]",
-}
-
 func TestMain(m *testing.M) {
 	// Read the YAML file contents
 	var err error
@@ -87,12 +78,6 @@ func setupOptions(t *testing.T, prefix string, terraformDir string) *testhelper.
 		ResourceGroup: resourceGroup,
 		TerraformVars: map[string]interface{}{
 			"access_tags": permanentResources["accessTags"],
-		},
-		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
-			List: IgnoreUpdates,
-		},
-		IgnoreDestroys: testhelper.Exemptions{ // Ignore for consistency check
-			List: IgnoreDestroys,
 		},
 	})
 
@@ -250,8 +235,8 @@ func setupTerraform(t *testing.T, prefix, realTerraformDir string) *terraform.Op
 		Upgrade: true,
 	})
 
-	terraform.WorkspaceSelectOrNew(t, existingTerraformOptions, prefix)
-	_, err = terraform.InitAndApplyE(t, existingTerraformOptions)
+	terraform.WorkspaceSelectOrNewContext(t, context.Background(), existingTerraformOptions, prefix)
+	_, err = terraform.InitAndApplyContextE(t, context.Background(), existingTerraformOptions)
 	require.NoError(t, err, "Init and Apply of temp existing resource failed")
 
 	return existingTerraformOptions
@@ -263,8 +248,8 @@ func cleanupTerraform(t *testing.T, options *terraform.Options, prefix string) {
 		return
 	}
 	logger.Log(t, "START: Destroy (existing resources)")
-	terraform.Destroy(t, options)
-	terraform.WorkspaceDelete(t, options, prefix)
+	terraform.DestroyContext(t, context.Background(), options)
+	terraform.WorkspaceDeleteContext(t, context.Background(), options, prefix)
 	logger.Log(t, "END: Destroy (existing resources)")
 }
 
@@ -279,7 +264,7 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 	require.True(t, present, checkVariable+" environment variable not set")
 	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
 
-	prefix := fmt.Sprintf("vpc-f-%s", strings.ToLower(random.UniqueId()))
+	prefix := fmt.Sprintf("vpc-f-%s", strings.ToLower(random.UniqueID()))
 	existingTerraformOptions := setupTerraform(t, prefix, "./existing-resources")
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
@@ -297,12 +282,6 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 		DeleteWorkspaceOnFail:  false,
 		WaitJobCompleteMinutes: 120,
 		TerraformVersion:       terraformVersion,
-		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
-			List: IgnoreUpdates,
-		},
-		IgnoreDestroys: testhelper.Exemptions{ // Ignore for consistency check
-			List: IgnoreDestroys,
-		},
 	})
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
@@ -313,11 +292,11 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 		{Name: "access_tags", Value: permanentResources["accessTags"], DataType: "list(string)"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
 		{Name: "enable_vpc_flow_logs", Value: "true", DataType: "bool"},
-		{Name: "existing_cos_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "cos_crn"), DataType: "string"},
+		{Name: "existing_cos_instance_crn", Value: terraform.OutputContext(t, context.Background(), existingTerraformOptions, "cos_crn"), DataType: "string"},
 		{Name: "kms_encryption_enabled_bucket", Value: "true", DataType: "bool"},
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 		{Name: "vpe_gateway_cloud_services", Value: []map[string]string{{"service_name": "kms"}, {"service_name": "cloud-object-storage"}}, DataType: "list(object{})"},
-		{Name: "vpe_gateway_cloud_service_by_crn", Value: []map[string]string{{"crn": terraform.Output(t, existingTerraformOptions, "postgresql_db_crn"), "vpe_name": "pg"}}, DataType: "list(object{})"},
+		{Name: "vpe_gateway_cloud_service_by_crn", Value: []map[string]string{{"crn": terraform.OutputContext(t, context.Background(), existingTerraformOptions, "postgresql_db_crn"), "vpe_name": "pg"}}, DataType: "list(object{})"},
 		{Name: "vpn_gateways", Value: []map[string]string{{"name": options.Prefix + "-vpn", "subnet_name": "subnet-c"}}, DataType: "list(object{})"},
 	}
 
@@ -335,7 +314,7 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 	require.True(t, present, checkVariable+" environment variable not set")
 	require.NotEqual(t, "", val, checkVariable+" environment variable is empty")
 
-	prefix := fmt.Sprintf("vpc-u-%s", strings.ToLower(random.UniqueId()))
+	prefix := fmt.Sprintf("vpc-u-%s", strings.ToLower(random.UniqueID()))
 	existingTerraformOptions := setupTerraform(t, prefix, "./existing-resources")
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
@@ -354,12 +333,6 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 		WaitJobCompleteMinutes:     120,
 		CheckApplyResultForUpgrade: true,
 		TerraformVersion:           terraformVersion,
-		IgnoreUpdates: testhelper.Exemptions{ // Ignore for consistency check
-			List: IgnoreUpdates,
-		},
-		IgnoreDestroys: testhelper.Exemptions{ // Ignore for consistency check
-			List: IgnoreDestroys,
-		},
 	})
 
 	options.TerraformVars = []testschematic.TestSchematicTerraformVar{
@@ -370,11 +343,11 @@ func TestRunUpgradeFullyConfigurable(t *testing.T) {
 		{Name: "access_tags", Value: permanentResources["accessTags"], DataType: "list(string)"},
 		{Name: "prefix", Value: options.Prefix, DataType: "string"},
 		{Name: "enable_vpc_flow_logs", Value: "true", DataType: "bool"},
-		{Name: "existing_cos_instance_crn", Value: terraform.Output(t, existingTerraformOptions, "cos_crn"), DataType: "string"},
+		{Name: "existing_cos_instance_crn", Value: terraform.OutputContext(t, context.Background(), existingTerraformOptions, "cos_crn"), DataType: "string"},
 		{Name: "kms_encryption_enabled_bucket", Value: "true", DataType: "bool"},
 		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
 		{Name: "vpe_gateway_cloud_services", Value: []map[string]string{{"service_name": "kms"}, {"service_name": "cloud-object-storage"}}, DataType: "list(object{})"},
-		{Name: "vpe_gateway_cloud_service_by_crn", Value: []map[string]string{{"crn": terraform.Output(t, existingTerraformOptions, "postgresql_db_crn"), "vpe_name": "pg"}}, DataType: "list(object{})"},
+		{Name: "vpe_gateway_cloud_service_by_crn", Value: []map[string]string{{"crn": terraform.OutputContext(t, context.Background(), existingTerraformOptions, "postgresql_db_crn"), "vpe_name": "pg"}}, DataType: "list(object{})"},
 		{Name: "vpn_gateways", Value: []map[string]string{{"name": options.Prefix + "-vpn", "subnet_name": "subnet-c"}}, DataType: "list(object{})"},
 	}
 
@@ -400,7 +373,7 @@ func TestRunHubAndSpokeDelegatedExample(t *testing.T) {
 		PostApplyHook: func(options *testhelper.TestOptions) error {
 			terraformOptions := options.TerraformOptions
 			terraformOptions.Vars["update_delegated_resolver"] = true
-			_, err := terraform.ApplyE(options.Testing, terraformOptions)
+			_, err := terraform.ApplyContextE(options.Testing, context.Background(), terraformOptions)
 			return err
 		},
 	})
