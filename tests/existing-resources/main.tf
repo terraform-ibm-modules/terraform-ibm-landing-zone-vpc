@@ -33,7 +33,7 @@ resource "ibm_is_subnet" "testacc_subnet" {
 module "postgresql_db" {
   count               = var.create_db ? 1 : 0
   source              = "terraform-ibm-modules/icd-postgresql/ibm"
-  version             = "4.12.4"
+  version             = "4.12.5"
   resource_group_id   = module.resource_group.resource_group_id
   name                = "${var.prefix}-vpe-pg"
   region              = var.region
@@ -56,7 +56,7 @@ resource "time_sleep" "sleep_time" {
 module "cos" {
   count             = var.create_cos ? 1 : 0
   source            = "terraform-ibm-modules/cos/ibm"
-  version           = "10.16.2"
+  version           = "10.16.3"
   resource_group_id = module.resource_group.resource_group_id
   cos_instance_name = "${var.prefix}-cos"
   resource_tags     = var.resource_tags
