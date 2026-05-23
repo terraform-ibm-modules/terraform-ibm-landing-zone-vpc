@@ -56,7 +56,7 @@ resource "time_sleep" "sleep_time" {
 module "cos" {
   count             = var.create_cos ? 1 : 0
   source            = "terraform-ibm-modules/cos/ibm"
-  version           = "10.16.1"
+  version           = "10.16.2"
   resource_group_id = module.resource_group.resource_group_id
   cos_instance_name = "${var.prefix}-cos"
   resource_tags     = var.resource_tags
