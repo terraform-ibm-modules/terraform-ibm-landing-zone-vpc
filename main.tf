@@ -102,9 +102,23 @@ data "ibm_is_vpc_dns_resolution_bindings" "dns_bindings" {
 # See https://cloud.ibm.com/docs/vpc?topic=vpc-hub-spoke-model for context
 ##############################################################################
 
+locals {
+  create_iam_account_settings = (
+    (
+      var.enable_hub == false &&
+      var.skip_spoke_auth_policy == false &&
+      (var.enable_hub_vpc_id || var.enable_hub_vpc_crn)
+    ) ||
+    (
+      var.enable_vpc_flow_logs &&
+      var.create_authorization_policy_vpc_to_cos
+    )
+  )
+}
+
 # fetch this account ID
 data "ibm_iam_account_settings" "iam_account_settings" {
-  count = (var.enable_hub == false && var.skip_spoke_auth_policy == false && (var.enable_hub_vpc_id || var.enable_hub_vpc_crn)) ? 1 : 0
+  count = local.create_iam_account_settings ? 1 : 0
 }
 
 # spoke -> hub auth policy based on https://cloud.ibm.com/docs/vpc?topic=vpc-vpe-dns-sharing-s2s-auth&interface=terraform
