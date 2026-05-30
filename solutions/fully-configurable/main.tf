@@ -20,7 +20,7 @@ module "resource_group" {
 module "existing_cos_crn_parser" {
   count   = var.existing_cos_instance_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.6.0"
+  version = "1.6.1"
   crn     = var.existing_cos_instance_crn
 }
 
@@ -134,7 +134,7 @@ resource "time_sleep" "wait_for_cross_account_authorization_policy" {
 module "existing_kms_instance_crn_parser" {
   count   = var.kms_encryption_enabled_bucket && var.existing_kms_instance_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.6.0"
+  version = "1.6.1"
   crn     = var.existing_kms_instance_crn
 }
 
@@ -142,7 +142,7 @@ module "existing_kms_instance_crn_parser" {
 module "existing_kms_key_crn_parser" {
   count   = var.kms_encryption_enabled_bucket && var.existing_flow_logs_bucket_kms_key_crn != null ? 1 : 0
   source  = "terraform-ibm-modules/common-utilities/ibm//modules/crn-parser"
-  version = "1.6.0"
+  version = "1.6.1"
   crn     = var.existing_flow_logs_bucket_kms_key_crn
 }
 
