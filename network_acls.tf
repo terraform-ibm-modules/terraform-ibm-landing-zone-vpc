@@ -203,9 +203,10 @@ resource "ibm_is_network_acl" "network_acl" {
   access_tags    = var.access_tags
   tags           = var.tags
 
-  # Create ACL rules
+  # Create ACL rules using rule name as key to ensure stability
+  # This prevents recreation when new ACLs are added to the list
   dynamic "rules" {
-    for_each = each.value.rules
+    for_each = { for rule in each.value.rules : rule.name => rule }
     content {
       name        = rules.value.name
       action      = rules.value.action
