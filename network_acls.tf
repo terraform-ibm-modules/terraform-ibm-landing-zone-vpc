@@ -203,12 +203,9 @@ resource "ibm_is_network_acl" "network_acl" {
   access_tags    = var.access_tags
   tags           = var.tags
 
-  # Create ACL rules with a stable key combining index and name
-  # This prevents recreation when new ACLs are added to the list
+  # Create ACL rules
   dynamic "rules" {
-    # for_each = each.value.rules
     for_each = { for idx, rule in each.value.rules : format("%04d", idx) => rule }
-    # for_each = { for idx, port in var.ports : format("%04d", idx) => port }
     content {
       name        = rules.value.name
       action      = rules.value.action
