@@ -41,37 +41,25 @@ module "slz_vpc" {
 
   network_acls = [{
     name                         = "${var.prefix}-acl"
-    add_ibm_cloud_internal_rules = true
-    add_vpc_connectivity_rules   = true
-    prepend_ibm_rules            = true
-    rules = [{
-      # name        = "inbound"
-      # action      = "allow"
-      # source      = "0.0.0.0/0"
-      # destination = "0.0.0.0/0"
-      # direction   = "inbound"
-      # },
-      # {
-      name        = "outbound"
-      action      = "allow"
-      source      = "0.0.0.0/0"
-      destination = "0.0.0.0/0"
-      direction   = "outbound"
+    add_ibm_cloud_internal_rules = false
+    add_vpc_connectivity_rules   = false
+    prepend_ibm_rules            = false
+    rules = [
+      {
+        name        = "inbound"
+        action      = "allow"
+        source      = "0.0.0.0/0"
+        destination = "0.0.0.0/0"
+        direction   = "inbound"
+      },
+      {
+        name        = "outbound"
+        action      = "allow"
+        source      = "0.0.0.0/0"
+        destination = "0.0.0.0/0"
+        direction   = "outbound"
       }
     ]
     }
   ]
-}
-
-
-resource "ibm_is_network_acl_rule" "acl_rule" {
-  # for_each = local.acl_rules
-
-  network_acl = "r006-c19099e5-419b-433d-8fc5-e3e0741c1b37"
-  name        = "inbound-v2"
-  action      = "allow"
-  source      = "0.0.0.0/0"
-  destination = "0.0.0.0/0"
-  direction   = "inbound"
-  protocol    = "any"
 }
