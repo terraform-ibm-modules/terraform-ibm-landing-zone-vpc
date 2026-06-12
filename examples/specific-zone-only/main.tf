@@ -44,13 +44,12 @@ module "slz_vpc" {
     add_ibm_cloud_internal_rules = false
     add_vpc_connectivity_rules   = false
     prepend_ibm_rules            = false
-    rules = [
-      {
-        name        = "inbound"
-        action      = "allow"
-        source      = "0.0.0.0/0"
-        destination = "0.0.0.0/0"
-        direction   = "inbound"
+    rules = [{
+      name        = "inbound"
+      action      = "allow"
+      source      = "0.0.0.0/0"
+      destination = "0.0.0.0/0"
+      direction   = "inbound"
       },
       {
         name        = "outbound"
