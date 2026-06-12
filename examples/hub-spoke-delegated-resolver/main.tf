@@ -86,7 +86,7 @@ module "spoke_to_hub_dns_binding" {
     spoke_to_hub_dns = {
       roles       = ["DNS Binding Connector"]
       description = "Allow spoke VPC to create DNS resolution binding with hub VPC"
-      
+
       # Subject attributes for the spoke VPC (using account-level policy since VPC doesn't exist yet)
       subject_attributes = [
         {
@@ -102,7 +102,7 @@ module "spoke_to_hub_dns_binding" {
           value = "vpc"
         }
       ]
-      
+
       # Resource attributes for the hub VPC
       resource_attributes = [
         {
