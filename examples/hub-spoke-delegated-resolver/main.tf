@@ -76,43 +76,56 @@ data "ibm_iam_account_settings" "iam_account_settings" {}
 # IAM Authorization Policy for DNS Resolution Binding
 # Create the policy before the spoke VPC to avoid circular dependency
 ##############################################################################
-resource "ibm_iam_authorization_policy" "spoke_to_hub_dns_binding" {
-  roles       = ["DNS Binding Connector"]
-  description = "Allow spoke VPC to create DNS resolution binding with hub VPC"
+module "spoke_to_hub_dns_binding" {
+  source  = "terraform-ibm-modules/s2s-auth/ibm"
+  version = "2.3.0"
 
-  # Subject is the spoke VPC (using account-level policy since VPC doesn't exist yet)
-  subject_attributes {
-    name  = "accountId"
-    value = data.ibm_iam_account_settings.iam_account_settings.account_id
-  }
-  subject_attributes {
-    name  = "serviceName"
-    value = "is"
-  }
-  subject_attributes {
-    name  = "resourceType"
-    value = "vpc"
-  }
+  enable_cbr = false
 
-  # Resource is the hub VPC
-  resource_attributes {
-    name  = "accountId"
-    value = data.ibm_iam_account_settings.iam_account_settings.account_id
-  }
-  resource_attributes {
-    name  = "serviceName"
-    value = "is"
-  }
-  resource_attributes {
-    name  = "vpcId"
-    value = module.hub_vpc.vpc_id
+  service_map = {
+    spoke_to_hub_dns = {
+      roles       = ["DNS Binding Connector"]
+      description = "Allow spoke VPC to create DNS resolution binding with hub VPC"
+      
+      # Subject attributes for the spoke VPC (using account-level policy since VPC doesn't exist yet)
+      subject_attributes = [
+        {
+          name  = "accountId"
+          value = data.ibm_iam_account_settings.iam_account_settings.account_id
+        },
+        {
+          name  = "serviceName"
+          value = "is"
+        },
+        {
+          name  = "resourceType"
+          value = "vpc"
+        }
+      ]
+      
+      # Resource attributes for the hub VPC
+      resource_attributes = [
+        {
+          name  = "accountId"
+          value = data.ibm_iam_account_settings.iam_account_settings.account_id
+        },
+        {
+          name  = "serviceName"
+          value = "is"
+        },
+        {
+          name  = "vpcId"
+          value = module.hub_vpc.vpc_id
+        }
+      ]
+    }
   }
 }
 
 
 module "spoke_vpc" {
   source                 = "../../"
-  depends_on             = [time_sleep.delay_between_hub_spoke, ibm_iam_authorization_policy.spoke_to_hub_dns_binding]
+  depends_on             = [time_sleep.delay_between_hub_spoke, module.spoke_to_hub_dns_binding]
   resource_group_id      = module.resource_group.resource_group_id
   region                 = var.region
   name                   = "spoke"
