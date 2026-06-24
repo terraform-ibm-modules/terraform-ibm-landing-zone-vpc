@@ -72,19 +72,70 @@ module "hub_vpc" {
 
 data "ibm_iam_account_settings" "iam_account_settings" {}
 
+##############################################################################
+# IAM Authorization Policy for DNS Resolution Binding
+# Create the policy before the spoke VPC to avoid circular dependency
+##############################################################################
+module "spoke_to_hub_dns_binding" {
+  source  = "terraform-ibm-modules/s2s-auth/ibm"
+  version = "2.3.0"
+
+  enable_cbr = false
+
+  service_map = {
+    spoke_to_hub_dns = {
+      roles       = ["DNS Binding Connector"]
+      description = "Allow spoke VPC to create DNS resolution binding with hub VPC"
+
+      # Subject attributes for the spoke VPC (using account-level policy since VPC doesn't exist yet)
+      subject_attributes = [
+        {
+          name  = "accountId"
+          value = data.ibm_iam_account_settings.iam_account_settings.account_id
+        },
+        {
+          name  = "serviceName"
+          value = "is"
+        },
+        {
+          name  = "resourceType"
+          value = "vpc"
+        }
+      ]
+
+      # Resource attributes for the hub VPC
+      resource_attributes = [
+        {
+          name  = "accountId"
+          value = data.ibm_iam_account_settings.iam_account_settings.account_id
+        },
+        {
+          name  = "serviceName"
+          value = "is"
+        },
+        {
+          name  = "vpcId"
+          value = module.hub_vpc.vpc_id
+        }
+      ]
+    }
+  }
+}
+
+
 module "spoke_vpc" {
-  source                    = "../../"
-  depends_on                = [time_sleep.delay_between_hub_spoke]
-  resource_group_id         = module.resource_group.resource_group_id
-  region                    = var.region
-  name                      = "spoke"
-  prefix                    = "${var.prefix}-spoke"
-  tags                      = var.resource_tags
-  hub_account_id            = data.ibm_iam_account_settings.iam_account_settings.account_id
-  hub_vpc_crn               = module.hub_vpc.vpc_crn
-  enable_hub_vpc_crn        = true
-  resolver_type             = "delegated"
-  update_delegated_resolver = var.update_delegated_resolver
+  source                 = "../../"
+  depends_on             = [time_sleep.delay_between_hub_spoke, module.spoke_to_hub_dns_binding]
+  resource_group_id      = module.resource_group.resource_group_id
+  region                 = var.region
+  name                   = "spoke"
+  prefix                 = "${var.prefix}-spoke"
+  tags                   = var.resource_tags
+  hub_account_id         = data.ibm_iam_account_settings.iam_account_settings.account_id
+  hub_vpc_crn            = module.hub_vpc.vpc_crn
+  enable_hub_vpc_crn     = true
+  resolver_type          = "delegated"
+  skip_spoke_auth_policy = true # We create the policy above to avoid circular dependency
   subnets = {
     zone-1 = [
       {

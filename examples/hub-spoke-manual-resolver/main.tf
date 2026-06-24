@@ -53,17 +53,16 @@ module "hub_vpc" {
 data "ibm_iam_account_settings" "iam_account_settings" {}
 
 module "spoke_vpc" {
-  source                    = "../../"
-  resource_group_id         = module.resource_group.resource_group_id
-  region                    = var.region
-  name                      = "spoke"
-  prefix                    = "${var.prefix}-spoke"
-  tags                      = var.resource_tags
-  hub_account_id            = data.ibm_iam_account_settings.iam_account_settings.account_id
-  hub_vpc_crn               = module.hub_vpc.vpc_crn
-  enable_hub_vpc_crn        = true
-  update_delegated_resolver = false
-  resolver_type             = "manual"
+  source             = "../../"
+  resource_group_id  = module.resource_group.resource_group_id
+  region             = var.region
+  name               = "spoke"
+  prefix             = "${var.prefix}-spoke"
+  tags               = var.resource_tags
+  hub_account_id     = data.ibm_iam_account_settings.iam_account_settings.account_id
+  hub_vpc_crn        = module.hub_vpc.vpc_crn
+  enable_hub_vpc_crn = true
+  resolver_type      = "manual"
   # Point to the custom resolver in the hub VPC
   manual_servers = [for location in module.hub_vpc.custom_resolver_hub.locations :
     {

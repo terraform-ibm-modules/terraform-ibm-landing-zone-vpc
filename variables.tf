@@ -659,17 +659,6 @@ variable "hub_vpc_crn" {
   }
 }
 
-variable "update_delegated_resolver" {
-  description = "If set to true, and if the vpc is configured to be a spoke for DNS resolution (enable_hub_vpc_crn or enable_hub_vpc_id set), then the spoke VPC resolver will be updated to a delegated resolver."
-  type        = bool
-  default     = false
-
-  validation {
-    condition     = !(var.update_delegated_resolver == true && var.resolver_type != "delegated")
-    error_message = "If var.update_delegated_resolver is true then var.resolver_type must be set to 'delegated'."
-  }
-}
-
 variable "skip_custom_resolver_hub_creation" {
   description = "Indicates whether to skip the configuration of a custom resolver in the hub VPC. Only relevant if enable_hub is set to true."
   type        = bool

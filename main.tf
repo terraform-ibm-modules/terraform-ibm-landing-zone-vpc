@@ -53,7 +53,7 @@ resource "ibm_is_vpc" "vpc" {
 
     # Delegated resolver
     dynamic "resolver" {
-      for_each = (var.enable_hub_vpc_id || var.enable_hub_vpc_crn) && var.update_delegated_resolver && var.resolver_type == "delegated" ? [1] : []
+      for_each = (var.enable_hub_vpc_id || var.enable_hub_vpc_crn) && var.resolver_type == "delegated" ? [1] : []
       content {
         type    = "delegated"
         vpc_id  = var.hub_vpc_id != null ? var.hub_vpc_id : null
@@ -67,7 +67,7 @@ resource "ibm_is_vpc" "vpc" {
 
     # Manual resolver
     dynamic "resolver" {
-      for_each = var.resolver_type == "manual" && !var.update_delegated_resolver ? [1] : []
+      for_each = var.resolver_type == "manual" ? [1] : []
       content {
         type = var.resolver_type
         dynamic "manual_servers" {
@@ -82,7 +82,7 @@ resource "ibm_is_vpc" "vpc" {
 
     # System resolver
     dynamic "resolver" {
-      for_each = var.resolver_type == "system" && !var.update_delegated_resolver ? [1] : []
+      for_each = var.resolver_type == "system" ? [1] : []
       content {
         type = var.resolver_type
       }

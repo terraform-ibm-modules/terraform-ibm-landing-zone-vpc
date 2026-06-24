@@ -370,12 +370,6 @@ func TestRunHubAndSpokeDelegatedExample(t *testing.T) {
 		Prefix:        "has-slz",
 		ResourceGroup: resourceGroup,
 		Region:        region,
-		PostApplyHook: func(options *testhelper.TestOptions) error {
-			terraformOptions := options.TerraformOptions
-			terraformOptions.Vars["update_delegated_resolver"] = true
-			_, err := terraform.ApplyContextE(options.Testing, context.Background(), terraformOptions)
-			return err
-		},
 	})
 
 	output, err := options.RunTestConsistency()
