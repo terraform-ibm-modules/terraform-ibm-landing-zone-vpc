@@ -45,7 +45,7 @@ module "slz_vpc" {
   routing_table_name                     = var.use_prefix ? null : "vpc-routing-table"
   public_gateway_name                    = var.use_prefix ? null : "vpc-public-gateway"
   vpc_flow_logs_name                     = var.use_prefix ? null : "vpc-flow-logs"
-  tags                                   = var.resource_tags
+  resource_tags                          = var.resource_tags
   access_tags                            = var.access_tags
   enable_vpc_flow_logs                   = var.enable_vpc_flow_logs
   create_authorization_policy_vpc_to_cos = var.create_authorization_policy_vpc_to_cos
