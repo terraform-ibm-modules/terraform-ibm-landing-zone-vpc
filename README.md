@@ -19,8 +19,6 @@ This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) net
 
 ![vpc-module](https://raw.githubusercontent.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/main/.docs/vpc-module.png)
 
-
-
 ### Upgrade notice for Hub-and-Spoke topology users (version 8.0.0 and above)
 
 > **Note:** This upgrade notice applies **only** to users of the advanced Hub-and-Spoke VPC topology who are upgrading from a previous version of this module to v8.0.0 or later. If you are using the standard topology, or a new user starting with v8.0.0 or above, you can safely ignore this section.
@@ -107,6 +105,7 @@ Expected network connectivity downtime of typically around 20 seconds.
 In addition to this root module, this repository provides two submodules that call the root module with presets and defaults that are aligned with the general [Framework for Financial Services](https://cloud.ibm.com/docs/framework-financial-services?topic=framework-financial-services-vpc-architecture-about) management and workload VPC topologies. See the [modules](https://github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc/tree/main/modules) for details.
 
 ### Usage
+
 ```terraform
 module vpc {
   source              = "terraform-ibm-modules/landing-zone-vpc/ibm"
@@ -114,7 +113,7 @@ module vpc {
   resource_group_id   = "xxXXxxXXxXxXXXXxxXxxxXXXXxXXXXX"
   region              = "us-south"
   prefix              = "my-test"
-  tags                = ["tag1", "tag2"]
+  resource_tags       = ["tag1", "tag2"]
   vpc_name            = "my-vpc"
   network_acls = [
     {
@@ -195,18 +194,17 @@ module.subnets.ibm_is_vpc_address_prefix.subnet_prefix["gcat-multizone-subnet-d"
 You need the following permissions to run this module.
 
 - IAM services
-    - **VPC Infrastructure** services
-        - `Editor` platform access
-    - **No service access**
-        - **Resource Group** \<your resource group>
-        - `Viewer` resource group access
+  - **VPC Infrastructure** services
+    - `Editor` platform access
+  - **No service access**
+    - **Resource Group** \<your resource group>
+    - `Viewer` resource group access
 
 To attach access management tags to resources in this module, you need the following permissions.
 
 - IAM Services
-    - **Tagging** service
-        - `Administrator` platform access
-
+  - **Tagging** service
+    - `Administrator` platform access
 
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 ### Requirements
@@ -262,7 +260,7 @@ To attach access management tags to resources in this module, you need the follo
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | A list of access tags to apply to the VPC resources created by the module. For more information, see https://cloud.ibm.com/docs/account?topic=account-access-tags-tutorial. | `list(string)` | `[]` | no |
+| <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | Add access management tags to the VPC resources to control access. [Learn more](https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#create-access-console). | `list(string)` | `[]` | no |
 | <a name="input_address_prefixes"></a> [address\_prefixes](#input\_address\_prefixes) | OPTIONAL - IP range that will be defined for the VPC for a certain location. Use only with manual address prefixes. You can pass value for `zone-4` only if your IBM cloud account is allowlisted for accessing zone-4. | <pre>object({<br/>    zone-1 = optional(list(string))<br/>    zone-2 = optional(list(string))<br/>    zone-3 = optional(list(string))<br/>    zone-4 = optional(list(string))<br/>  })</pre> | <pre>{<br/>  "zone-1": null,<br/>  "zone-2": null,<br/>  "zone-3": null<br/>}</pre> | no |
 | <a name="input_clean_default_sg_acl"></a> [clean\_default\_sg\_acl](#input\_clean\_default\_sg\_acl) | Remove all rules from the default VPC security group and VPC ACL (less permissive) | `bool` | `false` | no |
 | <a name="input_create_authorization_policy_vpc_to_cos"></a> [create\_authorization\_policy\_vpc\_to\_cos](#input\_create\_authorization\_policy\_vpc\_to\_cos) | Create authorisation policy for VPC to access COS. Set as false if authorization policy exists already | `bool` | `false` | no |
@@ -301,13 +299,13 @@ To attach access management tags to resources in this module, you need the follo
 | <a name="input_region"></a> [region](#input\_region) | The region to which to deploy the VPC | `string` | n/a | yes |
 | <a name="input_resolver_type"></a> [resolver\_type](#input\_resolver\_type) | Resolver type. Can be system or manual or delegated. | `string` | `null` | no |
 | <a name="input_resource_group_id"></a> [resource\_group\_id](#input\_resource\_group\_id) | The resource group ID where the VPC to be created | `string` | n/a | yes |
+| <a name="input_resource_tags"></a> [resource\_tags](#input\_resource\_tags) | Add user resource tags to the VPC resources to organize, track, and manage costs. [Learn more](https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#tag-types). | `list(string)` | `[]` | no |
 | <a name="input_routes"></a> [routes](#input\_routes) | OPTIONAL - Allows you to specify the next hop for packets based on their destination address | <pre>list(<br/>    object({<br/>      name                          = string<br/>      route_direct_link_ingress     = optional(bool)<br/>      route_transit_gateway_ingress = optional(bool)<br/>      route_vpc_zone_ingress        = optional(bool)<br/>      routes = optional(<br/>        list(<br/>          object({<br/>            action      = optional(string)<br/>            zone        = number<br/>            destination = string<br/>            next_hop    = string<br/>          })<br/>      ))<br/>    })<br/>  )</pre> | `[]` | no |
 | <a name="input_routing_table_name"></a> [routing\_table\_name](#input\_routing\_table\_name) | The name to give the provisioned routing tables. If not set, the module generates a name based on the `prefix` and `name` variables. | `string` | `null` | no |
 | <a name="input_security_group_rules"></a> [security\_group\_rules](#input\_security\_group\_rules) | A list of security group rules to be added to the default vpc security group (default empty) | <pre>list(<br/>    object({<br/>      name       = string<br/>      direction  = string<br/>      remote     = optional(string)<br/>      local      = optional(string)<br/>      ip_version = optional(string)<br/>      protocol   = optional(string)<br/>      port_min   = optional(number)<br/>      port_max   = optional(number)<br/>      type       = optional(number)<br/>      code       = optional(number)<br/>    })<br/>  )</pre> | `[]` | no |
 | <a name="input_skip_custom_resolver_hub_creation"></a> [skip\_custom\_resolver\_hub\_creation](#input\_skip\_custom\_resolver\_hub\_creation) | Indicates whether to skip the configuration of a custom resolver in the hub VPC. Only relevant if enable\_hub is set to true. | `bool` | `false` | no |
 | <a name="input_skip_spoke_auth_policy"></a> [skip\_spoke\_auth\_policy](#input\_skip\_spoke\_auth\_policy) | Set to true to skip the creation of an authorization policy between the DNS resolution spoke and hub, only enable this if a policy already exists between these two VPCs. See https://cloud.ibm.com/docs/vpc?topic=vpc-vpe-dns-sharing-s2s-auth&interface=ui for more details. | `bool` | `false` | no |
 | <a name="input_subnets"></a> [subnets](#input\_subnets) | List of subnets for the vpc. For each item in each array, a subnet will be created. Items can be either CIDR blocks or total ipv4 addresses. Public gateways will be enabled only in zones where a gateway has been created.  You can pass value for `zone-4` only if your IBM cloud account is allowlisted for accessing zone-4. | <pre>object({<br/>    zone-1 = list(object({<br/>      name           = string<br/>      cidr           = string<br/>      public_gateway = optional(bool, false)<br/>      acl_name       = string<br/>      no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true<br/>      subnet_tags    = optional(list(string), [])<br/>    }))<br/>    zone-2 = optional(list(object({<br/>      name           = string<br/>      cidr           = string<br/>      public_gateway = optional(bool, false)<br/>      acl_name       = string<br/>      no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true<br/>      subnet_tags    = optional(list(string), [])<br/>    })))<br/>    zone-3 = optional(list(object({<br/>      name           = string<br/>      cidr           = string<br/>      public_gateway = optional(bool, false)<br/>      acl_name       = string<br/>      no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true<br/>      subnet_tags    = optional(list(string), [])<br/>    })))<br/>    zone-4 = optional(list(object({<br/>      name           = string<br/>      cidr           = string<br/>      public_gateway = optional(bool, false)<br/>      acl_name       = string<br/>      no_addr_prefix = optional(bool, false) # do not automatically add address prefix for subnet, overrides other conditions if set to true<br/>      subnet_tags    = optional(list(string), [])<br/>    })))<br/>  })</pre> | <pre>{<br/>  "zone-1": [<br/>    {<br/>      "acl_name": "vpc-acl",<br/>      "cidr": "10.10.10.0/24",<br/>      "name": "subnet-a",<br/>      "no_addr_prefix": false,<br/>      "public_gateway": true<br/>    }<br/>  ],<br/>  "zone-2": [<br/>    {<br/>      "acl_name": "vpc-acl",<br/>      "cidr": "10.20.10.0/24",<br/>      "name": "subnet-b",<br/>      "no_addr_prefix": false,<br/>      "public_gateway": true<br/>    }<br/>  ],<br/>  "zone-3": [<br/>    {<br/>      "acl_name": "vpc-acl",<br/>      "cidr": "10.30.10.0/24",<br/>      "name": "subnet-c",<br/>      "no_addr_prefix": false,<br/>      "public_gateway": true<br/>    }<br/>  ]<br/>}</pre> | no |
-| <a name="input_tags"></a> [tags](#input\_tags) | List of Tags for the resource created | `list(string)` | `null` | no |
 | <a name="input_update_delegated_resolver"></a> [update\_delegated\_resolver](#input\_update\_delegated\_resolver) | If set to true, and if the vpc is configured to be a spoke for DNS resolution (enable\_hub\_vpc\_crn or enable\_hub\_vpc\_id set), then the spoke VPC resolver will be updated to a delegated resolver. | `bool` | `false` | no |
 | <a name="input_use_existing_dns_instance"></a> [use\_existing\_dns\_instance](#input\_use\_existing\_dns\_instance) | Whether to use an existing dns instance. If true, existing\_dns\_instance\_id must be set. | `bool` | `false` | no |
 | <a name="input_use_public_gateways"></a> [use\_public\_gateways](#input\_use\_public\_gateways) | Create a public gateway in any of the three zones with `true`. You can set the value for `zone-4` only if your IBM cloud account is allowlisted for accessing zone-4. | <pre>object({<br/>    zone-1 = optional(bool, false)<br/>    zone-2 = optional(bool, false)<br/>    zone-3 = optional(bool, false)<br/>    zone-4 = optional(bool, false)<br/>  })</pre> | <pre>{<br/>  "zone-1": true,<br/>  "zone-2": true,<br/>  "zone-3": true<br/>}</pre> | no |
@@ -349,6 +347,7 @@ To attach access management tags to resources in this module, you need the follo
 ## Known issues
 
 For a list of common known issues see:
+
 - [Known issues with Terraform IBM Module for Virtual Private Cloud (VPC)](https://cloud.ibm.com/docs/ibm-cloud-provider-for-terraform?topic=ibm-cloud-provider-for-terraform-known-issues-vpc).
 
 ## Contributing

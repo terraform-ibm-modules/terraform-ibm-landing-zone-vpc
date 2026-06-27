@@ -20,7 +20,7 @@ module "slz_vpc" {
   region            = var.region
   name              = var.name
   prefix            = var.prefix
-  tags              = var.resource_tags
+  resource_tags     = var.resource_tags
   subnets = {
     zone-1 = []
     zone-2 = [

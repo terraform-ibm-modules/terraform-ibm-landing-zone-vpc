@@ -226,7 +226,7 @@ module "vpc" {
   create_vpc        = true
   name              = var.vpc_name
   prefix            = local.prefix != "" ? trimspace(var.prefix) : null
-  tags              = var.resource_tags
+  resource_tags     = var.resource_tags
   access_tags       = var.access_tags
   subnets = {
     zone-1 = [

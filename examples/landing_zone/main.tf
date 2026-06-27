@@ -36,7 +36,7 @@ module "workload_vpc" {
   resource_group_id                      = module.resource_group.resource_group_id
   region                                 = var.region
   prefix                                 = "${var.prefix}-workload"
-  tags                                   = var.resource_tags
+  resource_tags                          = var.resource_tags
   access_tags                            = var.access_tags
   enable_vpc_flow_logs                   = var.enable_vpc_flow_logs
   create_authorization_policy_vpc_to_cos = var.create_authorization_policy_vpc_to_cos
@@ -51,7 +51,7 @@ module "management_vpc" {
   resource_group_id    = module.resource_group.resource_group_id
   region               = var.region
   prefix               = "${var.prefix}-management"
-  tags                 = var.resource_tags
+  resource_tags        = var.resource_tags
   clean_default_sg_acl = true
 }
 
