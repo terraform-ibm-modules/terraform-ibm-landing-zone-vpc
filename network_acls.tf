@@ -156,16 +156,17 @@ locals {
     }
   ]
 
-  # ACL Objects
+  # ACL Objects - Split into inline rules and separate rules
+  # Inline rules: ibm_rules and vpc_connectivity_rules (when prepend=true) + customer_rules
+  # Separate rules: ibm_rules and vpc_connectivity_rules (when prepend=false) + deny_all_rules
   acl_object = {
     for network_acl in var.network_acls :
     network_acl.name => {
       name = network_acl.name
-      rules = flatten([
-        # Prepend ibm rules
+      # Only include rules that should be in the ACL resource itself
+      inline_rules = flatten([
+        # Prepend ibm rules if requested
         [
-          # These rules cannot be added in a conditional operator due to inconsistent typing
-          # This will add all internal rules if the acl object contains add_ibm_cloud_internal_rules rules
           for rule in local.ibm_cloud_internal_rules :
           rule if network_acl.add_ibm_cloud_internal_rules == true && network_acl.prepend_ibm_rules == true
         ],
@@ -173,9 +174,11 @@ locals {
           for rule in local.vpc_connectivity_rules :
           rule if network_acl.add_vpc_connectivity_rules == true && network_acl.prepend_ibm_rules == true
         ],
-        # Customer rules
-        network_acl.rules,
-        # Append ibm rules
+        # Customer rules always in the middle
+        network_acl.rules
+      ])
+      # Rules to be added via ibm_is_network_acl_rule (appended after customer rules)
+      separate_rules = flatten([
         [
           for rule in local.ibm_cloud_internal_rules :
           rule if network_acl.add_ibm_cloud_internal_rules == true && network_acl.prepend_ibm_rules != true
@@ -203,9 +206,9 @@ resource "ibm_is_network_acl" "network_acl" {
   access_tags    = var.access_tags
   tags           = var.resource_tags
 
-  # Create ACL rules
+  # Create inline ACL rules (ibm_rules + vpc_connectivity_rules when prepend=true, then customer_rules)
   dynamic "rules" {
-    for_each = each.value.rules
+    for_each = each.value.inline_rules
     content {
       name        = rules.value.name
       action      = rules.value.action
@@ -222,6 +225,40 @@ resource "ibm_is_network_acl" "network_acl" {
       code            = rules.value.code
     }
   }
+}
+
+# Flatten all separate rules from all ACLs into a single map
+locals {
+  acl_separate_rules = merge([
+    for acl_name, acl in local.acl_object : {
+      for rule in acl.separate_rules :
+      "${acl_name}-${rule.name}" => merge(rule, {
+        acl_name = acl_name
+      })
+    } if var.create_subnets
+  ]...)
+}
+
+# Create separate ACL rules that will be appended at the end
+# This prevents re-ordering when customer_rules change
+resource "ibm_is_network_acl_rule" "acl_rule" {
+  for_each = local.acl_separate_rules
+
+  network_acl = ibm_is_network_acl.network_acl[each.value.acl_name].id
+
+  name        = each.value.name
+  action      = each.value.action
+  source      = each.value.source
+  destination = each.value.destination
+  direction   = each.value.direction
+
+  protocol        = each.value.protocol
+  port_min        = each.value.port_min
+  port_max        = each.value.port_max
+  source_port_min = each.value.source_port_min
+  source_port_max = each.value.source_port_max
+  type            = each.value.type
+  code            = each.value.code
 }
 
 ##############################################################################
