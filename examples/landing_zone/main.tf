@@ -17,7 +17,7 @@ module "resource_group" {
 module "cos_bucket" {
   count                  = var.enable_vpc_flow_logs ? 1 : 0
   source                 = "terraform-ibm-modules/cos/ibm"
-  version                = "10.16.5"
+  version                = "10.16.7"
   resource_group_id      = module.resource_group.resource_group_id
   region                 = var.region
   cross_region_location  = null
@@ -62,7 +62,7 @@ module "management_vpc" {
 
 module "tg_gateway_connection" {
   source               = "terraform-ibm-modules/transit-gateway/ibm"
-  version              = "3.1.0"
+  version              = "3.1.1"
   transit_gateway_name = "${var.prefix}-tg"
   region               = var.region
   global_routing       = false

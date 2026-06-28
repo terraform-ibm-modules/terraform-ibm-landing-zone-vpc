@@ -221,7 +221,7 @@ To attach access management tags to resources in this module, you need the follo
 |------|--------|---------|
 | <a name="module_dynamic_values"></a> [dynamic\_values](#module\_dynamic\_values) | ./dynamic_values | n/a |
 | <a name="module_unit_tests"></a> [unit\_tests](#module\_unit\_tests) | ./dynamic_values | n/a |
-| <a name="module_vpn_gateways"></a> [vpn\_gateways](#module\_vpn\_gateways) | terraform-ibm-modules/site-to-site-vpn/ibm | 3.0.8 |
+| <a name="module_vpn_gateways"></a> [vpn\_gateways](#module\_vpn\_gateways) | terraform-ibm-modules/site-to-site-vpn/ibm | 3.1.0 |
 
 ### Resources
 
