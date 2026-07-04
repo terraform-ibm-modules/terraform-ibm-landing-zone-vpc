@@ -494,7 +494,7 @@ locals {
 
 module "vpn_gateways" {
   source  = "terraform-ibm-modules/site-to-site-vpn/ibm"
-  version = "3.0.8"
+  version = "3.1.0"
 
   for_each = local.vpn_gateway_map
 
