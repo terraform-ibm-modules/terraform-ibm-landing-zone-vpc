@@ -31,5 +31,5 @@ variable "resource_group" {
 variable "resource_tags" {
   description = "List of Tags for the resource created"
   type        = list(string)
-  default     = null
+  default     = []
 }

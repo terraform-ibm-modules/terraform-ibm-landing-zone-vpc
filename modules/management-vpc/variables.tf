@@ -15,7 +15,7 @@ variable "resource_group_id" {
   type        = string
 }
 
-variable "tags" {
+variable "resource_tags" {
   description = "List of tags to apply to resources created by this module."
   type        = list(string)
   default     = []

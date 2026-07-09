@@ -201,7 +201,7 @@ resource "ibm_is_network_acl" "network_acl" {
   vpc            = local.vpc_id
   resource_group = var.resource_group_id
   access_tags    = var.access_tags
-  tags           = var.tags
+  tags           = var.resource_tags
 
   # Create ACL rules
   dynamic "rules" {

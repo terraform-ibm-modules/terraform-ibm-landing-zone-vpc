@@ -20,7 +20,7 @@ module "hub_vpc" {
   region            = var.region
   name              = "hub"
   prefix            = "${var.prefix}-hub"
-  tags              = var.resource_tags
+  resource_tags     = var.resource_tags
   enable_hub        = true
   subnets = {
     zone-1 = [
@@ -58,7 +58,7 @@ module "spoke_vpc" {
   region             = var.region
   name               = "spoke"
   prefix             = "${var.prefix}-spoke"
-  tags               = var.resource_tags
+  resource_tags             = var.resource_tags
   hub_account_id     = data.ibm_iam_account_settings.iam_account_settings.account_id
   hub_vpc_crn        = module.hub_vpc.vpc_crn
   enable_hub_vpc_crn = true
@@ -104,7 +104,7 @@ module "spoke_vpc" {
 
 module "tg_gateway_connection" {
   source               = "terraform-ibm-modules/transit-gateway/ibm"
-  version              = "3.1.0"
+  version              = "3.1.1"
   transit_gateway_name = "${var.prefix}-tg"
   region               = var.region
   global_routing       = false

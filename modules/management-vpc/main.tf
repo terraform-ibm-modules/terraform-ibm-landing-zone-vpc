@@ -5,7 +5,7 @@
 module "management_vpc" {
   source                                 = "../../"
   name                                   = "management"
-  tags                                   = var.tags
+  resource_tags                          = var.resource_tags
   access_tags                            = var.access_tags
   resource_group_id                      = var.resource_group_id
   region                                 = var.region

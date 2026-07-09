@@ -44,7 +44,7 @@ module "slz_vpc" {
   region            = var.region
   name              = var.name
   prefix            = var.prefix
-  tags              = var.resource_tags
+  resource_tags     = var.resource_tags
   enable_hub        = true
   dns_zones         = var.dns_zones
   dns_records       = var.dns_records

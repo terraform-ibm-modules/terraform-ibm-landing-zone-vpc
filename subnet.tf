@@ -41,7 +41,7 @@ resource "ibm_is_subnet" "subnet" {
   ipv4_cidr_block = length(keys(local.address_prefixes)) == 0 && !each.value.no_prefix ? ibm_is_vpc_address_prefix.subnet_prefix[each.value.prefix_name].cidr : each.value.cidr
   network_acl     = ibm_is_network_acl.network_acl[each.value.acl].id
   public_gateway  = each.value.public_gateway
-  tags            = var.tags
+  tags            = var.resource_tags
   access_tags     = var.access_tags
   depends_on      = [ibm_is_vpc_address_prefix.address_prefixes]
 }
