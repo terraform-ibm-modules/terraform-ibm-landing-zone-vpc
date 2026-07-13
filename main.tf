@@ -122,10 +122,16 @@ data "ibm_iam_account_settings" "iam_account_settings" {
 }
 
 # spoke -> hub auth policy based on https://cloud.ibm.com/docs/vpc?topic=vpc-vpe-dns-sharing-s2s-auth&interface=terraform
+#
+# The subject is scoped to all VPCs in the spoke's resource group rather than a specific VPC ID.
+# Scoping to the specific spoke VPC ID (local.vpc_id) creates a circular dependency for the
+# delegated resolver case: the policy must exist before the VPC is created (since the DNS binding
+# is embedded in the ibm_is_vpc resource), but the VPC ID is only known after creation.
+# Resource group scoping breaks the cycle while remaining narrower than a fully account-wide policy.
 resource "ibm_iam_authorization_policy" "vpc_dns_resolution_auth_policy" {
   count = (var.enable_hub == false && var.skip_spoke_auth_policy == false && (var.enable_hub_vpc_id || var.enable_hub_vpc_crn)) ? 1 : 0
   roles = ["DNS Binding Connector"]
-  # subject is the spoke
+  # subject: any VPC in the spoke's resource group
   subject_attributes {
     name  = "accountId"
     value = data.ibm_iam_account_settings.iam_account_settings[0].account_id
@@ -139,10 +145,10 @@ resource "ibm_iam_authorization_policy" "vpc_dns_resolution_auth_policy" {
     value = "vpc"
   }
   subject_attributes {
-    name  = "resource"
-    value = local.vpc_id
+    name  = "resourceGroupId"
+    value = var.resource_group_id
   }
-  # resource is the hub
+  # resource: the specific hub VPC
   resource_attributes {
     name  = "accountId"
     value = var.hub_account_id
