@@ -29,6 +29,7 @@ resource "time_sleep" "wait_for_vpc_creation_data" {
 
 resource "ibm_is_vpc" "vpc" {
   count          = var.create_vpc == true ? 1 : 0
+  depends_on     = [ibm_iam_authorization_policy.vpc_dns_resolution_auth_policy]
   name           = var.prefix != null ? "${var.prefix}-${var.name}" : var.name
   resource_group = var.resource_group_id
   # address prefix is set to auto only if no address prefixes NOR any subnet is passed as input
@@ -160,6 +161,9 @@ resource "ibm_iam_authorization_policy" "vpc_dns_resolution_auth_policy" {
   resource_attributes {
     name  = "vpcId"
     value = var.enable_hub_vpc_id ? var.hub_vpc_id : split(":", var.hub_vpc_crn)[9]
+  }
+  lifecycle {
+    create_before_destroy = true
   }
 }
 

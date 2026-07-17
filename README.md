@@ -23,14 +23,11 @@ This module creates the following IBM Cloud&reg; Virtual Private Cloud (VPC) net
 
 > **Note:** This upgrade notice applies **only** to users of the advanced Hub-and-Spoke VPC topology who are upgrading from a previous version of this module to v8.0.0 or later. If you are using the standard topology, or a new user starting with v8.0.0 or above, you can safely ignore this section.
 
-If you are upgrading, note that the `ibm_is_vpc_dns_resolution_binding` resources are no longer used for DNS resolution binding with the `Delegated` resolver type.
+If you are upgrading, note that the `ibm_is_vpc_dns_resolution_binding` resource is no longer used for DNS resolution binding with the `Delegated` resolver type. The delegated resolver is now configured directly on the `ibm_is_vpc` resource via `resolver_type = "delegated"`, allowing a **single** `terraform apply` to fully deploy the hub-and-spoke topology.
 
-- Upgrade to the latest module (>= `v8.0.0`).
-- Set `update_delegated_resolver = true` in your Terraform configuration (along with any other input parameters you previously used) and run `terraform apply` to re-create the DNS resolution binding with the `Delegated` resolver type. For example:
-
-```bash
-terraform apply -var="update_delegated_resolver=true"
-```
+- Remove `update_delegated_resolver` from your configuration if it was previously set.
+- Ensure `resolver_type = "delegated"` is set in your spoke module call.
+- Run a single `terraform apply` — no second apply is required.
 
 Expected network connectivity downtime of typically around 20 seconds.
 
