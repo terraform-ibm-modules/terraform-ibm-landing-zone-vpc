@@ -73,18 +73,17 @@ module "hub_vpc" {
 data "ibm_iam_account_settings" "iam_account_settings" {}
 
 module "spoke_vpc" {
-  source                    = "../../"
-  depends_on                = [time_sleep.delay_between_hub_spoke]
-  resource_group_id         = module.resource_group.resource_group_id
-  region                    = var.region
-  name                      = "spoke"
-  prefix                    = "${var.prefix}-spoke"
-  resource_tags             = var.resource_tags
-  hub_account_id            = data.ibm_iam_account_settings.iam_account_settings.account_id
-  hub_vpc_crn               = module.hub_vpc.vpc_crn
-  enable_hub_vpc_crn        = true
-  resolver_type             = "delegated"
-  update_delegated_resolver = var.update_delegated_resolver
+  source             = "../../"
+  depends_on         = [time_sleep.delay_between_hub_spoke]
+  resource_group_id  = module.resource_group.resource_group_id
+  region             = var.region
+  name               = "spoke"
+  prefix             = "${var.prefix}-spoke"
+  resource_tags      = var.resource_tags
+  hub_account_id     = data.ibm_iam_account_settings.iam_account_settings.account_id
+  hub_vpc_crn        = module.hub_vpc.vpc_crn
+  enable_hub_vpc_crn = true
+  resolver_type      = "delegated"
   subnets = {
     zone-1 = [
       {
@@ -120,7 +119,7 @@ module "spoke_vpc" {
 
 module "tg_gateway_connection" {
   source               = "terraform-ibm-modules/transit-gateway/ibm"
-  version              = "3.1.0"
+  version              = "3.1.1"
   transit_gateway_name = "${var.prefix}-tg"
   region               = var.region
   global_routing       = false
