@@ -15,12 +15,13 @@ module "resource_group" {
 #############################################################################
 
 module "slz_vpc" {
-  source            = "../../"
-  resource_group_id = module.resource_group.resource_group_id
-  region            = var.region
-  name              = var.name
-  prefix            = var.prefix
-  resource_tags     = var.resource_tags
+  source                  = "../../"
+  resource_group_id       = module.resource_group.resource_group_id
+  region                  = var.region
+  name                    = var.name
+  prefix                  = var.prefix
+  resource_tags           = var.resource_tags
+  incremental_rule_update = true
   subnets = {
     zone-1 = []
     zone-2 = [
@@ -57,6 +58,46 @@ module "slz_vpc" {
         source      = "0.0.0.0/0"
         destination = "0.0.0.0/0"
         direction   = "outbound"
+      },
+      {
+        name        = "abcd-telnet"
+        action      = "deny"
+        source      = "0.0.0.0/0"
+        destination = "10.10.10.0/24"
+        direction   = "inbound"
+        protocol    = "tcp"
+        port_min    = 23
+        port_max    = 23
+      },
+      {
+        name        = "deny-ftp"
+        action      = "deny"
+        source      = "0.0.0.0/0"
+        destination = "10.10.10.0/24"
+        direction   = "inbound"
+        protocol    = "tcp"
+        port_min    = 20
+        port_max    = 21
+        # },
+        # {
+        #   name        = "allow-custom-app-port"
+        #   action      = "allow"
+        #   source      = "10.20.0.0/24"
+        #   destination = "10.10.10.0/24"
+        #   direction   = "inbound"
+        #   protocol    = "tcp"
+        #   port_min    = 8080
+        #   port_max    = 8080
+        # },
+        # {
+        #   name        = "allow-port-range"
+        #   action      = "allow"
+        #   source      = "10.10.10.0/24"
+        #   destination = "10.20.0.0/24"
+        #   direction   = "outbound"
+        #   protocol    = "tcp"
+        #   port_min    = 30000
+        #   port_max    = 32767 # NodePort range for Kubernetes
       }
     ]
     }
