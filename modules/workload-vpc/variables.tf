@@ -159,6 +159,12 @@ variable "network_acls" {
   ]
 }
 
+variable "incremental_rule_update" {
+  type        = bool
+  description = "When set to true, enables inline rule updates (add, remove, reorder, patch, recreate only changed rules). When false (default), any change to inline rules deletes all existing rules and recreates them from the configuration."
+  default     = false
+}
+
 variable "use_public_gateways" {
   description = "For each `zone` that is set to `true`, a public gateway will be created in that zone"
   type = object({
