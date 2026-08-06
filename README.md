@@ -209,7 +209,7 @@ To attach access management tags to resources in this module, you need the follo
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
-| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | = 2.5.0-beta0 |
+| <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 2.5.0 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9.1, < 1.0.0 |
 
 ### Modules
@@ -224,34 +224,34 @@ To attach access management tags to resources in this module, you need the follo
 
 | Name | Type |
 |------|------|
-| [ibm_dns_custom_resolver.custom_resolver_hub](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/dns_custom_resolver) | resource |
-| [ibm_dns_permitted_network.dns_permitted_network](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/dns_permitted_network) | resource |
-| [ibm_dns_resource_record.dns_record](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/dns_resource_record) | resource |
-| [ibm_dns_zone.dns_zone](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/dns_zone) | resource |
-| [ibm_iam_authorization_policy.policy](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/iam_authorization_policy) | resource |
-| [ibm_iam_authorization_policy.policy_instance](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/iam_authorization_policy) | resource |
-| [ibm_iam_authorization_policy.vpc_dns_resolution_auth_policy](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/iam_authorization_policy) | resource |
-| [ibm_is_flow_log.flow_logs](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/is_flow_log) | resource |
-| [ibm_is_network_acl.network_acl](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/is_network_acl) | resource |
-| [ibm_is_public_gateway.gateway](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/is_public_gateway) | resource |
-| [ibm_is_security_group_rule.default_vpc_rule](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/is_security_group_rule) | resource |
-| [ibm_is_subnet.subnet](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/is_subnet) | resource |
-| [ibm_is_subnet_public_gateway_attachment.exist_subnet_gw](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/is_subnet_public_gateway_attachment) | resource |
-| [ibm_is_vpc.vpc](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/is_vpc) | resource |
-| [ibm_is_vpc_address_prefix.address_prefixes](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/is_vpc_address_prefix) | resource |
-| [ibm_is_vpc_address_prefix.subnet_prefix](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/is_vpc_address_prefix) | resource |
-| [ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/is_vpc_dns_resolution_binding) | resource |
-| [ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_id](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/is_vpc_dns_resolution_binding) | resource |
-| [ibm_is_vpc_routing_table.route_table](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/is_vpc_routing_table) | resource |
-| [ibm_is_vpc_routing_table_route.routing_table_routes](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/is_vpc_routing_table_route) | resource |
-| [ibm_resource_instance.dns_instance_hub](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/resources/resource_instance) | resource |
+| [ibm_dns_custom_resolver.custom_resolver_hub](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/dns_custom_resolver) | resource |
+| [ibm_dns_permitted_network.dns_permitted_network](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/dns_permitted_network) | resource |
+| [ibm_dns_resource_record.dns_record](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/dns_resource_record) | resource |
+| [ibm_dns_zone.dns_zone](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/dns_zone) | resource |
+| [ibm_iam_authorization_policy.policy](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/iam_authorization_policy) | resource |
+| [ibm_iam_authorization_policy.policy_instance](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/iam_authorization_policy) | resource |
+| [ibm_iam_authorization_policy.vpc_dns_resolution_auth_policy](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/iam_authorization_policy) | resource |
+| [ibm_is_flow_log.flow_logs](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_flow_log) | resource |
+| [ibm_is_network_acl.network_acl](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_network_acl) | resource |
+| [ibm_is_public_gateway.gateway](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_public_gateway) | resource |
+| [ibm_is_security_group_rule.default_vpc_rule](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_security_group_rule) | resource |
+| [ibm_is_subnet.subnet](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_subnet) | resource |
+| [ibm_is_subnet_public_gateway_attachment.exist_subnet_gw](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_subnet_public_gateway_attachment) | resource |
+| [ibm_is_vpc.vpc](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc) | resource |
+| [ibm_is_vpc_address_prefix.address_prefixes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_address_prefix) | resource |
+| [ibm_is_vpc_address_prefix.subnet_prefix](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_address_prefix) | resource |
+| [ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_crn](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_dns_resolution_binding) | resource |
+| [ibm_is_vpc_dns_resolution_binding.vpc_dns_resolution_binding_id](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_dns_resolution_binding) | resource |
+| [ibm_is_vpc_routing_table.route_table](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_routing_table) | resource |
+| [ibm_is_vpc_routing_table_route.routing_table_routes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/is_vpc_routing_table_route) | resource |
+| [ibm_resource_instance.dns_instance_hub](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/resource_instance) | resource |
 | [time_sleep.wait_for_authorization_policy](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
 | [time_sleep.wait_for_vpc_creation_data](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/sleep) | resource |
-| [ibm_iam_account_settings.iam_account_settings](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/data-sources/iam_account_settings) | data source |
-| [ibm_is_subnet.subnet](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/data-sources/is_subnet) | data source |
-| [ibm_is_vpc.vpc](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/data-sources/is_vpc) | data source |
-| [ibm_is_vpc_address_prefixes.get_address_prefixes](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/data-sources/is_vpc_address_prefixes) | data source |
-| [ibm_is_vpc_dns_resolution_bindings.dns_bindings](https://registry.terraform.io/providers/IBM-Cloud/ibm/2.5.0-beta0/docs/data-sources/is_vpc_dns_resolution_bindings) | data source |
+| [ibm_iam_account_settings.iam_account_settings](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/iam_account_settings) | data source |
+| [ibm_is_subnet.subnet](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_subnet) | data source |
+| [ibm_is_vpc.vpc](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_vpc) | data source |
+| [ibm_is_vpc_address_prefixes.get_address_prefixes](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_vpc_address_prefixes) | data source |
+| [ibm_is_vpc_dns_resolution_bindings.dns_bindings](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/data-sources/is_vpc_dns_resolution_bindings) | data source |
 
 ### Inputs
 
