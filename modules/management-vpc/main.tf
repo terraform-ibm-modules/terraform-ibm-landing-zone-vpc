@@ -17,6 +17,7 @@ module "management_vpc" {
   default_routing_table_name             = var.default_routing_table_name
   address_prefixes                       = var.address_prefixes
   network_acls                           = var.network_acls
+  incremental_rule_update                = var.incremental_rule_update
   use_public_gateways                    = var.use_public_gateways
   subnets                                = var.subnets
   enable_vpc_flow_logs                   = var.enable_vpc_flow_logs

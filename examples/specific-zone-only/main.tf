@@ -15,12 +15,13 @@ module "resource_group" {
 #############################################################################
 
 module "slz_vpc" {
-  source            = "../../"
-  resource_group_id = module.resource_group.resource_group_id
-  region            = var.region
-  name              = var.name
-  prefix            = var.prefix
-  resource_tags     = var.resource_tags
+  source                  = "../../"
+  resource_group_id       = module.resource_group.resource_group_id
+  region                  = var.region
+  name                    = var.name
+  prefix                  = var.prefix
+  resource_tags           = var.resource_tags
+  incremental_rule_update = true
   subnets = {
     zone-1 = []
     zone-2 = [

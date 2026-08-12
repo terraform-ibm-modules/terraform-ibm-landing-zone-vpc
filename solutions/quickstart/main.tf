@@ -257,9 +257,10 @@ module "vpc" {
       }
     ]
   }
-  network_acls         = local.network_acls
-  security_group_rules = local.public_security_group_rules
-  clean_default_sg_acl = local.clean_default_sg_acl
+  network_acls            = local.network_acls
+  incremental_rule_update = var.incremental_rule_update
+  security_group_rules    = local.public_security_group_rules
+  clean_default_sg_acl    = local.clean_default_sg_acl
   use_public_gateways = {
     zone-1 = local.allow_public_gateway
     zone-2 = local.allow_public_gateway
