@@ -196,12 +196,13 @@ resource "ibm_is_network_acl" "network_acl" {
   # ACLs if subnets are being created (not for existing subnets scenario)
   # The old version of this that had the bug was:
   # for_each       = var.create_subnets ? local.acl_object : {}
-  for_each       = { for acl_key, acl_value in local.acl_object : acl_key => acl_value if var.create_subnets }
-  name           = var.prefix != null ? "${var.prefix}-${each.key}" : each.key #already has name of vpc in each.key
-  vpc            = local.vpc_id
-  resource_group = var.resource_group_id
-  access_tags    = var.access_tags
-  tags           = var.resource_tags
+  for_each                = { for acl_key, acl_value in local.acl_object : acl_key => acl_value if var.create_subnets }
+  name                    = var.prefix != null ? "${var.prefix}-${each.key}" : each.key #already has name of vpc in each.key
+  vpc                     = local.vpc_id
+  resource_group          = var.resource_group_id
+  access_tags             = var.access_tags
+  tags                    = var.resource_tags
+  incremental_rule_update = var.incremental_rule_update
 
   # Create ACL rules
   dynamic "rules" {

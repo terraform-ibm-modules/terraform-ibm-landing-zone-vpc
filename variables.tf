@@ -301,6 +301,12 @@ variable "network_acls" {
 
 }
 
+variable "incremental_rule_update" {
+  type        = bool
+  description = "When set to true, enables surgical inline rule updates (add, remove, reorder, patch, recreate only changed rules). When false (default), any change to inline rules deletes all existing rules and recreates them from the configuration."
+  default     = false
+}
+
 ##############################################################################
 
 
