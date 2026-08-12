@@ -193,6 +193,7 @@ variable "network_acls" {
       add_ibm_cloud_internal_rules = optional(bool)
       add_vpc_connectivity_rules   = optional(bool)
       prepend_ibm_rules            = optional(bool)
+      add_deny_all_rule            = optional(bool, true)
       rules = list(
         object({
           name            = string

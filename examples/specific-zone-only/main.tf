@@ -44,6 +44,7 @@ module "slz_vpc" {
     add_ibm_cloud_internal_rules = false
     add_vpc_connectivity_rules   = false
     prepend_ibm_rules            = false
+    add_deny_all_rule            = false
     rules = [{
       name        = "inbound"
       action      = "allow"
