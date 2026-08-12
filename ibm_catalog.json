@@ -273,6 +273,9 @@
               }
             },
             {
+              "key": "incremental_rule_update"
+            },
+            {
               "key": "address_prefixes"
             },
             {
@@ -980,6 +983,9 @@
                   "type": "string"
                 }
               }
+            },
+            {
+              "key": "incremental_rule_update"
             },
             {
               "key": "enable_vpc_flow_logs",

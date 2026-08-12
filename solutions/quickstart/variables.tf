@@ -100,6 +100,12 @@ variable "enable_vpc_flow_logs" {
   default     = false
 }
 
+variable "incremental_rule_update" {
+  type        = bool
+  description = "When set to true, enables inline rule updates (add, remove, reorder, patch, recreate only changed rules). When false (default), any change to inline rules deletes all existing rules and recreates them from the configuration."
+  default     = false
+}
+
 variable "skip_vpc_cos_iam_auth_policy" {
   description = "To skip creating an IAM authorization policy that allows the VPC to access the Cloud Object Storage, set this variable to `true`. Required only if `enable_vpc_flow_logs` is set to true."
   type        = bool
