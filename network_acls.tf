@@ -185,7 +185,7 @@ locals {
           rule if network_acl.add_vpc_connectivity_rules == true && network_acl.prepend_ibm_rules != true
         ],
         # Best practice to add deny all at the end of ACL
-        local.deny_all_rules
+        network_acl.add_deny_all_rule ? local.deny_all_rules : []
       ])
     }
   }
