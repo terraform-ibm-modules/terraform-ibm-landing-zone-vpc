@@ -259,7 +259,6 @@ module "vpc" {
     ]
   }
   network_acls            = local.network_acls
-  incremental_rule_update = var.incremental_rule_update
   security_group_rules    = local.public_security_group_rules
   clean_default_sg_acl    = local.clean_default_sg_acl
   use_public_gateways = {
