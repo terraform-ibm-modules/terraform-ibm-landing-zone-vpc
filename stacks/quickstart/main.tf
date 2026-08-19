@@ -220,7 +220,8 @@ locals {
 #############################################################################
 
 module "vpc" {
-  source            = "../../"
+  source            = "terraform-ibm-modules/landing-zone-vpc/ibm"
+  version           = "10.0.1"
   resource_group_id = module.resource_group.resource_group_id
   region            = var.region
   create_vpc        = true
