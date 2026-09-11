@@ -291,7 +291,7 @@ func TestAddonPermutations(t *testing.T) {
 		TestCases:   testCases,
 		BaseSetupFunc: func(baseOptions *testaddons.TestAddonOptions, testCase testaddons.AddonTestCase) *testaddons.TestAddonOptions {
 			return testaddons.TestAddonsOptionsDefault(&testaddons.TestAddonOptions{
-				Testing:          t,
+				Testing:          baseOptions.Testing,
 				Prefix:           testCase.Prefix,
 				ResourceGroup:    resourceGroup,
 				VerboseOnFailure: true,
