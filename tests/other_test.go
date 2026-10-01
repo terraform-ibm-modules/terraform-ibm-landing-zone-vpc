@@ -127,7 +127,7 @@ func TestRunExistingVPCExample(t *testing.T) {
 		options.TerraformVars = map[string]interface{}{
 			"region":                       region,
 			"vpc_id":                       terraform.OutputContext(t, context.Background(), existingTerraformOptions, "vpc_id"),
-			"subnet_ids":                   terraform.OutputJSONContext(t, context.Background(), existingTerraformOptions, "subnet_id"),
+			"subnet_ids":                   terraform.OutputListContext(t, context.Background(), existingTerraformOptions, "subnet_id"),
 			"public_gateway_name":          fmt.Sprintf("%s-public-gateway", prefix),
 			"existing_resource_group_name": fmt.Sprintf("%s-resource-group", prefix),
 			"name":                         prefix,
