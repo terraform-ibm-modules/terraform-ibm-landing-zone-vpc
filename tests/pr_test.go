@@ -269,7 +269,7 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 
 	options := testschematic.TestSchematicOptionsDefault(&testschematic.TestSchematicOptions{
 		Testing: t,
-		Region:  "us-south",
+		Region:  "eu-de", // Hardcoding region to avoid jp-osa, as jp-osa does not support COS association with HPCS.
 		Prefix:  prefix,
 		TarIncludePatterns: []string{
 			"*.tf",
@@ -294,8 +294,8 @@ func TestFullyConfigurableWithFlowLogs(t *testing.T) {
 		{Name: "enable_vpc_flow_logs", Value: "true", DataType: "bool"},
 		{Name: "existing_cos_instance_crn", Value: terraform.OutputContext(t, context.Background(), existingTerraformOptions, "cos_crn"), DataType: "string"},
 		{Name: "kms_encryption_enabled_bucket", Value: "true", DataType: "bool"},
-		{Name: "existing_kms_instance_crn", Value: permanentResources["kp_dedicated_us_south_crn"], DataType: "string"},
-		{Name: "vpe_gateway_cloud_services", Value: []map[string]string{{"service_name": "kms"}, {"service_name": "cloud-object-storage"}}, DataType: "list(object{})"},
+		{Name: "existing_kms_instance_crn", Value: permanentResources["hpcs_south_crn"], DataType: "string"},
+		{Name: "vpe_gateway_cloud_services", Value: []map[string]string{{"service_name": "hs-crypto"}, {"service_name": "cloud-object-storage"}}, DataType: "list(object{})"},
 		{Name: "vpe_gateway_cloud_service_by_crn", Value: []map[string]string{{"crn": terraform.OutputContext(t, context.Background(), existingTerraformOptions, "postgresql_db_crn"), "vpe_name": "pg"}}, DataType: "list(object{})"},
 		{Name: "vpn_gateways", Value: []map[string]string{{"name": options.Prefix + "-vpn", "subnet_name": "subnet-c"}}, DataType: "list(object{})"},
 	}
