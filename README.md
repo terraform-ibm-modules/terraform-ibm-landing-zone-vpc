@@ -207,7 +207,7 @@ To attach access management tags to resources in this module, you need the follo
 ### Requirements
 
 | Name | Version |
-|------|---------|
+| ---- | ------- |
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.9.0 |
 | <a name="requirement_ibm"></a> [ibm](#requirement\_ibm) | >= 2.5.0, < 3.0.0 |
 | <a name="requirement_time"></a> [time](#requirement\_time) | >= 0.9.1, < 1.0.0 |
@@ -215,7 +215,7 @@ To attach access management tags to resources in this module, you need the follo
 ### Modules
 
 | Name | Source | Version |
-|------|--------|---------|
+| ---- | ------ | ------- |
 | <a name="module_dynamic_values"></a> [dynamic\_values](#module\_dynamic\_values) | ./dynamic_values | n/a |
 | <a name="module_unit_tests"></a> [unit\_tests](#module\_unit\_tests) | ./dynamic_values | n/a |
 | <a name="module_vpn_gateways"></a> [vpn\_gateways](#module\_vpn\_gateways) | terraform-ibm-modules/site-to-site-vpn/ibm | 3.1.0 |
@@ -223,7 +223,7 @@ To attach access management tags to resources in this module, you need the follo
 ### Resources
 
 | Name | Type |
-|------|------|
+| ---- | ---- |
 | [ibm_dns_custom_resolver.custom_resolver_hub](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/dns_custom_resolver) | resource |
 | [ibm_dns_permitted_network.dns_permitted_network](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/dns_permitted_network) | resource |
 | [ibm_dns_resource_record.dns_record](https://registry.terraform.io/providers/IBM-Cloud/ibm/latest/docs/resources/dns_resource_record) | resource |
@@ -256,7 +256,7 @@ To attach access management tags to resources in this module, you need the follo
 ### Inputs
 
 | Name | Description | Type | Default | Required |
-|------|-------------|------|---------|:--------:|
+| ---- | ----------- | ---- | ------- | :------: |
 | <a name="input_access_tags"></a> [access\_tags](#input\_access\_tags) | Add access management tags to the VPC resources to control access. [Learn more](https://cloud.ibm.com/docs/account?topic=account-tag&interface=ui#create-access-console). | `list(string)` | `[]` | no |
 | <a name="input_address_prefixes"></a> [address\_prefixes](#input\_address\_prefixes) | OPTIONAL - IP range that will be defined for the VPC for a certain location. Use only with manual address prefixes. You can pass value for `zone-4` only if your IBM cloud account is allowlisted for accessing zone-4. | <pre>object({<br/>    zone-1 = optional(list(string))<br/>    zone-2 = optional(list(string))<br/>    zone-3 = optional(list(string))<br/>    zone-4 = optional(list(string))<br/>  })</pre> | <pre>{<br/>  "zone-1": null,<br/>  "zone-2": null,<br/>  "zone-3": null<br/>}</pre> | no |
 | <a name="input_clean_default_sg_acl"></a> [clean\_default\_sg\_acl](#input\_clean\_default\_sg\_acl) | Remove all rules from the default VPC security group and VPC ACL (less permissive) | `bool` | `false` | no |
@@ -312,7 +312,7 @@ To attach access management tags to resources in this module, you need the follo
 ### Outputs
 
 | Name | Description |
-|------|-------------|
+| ---- | ----------- |
 | <a name="output_cidr_blocks"></a> [cidr\_blocks](#output\_cidr\_blocks) | List of CIDR blocks present in VPC stack |
 | <a name="output_custom_resolver_hub"></a> [custom\_resolver\_hub](#output\_custom\_resolver\_hub) | The custom resolver created for the hub vpc. Only set if enable\_hub is set and skip\_custom\_resolver\_hub\_creation is false. |
 | <a name="output_default_routing_table"></a> [default\_routing\_table](#output\_default\_routing\_table) | The default routing table ID and name that is created along with the VPC. |
