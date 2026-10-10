@@ -33,7 +33,7 @@ resource "ibm_is_subnet" "testacc_subnet" {
 module "postgresql_db" {
   count               = var.create_db ? 1 : 0
   source              = "terraform-ibm-modules/icd-postgresql/ibm"
-  version             = "5.0.0"
+  version             = "5.1.0"
   resource_group_id   = module.resource_group.resource_group_id
   name                = "${var.prefix}-vpe-pg"
   region              = var.region

@@ -163,7 +163,7 @@ module "kms" {
   }
   count                       = local.create_kms_key ? 1 : 0 # no need to create any KMS resources if not passing an existing KMS CRN or existing KMS key CRN is provided
   source                      = "terraform-ibm-modules/kms-all-inclusive/ibm"
-  version                     = "5.6.10"
+  version                     = "5.6.11"
   create_key_protect_instance = false
   region                      = local.kms_region
   existing_kms_instance_crn   = var.existing_kms_instance_crn
@@ -245,7 +245,7 @@ module "vpc" {
 
 module "vpe_gateway" {
   source               = "terraform-ibm-modules/vpe-gateway/ibm"
-  version              = "5.4.2"
+  version              = "5.5.1"
   resource_group_id    = module.resource_group.resource_group_id
   region               = var.region
   prefix               = local.prefix
