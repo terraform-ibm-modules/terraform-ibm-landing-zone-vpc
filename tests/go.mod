@@ -3,7 +3,7 @@ module github.com/terraform-ibm-modules/terraform-ibm-landing-zone-vpc
 go 1.26.1
 
 require (
-	github.com/IBM/go-sdk-core/v5 v5.25.0
+	github.com/IBM/go-sdk-core/v5 v5.25.1
 	github.com/gruntwork-io/terratest v1.0.1
 	github.com/stretchr/testify v1.12.1
 	github.com/terraform-ibm-modules/ibmcloud-terratest-wrapper v1.80.3
@@ -90,7 +90,7 @@ require (
 	go.yaml.in/yaml/v3 v3.0.5 // indirect
 	golang.org/x/crypto v0.58.0 // indirect
 	golang.org/x/mod v0.41.0 // indirect
-	golang.org/x/net v0.60.0 // indirect
+	golang.org/x/net v0.61.0 // indirect
 	golang.org/x/sync v0.24.0 // indirect
 	golang.org/x/sys v0.49.0 // indirect
 	golang.org/x/text v0.43.0 // indirect
