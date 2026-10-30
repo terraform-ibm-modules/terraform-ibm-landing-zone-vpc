@@ -691,7 +691,7 @@
               ],
               "optional": true,
               "on_by_default": true,
-              "version": "v10.13.1"
+              "version": "v11.2.0"
             },
             {
               "name": "deploy-arch-ibm-cloud-logs",
@@ -701,7 +701,7 @@
                 "fully-configurable"
               ],
               "id": "63d8ae58-fbf3-41ce-b844-0fb5b85882ab-global",
-              "version": "v1.11.3",
+              "version": "v2.1.7",
               "optional": true,
               "on_by_default": true,
               "input_mapping": [
@@ -775,7 +775,7 @@
               "name": "deploy-arch-ibm-activity-tracker",
               "description": "Configure Activity Tracker Event Routing to route the auditing events.",
               "id": "918453c3-4f97-4583-8c4a-83ef12fc7916-global",
-              "version": "v1.6.13",
+              "version": "v2.1.7",
               "flavors": [
                 "fully-configurable"
               ],
@@ -814,7 +814,7 @@
               "name": "deploy-arch-ibm-scc-workload-protection",
               "description": "Configure an IBM Cloud Security and Compliance Center Workload Protection instance to help you manage security and compliance for your organization.",
               "id": "4322cf44-2289-49aa-a719-dd79e39b14dc-global",
-              "version": "v1.17.4",
+              "version": "v1.22.21",
               "flavors": [
                 "fully-configurable"
               ],
