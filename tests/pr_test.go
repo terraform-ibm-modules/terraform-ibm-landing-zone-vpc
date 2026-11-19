@@ -414,6 +414,19 @@ func TestVpcAddonDefaultConfiguration(t *testing.T) {
 			},
 			Enabled: core.BoolPtr(true),
 		},
+		{
+			OfferingName:   "deploy-arch-ibm-scc-workload-protection",
+			OfferingFlavor: "fully-configurable",
+			Inputs: map[string]interface{}{
+				"app_config_crn": permanentResources["app_config_crn"],
+			},
+			Enabled: core.BoolPtr(true),
+		},
+		{
+			OfferingName:   "deploy-arch-ibm-apprapp",
+			OfferingFlavor: "fully-configurable",
+			Enabled:        core.BoolPtr(false),
+		},
 	}
 
 	err := options.RunAddonTest()
